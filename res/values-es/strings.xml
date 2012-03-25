@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Diary - Personal diary for Android
+    Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  -->
+<resources>
+    <string name="appName">Diario</string>
+    <string name="hint">Escribe lo que hiciste, tus ideas, tus sueños...  Pulsa el botón “menú” para más opciones.</string>
+    <string name="today">Hoy</string>
+    <string name="prevEntry">Anterior</string>
+    <string name="nextEntry">Siguiente</string>
+    <string name="goToDate">Ir a fecha...</string>
+    <string name="copyleft">Copyleft</string>
+    <string name="copyright"><![CDATA[
+        <html>
+          <head><link rel="stylesheet" href="stylesheet.css" /></head>
+          <body>
+            <p><b>Diario - Diario personal para Android</b></p>
+            <p>Copyright © 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a></p>
+            <p>Este programa es software libre: puedes redistribuirlo y/o modificarlo bajo los términos de la <a href="http://www.gnu.org/copyleft/gpl.html">Licencia Pública General de GNU</a> según lo publicado por la Free Software Foundation, ya sea la versión 3 de la Licencia, o (a tu elección) cualquier versión posterior.</p>
+            <p>Este programa se distribuye con la esperanza de que sea útil, pero SIN NINGUNA GARANTÍA, incluso sin la garantía MERCANTIL implícita o sin garantizar la CONVENIENCIA PARA UN PROPÓSITO PARTICULAR. Véase la <a href="http://www.gnu.org/copyleft/gpl.html">Licencia Pública General de GNU</a> para más detalles.</p>
+          </body>
+        </html>
+    ]]></string>
+</resources>

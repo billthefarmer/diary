@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Diary - Personal diary for Android
+    Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  -->
+<resources>
+    <string name="appName">Diary</string>
+    <string name="hint">Write down what you did, your ideas, your dreams...  Press the “menu” button for more options.</string>
+    <string name="today">Today</string>
+    <string name="prevEntry">Previous</string>
+    <string name="nextEntry">Next</string>
+    <string name="goToDate">Go to date...</string>
+    <string name="copyleft">Copyleft</string>
+    <string name="copyright"><![CDATA[
+        <html>
+          <head><link rel="stylesheet" href="stylesheet.css" /></head>
+          <body>
+            <p><b>Diary - Personal diary for Android</b></p>
+            <p>Copyright © 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a></p>
+            <p>This program is free software: you can redistribute it and/or modify it under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+            <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> for more details.</p>
+          </body>
+        </html>
+    ]]></string>
+</resources>
