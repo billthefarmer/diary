@@ -14,22 +14,53 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package jpf.android.diary;
+package org.billthefarmer.diary;
 
 import android.app.Activity;
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.Window;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-public class Text extends Activity {
-    public void onCreate(Bundle savedInstanceState) {
+public class Text extends Activity
+{
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         WebView webView = new WebView(this);
+
+        // Enable back navigation on action bar
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
         webView.loadDataWithBaseURL(
             "file:///android_asset/",
             getString(getIntent().getExtras().getInt("string")),
             "text/html", "utf-8", null);
         setContentView(webView);
+    }
+
+    // On options item selected
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Get id
+        int id = item.getItemId();
+        switch (id)
+        {
+        // Home
+        case android.R.id.home:
+            finish();
+            break;
+
+        default:
+            return false;
+        }
+
+        return true;
     }
 }

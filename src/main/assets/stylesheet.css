@@ -15,15 +15,3 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-body {
-    font-size: 14px;
-    line-height: 20px;
-    color: #222;
-    background: #f9f9f9;
-}
-a {
-    text-decoration: none;
-    color: #222;
-    border-bottom: 1px solid #ccc;
-}
