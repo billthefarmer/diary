@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Diary extends Activity {
@@ -158,13 +159,13 @@ public class Diary extends Activity {
     private File getMonth(int year, int month) {
         return new File(
             getYear(year).getPath() + File.separator
-            + String.format("%02d", month + 1));
+            + String.format(Locale.getDefault(), "%02d", month + 1));
     }
 
     private File getDay(int year, int month, int day) {
         return new File(
             getMonth(year, month).getPath() + File.separator
-            + String.format("%02d.txt", day));
+            + String.format(Locale.getDefault(), "%02d.txt", day));
     }
 
     private File getFile() {

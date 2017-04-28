@@ -18,23 +18,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   -->
+
 <resources>
-    <string name="appName">Diari</string>
-    <string name="hint">Escriu el que has fet, les teves idees, els teus somnis...  Prem el botó “menú” per a més opcions.</string>
-    <string name="today">Avui</string>
-    <string name="prevEntry">Anterior</string>
-    <string name="nextEntry">Següent</string>
-    <string name="goToDate">Ves a data...</string>
-    <string name="copyleft">Copyleft</string>
-    <string name="copyright"><![CDATA[
-        <html>
-          <head><link rel="stylesheet" href="stylesheet.css" /></head>
-          <body>
-            <p><b>Diari - Diari personal per Android</b></p>
-            <p>Copyright © 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a></p>
-            <p>Aquest programa és software libre: pots redistribuir-lo i/o modificar-lo sota els termes de la <a href="http://www.gnu.org/copyleft/gpl.html">Llicència Pública General de GNU</a> segons va publicar la Free Software Foundation, ja sigui la versió 3 de la Llicència, o (a la teva elecció) qualsevol versió posterior.</p>
-            <p>Aquest programa es distribueix amb l\'esperança de que sigui útil, però SENSE CAP GARANTIA, fins i tot sense la garantia MERCANTIL implícita o sense garantir la CONVENIÈNCIA PER UN PROPÒSIT PARTICULAR. Vegeu la <a href="http://www.gnu.org/copyleft/gpl.html">Llicència Pública General de GNU</a> per a més detalls.</p>
-          </body>
-        </html>
-    ]]></string>
+  <string name="appName">Diari</string>
+  <string name="hint">Escriu el que has fet, les teves idees, els teus somnis…  Prem el botó “menú” per a més opcions.</string>
+  <string name="today">Avui</string>
+  <string name="prevEntry">Anterior</string>
+  <string name="nextEntry">Següent</string>
+  <string name="goToDate">Ves a data…</string>
+  <string name="copyleft">Copyleft</string>
+  <string name="copyright"><![CDATA[
+  <html>
+  <head><link rel="stylesheet" href="stylesheet.css" /></head>
+  <body>
+  <p><b>Diari - Diari personal per Android</b></p>
+  <p>Copyright © 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a></p>
+  <p>Aquest programa és software libre: pots redistribuir-lo i/o modificar-lo sota els termes de la <a href="http://www.gnu.org/copyleft/gpl.html">Llicència Pública General de GNU</a> segons va publicar la Free Software Foundation, ja sigui la versió 3 de la Llicència, o (a la teva elecció) qualsevol versió posterior.</p>
+  <p>Aquest programa es distribueix amb l\'esperança de que sigui útil, però SENSE CAP GARANTIA, fins i tot sense la garantia MERCANTIL implícita o sense garantir la CONVENIÈNCIA PER UN PROPÒSIT PARTICULAR. Vegeu la <a href="http://www.gnu.org/copyleft/gpl.html">Llicència Pública General de GNU</a> per a més detalls.</p>
+  </body>
+  </html>
+  ]]></string>
 </resources>
