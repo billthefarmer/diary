@@ -34,12 +34,12 @@
       android:id="@+id/today"
       android:showAsAction="ifRoom"
       android:title="@string/today"
-      android:icon="@drawable/ic_action_go_to_today" />
+      android:icon="@drawable/ic_action_expand" />
   <item
       android:id="@+id/goToDate"
       android:showAsAction="ifRoom"
       android:title="@string/goToDate"
-      android:icon="@drawable/ic_action_go_to_date" />
+      android:icon="@drawable/ic_action_go_to_today" />
   <item
       android:id="@+id/copyleft"
       android:showAsAction="ifRoom"

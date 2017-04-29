@@ -21,15 +21,19 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.TextView;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 public class Text extends Activity
 {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // TextView textView = new TextView(this);
+        // textView.setText(getIntent().getExtras().getInt("string"));
+        // setContentView(textView);
+
+        // requestWindowFeature(Window.FEATURE_ACTION_BAR);
         WebView webView = new WebView(this);
 
         // Enable back navigation on action bar
@@ -37,10 +41,8 @@ public class Text extends Activity
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-        webView.loadDataWithBaseURL(
-            "file:///android_asset/",
-            getString(getIntent().getExtras().getInt("string")),
-            "text/html", "utf-8", null);
+        webView.loadData(getString(getIntent().getExtras().getInt("string")),
+            "text/html", "utf-8");
         setContentView(webView);
     }
 

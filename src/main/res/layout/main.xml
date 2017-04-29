@@ -29,6 +29,7 @@
   <EditText
       android:id="@+id/text"
       android:hint="@string/hint"
+      android:inputType="textCapSentences|textMultiLine"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
       android:gravity="top">

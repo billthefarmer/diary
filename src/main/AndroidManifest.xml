@@ -38,7 +38,7 @@
       android:allowBackup="true"
       android:icon="@drawable/icon"
       android:label="@string/appName"
-      android:theme="@android:style/Theme.Holo">
+      android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
 
     <activity
         android:label="@string/appName"
@@ -50,7 +50,7 @@
       </intent-filter>
     </activity>
     <activity
-        android:name="Text" >
+        android:name="Text">
     </activity>
 
   </application>

@@ -21,18 +21,18 @@
 
 <resources>
   <string name="appName">Diario</string>
-  <string name="hint">Escribe lo que hiciste, tus ideas, tus sueños…  Pulsa el botón “menú” para más opciones.</string>
+  <string name="hint">Escribe lo que hiciste, tus ideas, tus sueños…</string>
   <string name="today">Hoy</string>
   <string name="prevEntry">Anterior</string>
   <string name="nextEntry">Siguiente</string>
   <string name="goToDate">Ir a fecha…</string>
-  <string name="copyleft">Copyleft</string>
+  <string name="copyleft">Copyright</string>
   <string name="copyright"><![CDATA[
   <html>
-  <head><link rel="stylesheet" href="stylesheet.css" /></head>
   <body>
   <p><b>Diario - Diario personal para Android</b></p>
-  <p>Copyright © 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a></p>
+  <p>Copyright &copy; 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a></p>
+  <p>Copyright &copy; 2017  Bill Farmer</p>
   <p>Este programa es software libre: puedes redistribuirlo y/o modificarlo bajo los términos de la <a href="http://www.gnu.org/copyleft/gpl.html">Licencia Pública General de GNU</a> según lo publicado por la Free Software Foundation, ya sea la versión 3 de la Licencia, o (a tu elección) cualquier versión posterior.</p>
   <p>Este programa se distribuye con la esperanza de que sea útil, pero SIN NINGUNA GARANTÍA, incluso sin la garantía MERCANTIL implícita o sin garantizar la CONVENIENCIA PARA UN PROPÓSITO PARTICULAR. Véase la <a href="http://www.gnu.org/copyleft/gpl.html">Licencia Pública General de GNU</a> para más detalles.</p>
   </body>
