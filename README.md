@@ -10,4 +10,5 @@ The toolbar icons are, from left to right, **Previous**, which will
 show the previous entry, **Next**, which will show the next entry,
 **Today**, which will show today's entry, **Go to date...**, which
 will show the selected date, and **Copyright**, which will show the
-licence.
+licence. Depending on the device and orientation, some items may be on
+the menu.
