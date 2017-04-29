@@ -29,11 +29,7 @@ public class Text extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        // TextView textView = new TextView(this);
-        // textView.setText(getIntent().getExtras().getInt("string"));
-        // setContentView(textView);
 
-        // requestWindowFeature(Window.FEATURE_ACTION_BAR);
         WebView webView = new WebView(this);
 
         // Enable back navigation on action bar
