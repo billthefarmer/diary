@@ -4,4 +4,10 @@
 
 * Entries saved in plain text files
 * Browse entries
-* English Catalan and Spanish
+* English, Catalan and Spanish
+
+The toolbar icons are, from left to right, **Previous**, which will
+show the previous entry, **Next**, which will show the next entry,
+**Today**, which will show today's entry, **Go to date...**, which
+will show the selected date, and **Copyright**, which will show the
+licence.
