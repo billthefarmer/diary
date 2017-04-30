@@ -24,17 +24,17 @@
       android:id="@+id/prevEntry"
       android:showAsAction="ifRoom"
       android:title="@string/prevEntry"
-      android:icon="@drawable/ic_action_previous_item" />
+      android:icon="@drawable/ic_action_previous" />
   <item
       android:id="@+id/nextEntry"
       android:showAsAction="ifRoom"
       android:title="@string/nextEntry"
-      android:icon="@drawable/ic_action_next_item" />
+      android:icon="@drawable/ic_action_next" />
   <item
       android:id="@+id/today"
       android:showAsAction="ifRoom"
       android:title="@string/today"
-      android:icon="@drawable/ic_action_expand" />
+      android:icon="@drawable/ic_action_today" />
   <item
       android:id="@+id/goToDate"
       android:showAsAction="ifRoom"
