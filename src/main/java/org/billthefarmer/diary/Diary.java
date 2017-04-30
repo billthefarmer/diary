@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -28,11 +29,9 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -397,9 +396,7 @@ public class Diary extends Activity
                     fileWriter.write(string);
                     fileWriter.close();
                 }
-                catch (IOException e)
-                {
-                }
+                catch (Exception e) {}
             }
         }
     }
@@ -430,8 +427,8 @@ public class Diary extends Activity
 
     private void setDate(Calendar date)
     {
-        setTitle(DateFormat.getDateInstance(DateFormat.FULL)
-                 .format(new Date(date.getTimeInMillis())));
+        setTitleDate(new Date(date.getTimeInMillis()));
+
         int year = date.get(Calendar.YEAR);
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
@@ -440,6 +437,38 @@ public class Diary extends Activity
         nextEntry = getNextEntry(year, month, day);
 
         invalidateOptionsMenu();
+    }
+
+    private void setTitleDate(Date date)
+    {
+        Configuration config = getResources().getConfiguration();
+        switch (config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+        {
+        case Configuration.SCREENLAYOUT_SIZE_SMALL:
+            setTitle(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                     .format(date));
+            break;
+
+        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+            switch (config.orientation)
+            {
+            case Configuration.ORIENTATION_PORTRAIT:
+                setTitle(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                         .format(date));
+                break;
+
+            case Configuration.ORIENTATION_LANDSCAPE:
+                setTitle(DateFormat.getDateInstance(DateFormat.FULL)
+                         .format(date));
+                break;
+            }
+            break;
+
+        default:
+            setTitle(DateFormat.getDateInstance(DateFormat.FULL)
+                 .format(date));
+            break;
+        }
     }
 
     private void changeDate(Calendar date)
