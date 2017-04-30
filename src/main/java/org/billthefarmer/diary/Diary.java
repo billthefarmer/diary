@@ -135,8 +135,9 @@ public class Diary extends Activity
         switch (id)
         {
         case DATE_DIALOG:
-            return new DatePickerDialog(this,
-                                        new DatePickerDialog.OnDateSetListener()
+            DatePickerDialog dialog =
+                new DatePickerDialog(this,
+                                     new DatePickerDialog.OnDateSetListener()
             {
                 public void onDateSet(DatePicker view,
                                       int year,
@@ -150,6 +151,12 @@ public class Diary extends Activity
             currEntry.get(Calendar.YEAR),
             currEntry.get(Calendar.MONTH),
             currEntry.get(Calendar.DATE));
+
+            Configuration config = getResources().getConfiguration();
+            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                dialog.getDatePicker().setCalendarViewShown(true);
+
+            return dialog;
         }
         return null;
     }
