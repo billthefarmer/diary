@@ -22,8 +22,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.billthefarmer.diary"
     tools:ignore="GoogleAppIndexingWarning"
-    android:versionCode="1"
-    android:versionName="1.0"
+    android:versionCode="101"
+    android:versionName="1.01"
     android:installLocation="auto">
 
   <uses-sdk
@@ -36,7 +36,7 @@
   <application
       tools:ignore="AllowBackup"
       android:allowBackup="true"
-      android:icon="@drawable/icon"
+      android:icon="@drawable/ic_launcher"
       android:label="@string/appName"
       android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
 
