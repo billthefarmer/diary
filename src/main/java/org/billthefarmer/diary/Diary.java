@@ -152,9 +152,29 @@ public class Diary extends Activity
             currEntry.get(Calendar.MONTH),
             currEntry.get(Calendar.DATE));
 
+            DatePicker picker = dialog.getDatePicker();
             Configuration config = getResources().getConfiguration();
-            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                dialog.getDatePicker().setCalendarViewShown(true);
+            switch (config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+            {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                picker.setCalendarViewShown(true);
+                picker.setSpinnersShown(false);
+                break;
+
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                switch (config.orientation)
+                {
+                case Configuration.ORIENTATION_PORTRAIT:
+                    picker.setCalendarViewShown(true);
+                    picker.setSpinnersShown(false);
+                    break;
+
+                case Configuration.ORIENTATION_LANDSCAPE:
+                    picker.setCalendarViewShown(true);
+                    break;
+                }
+                break;
+            }
 
             return dialog;
         }
