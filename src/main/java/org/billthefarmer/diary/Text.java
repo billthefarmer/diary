@@ -18,6 +18,7 @@ package org.billthefarmer.diary;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -26,6 +27,7 @@ import android.webkit.WebView;
 
 public class Text extends Activity
 {
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,9 @@ public class Text extends Activity
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-        webView.loadData(getString(getIntent().getExtras().getInt("string")),
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        webView.loadData(getString(bundle.getInt(Diary.STRING)),
             "text/html", "utf-8");
         setContentView(webView);
     }

@@ -46,6 +46,8 @@ public class Diary extends Activity
     private final static int DATE_DIALOG = 0;
     private final static int BUFFER_SIZE = 1024;
 
+    public final static String STRING = "string";
+
     private final static String YEAR = "year";
     private final static String MONTH = "month";
     private final static String DAY = "day";
@@ -55,6 +57,7 @@ public class Diary extends Activity
     private Calendar nextEntry;
     private EditText text;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,7 @@ public class Diary extends Activity
                         (Integer) savedInstanceState.get(DAY)));
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle outState)
     {
         if (currEntry != null)
@@ -80,12 +84,14 @@ public class Diary extends Activity
         super.onSaveInstanceState(outState);
     }
 
+    @Override
     public void onPause()
     {
         super.onPause();
         save();
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
@@ -93,6 +99,7 @@ public class Diary extends Activity
         return true;
     }
 
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
         Calendar today = GregorianCalendar.getInstance();
@@ -106,6 +113,7 @@ public class Diary extends Activity
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -130,6 +138,7 @@ public class Diary extends Activity
         }
     }
 
+    @Override
     protected Dialog onCreateDialog(int id)
     {
         switch (id)
@@ -185,7 +194,7 @@ public class Diary extends Activity
     {
         Intent intent = new Intent(this, Text.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("string", string);
+        bundle.putInt(STRING, string);
         intent.putExtras(bundle);
         startActivity(intent);
     }
