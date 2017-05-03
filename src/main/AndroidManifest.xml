@@ -27,8 +27,9 @@
     android:installLocation="auto">
 
   <uses-sdk
+      tools:ignore="OldTargetApi"
       android:minSdkVersion="14"
-      android:targetSdkVersion="25" />
+      android:targetSdkVersion="22" />
 
   <uses-permission
       android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

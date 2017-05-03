@@ -70,6 +70,8 @@ public class Diary extends Activity
                         (Integer) savedInstanceState.get(YEAR),
                         (Integer) savedInstanceState.get(MONTH),
                         (Integer) savedInstanceState.get(DAY)));
+        if (prevEntry != null || nextEntry != null)
+            text.setHint(null);
     }
 
     @Override
