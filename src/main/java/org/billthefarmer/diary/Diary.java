@@ -33,11 +33,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -47,6 +49,7 @@ public class Diary extends Activity
     private final static int BUFFER_SIZE = 1024;
 
     public final static String STRING = "string";
+    public final static String DATE = "date";
 
     private final static String YEAR = "year";
     private final static String MONTH = "month";
@@ -194,10 +197,10 @@ public class Diary extends Activity
 
     private void showText(int string)
     {
-        Intent intent = new Intent(this, Text.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(STRING, string);
-        intent.putExtras(bundle);
+        Intent intent = new Intent(this, DiaryCalendar.class);
+        // Bundle bundle = new Bundle();
+        // bundle.putInt(STRING, string);
+        // intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -403,6 +406,21 @@ public class Diary extends Activity
             return getNextEntry(year, next, -1);
         }
         return new GregorianCalendar(year, month, next);
+    }
+
+    private List<Calendar> getEntries()
+    {
+        List<Calendar> list = new ArrayList<Calendar>();
+        Calendar entry = getNextEntry(1970, Calendar.JANUARY, 1);
+        while (entry != null)
+        {
+            list.add(entry);
+            entry = getNextEntry(entry.get(Calendar.YEAR),
+                                 entry.get(Calendar.MONTH),
+                                 entry.get(Calendar.DATE));
+        }
+
+        return list;
     }
 
     private void save()

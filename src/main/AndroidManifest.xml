@@ -51,6 +51,9 @@
       </intent-filter>
     </activity>
     <activity android:name="Text" />
+    <activity
+        android:name="DiaryCalendar"
+        android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
   </application>
 
