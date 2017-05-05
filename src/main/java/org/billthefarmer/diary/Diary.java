@@ -133,7 +133,8 @@ public class Diary extends Activity
             changeDate(nextEntry);
             return true;
         case R.id.goToDate:
-            showDialog(DATE_DIALOG);
+            goToDate(currEntry);
+            // showDialog(DATE_DIALOG);
             return true;
         case R.id.copyleft:
             showText(R.string.copyright);
@@ -195,12 +196,38 @@ public class Diary extends Activity
         return null;
     }
 
-    private void showText(int string)
+    // On activity result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data)
+    {
+        // Do nothing if cancelled
+        if (resultCode != RESULT_OK)
+            return;
+
+        // Get date from intent
+        Bundle extra = data.getExtras();
+        long time = extra.getLong(DATE);
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(time);
+        changeDate(calendar);
+    }
+
+    private void goToDate(Calendar date)
     {
         Intent intent = new Intent(this, DiaryCalendar.class);
-        // Bundle bundle = new Bundle();
-        // bundle.putInt(STRING, string);
-        // intent.putExtras(bundle);
+        Bundle bundle = new Bundle();
+        bundle.putLong(DATE, date.getTimeInMillis());
+        intent.putExtras(bundle);
+        startActivityForResult(intent, DATE_DIALOG);
+    }
+
+    private void showText(int string)
+    {
+        Intent intent = new Intent(this, Text.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(STRING, string);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
