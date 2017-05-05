@@ -25,10 +25,13 @@ import android.widget.Button;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
+import com.stacktips.view.DayDecorator;
+import com.stacktips.view.DayView;
 
 public class DiaryCalendar extends Activity
 {
@@ -104,4 +107,25 @@ public class DiaryCalendar extends Activity
                 }
             });
    }
+
+    private class DateDecorator
+        implements DayDecorator
+    {
+        private List<Date> dates;
+
+        private DateDecorator(List<Date> dates)
+        {
+            this.dates = dates;
+        }
+
+        public void decorate(DayView cell)
+        {
+            Date cellDate = cell.getDate();
+            for (Date date: dates)
+            {
+                if (date.equals(cellDate))
+                    cell.setBackgroundResource(R.drawable.diary_event);
+            }
+        }
+    }
 }
