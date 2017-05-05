@@ -44,8 +44,12 @@ public class DiaryCalendar extends Activity
         // Initialize CustomCalendarView from layout
         calendarView = (CustomCalendarView) findViewById(R.id.calendar);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
         // Initialize calendar with date
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        currentCalendar.setTimeInMillis(bundle.getLong(Diary.DATE));
 
         // Get date
         time = currentCalendar.getTime();
