@@ -128,22 +128,22 @@ public class DiaryCalendar extends Activity
     private class DateDecorator
         implements DayDecorator
     {
-        private List<Calendar> dates;
+        private List<Calendar> entries;
 
-        private DateDecorator(List<Calendar> dates)
+        private DateDecorator(List<Calendar> entries)
         {
-            this.dates = dates;
+            this.entries = entries;
         }
 
         public void decorate(DayView dayView)
         {
             Calendar cellDate = Calendar.getInstance();
             cellDate.setTime(dayView.getDate());
-            for (Calendar date: dates)
-                if (cellDate.get(Calendar.DATE) == date.get(Calendar.DATE) &&
-                    cellDate.get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
-                    cellDate.get(Calendar.YEAR) == date.get(Calendar.YEAR))
-                    dayView.setBackgroundResource(R.drawable.diary_event);
+            for (Calendar entry: entries)
+                if (cellDate.get(Calendar.DATE) == entry.get(Calendar.DATE) &&
+                    cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
+                    cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
+                    dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }
 }
