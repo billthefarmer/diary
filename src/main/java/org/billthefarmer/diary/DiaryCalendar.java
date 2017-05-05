@@ -18,11 +18,14 @@ package org.billthefarmer.diary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +38,8 @@ import com.stacktips.view.DayView;
 
 public class DiaryCalendar extends Activity
 {
+    public final static String TAG = "DiaryCalendar";
+
     private CustomCalendarView calendarView;
     private Date time;
 
@@ -64,6 +69,18 @@ public class DiaryCalendar extends Activity
 
         // Show/hide overflow days of a month
         // calendarView.setShowOverflowDate(false);
+
+        long longEntries[] = bundle.getLongArray(Diary.ENTRIES);
+        List<Calendar> entries = new ArrayList<Calendar>();
+        for (long time: longEntries)
+        {
+            Calendar entry = Calendar.getInstance();
+            entry.setTimeInMillis(time);
+            entries.add(entry);
+        }
+        List<DayDecorator> decorators = new ArrayList<DayDecorator>();
+        decorators.add(new DateDecorator(entries));
+        calendarView.setDecorators(decorators);
 
         // call refreshCalendar to update calendar the view
         calendarView.refreshCalendar(currentCalendar);
@@ -106,26 +123,27 @@ public class DiaryCalendar extends Activity
                     }
                 }
             });
-   }
+    }
 
     private class DateDecorator
         implements DayDecorator
     {
-        private List<Date> dates;
+        private List<Calendar> dates;
 
-        private DateDecorator(List<Date> dates)
+        private DateDecorator(List<Calendar> dates)
         {
             this.dates = dates;
         }
 
-        public void decorate(DayView cell)
+        public void decorate(DayView dayView)
         {
-            Date cellDate = cell.getDate();
-            for (Date date: dates)
-            {
-                if (date.equals(cellDate))
-                    cell.setBackgroundResource(R.drawable.diary_event);
-            }
+            Calendar cellDate = Calendar.getInstance();
+            cellDate.setTime(dayView.getDate());
+            for (Calendar date: dates)
+                if (cellDate.get(Calendar.DATE) == date.get(Calendar.DATE) &&
+                    cellDate.get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
+                    cellDate.get(Calendar.YEAR) == date.get(Calendar.YEAR))
+                    dayView.setBackgroundResource(R.drawable.diary_event);
         }
     }
 }

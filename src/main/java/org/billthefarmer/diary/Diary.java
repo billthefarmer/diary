@@ -23,11 +23,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -48,8 +50,10 @@ public class Diary extends Activity
     private final static int DATE_DIALOG = 0;
     private final static int BUFFER_SIZE = 1024;
 
+    public final static String TAG = "Diary";
     public final static String STRING = "string";
     public final static String DATE = "date";
+    public final static String ENTRIES = "entries";
 
     private final static String YEAR = "year";
     private final static String MONTH = "month";
@@ -218,6 +222,15 @@ public class Diary extends Activity
         Intent intent = new Intent(this, DiaryCalendar.class);
         Bundle bundle = new Bundle();
         bundle.putLong(DATE, date.getTimeInMillis());
+        List<Calendar> entryList = getEntries();
+        List<Long> longList = new ArrayList<Long>();
+        for (Calendar entry: entryList)
+            longList.add(entry.getTimeInMillis());
+        long entries[] = new long[longList.size()];
+        int i = 0;
+        for (long entry: longList)
+            entries[i++] = entry;
+        bundle.putLongArray(ENTRIES, entries);
         intent.putExtras(bundle);
         startActivityForResult(intent, DATE_DIALOG);
     }
