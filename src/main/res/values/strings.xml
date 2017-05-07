@@ -27,16 +27,23 @@
   <string name="nextEntry">Next</string>
   <string name="goToDate">Go to date…</string>
   <string name="done">Done</string>
-  <string name="copyleft">Copyright</string>
-  <string name="copyright"><![CDATA[
-  <html>
-  <body>
-  <p><h3>Diary - Personal diary for Android</h3></p>
-  <p>Copyright &copy; 2012  <a href="mailto:hola@josep-portella.com">Josep Portella Florit</a><br />
-  Copyright &copy; 2017  <a href="http://billthefarmer.github.io">Bill Farmer</a></p>
-  <p>This program is free software: you can redistribute it and/or modify it under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-  <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> for more details.</p>
-  </body>
-  </html>
-  ]]></string>
+  <string name="settings">Settings</string>
+  <string name="calendar">Calendar</string>
+  <string name="pref_calendar">Use custom calendar</string>
+  <string name="pref_calendar_summ">
+    Use custom calendar rather than date picker
+  </string>
+  <string name="pref_holo">Use Holo style date picker</string>
+  <string name="pref_holo_summ">
+    Use Holo style date picker rather than Material style calendar
+  </string>
+  <string name="about">About</string>
+  <string name="pref_about_summ">Diary version %s</string>
+  <string name="licence">GNU GPLv3</string>
+  <string name="copyright">
+    Copyright \u00A9 2012  <a
+    href="mailto:hola@josep-portella.com">Josep Portella
+    Florit</a>\nCopyright \u00A9 2017  <a
+    href="http://billthefarmer.github.io">Bill Farmer</a>
+  </string>
 </resources>

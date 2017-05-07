@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Diary - Personal diary for Android
+    Copyright (C) 2017	Bill Farmer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings">
+
+  <PreferenceCategory
+      android:key="pref_custom_category"
+      android:title="@string/calendar">
+
+    <CheckBoxPreference
+	android:key="pref_custom"
+	android:icon="@drawable/ic_pref_calendar"
+	android:title="@string/pref_calendar"
+	android:summary="@string/pref_calendar_summ"
+	android:persistent="true"
+	android:defaultValue="true" />
+
+    <CheckBoxPreference
+	android:key="pref_holo"
+	android:icon="@drawable/ic_pref_holo"
+	android:title="@string/pref_holo"
+	android:summary="@string/pref_holo_summ"
+	android:persistent="true"
+	android:defaultValue="true" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
+      android:key="pref_about_category"
+      android:title="@string/about">
+
+    <org.billthefarmer.diary.AboutPreference
+	android:key="pref_about"
+	android:icon="@drawable/ic_pref_about"
+	android:dialogIcon="@drawable/ic_pref_about"
+	android:negativeButtonText=""
+	android:title="@string/about"
+	android:summary="@string/pref_about_summ"
+	android:dialogLayout="@layout/about" />
+
+  </PreferenceCategory>
+
+</PreferenceScreen>

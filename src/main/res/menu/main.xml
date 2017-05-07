@@ -39,10 +39,10 @@
       android:id="@+id/goToDate"
       android:showAsAction="ifRoom"
       android:title="@string/goToDate"
-      android:icon="@drawable/ic_action_go_to_today" />
+      android:icon="@drawable/ic_action_go_to_date" />
   <item
-      android:id="@+id/copyleft"
+      android:id="@+id/settings"
       android:showAsAction="ifRoom"
-      android:title="@string/copyleft"
-      android:icon="@drawable/ic_action_about" />
+      android:title="@string/settings"
+      android:icon="@drawable/ic_action_settings" />
 </menu>

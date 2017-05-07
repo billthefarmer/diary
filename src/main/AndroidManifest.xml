@@ -54,6 +54,9 @@
     <activity
         android:name="DiaryCalendar"
         android:theme="@android:style/Theme.Holo.Light.Dialog" />
+    <activity
+        android:label="@string/settings"
+        android:name="Settings" />
 
   </application>
 

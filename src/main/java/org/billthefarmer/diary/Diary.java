@@ -21,8 +21,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,10 +48,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+// Diary
 public class Diary extends Activity
 {
+    private final static int VERSION_NOUGAT = 24;
+
     private final static int DATE_DIALOG = 0;
     private final static int BUFFER_SIZE = 1024;
+
+    public static final String PREF_ABOUT = "pref_about";
+    public static final String PREF_CUSTOM = "pref_custom";
+    public static final String PREF_HOLO = "pref_holo";
 
     public final static String TAG = "Diary";
     public final static String STRING = "string";
@@ -58,6 +68,9 @@ public class Diary extends Activity
     private final static String YEAR = "year";
     private final static String MONTH = "month";
     private final static String DAY = "day";
+
+    private boolean custom = true;
+    private boolean holo = true;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -81,6 +94,21 @@ public class Diary extends Activity
             text.setHint(null);
     }
 
+    // onResume
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        // Get preferences
+        SharedPreferences preferences =
+            PreferenceManager.getDefaultSharedPreferences(this);
+
+        custom = preferences.getBoolean(PREF_CUSTOM, true);
+        holo = preferences.getBoolean(PREF_HOLO, true);
+    }
+
+    // onSaveInstanceState
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
@@ -93,6 +121,7 @@ public class Diary extends Activity
         super.onSaveInstanceState(outState);
     }
 
+    // onPause
     @Override
     public void onPause()
     {
@@ -100,6 +129,7 @@ public class Diary extends Activity
         save();
     }
 
+    // onCreateOptionsMenu
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -108,6 +138,7 @@ public class Diary extends Activity
         return true;
     }
 
+    // onPrepareOptionsMenu
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
@@ -122,32 +153,33 @@ public class Diary extends Activity
         return true;
     }
 
+    // onOptionsItemSelected
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
         {
-        case R.id.today:
-            today();
-            return true;
         case R.id.prevEntry:
             changeDate(prevEntry);
             return true;
         case R.id.nextEntry:
             changeDate(nextEntry);
             return true;
+        case R.id.today:
+            today();
+            return true;
         case R.id.goToDate:
             goToDate(currEntry);
-            // showDialog(DATE_DIALOG);
             return true;
-        case R.id.copyleft:
-            showText(R.string.copyright);
+        case R.id.settings:
+            settings();
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 
+    // onCreateDialog
     @Override
     protected Dialog onCreateDialog(int id)
     {
@@ -171,30 +203,39 @@ public class Diary extends Activity
             currEntry.get(Calendar.MONTH),
             currEntry.get(Calendar.DATE));
 
-            DatePicker picker = dialog.getDatePicker();
-            Configuration config = getResources().getConfiguration();
-            switch (config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+            if (Build.VERSION.SDK_INT >= VERSION_NOUGAT || holo)
             {
-            case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                picker.setCalendarViewShown(true);
-                picker.setSpinnersShown(false);
-                break;
-
-            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                switch (config.orientation)
+                DatePicker picker = dialog.getDatePicker();
+                Configuration config = getResources().getConfiguration();
+                switch (config.screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK)
                 {
-                case Configuration.ORIENTATION_PORTRAIT:
+                case Configuration.SCREENLAYOUT_SIZE_SMALL:
                     picker.setCalendarViewShown(true);
                     picker.setSpinnersShown(false);
                     break;
 
-                case Configuration.ORIENTATION_LANDSCAPE:
+                case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                    switch (config.orientation)
+                    {
+                    case Configuration.ORIENTATION_PORTRAIT:
+                        picker.setCalendarViewShown(true);
+                        picker.setSpinnersShown(false);
+                        break;
+
+                    case Configuration.ORIENTATION_LANDSCAPE:
+                        picker.setCalendarViewShown(true);
+                        picker.setSpinnersShown(true);
+                        break;
+                    }
+                    break;
+
+                default:
                     picker.setCalendarViewShown(true);
+                    picker.setSpinnersShown(true);
                     break;
                 }
-                break;
             }
-
             return dialog;
         }
         return null;
@@ -219,20 +260,32 @@ public class Diary extends Activity
 
     private void goToDate(Calendar date)
     {
-        Intent intent = new Intent(this, DiaryCalendar.class);
-        Bundle bundle = new Bundle();
-        bundle.putLong(DATE, date.getTimeInMillis());
-        List<Calendar> entryList = getEntries();
-        List<Long> longList = new ArrayList<Long>();
-        for (Calendar entry: entryList)
-            longList.add(entry.getTimeInMillis());
-        long entries[] = new long[longList.size()];
-        int i = 0;
-        for (long entry: longList)
-            entries[i++] = entry;
-        bundle.putLongArray(ENTRIES, entries);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, DATE_DIALOG);
+        if (custom)
+        {
+            Intent intent = new Intent(this, DiaryCalendar.class);
+            Bundle bundle = new Bundle();
+            bundle.putLong(DATE, date.getTimeInMillis());
+            List<Calendar> entryList = getEntries();
+            List<Long> longList = new ArrayList<Long>();
+            for (Calendar entry: entryList)
+                longList.add(entry.getTimeInMillis());
+            long entries[] = new long[longList.size()];
+            int i = 0;
+            for (long entry: longList)
+                entries[i++] = entry;
+            bundle.putLongArray(ENTRIES, entries);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, DATE_DIALOG);
+        }
+
+        else
+            showDialog(DATE_DIALOG);
+    }
+
+    private void settings()
+    {
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 
     private void showText(int string)

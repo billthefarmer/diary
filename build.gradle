@@ -16,7 +16,7 @@ android {
 
     lintOptions {
 	disable 'IconDensities'
-	// abortOnError false
+        abortOnError false
     }
 }
 
