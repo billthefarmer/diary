@@ -34,6 +34,8 @@
     Usar un calendario personalizado en lugar de un selector de fechas
   </string>
   <string name="about">Acerca de</string>
+  <string name="pref_about_summ">Diary version %s</string>
+  <string name="licence">GNU GPLv3</string>
   <string name="copyright">
     Copyright \u00A9 2012 <a
     href="mailto:hola@josep-portella.com">Josep Portella

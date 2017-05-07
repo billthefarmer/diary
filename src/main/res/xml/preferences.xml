@@ -35,14 +35,6 @@
 	android:persistent="true"
 	android:defaultValue="true" />
 
-    <CheckBoxPreference
-	android:key="pref_holo"
-	android:icon="@drawable/ic_pref_holo"
-	android:title="@string/pref_holo"
-	android:summary="@string/pref_holo_summ"
-	android:persistent="true"
-	android:defaultValue="true" />
-
   </PreferenceCategory>
 
   <PreferenceCategory

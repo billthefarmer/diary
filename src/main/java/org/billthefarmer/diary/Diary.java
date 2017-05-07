@@ -58,7 +58,6 @@ public class Diary extends Activity
 
     public static final String PREF_ABOUT = "pref_about";
     public static final String PREF_CUSTOM = "pref_custom";
-    public static final String PREF_HOLO = "pref_holo";
 
     public final static String TAG = "Diary";
     public final static String STRING = "string";
@@ -70,7 +69,6 @@ public class Diary extends Activity
     private final static String DAY = "day";
 
     private boolean custom = true;
-    private boolean holo = true;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -105,7 +103,6 @@ public class Diary extends Activity
             PreferenceManager.getDefaultSharedPreferences(this);
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
-        holo = preferences.getBoolean(PREF_HOLO, true);
     }
 
     // onSaveInstanceState
@@ -203,7 +200,7 @@ public class Diary extends Activity
             currEntry.get(Calendar.MONTH),
             currEntry.get(Calendar.DATE));
 
-            if (Build.VERSION.SDK_INT >= VERSION_NOUGAT || holo)
+            if (Build.VERSION.SDK_INT < VERSION_NOUGAT)
             {
                 DatePicker picker = dialog.getDatePicker();
                 Configuration config = getResources().getConfiguration();
@@ -225,14 +222,12 @@ public class Diary extends Activity
 
                     case Configuration.ORIENTATION_LANDSCAPE:
                         picker.setCalendarViewShown(true);
-                        picker.setSpinnersShown(true);
                         break;
                     }
                     break;
 
                 default:
                     picker.setCalendarViewShown(true);
-                    picker.setSpinnersShown(true);
                     break;
                 }
             }
@@ -285,15 +280,6 @@ public class Diary extends Activity
     private void settings()
     {
         Intent intent = new Intent(this, Settings.class);
-        startActivity(intent);
-    }
-
-    private void showText(int string)
-    {
-        Intent intent = new Intent(this, Text.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(STRING, string);
-        intent.putExtras(bundle);
         startActivity(intent);
     }
 

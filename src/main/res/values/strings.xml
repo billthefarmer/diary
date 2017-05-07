@@ -33,10 +33,6 @@
   <string name="pref_calendar_summ">
     Use custom calendar rather than date picker
   </string>
-  <string name="pref_holo">Use Holo style date picker</string>
-  <string name="pref_holo_summ">
-    Use Holo style date picker rather than Material style calendar
-  </string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="licence">GNU GPLv3</string>
