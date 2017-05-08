@@ -47,8 +47,6 @@ public class DatePickerFragment extends DialogFragment
         args.putLong(Diary.DATE, date.getTimeInMillis());
         fragment.setArguments(args);
 
-        fragment.setStyle(0, android.R.style.Theme_Holo_Light_Dialog);
-
         return fragment;
     }
 
