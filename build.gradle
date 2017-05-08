@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-17'
+    compileSdkVersion 'android-22'
     buildToolsVersion '24.0.2'
 
     lintOptions {
