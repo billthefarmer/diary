@@ -48,6 +48,7 @@ public class DiaryCalendar extends Activity
     private CustomCalendarView calendarView;
     private Date time;
 
+    // onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -116,7 +117,6 @@ public class DiaryCalendar extends Activity
 
                     switch(id)
                     {
-
                         // Done
                     case R.id.done:
                         // Return new date in intent
@@ -130,6 +130,7 @@ public class DiaryCalendar extends Activity
             });
     }
 
+    // DateDecorator
     private class DateDecorator
         implements DayDecorator
     {
@@ -139,7 +140,8 @@ public class DiaryCalendar extends Activity
         {
             this.entries = entries;
         }
-
+        // decorate
+        @Override
         public void decorate(DayView dayView)
         {
             Calendar cellDate = Calendar.getInstance();

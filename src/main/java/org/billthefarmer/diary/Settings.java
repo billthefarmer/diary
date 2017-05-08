@@ -29,10 +29,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-// SettingsActivity class
+// Settings
 public class Settings extends Activity
 {
-    // On create
+    // onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -52,7 +52,7 @@ public class Settings extends Activity
         }
     }
 
-    // On options item selected
+    // onOptionsItemSelected
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -65,7 +65,6 @@ public class Settings extends Activity
             break;
 
         default:
-
             return false;
         }
 

@@ -67,7 +67,7 @@ public class DatePickerFragment extends DialogFragment
                                  calendar.get(Calendar.MONTH),
                                  calendar.get(Calendar.DATE));
 
-
+        // Set up the date picker
         if (Build.VERSION.SDK_INT < Diary.VERSION_NOUGAT)
         {
             DatePicker picker = dialog.getDatePicker();
