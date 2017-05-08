@@ -19,6 +19,7 @@ package org.billthefarmer.diary;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
@@ -50,8 +51,10 @@ import java.util.regex.Pattern;
 
 // Diary
 public class Diary extends Activity
+    implements DatePickerDialog.OnDateSetListener
+
 {
-    private final static int VERSION_NOUGAT = 24;
+    public final static int VERSION_NOUGAT = 24;
 
     private final static int DATE_DIALOG = 0;
     private final static int BUFFER_SIZE = 1024;
@@ -63,6 +66,7 @@ public class Diary extends Activity
     public final static String STRING = "string";
     public final static String DATE = "date";
     public final static String ENTRIES = "entries";
+    public final static String DATEPICKER = "datePicker";
 
     private final static String YEAR = "year";
     private final static String MONTH = "month";
@@ -176,67 +180,7 @@ public class Diary extends Activity
         }
     }
 
-    // onCreateDialog
-    @Override
-    protected Dialog onCreateDialog(int id)
-    {
-        switch (id)
-        {
-        case DATE_DIALOG:
-            DatePickerDialog dialog =
-                new DatePickerDialog(this,
-                                     new DatePickerDialog.OnDateSetListener()
-            {
-                public void onDateSet(DatePicker view,
-                                      int year,
-                                      int month,
-                                      int day)
-                {
-                    changeDate(new GregorianCalendar(
-                                   year, month, day));
-                }
-            },
-            currEntry.get(Calendar.YEAR),
-            currEntry.get(Calendar.MONTH),
-            currEntry.get(Calendar.DATE));
-
-            if (Build.VERSION.SDK_INT < VERSION_NOUGAT)
-            {
-                DatePicker picker = dialog.getDatePicker();
-                Configuration config = getResources().getConfiguration();
-                switch (config.screenLayout &
-                        Configuration.SCREENLAYOUT_SIZE_MASK)
-                {
-                case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                    picker.setCalendarViewShown(true);
-                    picker.setSpinnersShown(false);
-                    break;
-
-                case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                    switch (config.orientation)
-                    {
-                    case Configuration.ORIENTATION_PORTRAIT:
-                        picker.setCalendarViewShown(true);
-                        picker.setSpinnersShown(false);
-                        break;
-
-                    case Configuration.ORIENTATION_LANDSCAPE:
-                        picker.setCalendarViewShown(true);
-                        break;
-                    }
-                    break;
-
-                default:
-                    picker.setCalendarViewShown(true);
-                    break;
-                }
-            }
-            return dialog;
-        }
-        return null;
-    }
-
-    // On activity result
+    // onActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data)
@@ -253,6 +197,14 @@ public class Diary extends Activity
         changeDate(calendar);
     }
 
+    // onDateSet
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day)
+    {
+        changeDate(new GregorianCalendar(year, month, day));
+    }
+
+    // goToDate
     private void goToDate(Calendar date)
     {
         if (custom)
@@ -274,42 +226,52 @@ public class Diary extends Activity
         }
 
         else
-            showDialog(DATE_DIALOG);
+            showDatePickerDialog(date);
     }
 
+    // showDatePickerDialog
+    public void showDatePickerDialog(Calendar date)
+    {
+        DialogFragment fragment = DatePickerFragment.newInstance(date);
+        fragment.show(getFragmentManager(), DATEPICKER);
+    }
+
+    // settings
     private void settings()
     {
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
 
+    // getHome
     private File getHome()
     {
-        return new File(
-                   Environment.getExternalStorageDirectory().getPath()
-                   + File.separator + "Diary");
+        return new File(Environment.getExternalStorageDirectory().getPath()
+                        + File.separator + "Diary");
     }
 
+    // getYear
     private File getYear(int year)
     {
-        return new File(
-                   getHome().getPath() + File.separator + year);
+        return new File(getHome().getPath() + File.separator + year);
     }
 
+    // getMonth
     private File getMonth(int year, int month)
     {
-        return new File(
-                   getYear(year).getPath() + File.separator
-                   + String.format(Locale.getDefault(), "%02d", month + 1));
+        return new File(getYear(year).getPath() + File.separator
+                        + String.format(Locale.getDefault(),
+                                        "%02d", month + 1));
     }
 
+    // getDay
     private File getDay(int year, int month, int day)
     {
-        return new File(
-                   getMonth(year, month).getPath() + File.separator
-                   + String.format(Locale.getDefault(), "%02d.txt", day));
+        return new File(getMonth(year, month).getPath() + File.separator
+                        + String.format(Locale.getDefault(), "%02d.txt", day));
     }
 
+    // getFile
     private File getFile()
     {
         return getDay(currEntry.get(Calendar.YEAR),
@@ -317,6 +279,7 @@ public class Diary extends Activity
                       currEntry.get(Calendar.DATE));
     }
 
+    // sortFiles
     private static File[] sortFiles(File[] files)
     {
         if (files == null)
@@ -331,10 +294,10 @@ public class Diary extends Activity
         return files;
     }
 
+    // listYears
     private static File[] listYears(File home)
     {
-        return sortFiles(home.listFiles(
-                             new FilenameFilter()
+        return sortFiles(home.listFiles(new FilenameFilter()
         {
             public boolean accept(File dir, String filename)
             {
@@ -343,10 +306,10 @@ public class Diary extends Activity
         }));
     }
 
+    // listMonths
     private static File[] listMonths(File yearDir)
     {
-        return sortFiles(yearDir.listFiles(
-                             new FilenameFilter()
+        return sortFiles(yearDir.listFiles(new FilenameFilter()
         {
             public boolean accept(File dir, String filename)
             {
@@ -355,10 +318,10 @@ public class Diary extends Activity
         }));
     }
 
+    // listDays
     private static File[] listDays(File monthDir)
     {
-        return sortFiles(monthDir.listFiles(
-                             new FilenameFilter()
+        return sortFiles(monthDir.listFiles(new FilenameFilter()
         {
             public boolean accept(File dir, String filename)
             {
@@ -368,21 +331,25 @@ public class Diary extends Activity
         }));
     }
 
+    // yearValue
     private static int yearValue(File yearDir)
     {
         return Integer.parseInt(yearDir.getName());
     }
 
+    // monthValue
     private static int monthValue(File monthDir)
     {
         return Integer.parseInt(monthDir.getName()) - 1;
     }
 
+    // dayValue
     private static int dayValue(File dayFile)
     {
         return Integer.parseInt(dayFile.getName().split("\\.")[0]);
     }
 
+    // prevYear
     private int prevYear(int year)
     {
         int prev = -1;
@@ -395,6 +362,7 @@ public class Diary extends Activity
         return prev;
     }
 
+    // prevMonth
     private int prevMonth(int year, int month)
     {
         int prev = -1;
@@ -407,6 +375,7 @@ public class Diary extends Activity
         return prev;
     }
 
+    // prevDay
     private int prevDay(int year, int month, int day)
     {
         int prev = -1;
@@ -419,6 +388,7 @@ public class Diary extends Activity
         return prev;
     }
 
+    // getPrevEntry
     private Calendar getPrevEntry(int year, int month, int day)
     {
         int prev;
@@ -435,6 +405,7 @@ public class Diary extends Activity
         return new GregorianCalendar(year, month, prev);
     }
 
+    // nextYear
     private int nextYear(int year)
     {
         int next = -1;
@@ -447,6 +418,7 @@ public class Diary extends Activity
         return next;
     }
 
+    // nextMonth
     private int nextMonth(int year, int month)
     {
         int next = -1;
@@ -459,6 +431,7 @@ public class Diary extends Activity
         return next;
     }
 
+    // nextDay
     private int nextDay(int year, int month, int day)
     {
         int next = -1;
@@ -471,6 +444,7 @@ public class Diary extends Activity
         return next;
     }
 
+    // getNextEntry
     private Calendar getNextEntry(int year, int month, int day)
     {
         int next;
@@ -487,6 +461,7 @@ public class Diary extends Activity
         return new GregorianCalendar(year, month, next);
     }
 
+    // getEntries
     private List<Calendar> getEntries()
     {
         List<Calendar> list = new ArrayList<Calendar>();
@@ -502,6 +477,7 @@ public class Diary extends Activity
         return list;
     }
 
+    // save
     private void save()
     {
         if (currEntry != null)
@@ -522,6 +498,7 @@ public class Diary extends Activity
                         grandParent.delete();
                 }
             }
+
             else
             {
                 file.getParentFile().mkdirs();
@@ -536,6 +513,7 @@ public class Diary extends Activity
         }
     }
 
+    // read
     private static String read(File file)
     {
         StringBuilder text = new StringBuilder();
@@ -554,12 +532,14 @@ public class Diary extends Activity
         return text.toString();
     }
 
+    // load
     private void load()
     {
         text.setText(read(getFile()));
         text.setSelection(0);
     }
 
+    // setDate
     private void setDate(Calendar date)
     {
         setTitleDate(new Date(date.getTimeInMillis()));
@@ -574,6 +554,7 @@ public class Diary extends Activity
         invalidateOptionsMenu();
     }
 
+    // setTitleDate
     private void setTitleDate(Date date)
     {
         Configuration config = getResources().getConfiguration();
@@ -606,6 +587,7 @@ public class Diary extends Activity
         }
     }
 
+    // changeDate
     private void changeDate(Calendar date)
     {
         save();
@@ -613,6 +595,7 @@ public class Diary extends Activity
         load();
     }
 
+    // today
     private void today()
     {
         changeDate(GregorianCalendar.getInstance());
