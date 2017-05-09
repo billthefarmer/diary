@@ -19,20 +19,59 @@
 
   -->
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingTop="4dp">
+    android:paddingTop="4dp"
+    tools:ignore="RtlHardcoded">
+
   <EditText
       android:id="@+id/text"
       android:hint="@string/hint"
       android:inputType="textCapSentences|textMultiLine"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
-      android:gravity="top">
-    <requestFocus />
-  </EditText>
-</LinearLayout>
+      android:gravity="top" />
+
+  <br.tiagohm.markdownview.MarkdownView
+      android:id="@+id/markdown"
+      app:escapeHtml="false"
+      android:visibility="gone"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" />
+
+  <ImageView
+      android:id="@+id/done"
+      android:visibility="gone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+
+  <ImageView
+      android:id="@+id/edit"
+      android:src="@drawable/ic_action_edit"
+      android:background="@drawable/button"
+      android:visibility="gone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="20dp" />
+
+  <ImageView
+      android:id="@+id/accept"
+      android:src="@drawable/ic_action_accept"
+      android:background="@drawable/button"
+      android:visibility="visible"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginBottom="25dp"
+      android:layout_marginRight="25dp" />
+
+</RelativeLayout>

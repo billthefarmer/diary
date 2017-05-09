@@ -33,6 +33,11 @@
   <string name="pref_calendar_summ">
     Usar un calendario personalizado en lugar de un selector de fechas
   </string>
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Usar markdown</string>
+  <string name="pref_markdown_summ">
+    Utilizar marca para formatear entradas
+  </string>
   <string name="about">Acerca de</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="licence">GNU GPLv3</string>

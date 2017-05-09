@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -49,6 +50,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import br.tiagohm.markdownview.MarkdownView;
+
 // Diary
 public class Diary extends Activity
     implements DatePickerDialog.OnDateSetListener
@@ -61,6 +64,7 @@ public class Diary extends Activity
 
     public static final String PREF_ABOUT = "pref_about";
     public static final String PREF_CUSTOM = "pref_custom";
+    public static final String PREF_MARKDOWN = "pref_markdown";
 
     public final static String TAG = "Diary";
     public final static String STRING = "string";
@@ -73,18 +77,61 @@ public class Diary extends Activity
     private final static String DAY = "day";
 
     private boolean custom = true;
+    private boolean markdown = true;
 
     private Calendar prevEntry;
     private Calendar currEntry;
     private Calendar nextEntry;
-    private EditText text;
+
+    private EditText textView;
+
+    private MarkdownView markdownView;
+
+    private View accept;
+    private View edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        text = (EditText) findViewById(R.id.text);
+
+        textView = (EditText) findViewById(R.id.text);
+        markdownView = (MarkdownView) findViewById(R.id.markdown);
+
+        accept = findViewById(R.id.accept);
+        accept.setOnClickListener(new View.OnClickListener()
+            {
+                // On click
+                @Override
+                public void onClick(View v)
+                {
+                    // Get text
+                    String string = textView.getText().toString();
+                    markdownView.loadMarkdown(string);
+                    // Set visibility
+                    markdownView.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.GONE);
+                    accept.setVisibility(View.GONE);
+                    edit.setVisibility(View.VISIBLE);
+                }
+            });
+
+        edit = findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener()
+            {
+                // On click
+                @Override
+                public void onClick(View v)
+                {
+                    // Set visibility
+                    markdownView.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
+                    accept.setVisibility(View.VISIBLE);
+                    edit.setVisibility(View.GONE);
+                }
+            });
+
         if (savedInstanceState == null)
             today();
         else
@@ -92,8 +139,9 @@ public class Diary extends Activity
                         (Integer) savedInstanceState.get(YEAR),
                         (Integer) savedInstanceState.get(MONTH),
                         (Integer) savedInstanceState.get(DAY)));
+
         if (prevEntry != null || nextEntry != null)
-            text.setHint(null);
+            textView.setHint(null);
     }
 
     // onResume
@@ -107,6 +155,22 @@ public class Diary extends Activity
             PreferenceManager.getDefaultSharedPreferences(this);
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
+        markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        if (markdown)
+        {
+            markdownView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+            accept.setVisibility(View.GONE);
+            edit.setVisibility(View.VISIBLE);
+        }
+
+        else
+        {
+            markdownView.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+            accept.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+        }
     }
 
     // onSaveInstanceState
@@ -482,7 +546,7 @@ public class Diary extends Activity
     {
         if (currEntry != null)
         {
-            String string = text.getText().toString();
+            String string = textView.getText().toString();
             File file = getFile();
             if (string.length() == 0)
             {
@@ -535,8 +599,11 @@ public class Diary extends Activity
     // load
     private void load()
     {
-        text.setText(read(getFile()));
-        text.setSelection(0);
+        String string = read(getFile());
+        textView.setText(string);
+        if (markdown)
+            markdownView.loadMarkdown(string);
+        textView.setSelection(0);
     }
 
     // setDate

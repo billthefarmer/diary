@@ -38,6 +38,20 @@
   </PreferenceCategory>
 
   <PreferenceCategory
+      android:key="pref_markdown_category"
+      android:title="@string/markdown">
+
+    <CheckBoxPreference
+	android:key="pref_markdown"
+	android:icon="@drawable/ic_pref_markdown"
+	android:title="@string/pref_markdown"
+	android:summary="@string/pref_markdown_summ"
+	android:persistent="true"
+	android:defaultValue="true" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
       android:key="pref_about_category"
       android:title="@string/about">
 

@@ -15,8 +15,8 @@ android {
     buildToolsVersion '24.0.2'
 
     lintOptions {
-	disable 'IconDensities'
-        // abortOnError false
+	disable 'IconDensities', 'ContentDescription'
+        abortOnError false
     }
 }
 
@@ -29,5 +29,6 @@ repositories {
 
 dependencies {
     compile 'com.github.npanigrahy:Custom-Calendar-View:v1.1'
-    compile 'com.github.tiagohm.MarkdownView:library:0.16.0'
+    compile 'com.github.billthefarmer.MarkdownView:library:test-SNAPSHOT'
+    // compile 'com.github.billthefarmer.MarkdownView:emoji:test-SNAPSHOT'
 }
