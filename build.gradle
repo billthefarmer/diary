@@ -12,7 +12,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 'android-22'
-    buildToolsVersion '24.0.2'
+    buildToolsVersion '25.0.2'
 
     lintOptions {
 	disable 'IconDensities'
@@ -21,6 +21,7 @@ android {
 }
 
 repositories {
+    jcenter()
     maven {
         url "https://jitpack.io"
     }
@@ -28,4 +29,5 @@ repositories {
 
 dependencies {
     compile 'com.github.npanigrahy:Custom-Calendar-View:v1.1'
+    compile 'com.github.tiagohm.MarkdownView:library:0.16.0'
 }

@@ -28,7 +28,7 @@
 
   <uses-sdk
       tools:ignore="OldTargetApi"
-      android:minSdkVersion="14"
+      android:minSdkVersion="16"
       android:targetSdkVersion="22" />
 
   <uses-permission
@@ -39,7 +39,8 @@
       android:allowBackup="true"
       android:icon="@drawable/ic_launcher"
       android:label="@string/appName"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      tools:replace="android:label">
 
     <activity
         android:label="@string/appName"
