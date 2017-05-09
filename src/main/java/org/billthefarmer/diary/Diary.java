@@ -158,6 +158,9 @@ public class Diary extends Activity
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
         if (markdown)
         {
+            // Get text
+            String string = textView.getText().toString();
+            markdownView.loadMarkdown(string);
             markdownView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
             accept.setVisibility(View.GONE);
