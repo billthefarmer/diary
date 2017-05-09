@@ -12,7 +12,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 'android-22'
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '24.0.2'
 
     lintOptions {
 	disable 'IconDensities'
