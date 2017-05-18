@@ -9,7 +9,7 @@ and [here](https://github.com/billthefarmer/diary/releases).
 
 * Entries saved in plain text files
 * Browse entries
-* English, Catalan and Spanish
+* English, Catalan, Spanish and Japanese
 * Choice of date picker calendars
 
 The toolbar icons are, from left to right, **Previous**, which will
