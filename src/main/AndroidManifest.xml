@@ -33,6 +33,13 @@
 
   <uses-permission
       android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <!--
+      This next declaration - READ_PHONE_STATE is here to prevent the
+      android build system from making it up as it goes along
+  -->
+  <uses-permission
+      android:name="android.permission.READ_PHONE_STATE"
+      tools:node="remove" />
 
   <application
       tools:ignore="AllowBackup"
