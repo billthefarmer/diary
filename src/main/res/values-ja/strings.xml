@@ -33,6 +33,11 @@
   <string name="pref_calendar_summ">
     日付ピッカーではなくカスタムのカレンダーを使用します
   </string>
+  <string name="markdown">値下げ</string>
+  <string name="pref_markdown">使用記法</string>
+  <string name="pref_markdown_summ">
+    書式項目に使用記法
+  </string>
   <string name="about">アプリについて</string>
   <string name="pref_about_summ">Diary バージョン %s</string>
   <string name="licence">GNU GPLv3</string>
