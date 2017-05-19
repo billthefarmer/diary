@@ -24,8 +24,8 @@
     android:shape="oval" >
 
   <size
-      android:width="50dp"
-      android:height="50dp" />
+      android:width="56dp"
+      android:height="56dp" />
 
   <solid
       android:color="@android:color/holo_blue_bright" />
