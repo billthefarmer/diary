@@ -27,6 +27,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import br.tiagohm.markdownview.MarkdownView;
+import us.feras.mdv.MarkdownView;
 
 // Diary
 public class Diary extends Activity
@@ -76,8 +78,13 @@ public class Diary extends Activity
     private final static String MONTH = "month";
     private final static String DAY = "day";
 
+    private final static String SHOWN = "shown";
+
     private boolean custom = true;
     private boolean markdown = true;
+
+    private boolean dirty = false;
+    private boolean shown = true;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -97,6 +104,30 @@ public class Diary extends Activity
         setContentView(R.layout.main);
 
         textView = (EditText) findViewById(R.id.text);
+        textView.addTextChangedListener(new TextWatcher()
+            {
+                // afterTextChanged
+                @Override
+                public void afterTextChanged (Editable s) {}
+
+                // beforeTextChanged
+                @Override
+                public void beforeTextChanged (CharSequence s, 
+                                               int start, 
+                                               int count, 
+                                               int after) {}
+                // onTextChanged
+                @Override
+                public void onTextChanged (CharSequence s, 
+                                           int start, 
+                                           int before, 
+                                           int count)
+                {
+                    // Set flag
+                    dirty = true;
+                }
+            });
+
         markdownView = (MarkdownView) findViewById(R.id.markdown);
 
         accept = findViewById(R.id.accept);
@@ -106,14 +137,23 @@ public class Diary extends Activity
                 @Override
                 public void onClick(View v)
                 {
-                    // Get text
-                    String string = textView.getText().toString();
-                    markdownView.loadMarkdown(string);
+                    // Check flag
+                    if (dirty)
+                    {
+                        // Get text
+                        String string = textView.getText().toString();
+                        markdownView.loadMarkdown(string);
+                        // Clear flag
+                        dirty = false;
+                    }
+
                     // Set visibility
                     markdownView.setVisibility(View.VISIBLE);
                     textView.setVisibility(View.GONE);
                     accept.setVisibility(View.GONE);
                     edit.setVisibility(View.VISIBLE);
+
+                    shown = true;
                 }
             });
 
@@ -129,16 +169,23 @@ public class Diary extends Activity
                     textView.setVisibility(View.VISIBLE);
                     accept.setVisibility(View.VISIBLE);
                     edit.setVisibility(View.GONE);
+
+                    shown = false;
                 }
             });
 
         if (savedInstanceState == null)
             today();
+
         else
+        {
             setDate(new GregorianCalendar(
                         (Integer) savedInstanceState.get(YEAR),
                         (Integer) savedInstanceState.get(MONTH),
                         (Integer) savedInstanceState.get(DAY)));
+
+            shown = (Boolean) savedInstanceState.get(SHOWN);
+        }
 
         if (prevEntry != null || nextEntry != null)
             textView.setHint(null);
@@ -156,11 +203,15 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
-        if (markdown)
+        if (markdown && shown)
         {
-            // Get text
-            String string = textView.getText().toString();
-            markdownView.loadMarkdown(string);
+            // Check visibility
+            if (true)
+            {
+                // Get text
+                String string = textView.getText().toString();
+                markdownView.loadMarkdown(string);
+            }
             markdownView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
             accept.setVisibility(View.GONE);
@@ -185,6 +236,8 @@ public class Diary extends Activity
             outState.putInt(YEAR, currEntry.get(Calendar.YEAR));
             outState.putInt(MONTH, currEntry.get(Calendar.MONTH));
             outState.putInt(DAY, currEntry.get(Calendar.DATE));
+
+            outState.putBoolean(SHOWN, shown);
         }
         super.onSaveInstanceState(outState);
     }

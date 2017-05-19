@@ -28,8 +28,8 @@
 
   <uses-sdk
       tools:ignore="OldTargetApi"
-      android:minSdkVersion="16"
-      android:targetSdkVersion="22" />
+      android:minSdkVersion="14"
+      android:targetSdkVersion="22"/>
 
   <uses-permission
       android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -44,7 +44,6 @@
       tools:node="remove" />
 
   <application
-      tools:ignore="AllowBackup"
       android:allowBackup="true"
       android:icon="@drawable/ic_launcher"
       android:label="@string/appName"
