@@ -123,8 +123,10 @@ public class Diary extends Activity
                                            int before, 
                                            int count)
                 {
-                    // Set flag
-                    dirty = true;
+                    // Check markdown
+                    if (markdown)
+                        // Set flag
+                        dirty = true;
                 }
             });
 
@@ -203,19 +205,38 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
-        if (markdown && shown)
+
+        if (markdown)
         {
-            // Check visibility
-            if (true)
+            // Get text
+            String string = textView.getText().toString();
+            markdownView.loadMarkdown(string);
+        }
+
+        setVisibility();
+    }
+
+    // setVisibility
+    private void setVisibility()
+    {
+        if (markdown)
+        {
+            // Check if shown
+            if (shown)
             {
-                // Get text
-                String string = textView.getText().toString();
-                markdownView.loadMarkdown(string);
+                markdownView.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.GONE);
+                accept.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
             }
-            markdownView.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.GONE);
-            accept.setVisibility(View.GONE);
-            edit.setVisibility(View.VISIBLE);
+
+            else
+            {
+                markdownView.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                accept.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.GONE);
+            }
         }
 
         else
