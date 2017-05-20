@@ -285,11 +285,10 @@ public class Diary extends Activity
     public boolean onPrepareOptionsMenu(Menu menu)
     {
         Calendar today = GregorianCalendar.getInstance();
-        menu.findItem(R.id.today).setEnabled(
-            currEntry == null
-            || currEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR)
-            || currEntry.get(Calendar.MONTH) != today.get(Calendar.MONTH)
-            || currEntry.get(Calendar.DATE) != today.get(Calendar.DATE));
+        menu.findItem(R.id.today).setEnabled(currEntry == null ||
+            currEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR) ||
+            currEntry.get(Calendar.MONTH) != today.get(Calendar.MONTH) ||
+            currEntry.get(Calendar.DATE) != today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
         return true;
@@ -691,9 +690,21 @@ public class Diary extends Activity
         int year = date.get(Calendar.YEAR);
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                               calendar.get(Calendar.MONTH),
+                                               calendar.get(Calendar.DATE));
+
         prevEntry = getPrevEntry(year, month, day);
+        if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
+            today.compareTo(date) < 0)
+            prevEntry = today;
         currEntry = date;
         nextEntry = getNextEntry(year, month, day);
+        if ((nextEntry == null || today.compareTo(nextEntry) < 0) &&
+            today.compareTo(date) > 0)
+            nextEntry = today;
 
         invalidateOptionsMenu();
     }
