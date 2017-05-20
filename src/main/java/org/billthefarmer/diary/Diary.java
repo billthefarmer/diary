@@ -37,11 +37,17 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import java.text.DateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -80,6 +86,8 @@ public class Diary extends Activity
 
     private final static String SHOWN = "shown";
 
+    private final static String HELP = "help.md";
+    
     private boolean custom = true;
     private boolean markdown = true;
 
@@ -189,8 +197,8 @@ public class Diary extends Activity
             shown = (Boolean) savedInstanceState.get(SHOWN);
         }
 
-        if (prevEntry != null || nextEntry != null)
-            textView.setHint(null);
+        if (prevEntry == null && nextEntry == null && textView.length() == 0)
+            textView.setText(getHelp());
     }
 
     // onResume
@@ -670,6 +678,41 @@ public class Diary extends Activity
         catch (Exception e) {}
 
         return text.toString();
+    }
+
+    // getHelp
+    private String getHelp()
+    {
+        try
+        {
+            InputStream input = getResources().getAssets().open(HELP);
+            try
+            {
+                BufferedReader bufferedReader =
+                    new BufferedReader(new InputStreamReader(input));
+                StringBuilder content =
+                    new StringBuilder(input.available());
+                String line;
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    content.append(line);
+                    content.append(System.getProperty("line.separator"));
+                }
+
+                return content.toString();
+            }
+
+            finally
+            {
+                input.close();
+            }
+        }
+
+        catch (Exception e)
+        {
+            Log.d(TAG, "Error while reading file from assets", e);
+            return null;
+        }
     }
 
     // load
