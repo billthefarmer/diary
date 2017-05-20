@@ -753,6 +753,10 @@ public class Diary extends Activity
     // today
     private void today()
     {
-        changeDate(GregorianCalendar.getInstance());
+        Calendar calendar = GregorianCalendar.getInstance();
+        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                               calendar.get(Calendar.MONTH),
+                                               calendar.get(Calendar.DATE));
+        changeDate(today);
     }
 }
