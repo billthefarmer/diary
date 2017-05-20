@@ -7,6 +7,12 @@ and [here](https://github.com/billthefarmer/diary/releases).
 
 ![Calendar](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Calendar-landscape.png)
 
+There is a
+[help](https://github.com/billthefarmer/diary/blob/master/data/help.md)
+and a
+[test](https://github.com/billthefarmer/diary/blob/master/data/test.md)
+file, which can be copied in to an entry for reference if required.
+
 * Entries saved in plain text files
 * Browse entries
 * English, Catalan, Spanish and Japanese
@@ -20,6 +26,10 @@ show the previous entry, **Next**, which will show the next entry,
 show a date picker dialog to select a new date, and **Settings**,
 which will show the settings. Depending on the device and orientation,
 some items may be on the menu.
+
+## Editing
+In markdown mode the **Edit** button floating above the page allows
+editing entries. The **Done** button restores the formatted view.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows entries
