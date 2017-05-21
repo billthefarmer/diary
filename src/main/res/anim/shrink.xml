@@ -29,4 +29,4 @@
     android:pivotX="50%"
     android:pivotY="50%"
     android:fillAfter="false"
-    android:duration="200" />
+    android:duration="150" />

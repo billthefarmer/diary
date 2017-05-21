@@ -160,23 +160,25 @@ public class Diary extends Activity
                     }
 
                     // Animation
-                    Animation shrink =
+                    Animation viewClose =
+                        AnimationUtils
+                        .loadAnimation(v.getContext(),
+                                       R.anim.activity_close_exit);
+                    Animation viewOpen =
+                        AnimationUtils
+                        .loadAnimation(v.getContext(),
+                                       R.anim.activity_open_enter);
+                    textView.startAnimation(viewClose);
+                    markdownView.startAnimation(viewOpen);
+
+                    Animation buttonShrink =
                         AnimationUtils.loadAnimation(v.getContext(),
                                                      R.anim.shrink);
-                    Animation grow =
+                    Animation buttonGrow =
                         AnimationUtils.loadAnimation(v.getContext(),
                                                      R.anim.grow);
-                    textView.startAnimation(shrink);
-                    markdownView.startAnimation(grow);
-
-                    Animation fade =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.fade);
-                    Animation appear =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.appear);
-                    accept.startAnimation(fade);
-                    edit.startAnimation(appear);
+                    accept.startAnimation(buttonShrink);
+                    edit.startAnimation(buttonGrow);
 
                     // Set visibility
                     markdownView.setVisibility(View.VISIBLE);
@@ -197,23 +199,25 @@ public class Diary extends Activity
                 {
 
                     // Animation
-                    Animation shrink =
+                    Animation viewClose =
+                        AnimationUtils
+                        .loadAnimation(v.getContext(),
+                                       R.anim.activity_close_exit);
+                    Animation viewGrow =
+                        AnimationUtils
+                        .loadAnimation(v.getContext(),
+                                       R.anim.activity_open_enter);
+                    markdownView.startAnimation(viewClose);
+                    textView.startAnimation(viewGrow);
+
+                    Animation buttonShrink =
                         AnimationUtils.loadAnimation(v.getContext(),
                                                      R.anim.shrink);
-                    Animation grow =
+                    Animation buttonGrow =
                         AnimationUtils.loadAnimation(v.getContext(),
                                                      R.anim.grow);
-                    markdownView.startAnimation(shrink);
-                    textView.startAnimation(grow);
-
-                    Animation fade =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.fade);
-                    Animation appear =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.appear);
-                    edit.startAnimation(fade);
-                    accept.startAnimation(appear);
+                    edit.startAnimation(buttonShrink);
+                    accept.startAnimation(buttonGrow);
 
                     // Set visibility
                     markdownView.setVisibility(View.GONE);
