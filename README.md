@@ -11,7 +11,7 @@ There is a
 [help](https://github.com/billthefarmer/diary/blob/master/data/help.md)
 and a
 [test](https://github.com/billthefarmer/diary/blob/master/data/test.md)
-file, which can be copied in to an entry for reference if required.
+file, which may be copied in to an entry for reference if required.
 
 * Entries saved in plain text files
 * Browse entries

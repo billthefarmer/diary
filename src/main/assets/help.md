@@ -21,8 +21,9 @@ Depending on the device and orientation, some items may be on the
 menu.
 
 ## Editing
-In markdown mode the **Edit** button floating above the page allows
-editing entries. The **Done** button restores the formatted view.
+In markdown mode the floating **Edit** button allows editing
+entries. The **Done** button restores the formatted view. You may copy
+this text and paste in into another page if you don't want it here.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows entries

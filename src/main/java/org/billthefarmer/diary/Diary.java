@@ -197,6 +197,7 @@ public class Diary extends Activity
             shown = (Boolean) savedInstanceState.get(SHOWN);
         }
 
+        // Copy help text to today's page if no entries
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
             textView.setText(getHelp());
     }
@@ -685,6 +686,7 @@ public class Diary extends Activity
     {
         try
         {
+            // Open help file
             InputStream input = getResources().getAssets().open(HELP);
             try
             {

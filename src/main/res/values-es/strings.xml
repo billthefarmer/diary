@@ -21,7 +21,6 @@
 
 <resources>
   <string name="appName">Diario</string>
-  <string name="hint">Escribe lo que hiciste, tus ideas, tus sueños…</string>
   <string name="today">Hoy</string>
   <string name="prevEntry">Anterior</string>
   <string name="nextEntry">Siguiente</string>

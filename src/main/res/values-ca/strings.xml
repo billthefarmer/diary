@@ -21,7 +21,6 @@
 
 <resources>
   <string name="appName">Diari</string>
-  <string name="hint">Escriu el que has fet, les teves idees, els teus somnis…</string>
   <string name="today">Avui</string>
   <string name="prevEntry">Anterior</string>
   <string name="nextEntry">Següent</string>

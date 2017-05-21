@@ -21,7 +21,6 @@
 
 <resources>
   <string name="appName">Diary</string>
-  <string name="hint">あなたがしたこと、考え、夢を書き留めてください…</string>
   <string name="today">今日</string>
   <string name="prevEntry">前へ</string>
   <string name="nextEntry">次へ</string>
