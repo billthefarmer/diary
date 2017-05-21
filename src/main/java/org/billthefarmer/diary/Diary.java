@@ -171,14 +171,14 @@ public class Diary extends Activity
                     textView.startAnimation(viewClose);
                     markdownView.startAnimation(viewOpen);
 
-                    Animation buttonShrink =
+                    Animation buttonFlipOut =
                         AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.shrink);
-                    Animation buttonGrow =
+                                                     R.anim.flip_out);
+                    Animation buttonFlipIn =
                         AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.grow);
-                    accept.startAnimation(buttonShrink);
-                    edit.startAnimation(buttonGrow);
+                                                     R.anim.flip_in);
+                    accept.startAnimation(buttonFlipOut);
+                    edit.startAnimation(buttonFlipIn);
 
                     // Set visibility
                     markdownView.setVisibility(View.VISIBLE);
@@ -203,21 +203,21 @@ public class Diary extends Activity
                         AnimationUtils
                         .loadAnimation(v.getContext(),
                                        R.anim.activity_close_exit);
-                    Animation viewGrow =
+                    Animation viewOpen =
                         AnimationUtils
                         .loadAnimation(v.getContext(),
                                        R.anim.activity_open_enter);
                     markdownView.startAnimation(viewClose);
-                    textView.startAnimation(viewGrow);
+                    textView.startAnimation(viewOpen);
 
-                    Animation buttonShrink =
+                    Animation buttonFlipOut =
                         AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.shrink);
-                    Animation buttonGrow =
+                                                     R.anim.flip_out);
+                    Animation buttonFlipIn =
                         AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.grow);
-                    edit.startAnimation(buttonShrink);
-                    accept.startAnimation(buttonGrow);
+                                                     R.anim.flip_in);
+                    edit.startAnimation(buttonFlipOut);
+                    accept.startAnimation(buttonFlipIn);
 
                     // Set visibility
                     markdownView.setVisibility(View.GONE);

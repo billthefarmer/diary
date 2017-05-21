@@ -19,14 +19,25 @@
 
   -->
 
-<scale
+<set
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/linear_interpolator"
-    android:fromXScale="1.0"
-    android:toXScale="0.0"
-    android:fromYScale="1.0"
-    android:toYScale="0.9"
-    android:pivotX="50%"
-    android:pivotY="50%"
-    android:fillAfter="false"
-    android:duration="150" />
+    android:shareInterpolator="false">
+  <alpha
+      android:interpolator="@android:anim/linear_interpolator"
+      android:fromAlpha="0.0"
+      android:toAlpha="1.0"
+      android:fillAfter="false"
+      android:startOffset="150"
+      android:duration="150" />
+  <scale
+      android:interpolator="@android:anim/linear_interpolator"
+      android:fromXScale="0.0"
+      android:toXScale="1.0"
+      android:fromYScale="0.9"
+      android:toYScale="1.0"
+      android:pivotX="50%"
+      android:pivotY="50%"
+      android:fillAfter="false"
+      android:startOffset="150"
+      android:duration="150" />
+</set>
