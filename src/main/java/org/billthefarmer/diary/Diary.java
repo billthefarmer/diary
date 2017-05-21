@@ -30,6 +30,8 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -157,6 +159,25 @@ public class Diary extends Activity
                         dirty = false;
                     }
 
+                    // Animation
+                    Animation shrink =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.shrink);
+                    Animation grow =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.grow);
+                    textView.startAnimation(shrink);
+                    markdownView.startAnimation(grow);
+
+                    Animation fade =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.fade);
+                    Animation appear =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.appear);
+                    accept.startAnimation(fade);
+                    edit.startAnimation(appear);
+
                     // Set visibility
                     markdownView.setVisibility(View.VISIBLE);
                     textView.setVisibility(View.GONE);
@@ -174,6 +195,26 @@ public class Diary extends Activity
                 @Override
                 public void onClick(View v)
                 {
+
+                    // Animation
+                    Animation shrink =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.shrink);
+                    Animation grow =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.grow);
+                    markdownView.startAnimation(shrink);
+                    textView.startAnimation(grow);
+
+                    Animation fade =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.fade);
+                    Animation appear =
+                        AnimationUtils.loadAnimation(v.getContext(),
+                                                     R.anim.appear);
+                    edit.startAnimation(fade);
+                    accept.startAnimation(appear);
+
                     // Set visibility
                     markdownView.setVisibility(View.GONE);
                     textView.setVisibility(View.VISIBLE);
