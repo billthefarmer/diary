@@ -31,7 +31,8 @@
       android:id="@+id/text"
       android:inputType="textCapSentences|textMultiLine"
       android:layout_width="fill_parent"
-      android:layout_height="fill_parent" />
+      android:layout_height="fill_parent"
+      android:gravity="top" />
 
   <us.feras.mdv.MarkdownView
       android:id="@+id/markdown"
