@@ -22,8 +22,8 @@ menu.
 
 ## Editing
 In markdown mode the floating **Edit** button allows editing
-entries. The **Done** button restores the formatted view. You may copy
-this text and paste in into another page if you don't want it here.
+entries. The **Accept** button restores the formatted view. You may cut
+and paste this text into another page if you don't want it here.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows entries
