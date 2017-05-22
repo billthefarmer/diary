@@ -86,6 +86,7 @@ public class DiaryCalendar extends Activity
         }
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
         decorators.add(new DateDecorator(entries));
+        decorators.add(new SelectDecorator(null));
         calendarView.setDecorators(decorators);
 
         // call refreshCalendar to update calendar the view
@@ -100,6 +101,15 @@ public class DiaryCalendar extends Activity
                     time = date;
                     setTitle(DateFormat.getDateInstance(DateFormat.FULL)
                              .format(time));
+
+                    Calendar selectDate = Calendar.getInstance();
+                    selectDate.setTime(date);
+                    List<DayDecorator> decorators =
+                        calendarView.getDecorators();
+                    decorators.set(1, new SelectDecorator(selectDate));
+                    calendarView.setDecorators(decorators);
+                    calendarView
+                        .refreshCalendar(calendarView.getCurrentCalendar());
                 }
 
                 @Override
@@ -151,6 +161,30 @@ public class DiaryCalendar extends Activity
                     cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
                     cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
                     dayView.setBackgroundResource(R.drawable.diary_entry);
+        }
+    }
+
+    // SelectDecorator
+    private class SelectDecorator
+        implements DayDecorator
+    {
+        private Calendar select;
+
+        private SelectDecorator(Calendar select)
+        {
+            this.select = select;
+        }
+        // decorate
+        @Override
+        public void decorate(DayView dayView)
+        {
+            Calendar cellDate = Calendar.getInstance();
+            cellDate.setTime(dayView.getDate());
+            if (select != null &&
+                cellDate.get(Calendar.DATE) == select.get(Calendar.DATE) &&
+                cellDate.get(Calendar.MONTH) == select.get(Calendar.MONTH) &&
+                cellDate.get(Calendar.YEAR) == select.get(Calendar.YEAR))
+                dayView.setBackgroundResource(R.drawable.diary_select);
         }
     }
 }
