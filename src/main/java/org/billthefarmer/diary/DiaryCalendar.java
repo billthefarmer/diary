@@ -85,7 +85,7 @@ public class DiaryCalendar extends Activity
             entries.add(entry);
         }
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
-        decorators.add(new DateDecorator(entries));
+        decorators.add(new EntryDecorator(entries));
         decorators.add(new SelectDecorator(null));
         calendarView.setDecorators(decorators);
 
@@ -140,13 +140,13 @@ public class DiaryCalendar extends Activity
             });
     }
 
-    // DateDecorator
-    private class DateDecorator
+    // EntryDecorator
+    private class EntryDecorator
         implements DayDecorator
     {
         private List<Calendar> entries;
 
-        private DateDecorator(List<Calendar> entries)
+        private EntryDecorator(List<Calendar> entries)
         {
             this.entries = entries;
         }
