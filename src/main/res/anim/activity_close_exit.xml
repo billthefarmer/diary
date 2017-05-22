@@ -22,7 +22,7 @@
      android:zAdjustment="top">
   <alpha android:fromAlpha="1.0"
          android:toAlpha="0.0"
-         android:interpolator="@android:anim/decelerate_interpolator"
+         android:interpolator="@anim/decelerate_cubic"
          android:fillEnabled="true"
          android:fillBefore="true"
          android:fillAfter="true"
@@ -33,7 +33,7 @@
          android:toYScale=".8"
          android:pivotX="50%p"
          android:pivotY="50%p"
-         android:interpolator="@android:anim/decelerate_interpolator"
+         android:interpolator="@anim/decelerate_cubic"
          android:fillEnabled="true"
          android:fillBefore="true"
          android:fillAfter="true"
