@@ -28,6 +28,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.npanigrahy:Custom-Calendar-View:v1.1'
+    // compile 'com.github.npanigrahy:Custom-Calendar-View:v1.1'
+    compile 'com.github.billthefarmer:CustomCalendarView:-SNAPSHOT'
     compile 'us.feras.mdv:markdownview:1.1.0'
 }
