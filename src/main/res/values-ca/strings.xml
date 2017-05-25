@@ -42,14 +42,15 @@
   <string name="licence">GNU GPLv3</string>
   <string name="copyright">
     Copyright \u00A9 2012 <a
-    href="mailto:hola@josep-portella.com">Josep Portella
-    Florit</a>\nCopyright \u00A9 2017 <a
-    href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
+    href="mailto:hola@josep-portella.com">Josep Portella Florit</a>\n
+    Copyright \u00A9 2017 <a
+    href="http://billthefarmer.github.io">Bill Farmer</a>\n Custom
     calendar per <a
     href="https://github.com/npanigrahy/Custom-Calendar-View"> Custom
-    Calendar View</a>\nMarkdown view per <a
+    Calendar View</a>\n Markdown view per <a
     href="https://github.com/falnatsheh/MarkdownView">Markdown
-    View</a>\nTraducció japonesa per <a
-    href="https://github.com/naofum">naofum</a>
+    View</a>\n Traducció japonesa per <a
+    href="https://github.com/naofum">naofum</a>\n Traducció alemanya
+    per <a href="http://chrpaul.de">Christian Paul</a>
 </string>
 </resources>
