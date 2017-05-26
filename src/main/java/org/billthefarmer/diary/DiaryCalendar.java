@@ -36,10 +36,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.stacktips.view.CalendarListener;
-import com.stacktips.view.CustomCalendarView;
-import com.stacktips.view.DayDecorator;
-import com.stacktips.view.DayView;
+import org.billthefarmer.view.CalendarListener;
+import org.billthefarmer.view.CustomCalendarView;
+import org.billthefarmer.view.DayDecorator;
+import org.billthefarmer.view.DayView;
 
 public class DiaryCalendar extends Activity
 {
@@ -53,7 +53,7 @@ public class DiaryCalendar extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar);
+        setContentView(R.layout.calendar_picker);
 
         // Initialize CustomCalendarView from layout
         calendarView = (CustomCalendarView) findViewById(R.id.calendar);
@@ -84,9 +84,9 @@ public class DiaryCalendar extends Activity
             entry.setTimeInMillis(time);
             entries.add(entry);
         }
+
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
         decorators.add(new EntryDecorator(entries));
-        decorators.add(new SelectDecorator(null));
         calendarView.setDecorators(decorators);
 
         // call refreshCalendar to update calendar the view
@@ -96,24 +96,15 @@ public class DiaryCalendar extends Activity
         calendarView.setCalendarListener(new CalendarListener()
             {
                 @Override
-                public void onDateSelected(Date date)
+                public void onDateSelected(Calendar date)
                 {
-                    time = date;
+                    time = date.getTime();
                     setTitle(DateFormat.getDateInstance(DateFormat.FULL)
                              .format(time));
-
-                    Calendar selectDate = Calendar.getInstance();
-                    selectDate.setTime(date);
-                    List<DayDecorator> decorators =
-                        calendarView.getDecorators();
-                    decorators.set(1, new SelectDecorator(selectDate));
-                    calendarView.setDecorators(decorators);
-                    calendarView
-                        .refreshCalendar(calendarView.getCurrentCalendar());
                 }
 
                 @Override
-                public void onMonthChanged(Date date) {}
+                public void onMonthChanged(Calendar date) {}
             });
 
         Button button = (Button) findViewById(R.id.done);
@@ -154,37 +145,12 @@ public class DiaryCalendar extends Activity
         @Override
         public void decorate(DayView dayView)
         {
-            Calendar cellDate = Calendar.getInstance();
-            cellDate.setTime(dayView.getDate());
+            Calendar cellDate = dayView.getDate();
             for (Calendar entry: entries)
                 if (cellDate.get(Calendar.DATE) == entry.get(Calendar.DATE) &&
                     cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
                     cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
                     dayView.setBackgroundResource(R.drawable.diary_entry);
-        }
-    }
-
-    // SelectDecorator
-    private class SelectDecorator
-        implements DayDecorator
-    {
-        private Calendar select;
-
-        private SelectDecorator(Calendar select)
-        {
-            this.select = select;
-        }
-        // decorate
-        @Override
-        public void decorate(DayView dayView)
-        {
-            Calendar cellDate = Calendar.getInstance();
-            cellDate.setTime(dayView.getDate());
-            if (select != null &&
-                cellDate.get(Calendar.DATE) == select.get(Calendar.DATE) &&
-                cellDate.get(Calendar.MONTH) == select.get(Calendar.MONTH) &&
-                cellDate.get(Calendar.YEAR) == select.get(Calendar.YEAR))
-                dayView.setBackgroundResource(R.drawable.diary_select);
         }
     }
 }
