@@ -89,6 +89,7 @@ public class Diary extends Activity
     private final static String SHOWN = "shown";
 
     private final static String HELP = "help.md";
+    private final static String STYLES = "file:///android_asset/styles.css";
     
     private boolean custom = true;
     private boolean markdown = true;
@@ -154,7 +155,7 @@ public class Diary extends Activity
                     {
                         // Get text
                         String string = textView.getText().toString();
-                        markdownView.loadMarkdown(string);
+                        markdownView.loadMarkdown(string, STYLES);
                         // Clear flag
                         dirty = false;
                     }
@@ -264,7 +265,7 @@ public class Diary extends Activity
         {
             // Get text
             String string = textView.getText().toString();
-            markdownView.loadMarkdown(string);
+            markdownView.loadMarkdown(string, STYLES);
         }
 
         setVisibility();
@@ -768,7 +769,7 @@ public class Diary extends Activity
         String string = read(getFile());
         textView.setText(string);
         if (markdown)
-            markdownView.loadMarkdown(string);
+            markdownView.loadMarkdown(string, STYLES);
         textView.setSelection(0);
     }
 
