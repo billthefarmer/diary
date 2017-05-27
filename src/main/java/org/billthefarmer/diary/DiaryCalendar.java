@@ -155,7 +155,7 @@ public class DiaryCalendar extends Activity
     }
 
     // onSwipeLeft
-    void onSwipeLeft()
+    private void onSwipeLeft()
     {
         currentMonthIndex++;
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
@@ -164,7 +164,7 @@ public class DiaryCalendar extends Activity
     }
 
     // onSwipeRight
-    void onSwipeRight()
+    private void onSwipeRight()
     {
         currentMonthIndex--;
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());

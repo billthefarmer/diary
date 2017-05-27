@@ -876,7 +876,7 @@ public class Diary extends Activity
     }
 
     // onSwipeLeft
-    void onSwipeLeft()
+    private void onSwipeLeft()
     {
         Calendar nextDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
                                                  currEntry.get(Calendar.MONTH),
@@ -886,7 +886,7 @@ public class Diary extends Activity
     }
 
     // onSwipeRight
-    void onSwipeRight()
+    private void onSwipeRight()
     {
         Calendar prevDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
                                                  currEntry.get(Calendar.MONTH),
