@@ -32,9 +32,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -105,6 +107,8 @@ public class Diary extends Activity
 
     private MarkdownView markdownView;
 
+    private GestureDetector gestureDetector;
+
     private View accept;
     private View edit;
 
@@ -115,120 +119,15 @@ public class Diary extends Activity
         setContentView(R.layout.main);
 
         textView = (EditText) findViewById(R.id.text);
-        textView.addTextChangedListener(new TextWatcher()
-            {
-                // afterTextChanged
-                @Override
-                public void afterTextChanged (Editable s) {}
-
-                // beforeTextChanged
-                @Override
-                public void beforeTextChanged (CharSequence s, 
-                                               int start, 
-                                               int count, 
-                                               int after) {}
-                // onTextChanged
-                @Override
-                public void onTextChanged (CharSequence s, 
-                                           int start, 
-                                           int before, 
-                                           int count)
-                {
-                    // Check markdown
-                    if (markdown)
-                        // Set flag
-                        dirty = true;
-                }
-            });
-
         markdownView = (MarkdownView) findViewById(R.id.markdown);
 
         accept = findViewById(R.id.accept);
-        accept.setOnClickListener(new View.OnClickListener()
-            {
-                // On click
-                @Override
-                public void onClick(View v)
-                {
-                    // Check flag
-                    if (dirty)
-                    {
-                        // Get text
-                        String string = textView.getText().toString();
-                        markdownView.loadMarkdown(string, STYLES);
-                        // Clear flag
-                        dirty = false;
-                    }
-
-                    // Animation
-                    Animation viewClose =
-                        AnimationUtils
-                        .loadAnimation(v.getContext(),
-                                       R.anim.activity_close_exit);
-                    Animation viewOpen =
-                        AnimationUtils
-                        .loadAnimation(v.getContext(),
-                                       R.anim.activity_open_enter);
-                    textView.startAnimation(viewClose);
-                    markdownView.startAnimation(viewOpen);
-
-                    Animation buttonFlipOut =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.flip_out);
-                    Animation buttonFlipIn =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.flip_in);
-                    accept.startAnimation(buttonFlipOut);
-                    edit.startAnimation(buttonFlipIn);
-
-                    // Set visibility
-                    markdownView.setVisibility(View.VISIBLE);
-                    textView.setVisibility(View.GONE);
-                    accept.setVisibility(View.GONE);
-                    edit.setVisibility(View.VISIBLE);
-
-                    shown = true;
-                }
-            });
-
         edit = findViewById(R.id.edit);
-        edit.setOnClickListener(new View.OnClickListener()
-            {
-                // On click
-                @Override
-                public void onClick(View v)
-                {
 
-                    // Animation
-                    Animation viewClose =
-                        AnimationUtils
-                        .loadAnimation(v.getContext(),
-                                       R.anim.activity_close_exit);
-                    Animation viewOpen =
-                        AnimationUtils
-                        .loadAnimation(v.getContext(),
-                                       R.anim.activity_open_enter);
-                    markdownView.startAnimation(viewClose);
-                    textView.startAnimation(viewOpen);
+        setListeners();
 
-                    Animation buttonFlipOut =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.flip_out);
-                    Animation buttonFlipIn =
-                        AnimationUtils.loadAnimation(v.getContext(),
-                                                     R.anim.flip_in);
-                    edit.startAnimation(buttonFlipOut);
-                    accept.startAnimation(buttonFlipIn);
-
-                    // Set visibility
-                    markdownView.setVisibility(View.GONE);
-                    textView.setVisibility(View.VISIBLE);
-                    accept.setVisibility(View.VISIBLE);
-                    edit.setVisibility(View.GONE);
-
-                    shown = false;
-                }
-            });
+        gestureDetector =
+            new GestureDetector(this, new GestureListener());
 
         if (savedInstanceState == null)
             today();
@@ -269,38 +168,6 @@ public class Diary extends Activity
         }
 
         setVisibility();
-    }
-
-    // setVisibility
-    private void setVisibility()
-    {
-        if (markdown)
-        {
-            // Check if shown
-            if (shown)
-            {
-                markdownView.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.GONE);
-                accept.setVisibility(View.GONE);
-                edit.setVisibility(View.VISIBLE);
-            }
-
-            else
-            {
-                markdownView.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
-                accept.setVisibility(View.VISIBLE);
-                edit.setVisibility(View.GONE);
-            }
-        }
-
-        else
-        {
-            markdownView.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            accept.setVisibility(View.GONE);
-            edit.setVisibility(View.GONE);
-        }
     }
 
     // onSaveInstanceState
@@ -397,6 +264,162 @@ public class Diary extends Activity
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
         changeDate(new GregorianCalendar(year, month, day));
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event)
+    {
+        gestureDetector.onTouchEvent(event);
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void setListeners()
+    {
+        if (textView != null)
+            textView.addTextChangedListener(new TextWatcher()
+                {
+                    // afterTextChanged
+                    @Override
+                    public void afterTextChanged (Editable s) {}
+
+                    // beforeTextChanged
+                    @Override
+                    public void beforeTextChanged (CharSequence s,
+                                                   int start,
+                                                   int count,
+                                                   int after) {}
+                    // onTextChanged
+                    @Override
+                    public void onTextChanged (CharSequence s,
+                                               int start,
+                                               int before,
+                                               int count)
+                    {
+                        // Check markdown
+                        if (markdown)
+                            // Set flag
+                            dirty = true;
+                    }
+                });
+
+        if (accept != null)
+            accept.setOnClickListener(new View.OnClickListener()
+                {
+                    // On click
+                    @Override
+                    public void onClick(View v)
+                    {
+                        // Check flag
+                        if (dirty)
+                        {
+                            // Get text
+                            String string = textView.getText().toString();
+                            markdownView.loadMarkdown(string, STYLES);
+                            // Clear flag
+                            dirty = false;
+                        }
+
+                        // Animation
+                        Animation viewClose =
+                            AnimationUtils
+                            .loadAnimation(v.getContext(),
+                                           R.anim.activity_close_exit);
+                        Animation viewOpen =
+                            AnimationUtils
+                            .loadAnimation(v.getContext(),
+                                           R.anim.activity_open_enter);
+                        textView.startAnimation(viewClose);
+                        markdownView.startAnimation(viewOpen);
+
+                        Animation buttonFlipOut =
+                            AnimationUtils.loadAnimation(v.getContext(),
+                                                         R.anim.flip_out);
+                        Animation buttonFlipIn =
+                            AnimationUtils.loadAnimation(v.getContext(),
+                                                         R.anim.flip_in);
+                        accept.startAnimation(buttonFlipOut);
+                        edit.startAnimation(buttonFlipIn);
+
+                        // Set visibility
+                        markdownView.setVisibility(View.VISIBLE);
+                        textView.setVisibility(View.GONE);
+                        accept.setVisibility(View.GONE);
+                        edit.setVisibility(View.VISIBLE);
+
+                        shown = true;
+                    }
+                });
+
+        if (edit != null)
+            edit.setOnClickListener(new View.OnClickListener()
+                {
+                    // On click
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                        // Animation
+                        Animation viewClose =
+                            AnimationUtils
+                            .loadAnimation(v.getContext(),
+                                           R.anim.activity_close_exit);
+                        Animation viewOpen =
+                            AnimationUtils
+                            .loadAnimation(v.getContext(),
+                                           R.anim.activity_open_enter);
+                        markdownView.startAnimation(viewClose);
+                        textView.startAnimation(viewOpen);
+
+                        Animation buttonFlipOut =
+                            AnimationUtils.loadAnimation(v.getContext(),
+                                                         R.anim.flip_out);
+                        Animation buttonFlipIn =
+                            AnimationUtils.loadAnimation(v.getContext(),
+                                                         R.anim.flip_in);
+                        edit.startAnimation(buttonFlipOut);
+                        accept.startAnimation(buttonFlipIn);
+
+                        // Set visibility
+                        markdownView.setVisibility(View.GONE);
+                        textView.setVisibility(View.VISIBLE);
+                        accept.setVisibility(View.VISIBLE);
+                        edit.setVisibility(View.GONE);
+
+                        shown = false;
+                    }
+                });
+    }
+
+    // setVisibility
+    private void setVisibility()
+    {
+        if (markdown)
+        {
+            // Check if shown
+            if (shown)
+            {
+                markdownView.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.GONE);
+                accept.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
+            }
+
+            else
+            {
+                markdownView.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                accept.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.GONE);
+            }
+        }
+
+        else
+        {
+            markdownView.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+            accept.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+        }
     }
 
     // goToDate
@@ -849,5 +872,76 @@ public class Diary extends Activity
                                                calendar.get(Calendar.MONTH),
                                                calendar.get(Calendar.DATE));
         changeDate(today);
+    }
+
+    // onSwipeLeft
+    void onSwipeLeft()
+    {
+        Calendar nextDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                                 currEntry.get(Calendar.MONTH),
+                                                 currEntry.get(Calendar.DATE));
+        nextDay.add(Calendar.DATE, 1);
+        changeDate(nextDay);
+    }
+
+    // onSwipeRight
+    void onSwipeRight()
+    {
+        Calendar prevDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                                 currEntry.get(Calendar.MONTH),
+                                                 currEntry.get(Calendar.DATE));
+        prevDay.add(Calendar.DATE, -1);
+        changeDate(prevDay);
+    }
+
+    // GestureListener
+    private class GestureListener
+        extends GestureDetector.SimpleOnGestureListener
+    {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        // onDown
+        @Override
+        public boolean onDown(MotionEvent e)
+        {
+            return true;
+        }
+
+        // onFling
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY)
+        {
+            boolean result = false;
+
+            try
+            {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY))
+                {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD &&
+                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
+                    {
+                        if (diffX > 0)
+                        {
+                            onSwipeRight();
+                        }
+
+                        else
+                        {
+                            onSwipeLeft();
+                        }
+                    }
+
+                    result = true;
+                }
+            }
+
+            catch (Exception e) {}
+
+            return result;
+        }
     }
 }
