@@ -266,6 +266,7 @@ public class Diary extends Activity
         changeDate(new GregorianCalendar(year, month, day));
     }
 
+    // dispatchTouchEvent
     @Override
     public boolean dispatchTouchEvent(MotionEvent event)
     {

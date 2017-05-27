@@ -26,6 +26,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -45,8 +47,12 @@ public class DiaryCalendar extends Activity
 {
     public final static String TAG = "DiaryCalendar";
 
+    private GestureDetector gestureDetector;
+
     private CustomCalendarView calendarView;
     private Date time;
+
+    private int currentMonthIndex = 0;
 
     // onCreate
     @Override
@@ -57,6 +63,9 @@ public class DiaryCalendar extends Activity
 
         // Initialize CustomCalendarView from layout
         calendarView = (CustomCalendarView) findViewById(R.id.calendar);
+
+        gestureDetector =
+            new GestureDetector(this, new GestureListener());
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -92,6 +101,20 @@ public class DiaryCalendar extends Activity
         // call refreshCalendar to update calendar the view
         calendarView.refreshCalendar(currentCalendar);
 
+        setListeners();
+    }
+
+    // dispatchTouchEvent
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event)
+    {
+        gestureDetector.onTouchEvent(event);
+        return super.dispatchTouchEvent(event);
+    }
+
+    // setListeners
+    private void setListeners()
+    {
         // Handling custom calendar events
         calendarView.setCalendarListener(new CalendarListener()
             {
@@ -131,6 +154,24 @@ public class DiaryCalendar extends Activity
             });
     }
 
+    // onSwipeLeft
+    void onSwipeLeft()
+    {
+        currentMonthIndex++;
+        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        currentCalendar.add(Calendar.MONTH, currentMonthIndex);
+        calendarView.refreshCalendar(currentCalendar);
+    }
+
+    // onSwipeRight
+    void onSwipeRight()
+    {
+        currentMonthIndex--;
+        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        currentCalendar.add(Calendar.MONTH, currentMonthIndex);
+        calendarView.refreshCalendar(currentCalendar);
+    }
+
     // EntryDecorator
     private class EntryDecorator
         implements DayDecorator
@@ -151,6 +192,57 @@ public class DiaryCalendar extends Activity
                     cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
                     cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
                     dayView.setBackgroundResource(R.drawable.diary_entry);
+        }
+    }
+
+    // GestureListener
+    private class GestureListener
+        extends GestureDetector.SimpleOnGestureListener
+    {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        // onDown
+        @Override
+        public boolean onDown(MotionEvent e)
+        {
+            return true;
+        }
+
+        // onFling
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY)
+        {
+            boolean result = false;
+
+            try
+            {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY))
+                {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD &&
+                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
+                    {
+                        if (diffX > 0)
+                        {
+                            onSwipeRight();
+                        }
+
+                        else
+                        {
+                            onSwipeLeft();
+                        }
+                    }
+
+                    result = true;
+                }
+            }
+
+            catch (Exception e) {}
+
+            return result;
         }
     }
 }
