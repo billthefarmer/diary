@@ -168,6 +168,7 @@ public class Diary extends Activity
         {
             // Get text
             String string = textView.getText().toString();
+            string = substitutePath(string);
             markdownView.loadMarkdown(string, STYLES);
         }
 
@@ -319,13 +320,7 @@ public class Diary extends Activity
                         {
                             // Get text
                             String string = textView.getText().toString();
-                            String path =
-                                getMonth(currEntry.get(Calendar.YEAR),
-                                         currEntry.get(Calendar.MONTH))
-                                .getAbsolutePath();
-                            String replace = String.format(Locale.getDefault(),
-                                                           FORMAT, path);
-                            string = string.replaceAll(REGEX, replace);
+                            string = substitutePath(string);
                             markdownView.loadMarkdown(string, STYLES);
                             // Clear flag
                             dirty = false;
@@ -400,6 +395,17 @@ public class Diary extends Activity
                         shown = false;
                     }
                 });
+    }
+
+    // substitutePath
+    private String substitutePath(String path)
+    {
+        String current =
+            getMonth(currEntry.get(Calendar.YEAR),
+                     currEntry.get(Calendar.MONTH)).getAbsolutePath();
+        String replace = String.format(Locale.getDefault(),
+                                       FORMAT, current);
+        return path.replaceAll(REGEX, replace);
     }
 
     // setVisibility
@@ -804,7 +810,10 @@ public class Diary extends Activity
         String string = read(getFile());
         textView.setText(string);
         if (markdown)
+        {
+            string = substitutePath(string);
             markdownView.loadMarkdown(string, STYLES);
+        }
         textView.setSelection(0);
     }
 
@@ -899,11 +908,8 @@ public class Diary extends Activity
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
 
-        if (markdown)
+        if (shown)
             markdownView.startAnimation(viewSwipeIn);
-
-        else
-            scrollView.startAnimation(viewSwipeIn);
     }
 
     // onSwipeRight
@@ -919,11 +925,8 @@ public class Diary extends Activity
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
 
-        if (markdown)
+        if (shown)
             markdownView.startAnimation(viewSwipeIn);
-
-        else
-            scrollView.startAnimation(viewSwipeIn);
     }
 
     // GestureListener
