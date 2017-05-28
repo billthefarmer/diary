@@ -23,22 +23,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:ignore="RtlHardcoded">
 
-  <EditText
-      android:id="@+id/text"
-      android:inputType="textCapSentences|textMultiLine"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:gravity="top" />
+  <ScrollView
+      android:id="@+id/scroll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fillViewport="true">
+
+    <EditText
+        android:id="@+id/text"
+        android:inputType="textCapSentences|textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top" />
+
+  </ScrollView>
 
   <us.feras.mdv.MarkdownView
       android:id="@+id/markdown"
       android:visibility="gone"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent" />
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
   <ImageButton
       android:id="@+id/edit"

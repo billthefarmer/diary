@@ -40,6 +40,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -92,6 +93,8 @@ public class Diary extends Activity
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
+    private final static String REGEX = "\\(~/(.+?)\\)";
+    private final static String FORMAT = "(file://%s/$1)";
     
     private boolean custom = true;
     private boolean markdown = true;
@@ -104,7 +107,7 @@ public class Diary extends Activity
     private Calendar nextEntry;
 
     private EditText textView;
-
+    private ScrollView scrollView;
     private MarkdownView markdownView;
 
     private GestureDetector gestureDetector;
@@ -119,6 +122,7 @@ public class Diary extends Activity
         setContentView(R.layout.main);
 
         textView = (EditText) findViewById(R.id.text);
+        scrollView = (ScrollView) findViewById(R.id.scroll);
         markdownView = (MarkdownView) findViewById(R.id.markdown);
 
         accept = findViewById(R.id.accept);
@@ -315,6 +319,13 @@ public class Diary extends Activity
                         {
                             // Get text
                             String string = textView.getText().toString();
+                            String path =
+                                getMonth(currEntry.get(Calendar.YEAR),
+                                         currEntry.get(Calendar.MONTH))
+                                .getAbsolutePath();
+                            String replace = String.format(Locale.getDefault(),
+                                                           FORMAT, path);
+                            string = string.replaceAll(REGEX, replace);
                             markdownView.loadMarkdown(string, STYLES);
                             // Clear flag
                             dirty = false;
@@ -329,7 +340,7 @@ public class Diary extends Activity
                             AnimationUtils
                             .loadAnimation(v.getContext(),
                                            R.anim.activity_open_enter);
-                        textView.startAnimation(viewClose);
+                        scrollView.startAnimation(viewClose);
                         markdownView.startAnimation(viewOpen);
 
                         Animation buttonFlipOut =
@@ -343,7 +354,7 @@ public class Diary extends Activity
 
                         // Set visibility
                         markdownView.setVisibility(View.VISIBLE);
-                        textView.setVisibility(View.GONE);
+                        scrollView.setVisibility(View.GONE);
                         accept.setVisibility(View.GONE);
                         edit.setVisibility(View.VISIBLE);
 
@@ -369,7 +380,7 @@ public class Diary extends Activity
                             .loadAnimation(v.getContext(),
                                            R.anim.activity_open_enter);
                         markdownView.startAnimation(viewClose);
-                        textView.startAnimation(viewOpen);
+                        scrollView.startAnimation(viewOpen);
 
                         Animation buttonFlipOut =
                             AnimationUtils.loadAnimation(v.getContext(),
@@ -382,7 +393,7 @@ public class Diary extends Activity
 
                         // Set visibility
                         markdownView.setVisibility(View.GONE);
-                        textView.setVisibility(View.VISIBLE);
+                        scrollView.setVisibility(View.VISIBLE);
                         accept.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.GONE);
 
@@ -400,7 +411,7 @@ public class Diary extends Activity
             if (shown)
             {
                 markdownView.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
                 edit.setVisibility(View.VISIBLE);
             }
@@ -408,7 +419,7 @@ public class Diary extends Activity
             else
             {
                 markdownView.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.GONE);
             }
@@ -417,7 +428,7 @@ public class Diary extends Activity
         else
         {
             markdownView.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.VISIBLE);
             accept.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
         }
@@ -882,7 +893,17 @@ public class Diary extends Activity
                                                  currEntry.get(Calendar.MONTH),
                                                  currEntry.get(Calendar.DATE));
         nextDay.add(Calendar.DATE, 1);
+
         changeDate(nextDay);
+
+        Animation viewSwipeIn =
+            AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
+
+        if (markdown)
+            markdownView.startAnimation(viewSwipeIn);
+
+        else
+            scrollView.startAnimation(viewSwipeIn);
     }
 
     // onSwipeRight
@@ -892,7 +913,17 @@ public class Diary extends Activity
                                                  currEntry.get(Calendar.MONTH),
                                                  currEntry.get(Calendar.DATE));
         prevDay.add(Calendar.DATE, -1);
+
         changeDate(prevDay);
+
+        Animation viewSwipeIn =
+            AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
+
+        if (markdown)
+            markdownView.startAnimation(viewSwipeIn);
+
+        else
+            scrollView.startAnimation(viewSwipeIn);
     }
 
     // GestureListener
