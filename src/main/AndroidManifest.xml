@@ -40,8 +40,7 @@
       android:allowBackup="true"
       android:icon="@drawable/ic_launcher"
       android:label="@string/appName"
-      android:theme="@style/AppTheme"
-      tools:replace="android:label">
+      android:theme="@style/AppTheme">
 
     <activity
         android:label="@string/appName"

@@ -63,8 +63,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import us.feras.mdv.MarkdownView;
-
 // Diary
 public class Diary extends Activity
     implements DatePickerDialog.OnDateSetListener
