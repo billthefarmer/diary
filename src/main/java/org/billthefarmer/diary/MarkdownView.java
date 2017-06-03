@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.URLUtil;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.markdownj.MarkdownProcessor;
@@ -27,15 +26,11 @@ public class MarkdownView extends WebView
     public MarkdownView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-
-        WebSettings settings = getSettings();
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
     }
 
     public MarkdownView(Context context)
     {
-        this(context, null);
+        super(context);
     }
 
     /**

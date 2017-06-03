@@ -38,6 +38,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -126,6 +127,10 @@ public class Diary extends Activity
 
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
+
+        WebSettings settings = markdownView.getSettings();
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
 
         setListeners();
 
