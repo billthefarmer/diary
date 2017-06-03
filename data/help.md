@@ -30,9 +30,9 @@ entries. The **Accept** button restores the formatted view. You may cut
 and paste this text into another page if you don't want it here.
 
 You may store images in the diary storage folders and reference them
-in diary entries using path substitution so markdown text
-`![cat](~/cat.jpg)` will display `cat.jpg` stored in the current month
-folder which is `Diary/<year>/<month>` on the sdcard.
+in diary entries so markdown text `![cat](cat.jpg)` will display `cat.jpg`
+stored in the current month folder which is `Diary/<year>/<month>` on the
+sdcard.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows entries
