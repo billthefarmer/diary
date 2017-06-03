@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.URLUtil;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.markdownj.MarkdownProcessor;
@@ -26,11 +27,14 @@ public class MarkdownView extends WebView
     public MarkdownView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+
+        WebSettings settings = getSettings();
+        settings.setBuiltInZoomControls(true);
     }
 
     public MarkdownView(Context context)
     {
-        super(context);
+        this(context, null);
     }
 
     /**
@@ -197,12 +201,12 @@ public class MarkdownView extends WebView
     private void loadMarkdownToView(String baseUrl, String txt,
                                     String cssFileUrl)
     {
-        MarkdownProcessor m = new MarkdownProcessor();
-        String html = m.markdown(txt);
+        MarkdownProcessor mark = new MarkdownProcessor();
+        String html = mark.markdown(txt);
         if (cssFileUrl != null)
         {
             html = "<link rel='stylesheet' type='text/css' href='" +
-                cssFileUrl + "' />" + html;
+                cssFileUrl + "' />\n" + html;
         }
 
         loadDataWithBaseURL(baseUrl, html, "text/html", "UTF-8", null);

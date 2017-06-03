@@ -93,7 +93,7 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String REGEX = "\\(~/(.+?)\\)";
     private final static String FORMAT = "(file://%s/$1)";
-    private final static String FILE = "file://%s";
+    private final static String FILE = "file://%s/";
     
     private boolean custom = true;
     private boolean markdown = true;
