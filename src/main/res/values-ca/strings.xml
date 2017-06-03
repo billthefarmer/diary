@@ -37,10 +37,6 @@
   <string name="pref_markdown_summ">
     Utilitzeu markdown a les entrades de format
   </string>
-  <string name="pref_zoom">Ús del zoom</string>
-  <string name="pref_zoom_summ">
-    Utilitzar el zoom per ampliar la vista de markdown
-  </string>
   <string name="about">Sobre</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="licence">GNU GPLv3</string>

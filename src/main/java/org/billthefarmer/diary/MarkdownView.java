@@ -27,6 +27,10 @@ public class MarkdownView extends WebView
     public MarkdownView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+
+        WebSettings settings = getSettings();
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
     }
 
     public MarkdownView(Context context)
@@ -100,12 +104,6 @@ public class MarkdownView extends WebView
     public void loadMarkdownFile(String url)
     {
         loadMarkdownFile(url, null);
-    }
-
-    public void setZoom(boolean zoom)
-    {
-        WebSettings settings = getSettings();
-        settings.setBuiltInZoomControls(zoom);
     }
 
     private String readFileFromAsset(String fileName)

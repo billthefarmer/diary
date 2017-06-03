@@ -76,7 +76,6 @@ public class Diary extends Activity
     public static final String PREF_ABOUT = "pref_about";
     public static final String PREF_CUSTOM = "pref_custom";
     public static final String PREF_MARKDOWN = "pref_markdown";
-    public static final String PREF_ZOOM = "pref_zoom";
 
     public final static String TAG = "Diary";
     public final static String STRING = "string";
@@ -98,7 +97,6 @@ public class Diary extends Activity
     
     private boolean custom = true;
     private boolean markdown = true;
-    private boolean zoom = false;
 
     private boolean dirty = false;
     private boolean shown = true;
@@ -164,7 +162,6 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
-        zoom = preferences.getBoolean(PREF_ZOOM, false);
 
         if (markdown)
         {
@@ -172,7 +169,6 @@ public class Diary extends Activity
             String string = textView.getText().toString();
             string = substitutePath(string);
             markdownView.loadMarkdown(getBaseUrl(), string, STYLES);
-            markdownView.setZoom(zoom);
         }
 
         setVisibility();
