@@ -37,6 +37,10 @@
   <string name="pref_markdown_summ">
     Nutze Markdown zur Textformatierung
   </string>
+  <string name="pref_zoom">Zoom verwenden</string>
+  <string name="pref_zoom_summ">
+    Verwenden Sie den Zoom, um die Markdownansicht zu erweitern
+  </string>
   <string name="about">Über</string>
   <string name="pref_about_summ">Tagebuchversion %s</string>
   <string name="licence">GNU GPLv3</string>

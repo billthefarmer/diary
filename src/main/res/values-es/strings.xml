@@ -35,7 +35,11 @@
   <string name="markdown">Markdown</string>
   <string name="pref_markdown">Usar markdown</string>
   <string name="pref_markdown_summ">
-    Utilizar marca para formatear entradas
+    Utilizar markdown para formatear entradas
+  </string>
+  <string name="pref_zoom">Utilizar zoom</string>
+  <string name="pref_zoom_summ">
+    Utilizar el zoom para ampliar la vista de markdown
   </string>
   <string name="about">Acerca de</string>
   <string name="pref_about_summ">Diary version %s</string>

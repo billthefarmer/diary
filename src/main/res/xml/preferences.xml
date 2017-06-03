@@ -49,6 +49,14 @@
 	android:persistent="true"
 	android:defaultValue="true" />
 
+    <CheckBoxPreference
+	android:key="pref_zoom"
+	android:icon="@drawable/ic_pref_zoom"
+	android:title="@string/pref_zoom"
+	android:summary="@string/pref_zoom_summ"
+	android:persistent="true"
+	android:defaultValue="false" />
+
   </PreferenceCategory>
 
   <PreferenceCategory
