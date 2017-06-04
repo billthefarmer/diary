@@ -35,7 +35,7 @@ stored in the current month folder which is `Diary/<year>/<month>` on the
 sdcard.
 
 ## Settings
-* **Use custom calendar** - Use custom calendar that shows entries
-  rather than date picker calendar
+* **Use custom calendar** - Use custom calendar that shows diary
+  entries rather than date picker calendar
 * **Use markdown** - Use markdown formatting for diary entries
 * **About** - Show app version, licence and credits
