@@ -28,6 +28,6 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.billthefarmer:CustomCalendarView:v1.0'
+    compile 'com.github.billthefarmer:CustomCalendarView:v1.01'
     compile 'org.markdownj:markdownj-core:0.4'
 }
