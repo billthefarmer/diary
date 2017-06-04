@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Locale;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -22,6 +23,9 @@ import org.markdownj.MarkdownProcessor;
 public class MarkdownView extends WebView
 {
     private static final String TAG = "MarkdownView";
+
+    private static final String CSS =
+        "<link rel='stylesheet' type='text/css' href='%s' />\n%s";
 
     public MarkdownView(Context context, AttributeSet attrs)
     {
@@ -40,15 +44,15 @@ public class MarkdownView extends WebView
      *
      * @param baseUrl
      *            - the URL to use as the page's base URL
-     * @param txt
+     * @param text
      *            - input in markdown format
      * @param cssFileUrl
      *            - a URL to css File. If the file located in the project assets
      *            folder then the URL should start with "file:///android_asset/"
      */
-    public void loadMarkdown(String baseUrl, String txt, String cssFileUrl)
+    public void loadMarkdown(String baseUrl, String text, String cssFileUrl)
     {
-        loadMarkdownToView(baseUrl, txt, cssFileUrl);
+        loadMarkdownToView(baseUrl, text, cssFileUrl);
     }
 
     /**
@@ -56,26 +60,26 @@ public class MarkdownView extends WebView
      * HTML. The HTML output will be styled based on the given CSS
      * file.
      *
-     * @param txt
+     * @param text
      *            - input in markdown format
      * @param cssFileUrl
      *            - a URL to css File. If the file located in the project assets
      *            folder then the URL should start with "file:///android_asset/"
      */
-    public void loadMarkdown(String txt, String cssFileUrl)
+    public void loadMarkdown(String text, String cssFileUrl)
     {
-        loadMarkdown(null, txt, cssFileUrl);
+        loadMarkdown(null, text, cssFileUrl);
     }
 
     /**
      * Loads the given Markdown text to the view as rich formatted HTML.
      *
-     * @param txt
+     * @param text
      *            - input in Markdown format
      */
-    public void loadMarkdown(String txt)
+    public void loadMarkdown(String text)
     {
-        loadMarkdown(txt, null);
+        loadMarkdown(text, null);
     }
 
     /**
@@ -83,6 +87,8 @@ public class MarkdownView extends WebView
      * HTML. The HTML output will be styled based on the given CSS
      * file.
      *
+     * @param baseUrl
+     *            - the URL to use as the page's base URL
      * @param url
      *            - a URL to the Markdown file. If the file located in the
      *            project assets folder then the URL should start with
@@ -91,9 +97,14 @@ public class MarkdownView extends WebView
      *            - a URL to css File. If the file located in the project assets
      *            folder then the URL should start with "file:///android_asset/"
      */
+    public void loadMarkdownFile(String baseUrl, String url, String cssFileUrl)
+    {
+        new LoadMarkdownUrlTask().execute(baseUrl, url, cssFileUrl);
+    }
+
     public void loadMarkdownFile(String url, String cssFileUrl)
     {
-        new LoadMarkdownUrlTask().execute(url, cssFileUrl);
+        loadMarkdownFile(null, url, cssFileUrl);
     }
 
     public void loadMarkdownFile(String url)
@@ -136,6 +147,7 @@ public class MarkdownView extends WebView
     private class LoadMarkdownUrlTask
         extends AsyncTask<String, Integer, String>
     {
+        private String baseUrl;
         private String cssFileUrl;
 
         protected String doInBackground(String... params)
@@ -143,8 +155,9 @@ public class MarkdownView extends WebView
             try
             {
                 String markdown = "";
-                String url = params[0];
-                this.cssFileUrl = params[1];
+                baseUrl = params[0];
+                String url = params[1];
+                cssFileUrl = params[2];
                 if(URLUtil.isNetworkUrl(url))
                 {
                     markdown = HttpHelper.get(url).getResponseMessage();
@@ -184,7 +197,7 @@ public class MarkdownView extends WebView
         {
             if (result != null)
             {
-                loadMarkdownToView(null, result, cssFileUrl);
+                loadMarkdownToView(baseUrl, result, cssFileUrl);
             }
 
             else
@@ -194,15 +207,14 @@ public class MarkdownView extends WebView
         }
     }
 
-    private void loadMarkdownToView(String baseUrl, String txt,
+    private void loadMarkdownToView(String baseUrl, String text,
                                     String cssFileUrl)
     {
         MarkdownProcessor mark = new MarkdownProcessor();
-        String html = mark.markdown(txt);
+        String html = mark.markdown(text);
         if (cssFileUrl != null)
         {
-            html = "<link rel='stylesheet' type='text/css' href='" +
-                cssFileUrl + "' />\n" + html;
+            html = String.format(Locale.getDefault(), CSS, cssFileUrl, html);
         }
 
         loadDataWithBaseURL(baseUrl, html, "text/html", "UTF-8", null);

@@ -40,12 +40,12 @@ In markdown mode the **Edit** button floating above the page allows
 editing entries. The **Done** button restores the formatted view.
 
 You may store images in the diary storage folders and reference them
-in diary entries using path substitution so markdown text
-`![cat](~/cat.jpg)` will display `cat.jpg` stored in the current month
-folder which is `Diary/<year>/<month>` on the sdcard.
+in diary entries so markdown text `![cat](cat.jpg)` will display
+`cat.jpg` stored in the current month folder which is
+`Diary/<year>/<month>` on the sdcard.
 
 ## Settings
-* **Use custom calendar** - Use custom calendar that shows entries
-  rather than date picker calendar
+* **Use custom calendar** - Use custom calendar that shows diary
+  entries rather than date picker calendar
 * **Use markdown** - Use markdown formatting for diary entries
 * **About** - Show app version, licence and credits
