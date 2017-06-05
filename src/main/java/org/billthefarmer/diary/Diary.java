@@ -79,6 +79,7 @@ public class Diary extends Activity
     public static final String PREF_MARKDOWN = "pref_markdown";
 
     public final static String TAG = "Diary";
+    public final static String DIARY = "Diary";
     public final static String STRING = "string";
     public final static String DATE = "date";
     public final static String ENTRIES = "entries";
@@ -498,29 +499,29 @@ public class Diary extends Activity
     // getHome
     private File getHome()
     {
-        return new File(Environment.getExternalStorageDirectory().getPath()
-                        + File.separator + "Diary");
+        return new File(Environment.getExternalStorageDirectory(), DIARY);
     }
 
     // getYear
     private File getYear(int year)
     {
-        return new File(getHome().getPath() + File.separator + year);
+        return new File(getHome(), String.format(Locale.getDefault(),
+                                                 "%04d", year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
-        return new File(getYear(year).getPath() + File.separator
-                        + String.format(Locale.getDefault(),
-                                        "%02d", month + 1));
+        return new File(getYear(year), String.format(Locale.getDefault(),
+                                                     "%02d", month + 1));
     }
 
     // getDay
     private File getDay(int year, int month, int day)
     {
-        return new File(getMonth(year, month).getPath() + File.separator
-                        + String.format(Locale.getDefault(), "%02d.txt", day));
+        return new
+            File(getMonth(year, month), String.format(Locale.getDefault(),
+                                                      "%02d.txt", day));
     }
 
     // getFile
