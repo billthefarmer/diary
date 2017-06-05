@@ -95,7 +95,7 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String REGEX = "\\(~/(.+?)\\)";
     private final static String FORMAT = "(file://%s/$1)";
-    private final static String FILE = "file://%s/";
+    private final static String CSS = "css/styles.css";
     
     private boolean custom = true;
     private boolean markdown = true;
@@ -174,7 +174,7 @@ public class Diary extends Activity
             // Get text
             String string = textView.getText().toString();
             string = substitutePath(string);
-            markdownView.loadMarkdown(getBaseUrl(), string, STYLES);
+            markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
 
         setVisibility();
@@ -327,7 +327,7 @@ public class Diary extends Activity
                             String string = textView.getText().toString();
                             string = substitutePath(string);
                             markdownView.loadMarkdown(getBaseUrl(), string,
-                                                      STYLES);
+                                                      getStyles());
                             // Clear flag
                             dirty = false;
                         }
@@ -406,23 +406,48 @@ public class Diary extends Activity
     // substitutePath
     private String substitutePath(String path)
     {
-        String current = currentPath();
+        String current = getCurrent().getAbsolutePath();
         String replace = String.format(Locale.getDefault(),
                                        FORMAT, current);
         return path.replaceAll(REGEX, replace);
     }
 
+    // getBaseUrl
     private String getBaseUrl()
     {
-        String current = currentPath();
-        return String.format(Locale.getDefault(), FILE, current);
+        try
+        {
+            return getCurrent().toURI().toURL().toString();
+        }
+
+        catch (Exception e) {}
+
+        return null;
     }
 
-    // currentPath
-    private String currentPath()
+    // getCurrent
+    private File getCurrent()
     {
         return getMonth(currEntry.get(Calendar.YEAR),
-                        currEntry.get(Calendar.MONTH)).getAbsolutePath();
+                        currEntry.get(Calendar.MONTH));
+    }
+
+    // getStyles
+    private String getStyles()
+    {
+        File cssFile = new File(getHome(), CSS);
+
+        if (cssFile.exists())
+        {
+            try
+            {
+                return cssFile.toURI().toURL().toString();
+            }
+
+            catch (Exception e) {}
+        }
+
+        return STYLES;
     }
 
     // setVisibility
@@ -828,8 +853,9 @@ public class Diary extends Activity
         textView.setText(string);
         if (markdown)
         {
+            dirty = false;
             string = substitutePath(string);
-            markdownView.loadMarkdown(getBaseUrl(), string, STYLES);
+            markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
         textView.setSelection(0);
     }
