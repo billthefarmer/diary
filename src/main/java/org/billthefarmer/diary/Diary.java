@@ -100,7 +100,7 @@ public class Diary extends Activity
     private boolean custom = true;
     private boolean markdown = true;
 
-    private boolean dirty = false;
+    private boolean dirty = true;
     private boolean shown = true;
 
     private Calendar prevEntry;
@@ -116,6 +116,7 @@ public class Diary extends Activity
     private View accept;
     private View edit;
 
+    // onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -169,7 +170,7 @@ public class Diary extends Activity
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
 
-        if (markdown)
+        if (markdown && dirty)
         {
             // Get text
             String string = textView.getText().toString();
@@ -564,6 +565,8 @@ public class Diary extends Activity
             return new File[0];
         Arrays.sort(files, new Comparator<File> ()
         {
+            // compare
+            @Override
             public int compare(File file1, File file2)
             {
                 return file2.getName().compareTo(file1.getName());
@@ -577,6 +580,8 @@ public class Diary extends Activity
     {
         return sortFiles(home.listFiles(new FilenameFilter()
         {
+            // accept
+            @Override
             public boolean accept(File dir, String filename)
             {
                 return Pattern.matches("^[0-9]{4}$", filename);
@@ -589,6 +594,8 @@ public class Diary extends Activity
     {
         return sortFiles(yearDir.listFiles(new FilenameFilter()
         {
+            // accept
+            @Override
             public boolean accept(File dir, String filename)
             {
                 return Pattern.matches("^[0-9]{2}$", filename);
@@ -601,6 +608,8 @@ public class Diary extends Activity
     {
         return sortFiles(monthDir.listFiles(new FilenameFilter()
         {
+            // accept
+            @Override
             public boolean accept(File dir, String filename)
             {
                 return Pattern.matches(
