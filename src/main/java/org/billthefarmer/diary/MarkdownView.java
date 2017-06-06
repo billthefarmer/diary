@@ -20,6 +20,7 @@ import org.markdownj.MarkdownProcessor;
 /**
  * @author Feras Alnatsheh
  */
+// MarkdownView
 public class MarkdownView extends WebView
 {
     private static final String TAG = "MarkdownView";
@@ -27,11 +28,13 @@ public class MarkdownView extends WebView
     private static final String CSS =
         "<link rel='stylesheet' type='text/css' href='%s' />\n%s";
 
+    // MarkdownView
     public MarkdownView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
 
+    // MarkdownView
     public MarkdownView(Context context)
     {
         super(context);
@@ -102,16 +105,40 @@ public class MarkdownView extends WebView
         new LoadMarkdownUrlTask().execute(baseUrl, url, cssFileUrl);
     }
 
+    /**
+     * Loads the given Markdown file to the view as rich formatted
+     * HTML. The HTML output will be styled based on the given CSS
+     * file.
+     *
+     * @param url
+     *            - a URL to the Markdown file. If the file located in the
+     *            project assets folder then the URL should start with
+     *            "file:///android_asset/"
+     * @param cssFileUrl
+     *            - a URL to css File. If the file located in the project assets
+     *            folder then the URL should start with "file:///android_asset/"
+     */
     public void loadMarkdownFile(String url, String cssFileUrl)
     {
         loadMarkdownFile(null, url, cssFileUrl);
     }
 
+    /**
+     * Loads the given Markdown file to the view as rich formatted
+     * HTML. The HTML output will be styled based on the given CSS
+     * file.
+     *
+     * @param url
+     *            - a URL to the Markdown file. If the file located in the
+     *            project assets folder then the URL should start with
+     *            "file:///android_asset/"
+     */
     public void loadMarkdownFile(String url)
     {
         loadMarkdownFile(url, null);
     }
 
+    // readFileFromAsset
     private String readFileFromAsset(String fileName)
     {
         try
@@ -144,12 +171,15 @@ public class MarkdownView extends WebView
         }
     }
 
+    // LoadMarkdownUrlTask
     private class LoadMarkdownUrlTask
         extends AsyncTask<String, Integer, String>
     {
         private String baseUrl;
         private String cssFileUrl;
 
+        // doInBackground
+        @Override
         protected String doInBackground(String... params)
         {
             try
@@ -188,11 +218,15 @@ public class MarkdownView extends WebView
             }
         }
 
+        // onProgressUpdate
+        @Override
         protected void onProgressUpdate(Integer... progress)
         {
             // no-op
         }
 
+        // onPostExecute
+        @Override
         protected void onPostExecute(String result)
         {
             if (result != null)
@@ -207,6 +241,7 @@ public class MarkdownView extends WebView
         }
     }
 
+    // loadMarkdownToView
     private void loadMarkdownToView(String baseUrl, String text,
                                     String cssFileUrl)
     {
