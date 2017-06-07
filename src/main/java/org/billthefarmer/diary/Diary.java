@@ -481,13 +481,10 @@ public class Diary extends Activity
             Bundle bundle = new Bundle();
             bundle.putLong(DATE, date.getTimeInMillis());
             List<Calendar> entryList = getEntries();
-            List<Long> longList = new ArrayList<Long>();
-            for (Calendar entry: entryList)
-                longList.add(entry.getTimeInMillis());
-            long entries[] = new long[longList.size()];
+            long entries[] = new long[entryList.size()];
             int i = 0;
-            for (long entry: longList)
-                entries[i++] = entry;
+            for (Calendar entry: entryList)
+                entries[i++] = entry.getTimeInMillis();
             bundle.putLongArray(ENTRIES, entries);
             intent.putExtras(bundle);
             startActivityForResult(intent, DATE_DIALOG);
