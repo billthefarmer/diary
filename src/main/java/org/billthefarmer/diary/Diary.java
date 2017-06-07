@@ -64,6 +64,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import org.billthefarmer.markdown.MarkdownView;
+
 // Diary
 public class Diary extends Activity
     implements DatePickerDialog.OnDateSetListener
