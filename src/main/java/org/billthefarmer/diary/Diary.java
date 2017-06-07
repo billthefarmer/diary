@@ -95,8 +95,6 @@ public class Diary extends Activity
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
-    private final static String REGEX = "\\(~/(.+?)\\)";
-    private final static String FORMAT = "(file://%s/$1)";
     private final static String CSS = "css/styles.css";
     
     private boolean custom = true;
@@ -176,7 +174,6 @@ public class Diary extends Activity
         {
             // Get text
             String string = textView.getText().toString();
-            string = substitutePath(string);
             markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
 
@@ -328,7 +325,6 @@ public class Diary extends Activity
                         {
                             // Get text
                             String string = textView.getText().toString();
-                            string = substitutePath(string);
                             markdownView.loadMarkdown(getBaseUrl(), string,
                                                       getStyles());
                             // Clear flag
@@ -404,15 +400,6 @@ public class Diary extends Activity
                         shown = false;
                     }
                 });
-    }
-
-    // substitutePath
-    private String substitutePath(String path)
-    {
-        String current = getCurrent().getAbsolutePath();
-        String replace = String.format(Locale.getDefault(),
-                                       FORMAT, current);
-        return path.replaceAll(REGEX, replace);
     }
 
     // getBaseUrl
@@ -865,7 +852,6 @@ public class Diary extends Activity
         if (markdown)
         {
             dirty = false;
-            string = substitutePath(string);
             markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
         textView.setSelection(0);
@@ -956,7 +942,6 @@ public class Diary extends Activity
                                                  currEntry.get(Calendar.MONTH),
                                                  currEntry.get(Calendar.DATE));
         nextDay.add(Calendar.DATE, 1);
-
         changeDate(nextDay);
 
         Animation viewSwipeIn =
@@ -973,7 +958,6 @@ public class Diary extends Activity
                                                  currEntry.get(Calendar.MONTH),
                                                  currEntry.get(Calendar.DATE));
         prevDay.add(Calendar.DATE, -1);
-
         changeDate(prevDay);
 
         Animation viewSwipeIn =
