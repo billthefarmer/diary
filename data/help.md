@@ -39,7 +39,7 @@ sdcard.
 
 ## Styles
 You may add custom styles to the markdown formatting by placing a
-`styles.css`file in the `Diary/css` folder, which will replace the
+`styles.css` file in the `Diary/css` folder, which will replace the
 built in styles file which simply limits the width of images to the
 page width. The simplest way to create a styles file is to write it on
 a diary page, and then use a file manager to move and rename it.
@@ -47,11 +47,12 @@ a diary page, and then use a file manager to move and rename it.
 **Caution** - There is no such thing as a markdown syntax error, but
 syntax errors in a styles file may cause unpredictable results and
 affect all diary pages. See
-[CSS Tutorial](https://www.w3schools.com/Css). You may include the
-built in styles file with an `@import` statement `@import
-"file:///android_asset/styles.css";` or`@import
-url("file:///android_asset/styles.css");`, which should be on the
-first line.
+[CSS Tutorial](https://www.w3schools.com/Css).
+
+You may include the built in styles file with an `@import` statement
+`@import "file:///android_asset/styles.css";` or
+`@import url("file:///android_asset/styles.css");`, which should be on
+the first line.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
