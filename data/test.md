@@ -6,11 +6,12 @@
 #### Header 4
 
 ## Paragraph
-Paragraph **bold** *italic* `code`. Lorem ipsum dolor sit amet,
-consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat.
+Paragraph **bold** *italic* `code`.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat.
 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
 dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
@@ -43,10 +44,11 @@ laborum.
 2. Two items
 
 ## Link
-[Diary]( https://github.com/billthefarmer/diary)
+[Diary](https://github.com/billthefarmer/diary)
+<https://github.com/billthefarmer/diary>
 
 ## Image
-![]( https://raw.githubusercontent.com/billthefarmer/billthefarmer.github.io/master/images/diary/Calendar-landscape.png)
+![](https://raw.githubusercontent.com/billthefarmer/billthefarmer.github.io/master/images/diary/Calendar-landscape.png)
 
 ## Code
     proc wobble()
