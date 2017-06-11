@@ -19,9 +19,9 @@
 
   <item
       android:state_pressed="true"
-      android:drawable="@drawable/ic_down" />
+      android:drawable="@drawable/ic_pressed" />
 
   <item
-      android:drawable="@drawable/ic_up" />
+      android:drawable="@drawable/ic_released" />
 
 </selector>
