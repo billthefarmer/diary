@@ -1,13 +1,14 @@
 ## Styles
-| **Markdown** | **HTML** | **Styles** |
-| :-- | :-: | :-- |
-| `# Header` | `<h1>Header</h1>` | `h1 { ... }`|
-| `## Subheader` | `<h2>Subheader</h2>` | `h2 { ... }` |
-| `text` | `<p>text</p>` | `p { ... }` |
-| `* item` | `<ul><li>item</li></ul>` | `ul { ... }` |
-| `1 one` | `<ol><li>one</li></ol>` | `ol { ... }` |
-| `[google](google.com)` | `<a href="google.com">google</a>` | `a { ... }` |
-| `![cat](cat.jpg)` | `<img src="cat.jpg" alt="cat">` | `img { ... }` |
+<table>
+<tr><td><b>Markdown</b></td><td><b>HTML</b></td><td><b>Styles</b></td></tr>
+<tr><td><code># Header</code></td><td><h1>Header</h1></td><td><code>h1 { ... }</code></td></tr>
+<tr><td><code>## Subheader</code></td><td><h2>Subheader</h2></td><td><code>h2 { ... }</code></td></tr>
+<tr><td><code>text</code></td><td><p>text</p></td><td><code>p { ... }</code></td></tr>
+<tr><td><code>* item</code></td><td><ul><li>item</li></ul></td><td><code>ul { ... }</code></td></tr>
+<tr><td><code>1 one</code></td><td><ol><li>one</li></ol></td><td><code>ol { ... }</code></td></tr>
+<tr><td><code>[google](google.com)</code></td><td><a href="google.com">google</a></td><td><code>a { ... }</code></td></tr>
+<tr><td><code>![cat](cat.jpg)</code></td><td><img src="cat.jpg" alt="cat"></td><td><code>img { ... }</code></td></tr>
+</table>
 ### Example
     @import url("file:///android_asset/styles.css");
     img {
