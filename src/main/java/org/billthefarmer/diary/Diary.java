@@ -39,6 +39,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -102,6 +104,9 @@ public class Diary extends Activity
 
     private boolean dirty = true;
     private boolean shown = true;
+
+    private float minScale = 1000;
+    private boolean canSwipe = true;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -310,6 +315,21 @@ public class Diary extends Activity
                         if (markdown)
                             // Set flag
                             dirty = true;
+                    }
+                });
+
+        if (markdownView != null)
+            markdownView.setWebViewClient(new WebViewClient()
+                {
+                    // onScaleChanged
+                    @Override
+                    public void onScaleChanged (WebView view,
+                                                float oldScale,
+                                                float newScale)
+                    {
+                        if (minScale > oldScale)
+                            minScale = oldScale;
+                        canSwipe = (newScale == minScale);
                     }
                 });
 
@@ -935,6 +955,9 @@ public class Diary extends Activity
     // onSwipeLeft
     private void onSwipeLeft()
     {
+        if (!canSwipe)
+            return;
+
         Calendar nextDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
                                                  currEntry.get(Calendar.MONTH),
                                                  currEntry.get(Calendar.DATE));
@@ -951,6 +974,9 @@ public class Diary extends Activity
     // onSwipeRight
     private void onSwipeRight()
     {
+        if (!canSwipe)
+            return;
+
         Calendar prevDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
                                                  currEntry.get(Calendar.MONTH),
                                                  currEntry.get(Calendar.DATE));
