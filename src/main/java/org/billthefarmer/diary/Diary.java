@@ -159,7 +159,7 @@ public class Diary extends Activity
 
         // Copy help text to today's page if no entries
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
-            textView.setText(getHelp());
+            textView.setText(readAssetFile(HELP));
     }
 
     // onResume
@@ -618,8 +618,7 @@ public class Diary extends Activity
             @Override
             public boolean accept(File dir, String filename)
             {
-                return Pattern.matches(
-                           "^[0-9]{2}.txt$", filename);
+                return Pattern.matches("^[0-9]{2}.txt$", filename);
             }
         }));
     }
@@ -825,13 +824,13 @@ public class Diary extends Activity
         return text.toString();
     }
 
-    // getHelp
-    private String getHelp()
+    // readAssetFile
+    private String readAssetFile(String file)
     {
         try
         {
             // Open help file
-            InputStream input = getResources().getAssets().open(HELP);
+            InputStream input = getResources().getAssets().open(file);
             try
             {
                 BufferedReader bufferedReader =

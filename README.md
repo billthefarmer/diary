@@ -18,6 +18,7 @@ file, which may be copied in to an entry for reference if required.
 * English, Catalan, Spanish, Japanese and German
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
+* Display images stored in diary folders
 
 ## Toolbar
 The toolbar icons are, from left to right:
@@ -25,7 +26,7 @@ The toolbar icons are, from left to right:
 * **Previous** - show the previous entry or today
 * **Next** - show the next entry or today if next
 * **Today** - show today's entry
-* **Go to date…** - show a date picker dialog to select a new date
+* **Go to date** - show a date picker dialog to select a new date
 * **Settings** - show the settings
 
 Depending on the device and orientation, some items may be on the
@@ -36,8 +37,9 @@ Swipe left and right in the diary will show the next or previous day
 or in the custom calendar will show the next or previous month.
 
 ## Editing
-In markdown mode the **Edit** button floating above the page allows
-editing entries. The **Done** button restores the formatted view.
+In markdown mode the floating **Edit** button floating above the page
+allows editing entries. The **Done** button restores the formatted
+view.
 
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
