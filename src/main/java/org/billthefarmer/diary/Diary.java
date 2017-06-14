@@ -954,7 +954,7 @@ public class Diary extends Activity
     // onSwipeLeft
     private void onSwipeLeft()
     {
-        if (!canSwipe)
+        if (!canSwipe && shown)
             return;
 
         Calendar nextDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
@@ -963,17 +963,19 @@ public class Diary extends Activity
         nextDay.add(Calendar.DATE, 1);
         changeDate(nextDay);
 
-        Animation viewSwipeIn =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
-
         if (shown)
+        {
+            Animation viewSwipeIn =
+                AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
+
             markdownView.startAnimation(viewSwipeIn);
+        }
     }
 
     // onSwipeRight
     private void onSwipeRight()
     {
-        if (!canSwipe)
+        if (!canSwipe && shown)
             return;
 
         Calendar prevDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
@@ -982,11 +984,13 @@ public class Diary extends Activity
         prevDay.add(Calendar.DATE, -1);
         changeDate(prevDay);
 
-        Animation viewSwipeIn =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
-
         if (shown)
+        {
+            Animation viewSwipeIn =
+                AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
+
             markdownView.startAnimation(viewSwipeIn);
+        }
     }
 
     // GestureListener
