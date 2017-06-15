@@ -9,6 +9,7 @@
 <tr><td><code>[Google](google.com)</code></td><td><a href="http://google.com">Google</a></td><td><code>a { ... }</code></td></tr>
 <tr><td><code>![cat](cat.jpg)</code></td><td><img src="cat.jpg" alt="cat"></td><td><code>img { ... }</code></td></tr>
 </table>
+
 ### Example
 
     @import url("file:///android_asset/styles.css");
