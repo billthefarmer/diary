@@ -27,6 +27,6 @@
       android:fillEnabled="true"
       android:fillBefore="false"
       android:fromXDelta="0%p"
-      android:toXDelta="100%p"
+      android:toXDelta="-100%p"
       android:duration="150" />
 </set>
