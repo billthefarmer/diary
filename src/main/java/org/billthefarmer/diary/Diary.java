@@ -85,6 +85,7 @@ public class Diary extends Activity
     public static final String PREF_MARKDOWN = "pref_markdown";
 
     public final static String TAG = "Diary";
+
     public final static String DIARY = "Diary";
     public final static String STRING = "string";
     public final static String DATE = "date";
@@ -362,25 +363,7 @@ public class Diary extends Activity
                         }
 
                         // Animation
-                        Animation viewClose =
-                            AnimationUtils
-                            .loadAnimation(v.getContext(),
-                                           R.anim.activity_close_exit);
-                        Animation viewOpen =
-                            AnimationUtils
-                            .loadAnimation(v.getContext(),
-                                           R.anim.activity_open_enter);
-                        scrollView.startAnimation(viewClose);
-                        markdownView.startAnimation(viewOpen);
-
-                        Animation buttonFlipOut =
-                            AnimationUtils.loadAnimation(v.getContext(),
-                                                         R.anim.flip_out);
-                        Animation buttonFlipIn =
-                            AnimationUtils.loadAnimation(v.getContext(),
-                                                         R.anim.flip_in);
-                        accept.startAnimation(buttonFlipOut);
-                        edit.startAnimation(buttonFlipIn);
+                        animateAccept();
 
                         // Set visibility
                         markdownView.setVisibility(View.VISIBLE);
@@ -401,25 +384,7 @@ public class Diary extends Activity
                     {
 
                         // Animation
-                        Animation viewClose =
-                            AnimationUtils
-                            .loadAnimation(v.getContext(),
-                                           R.anim.activity_close_exit);
-                        Animation viewOpen =
-                            AnimationUtils
-                            .loadAnimation(v.getContext(),
-                                           R.anim.activity_open_enter);
-                        markdownView.startAnimation(viewClose);
-                        scrollView.startAnimation(viewOpen);
-
-                        Animation buttonFlipOut =
-                            AnimationUtils.loadAnimation(v.getContext(),
-                                                         R.anim.flip_out);
-                        Animation buttonFlipIn =
-                            AnimationUtils.loadAnimation(v.getContext(),
-                                                         R.anim.flip_in);
-                        edit.startAnimation(buttonFlipOut);
-                        accept.startAnimation(buttonFlipIn);
+                        animateEdit();
 
                         // Set visibility
                         markdownView.setVisibility(View.GONE);
@@ -430,6 +395,49 @@ public class Diary extends Activity
                         shown = false;
                     }
                 });
+    }
+
+    // animateAccept
+    public void animateAccept()
+    {
+        // Animation
+        Animation viewClose =
+            AnimationUtils.loadAnimation(this,
+                                         R.anim.activity_close_exit);
+        Animation viewOpen =
+            AnimationUtils.loadAnimation(this,
+                                         R.anim.activity_open_enter);
+
+        scrollView.startAnimation(viewClose);
+        markdownView.startAnimation(viewOpen);
+
+        Animation buttonFlipOut =
+            AnimationUtils.loadAnimation(this, R.anim.flip_out);
+        Animation buttonFlipIn =
+            AnimationUtils.loadAnimation(this, R.anim.flip_in);
+
+        accept.startAnimation(buttonFlipOut);
+        edit.startAnimation(buttonFlipIn);
+    }
+
+    // animateEdit
+    private void animateEdit()
+    {
+        Animation viewClose =
+            AnimationUtils.loadAnimation(this, R.anim.activity_close_exit);
+        Animation viewOpen =
+            AnimationUtils.loadAnimation(this, R.anim.activity_open_enter);
+
+        markdownView.startAnimation(viewClose);
+        scrollView.startAnimation(viewOpen);
+
+        Animation buttonFlipOut =
+            AnimationUtils.loadAnimation(this, R.anim.flip_out);
+        Animation buttonFlipIn =
+            AnimationUtils.loadAnimation(this, R.anim.flip_in);
+
+        edit.startAnimation(buttonFlipOut);
+        accept.startAnimation(buttonFlipIn);
     }
 
     // getBaseUrl
