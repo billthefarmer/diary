@@ -117,9 +117,9 @@ public class Diary extends Activity
 
     private EditText textView;
     private ScrollView scrollView;
-    private MarkdownView markdownPrev;
+    // private MarkdownView markdownPrev;
     private MarkdownView markdownView;
-    private MarkdownView markdownNext;
+    // private MarkdownView markdownNext;
 
     private GestureDetector gestureDetector;
 
@@ -137,8 +137,8 @@ public class Diary extends Activity
         scrollView = (ScrollView) findViewById(R.id.scroll);
         markdownView = (MarkdownView) findViewById(R.id.markdown);
 
-        markdownPrev = (MarkdownView) findViewById(R.id.markdownPrev);
-        markdownNext = (MarkdownView) findViewById(R.id.markdownNext);
+        // markdownPrev = (MarkdownView) findViewById(R.id.markdownPrev);
+        // markdownNext = (MarkdownView) findViewById(R.id.markdownNext);
 
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
@@ -190,8 +190,8 @@ public class Diary extends Activity
             markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
 
-        if (markdown)
-            preLoad();
+        // if (markdown)
+        //     preLoad();
 
         setVisibility();
     }
@@ -990,7 +990,7 @@ public class Diary extends Activity
         prevDay.add(Calendar.DATE, -1);
         return prevDay;
     }
-
+    /*
     // getNextDay
     private File getNextDay()
     {
@@ -1047,7 +1047,7 @@ public class Diary extends Activity
         Animation viewSwipeOut =
             AnimationUtils.loadAnimation(this, R.anim.swipe_left_out);
 
-        markdownPrev.startAnimation(viewSwipeIn);
+        markdownNext.startAnimation(viewSwipeIn);
         markdownView.startAnimation(viewSwipeOut);
     }
 
@@ -1060,24 +1060,24 @@ public class Diary extends Activity
         Animation viewSwipeOut =
             AnimationUtils.loadAnimation(this, R.anim.swipe_right_out);
 
-        markdownNext.startAnimation(viewSwipeIn);
+        markdownPrev.startAnimation(viewSwipeIn);
         markdownView.startAnimation(viewSwipeOut);
     }
-
+    */
     // onSwipeLeft
     private void onSwipeLeft()
     {
         if (!canSwipe && shown)
             return;
 
-        if (shown)
-            animationLeft();
+        // if (shown)
+        //     animationLeft();
 
         Calendar nextDay = getNextCalendarDay();
         changeDate(nextDay);
 
-        if (markdown)
-            preLoad();
+        // if (markdown)
+        //     preLoad();
     }
 
     // onSwipeRight
@@ -1086,14 +1086,14 @@ public class Diary extends Activity
         if (!canSwipe && shown)
             return;
 
-        if (shown)
-            animationRight();
+        // if (shown)
+        //     animationRight();
 
         Calendar prevDay = getPrevCalendarDay();
         changeDate(prevDay);
 
-        if (markdown)
-            preLoad();
+        // if (markdown)
+        //     preLoad();
     }
 
     // GestureListener

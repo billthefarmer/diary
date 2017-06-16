@@ -28,5 +28,5 @@
       android:fillBefore="false"
       android:fromXDelta="0%p"
       android:toXDelta="100%p"
-      android:duration="150" />
+      android:duration="@android:integer/config_longAnimTime" />
 </set>
