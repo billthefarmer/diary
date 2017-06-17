@@ -117,9 +117,8 @@ public class Diary extends Activity
 
     private EditText textView;
     private ScrollView scrollView;
-    // private MarkdownView markdownPrev;
+
     private MarkdownView markdownView;
-    // private MarkdownView markdownNext;
 
     private GestureDetector gestureDetector;
 
@@ -136,9 +135,6 @@ public class Diary extends Activity
         textView = (EditText) findViewById(R.id.text);
         scrollView = (ScrollView) findViewById(R.id.scroll);
         markdownView = (MarkdownView) findViewById(R.id.markdown);
-
-        // markdownPrev = (MarkdownView) findViewById(R.id.markdownPrev);
-        // markdownNext = (MarkdownView) findViewById(R.id.markdownNext);
 
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
@@ -189,9 +185,6 @@ public class Diary extends Activity
             String string = textView.getText().toString();
             markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
-
-        // if (markdown)
-        //     preLoad();
 
         setVisibility();
     }
@@ -990,94 +983,15 @@ public class Diary extends Activity
         prevDay.add(Calendar.DATE, -1);
         return prevDay;
     }
-    /*
-    // getNextDay
-    private File getNextDay()
-    {
-        Calendar nextDay = getNextCalendarDay();
-        return getDay(nextDay.get(Calendar.YEAR),
-                      nextDay.get(Calendar.MONTH),
-                      nextDay.get(Calendar.DATE));
-    }
 
-    // getPrevDay
-    private File getPrevDay()
-    {
-        Calendar prevDay = getPrevCalendarDay();
-        return getDay(prevDay.get(Calendar.YEAR),
-                      prevDay.get(Calendar.MONTH),
-                      prevDay.get(Calendar.DATE));
-    }
-
-    // loadPrevDay
-    private void loadPrevDay()
-    {
-        String string = read(getPrevDay());
-        markdownPrev.loadMarkdown(getBaseUrl(), string, getStyles());
-    }
-
-    // loadNextDay
-    private void loadNextDay()
-    {
-        String string = read(getNextDay());
-        markdownNext.loadMarkdown(getBaseUrl(), string, getStyles());
-    }
-
-    // preLoad
-    private void preLoad()
-    {
-        textView.postDelayed(new Runnable()
-            {
-                // run
-                @Override
-                public void run()
-                {
-                    loadPrevDay();
-                    loadNextDay();
-                }
-            }, DELAY);
-    }
-
-    // animationLeft
-    private void animationLeft()
-    {
-        Animation viewSwipeIn =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
-
-        Animation viewSwipeOut =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_left_out);
-
-        markdownNext.startAnimation(viewSwipeIn);
-        markdownView.startAnimation(viewSwipeOut);
-    }
-
-    // animationRight
-    private void animationRight()
-    {
-        Animation viewSwipeIn =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
-
-        Animation viewSwipeOut =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_right_out);
-
-        markdownPrev.startAnimation(viewSwipeIn);
-        markdownView.startAnimation(viewSwipeOut);
-    }
-    */
     // onSwipeLeft
     private void onSwipeLeft()
     {
         if (!canSwipe && shown)
             return;
 
-        // if (shown)
-        //     animationLeft();
-
         Calendar nextDay = getNextCalendarDay();
         changeDate(nextDay);
-
-        // if (markdown)
-        //     preLoad();
     }
 
     // onSwipeRight
@@ -1086,14 +1000,8 @@ public class Diary extends Activity
         if (!canSwipe && shown)
             return;
 
-        // if (shown)
-        //     animationRight();
-
         Calendar prevDay = getPrevCalendarDay();
         changeDate(prevDay);
-
-        // if (markdown)
-        //     preLoad();
     }
 
     // GestureListener
