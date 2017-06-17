@@ -984,6 +984,24 @@ public class Diary extends Activity
         return prevDay;
     }
 
+    // animateSwipeLeft
+    private void animateSwipeLeft()
+    {
+        Animation viewSwipeIn =
+            AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
+
+        markdownView.startAnimation(viewSwipeIn);
+    }
+
+    // animateSwipeRight
+    private void animateSwipeRight()
+    {
+        Animation viewSwipeIn =
+            AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
+
+        markdownView.startAnimation(viewSwipeIn);
+    }
+
     // onSwipeLeft
     private void onSwipeLeft()
     {
@@ -992,6 +1010,9 @@ public class Diary extends Activity
 
         Calendar nextDay = getNextCalendarDay();
         changeDate(nextDay);
+
+        if (shown)
+            animateSwipeLeft();
     }
 
     // onSwipeRight
@@ -1002,6 +1023,9 @@ public class Diary extends Activity
 
         Calendar prevDay = getPrevCalendarDay();
         changeDate(prevDay);
+
+        if (shown)
+            animateSwipeRight();
     }
 
     // GestureListener
