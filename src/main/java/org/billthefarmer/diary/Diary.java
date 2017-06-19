@@ -84,7 +84,7 @@ public class Diary extends Activity
     public static final String PREF_CUSTOM = "pref_custom";
     public static final String PREF_MARKDOWN = "pref_markdown";
 
-    public final static String TAG = "Diary";
+    private final static String TAG = "Diary";
 
     public final static String DIARY = "Diary";
     public final static String STRING = "string";
@@ -333,7 +333,8 @@ public class Diary extends Activity
                     {
                         if (minScale > oldScale)
                             minScale = oldScale;
-                        canSwipe = (newScale == minScale);
+                        canSwipe = (Math.abs(newScale - minScale) <
+                                    minScale / 100);
                     }
                 });
 
