@@ -1012,7 +1012,7 @@ public class Diary extends Activity
         Calendar nextDay = getNextCalendarDay();
         changeDate(nextDay);
 
-        if (shown)
+        if (markdown && shown)
             animateSwipeLeft();
     }
 
@@ -1025,7 +1025,7 @@ public class Diary extends Activity
         Calendar prevDay = getPrevCalendarDay();
         changeDate(prevDay);
 
-        if (shown)
+        if (markdown && shown)
             animateSwipeRight();
     }
 
