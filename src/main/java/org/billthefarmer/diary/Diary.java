@@ -396,32 +396,6 @@ public class Diary extends Activity
                 });
     }
 
-    // imageCheck()
-    private void imageCheck()
-    {
-        // Check for sent images
-        Intent intent = getIntent();
-        if (intent.getAction().equals(Intent.ACTION_SEND))
-        {
-            Object obj = intent.getExtras().get(Intent.EXTRA_STREAM);
-            if (obj instanceof Uri)
-            {
-                Uri item = (Uri) obj;
-                addImage(item);
-            }
-        }
-
-        else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
-        {
-            Object obj = intent.getExtras().get(Intent.EXTRA_STREAM);
-            if (obj instanceof List)
-            {
-                List<Uri> items = (List<Uri>) obj;
-                addImages(items);
-            }
-        }
-    }
-
     // animateAccept
     public void animateAccept()
     {
@@ -463,6 +437,35 @@ public class Diary extends Activity
 
         edit.startAnimation(buttonFlipOut);
         accept.startAnimation(buttonFlipIn);
+    }
+
+    // imageCheck
+    private void imageCheck()
+    {
+        // Check for sent images
+        Intent intent = getIntent();
+        if (intent.getAction().equals(Intent.ACTION_SEND))
+        {
+            try
+            {
+                Uri item = (Uri) intent.getExtras().get(Intent.EXTRA_STREAM);
+                addImage(item);
+            }
+
+            catch (Exception e) {}
+        }
+
+        else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+        {
+            try
+            {
+                List<Uri> items = (List<Uri>)
+                    intent.getExtras().get(Intent.EXTRA_STREAM);
+                addImages(items);
+            }
+
+            catch (Exception e) {}
+        }
     }
 
     // getBaseUrl
