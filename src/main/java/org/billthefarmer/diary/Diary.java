@@ -23,6 +23,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -101,6 +102,7 @@ public class Diary extends Activity
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
+    private final static String IMAGE = "![](%s)\n";
     
     private boolean custom = true;
     private boolean markdown = true;
@@ -160,6 +162,9 @@ public class Diary extends Activity
 
             shown = (Boolean) savedInstanceState.get(SHOWN);
         }
+
+        // Check for sent images
+        imageCheck();
 
         // Copy help text to today's page if no entries
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
@@ -389,6 +394,32 @@ public class Diary extends Activity
                         shown = false;
                     }
                 });
+    }
+
+    // imageCheck()
+    private void imageCheck()
+    {
+        // Check for sent images
+        Intent intent = getIntent();
+        if (intent.getAction().equals(Intent.ACTION_SEND))
+        {
+            Object obj = intent.getExtras().get(Intent.EXTRA_STREAM);
+            if (obj instanceof Uri)
+            {
+                Uri item = (Uri) obj;
+                addImage(item);
+            }
+        }
+
+        else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+        {
+            Object obj = intent.getExtras().get(Intent.EXTRA_STREAM);
+            if (obj instanceof List)
+            {
+                List<Uri> items = (List<Uri>) obj;
+                addImages(items);
+            }
+        }
     }
 
     // animateAccept
@@ -961,6 +992,22 @@ public class Diary extends Activity
                                                calendar.get(Calendar.MONTH),
                                                calendar.get(Calendar.DATE));
         changeDate(today);
+    }
+
+    // addImage
+    private  void addImage(Uri image)
+    {
+        textView.append(String.format(IMAGE, image.toString()));
+
+        String string = textView.getText().toString();
+        markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
+    }
+
+    // addImages
+    private void addImages(List<Uri> images)
+    {
+        for (Uri image: images)
+            addImage(image);
     }
 
     // getNextCalendarDay
