@@ -43,19 +43,7 @@
   </ScrollView>
 
   <org.billthefarmer.markdown.MarkdownView
-      android:id="@+id/markdownPrev"
-      android:visibility="gone"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
-
-  <org.billthefarmer.markdown.MarkdownView
-      android:id="@+id/markdownCurr"
-      android:visibility="gone"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
-
-  <org.billthefarmer.markdown.MarkdownView
-      android:id="@+id/markdownNext"
+      android:id="@+id/markdown"
       android:visibility="gone"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />

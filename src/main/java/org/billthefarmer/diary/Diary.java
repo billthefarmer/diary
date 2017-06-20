@@ -84,7 +84,7 @@ public class Diary extends Activity
     public static final String PREF_CUSTOM = "pref_custom";
     public static final String PREF_MARKDOWN = "pref_markdown";
 
-    public final static String TAG = "Diary";
+    private final static String TAG = "Diary";
 
     public final static String DIARY = "Diary";
     public final static String STRING = "string";
@@ -118,9 +118,7 @@ public class Diary extends Activity
     private EditText textView;
     private ScrollView scrollView;
 
-    private MarkdownView prevMarkdown;
-    private MarkdownView currMarkdown;
-    private MarkdownView nextMarkdown;
+    private MarkdownView markdownView;
 
     private GestureDetector gestureDetector;
 
@@ -136,23 +134,12 @@ public class Diary extends Activity
 
         textView = (EditText) findViewById(R.id.text);
         scrollView = (ScrollView) findViewById(R.id.scroll);
-
-        prevMarkdown = (MarkdownView) findViewById(R.id.markdownPrev);
-        currMarkdown = (MarkdownView) findViewById(R.id.markdownCurr);
-        nextMarkdown = (MarkdownView) findViewById(R.id.markdownNext);
+        markdownView = (MarkdownView) findViewById(R.id.markdown);
 
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
 
-        WebSettings settings = prevMarkdown.getSettings();
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-
-        settings = currMarkdown.getSettings();
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-
-        settings = nextMarkdown.getSettings();
+        WebSettings settings = markdownView.getSettings();
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
 
@@ -196,11 +183,8 @@ public class Diary extends Activity
         {
             // Get text
             String string = textView.getText().toString();
-            currMarkdown.loadMarkdown(getBaseUrl(), string, getStyles());
+            markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
-
-        if (markdown)
-            preLoad();
 
         setVisibility();
     }
@@ -338,8 +322,8 @@ public class Diary extends Activity
                     }
                 });
 
-        if (prevMarkdown != null)
-            prevMarkdown.setWebViewClient(new WebViewClient()
+        if (markdownView != null)
+            markdownView.setWebViewClient(new WebViewClient()
                 {
                     // onScaleChanged
                     @Override
@@ -349,37 +333,8 @@ public class Diary extends Activity
                     {
                         if (minScale > oldScale)
                             minScale = oldScale;
-                        canSwipe = (newScale == minScale);
-                    }
-                });
-
-        if (currMarkdown != null)
-            currMarkdown.setWebViewClient(new WebViewClient()
-                {
-                    // onScaleChanged
-                    @Override
-                    public void onScaleChanged (WebView view,
-                                                float oldScale,
-                                                float newScale)
-                    {
-                        if (minScale > oldScale)
-                            minScale = oldScale;
-                        canSwipe = (newScale == minScale);
-                    }
-                });
-
-        if (nextMarkdown != null)
-            nextMarkdown.setWebViewClient(new WebViewClient()
-                {
-                    // onScaleChanged
-                    @Override
-                    public void onScaleChanged (WebView view,
-                                                float oldScale,
-                                                float newScale)
-                    {
-                        if (minScale > oldScale)
-                            minScale = oldScale;
-                        canSwipe = (newScale == minScale);
+                        canSwipe = (Math.abs(newScale - minScale) <
+                                    minScale / 100);
                     }
                 });
 
@@ -395,7 +350,7 @@ public class Diary extends Activity
                         {
                             // Get text
                             String string = textView.getText().toString();
-                            currMarkdown.loadMarkdown(getBaseUrl(), string,
+                            markdownView.loadMarkdown(getBaseUrl(), string,
                                                       getStyles());
                             // Clear flag
                             dirty = false;
@@ -405,7 +360,7 @@ public class Diary extends Activity
                         animateAccept();
 
                         // Set visibility
-                        currMarkdown.setVisibility(View.VISIBLE);
+                        markdownView.setVisibility(View.VISIBLE);
                         scrollView.setVisibility(View.INVISIBLE);
                         accept.setVisibility(View.INVISIBLE);
                         edit.setVisibility(View.VISIBLE);
@@ -426,7 +381,7 @@ public class Diary extends Activity
                         animateEdit();
 
                         // Set visibility
-                        currMarkdown.setVisibility(View.INVISIBLE);
+                        markdownView.setVisibility(View.INVISIBLE);
                         scrollView.setVisibility(View.VISIBLE);
                         accept.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.INVISIBLE);
@@ -448,7 +403,7 @@ public class Diary extends Activity
                                          R.anim.activity_open_enter);
 
         scrollView.startAnimation(viewClose);
-        currMarkdown.startAnimation(viewOpen);
+        markdownView.startAnimation(viewOpen);
 
         Animation buttonFlipOut =
             AnimationUtils.loadAnimation(this, R.anim.flip_out);
@@ -467,7 +422,7 @@ public class Diary extends Activity
         Animation viewOpen =
             AnimationUtils.loadAnimation(this, R.anim.activity_open_enter);
 
-        currMarkdown.startAnimation(viewClose);
+        markdownView.startAnimation(viewClose);
         scrollView.startAnimation(viewOpen);
 
         Animation buttonFlipOut =
@@ -525,7 +480,7 @@ public class Diary extends Activity
             // Check if shown
             if (shown)
             {
-                currMarkdown.setVisibility(View.VISIBLE);
+                markdownView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.INVISIBLE);
                 accept.setVisibility(View.INVISIBLE);
                 edit.setVisibility(View.VISIBLE);
@@ -533,7 +488,7 @@ public class Diary extends Activity
 
             else
             {
-                currMarkdown.setVisibility(View.INVISIBLE);
+                markdownView.setVisibility(View.INVISIBLE);
                 scrollView.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.INVISIBLE);
@@ -542,7 +497,7 @@ public class Diary extends Activity
 
         else
         {
-            currMarkdown.setVisibility(View.INVISIBLE);
+            markdownView.setVisibility(View.INVISIBLE);
             scrollView.setVisibility(View.VISIBLE);
             accept.setVisibility(View.INVISIBLE);
             edit.setVisibility(View.INVISIBLE);
@@ -925,7 +880,7 @@ public class Diary extends Activity
         if (markdown)
         {
             dirty = false;
-            currMarkdown.loadMarkdown(getBaseUrl(), string, getStyles());
+            markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
         }
         textView.setSelection(0);
     }
@@ -1030,147 +985,22 @@ public class Diary extends Activity
         return prevDay;
     }
 
-    // getNextDay
-    private File getNextDay()
-    {
-        Calendar nextDay = getNextCalendarDay();
-        return getDay(nextDay.get(Calendar.YEAR),
-                      nextDay.get(Calendar.MONTH),
-                      nextDay.get(Calendar.DATE));
-    }
-
-    // getPrevDay
-    private File getPrevDay()
-    {
-        Calendar prevDay = getPrevCalendarDay();
-        return getDay(prevDay.get(Calendar.YEAR),
-                      prevDay.get(Calendar.MONTH),
-                      prevDay.get(Calendar.DATE));
-    }
-
-    // loadPrevDay
-    private void loadPrevDay()
-    {
-        String string = read(getPrevDay());
-        prevMarkdown.loadMarkdown(getBaseUrl(), string, getStyles());
-    }
-
-    // loadNextDay
-    private void loadNextDay()
-    {
-        String string = read(getNextDay());
-        nextMarkdown.loadMarkdown(getBaseUrl(), string, getStyles());
-    }
-
-    // preLoad
-    private void preLoad()
-    {
-        loadPrevDay();
-        loadNextDay();
-    }
-
-    // animationLeft
-    private void animationLeft()
+    // animateSwipeLeft
+    private void animateSwipeLeft()
     {
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
 
-        Animation viewSwipeOut =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_left_out);
-
-        viewSwipeOut.setAnimationListener(new Animation.AnimationListener()
-            {
-                // onAnimationEnd
-                @Override
-                public void onAnimationEnd (Animation animation)
-                {
-                    Calendar nextDay = getNextCalendarDay();
-                    changeDate(nextDay);
-                    preLoad();
-                }
-
-                // onAnimationRepeat
-                @Override
-                public void onAnimationRepeat (Animation animation) {}
-
-                // onAnimationStart
-                @Override
-                public void onAnimationStart (Animation animation) {}
-            });
-
-        nextMarkdown.startAnimation(viewSwipeIn);
-        currMarkdown.startAnimation(viewSwipeOut);
-
-        Log.d(TAG, "Prev: " +
-              getResources().getResourceEntryName(prevMarkdown.getId()));
-        Log.d(TAG, "Curr: " +
-              getResources().getResourceEntryName(currMarkdown.getId()));
-        Log.d(TAG, "Next: " +
-              getResources().getResourceEntryName(nextMarkdown.getId()));
-
-        MarkdownView tempMarkdown = currMarkdown;
-        currMarkdown = nextMarkdown;
-        nextMarkdown = prevMarkdown;
-        prevMarkdown = tempMarkdown;
-
-        Log.d(TAG, "Prev: " +
-              getResources().getResourceEntryName(prevMarkdown.getId()));
-        Log.d(TAG, "Curr: " +
-              getResources().getResourceEntryName(currMarkdown.getId()));
-        Log.d(TAG, "Next: " +
-              getResources().getResourceEntryName(nextMarkdown.getId()));
+        markdownView.startAnimation(viewSwipeIn);
     }
 
-    // animationRight
-    private void animationRight()
+    // animateSwipeRight
+    private void animateSwipeRight()
     {
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
 
-        Animation viewSwipeOut =
-            AnimationUtils.loadAnimation(this, R.anim.swipe_right_out);
-
-        viewSwipeOut.setAnimationListener(new Animation.AnimationListener()
-            {
-                // onAnimationEnd
-                @Override
-                public void onAnimationEnd (Animation animation)
-                {
-                    Calendar prevDay = getPrevCalendarDay();
-                    changeDate(prevDay);
-                    preLoad();
-                }
-
-                // onAnimationRepeat
-                @Override
-                public void onAnimationRepeat (Animation animation) {}
-
-                // onAnimationStart
-                @Override
-                public void onAnimationStart (Animation animation) {}
-            });
-
-        prevMarkdown.startAnimation(viewSwipeIn);
-        currMarkdown.startAnimation(viewSwipeOut);
-
-        Log.d(TAG, "Prev: " +
-              getResources().getResourceEntryName(prevMarkdown.getId()));
-        Log.d(TAG, "Curr: " +
-              getResources().getResourceEntryName(currMarkdown.getId()));
-        Log.d(TAG, "Next: " +
-              getResources().getResourceEntryName(nextMarkdown.getId()));
-
-        MarkdownView tempMarkdown = currMarkdown;
-        currMarkdown = prevMarkdown;
-        prevMarkdown = nextMarkdown;
-        nextMarkdown = tempMarkdown;
-
-        Log.d(TAG, "Prev: " +
-              getResources().getResourceEntryName(prevMarkdown.getId()));
-        Log.d(TAG, "Curr: " +
-              getResources().getResourceEntryName(currMarkdown.getId()));
-        Log.d(TAG, "Next: " +
-              getResources().getResourceEntryName(nextMarkdown.getId()));
+        markdownView.startAnimation(viewSwipeIn);
     }
 
     // onSwipeLeft
@@ -1179,14 +1009,11 @@ public class Diary extends Activity
         if (!canSwipe && shown)
             return;
 
-        if (shown)
-            animationLeft();
+        Calendar nextDay = getNextCalendarDay();
+        changeDate(nextDay);
 
-        else
-        {
-            Calendar nextDay = getNextCalendarDay();
-            changeDate(nextDay);
-        }
+        if (markdown && shown)
+            animateSwipeLeft();
     }
 
     // onSwipeRight
@@ -1195,14 +1022,11 @@ public class Diary extends Activity
         if (!canSwipe && shown)
             return;
 
-        if (shown)
-            animationRight();
+        Calendar prevDay = getPrevCalendarDay();
+        changeDate(prevDay);
 
-        else
-        {
-            Calendar prevDay = getPrevCalendarDay();
-            changeDate(prevDay);
-        }
+        if (markdown && shown)
+            animateSwipeRight();
     }
 
     // GestureListener
