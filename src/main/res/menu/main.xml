@@ -44,6 +44,11 @@
       android:title="@string/goToDate"
       android:icon="@drawable/ic_action_go_to_date" />
   <item
+      android:id="@+id/getImage"
+      android:showAsAction="ifRoom"
+      android:title="@string/getImage"
+      android:icon="@drawable/ic_action_picture" />
+  <item
       android:id="@+id/settings"
       android:showAsAction="ifRoom"
       android:title="@string/settings"

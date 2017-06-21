@@ -23,11 +23,13 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -77,6 +79,8 @@ public class Diary extends Activity
     public final static int VERSION_NOUGAT = 24;
 
     private final static int DATE_DIALOG = 0;
+    private final static int GET_IMAGE = 1;
+
     private final static int BUFFER_SIZE = 1024;
 
     private final static int DELAY = 500;
@@ -102,7 +106,7 @@ public class Diary extends Activity
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
-    private final static String IMAGE = "![](%s)\n";
+    private final static String IMAGE = "![%s](%s)\n";
     
     private boolean custom = true;
     private boolean markdown = true;
@@ -112,6 +116,7 @@ public class Diary extends Activity
 
     private float minScale = 1000;
     private boolean canSwipe = true;
+    private boolean haveImage = false;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -162,6 +167,13 @@ public class Diary extends Activity
 
             shown = (Boolean) savedInstanceState.get(SHOWN);
         }
+
+        // Get preferences
+        SharedPreferences preferences =
+            PreferenceManager.getDefaultSharedPreferences(this);
+
+        custom = preferences.getBoolean(PREF_CUSTOM, true);
+        markdown = preferences.getBoolean(PREF_MARKDOWN, true);
 
         // Check for sent images
         imageCheck();
@@ -248,22 +260,26 @@ public class Diary extends Activity
         {
         case R.id.prevEntry:
             changeDate(prevEntry);
-            return true;
+            break;
         case R.id.nextEntry:
             changeDate(nextEntry);
-            return true;
+            break;
         case R.id.today:
             today();
-            return true;
+            break;
         case R.id.goToDate:
             goToDate(currEntry);
-            return true;
+            break;
+        case R.id.getImage:
+            getImage();
+            break;
         case R.id.settings:
             settings();
-            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+
+        return true;
     }
 
     // onActivityResult
@@ -275,12 +291,25 @@ public class Diary extends Activity
         if (resultCode != RESULT_OK)
             return;
 
-        // Get date from intent
-        Bundle extra = data.getExtras();
-        long time = extra.getLong(DATE);
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(time);
-        changeDate(calendar);
+        switch (requestCode)
+        {
+        case DATE_DIALOG:
+            // Get date from intent
+            Bundle extra = data.getExtras();
+            long time = extra.getLong(DATE);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTimeInMillis(time);
+            changeDate(calendar);
+
+            if (haveImage)
+                imageAdd(getIntent());
+            break;
+
+        case GET_IMAGE:
+            Uri uri = data.getData();
+            addImage(uri, false);
+            break;
+        }
     }
 
     // onDateSet
@@ -288,6 +317,9 @@ public class Diary extends Activity
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
         changeDate(new GregorianCalendar(year, month, day));
+
+        if (haveImage)
+            imageAdd(getIntent());
     }
 
     // dispatchTouchEvent
@@ -444,12 +476,26 @@ public class Diary extends Activity
     {
         // Check for sent images
         Intent intent = getIntent();
+        if (intent.getAction().equals(Intent.ACTION_SEND) ||
+            intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+        {
+            haveImage = true;
+            goToDate(currEntry);
+        }
+    }
+
+    // imageAdd
+    private void imageAdd(Intent intent)
+    {
         if (intent.getAction().equals(Intent.ACTION_SEND))
         {
+            haveImage = false;
+            intent.setAction(Intent.ACTION_MAIN);
+
             try
             {
                 Uri item = (Uri) intent.getExtras().get(Intent.EXTRA_STREAM);
-                addImage(item);
+                addImage(item, true);
             }
 
             catch (Exception e) {}
@@ -457,11 +503,14 @@ public class Diary extends Activity
 
         else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
+            haveImage = false;
+            intent.setAction(Intent.ACTION_MAIN);
+
             try
             {
                 List<Uri> items = (List<Uri>)
                     intent.getExtras().get(Intent.EXTRA_STREAM);
-                addImages(items);
+                addImages(items, true);
             }
 
             catch (Exception e) {}
@@ -542,22 +591,26 @@ public class Diary extends Activity
     private void goToDate(Calendar date)
     {
         if (custom)
-        {
-            Intent intent = new Intent(this, DiaryCalendar.class);
-            Bundle bundle = new Bundle();
-            bundle.putLong(DATE, date.getTimeInMillis());
-            List<Calendar> entryList = getEntries();
-            long entries[] = new long[entryList.size()];
-            int i = 0;
-            for (Calendar entry: entryList)
-                entries[i++] = entry.getTimeInMillis();
-            bundle.putLongArray(ENTRIES, entries);
-            intent.putExtras(bundle);
-            startActivityForResult(intent, DATE_DIALOG);
-        }
+            showCustomCalendar(date);
 
         else
             showDatePickerDialog(date);
+    }
+
+    // showCustomCalendar
+    public void showCustomCalendar(Calendar date)
+    {
+        Intent intent = new Intent(this, DiaryCalendar.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong(DATE, date.getTimeInMillis());
+        List<Calendar> entryList = getEntries();
+        long entries[] = new long[entryList.size()];
+        int i = 0;
+        for (Calendar entry: entryList)
+            entries[i++] = entry.getTimeInMillis();
+        bundle.putLongArray(ENTRIES, entries);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, DATE_DIALOG);
     }
 
     // showDatePickerDialog
@@ -565,6 +618,15 @@ public class Diary extends Activity
     {
         DialogFragment fragment = DatePickerFragment.newInstance(date);
         fragment.show(getFragmentManager(), DATEPICKER);
+    }
+
+    public void getImage()
+    {
+        Intent intent = new Intent();  
+        intent.setAction(Intent.ACTION_GET_CONTENT);  
+        intent.setType("image/*");  
+        startActivityForResult(Intent.createChooser(intent, null),
+                               GET_IMAGE);
     }
 
     // settings
@@ -899,11 +961,9 @@ public class Diary extends Activity
             }
         }
 
-        catch (Exception e)
-        {
-            Log.d(TAG, "Error while reading file from assets", e);
-            return null;
-        }
+        catch (Exception e) {}
+
+        return null;
     }
 
     // load
@@ -998,19 +1058,45 @@ public class Diary extends Activity
     }
 
     // addImage
-    private  void addImage(Uri image)
+    private  void addImage(Uri image, boolean append)
     {
-        textView.append(String.format(IMAGE, image.toString()));
+        if (image != null && image.getScheme().equals("content"))
+        {
+            String projection[] =
+                { MediaStore.MediaColumns.DATA };
+            Cursor cursor = getContentResolver()
+                .query(image, projection, null, null, null);
+            if (cursor.moveToFirst())
+            {
+                int index = cursor.getColumnIndex(projection[0]);
+                String path = cursor.getString(index);
+                if (path != null)
+                    image = Uri.fromFile(new File(path));
+            }
+            cursor.close();
+        }
+
+        String text = String.format(IMAGE, image.getLastPathSegment(),
+                                    image.toString());
+        if (append)
+            textView.append(text);
+
+        else
+        {
+            Editable editable = textView.getEditableText();
+            int position = textView.getSelectionStart();
+            editable.insert(position, text);
+        }
 
         String string = textView.getText().toString();
         markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
     }
 
     // addImages
-    private void addImages(List<Uri> images)
+    private void addImages(List<Uri> images, boolean append)
     {
         for (Uri image: images)
-            addImage(image);
+            addImage(image, append);
     }
 
     // getNextCalendarDay
