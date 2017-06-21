@@ -25,7 +25,7 @@
   <string name="prevEntry">Previous</string>
   <string name="nextEntry">Next</string>
   <string name="goToDate">Go to date…</string>
-  <string name ="getImage">Get image…</string>
+  <string name="addImage">Add image…</string>
   <string name="done">Done</string>
   <string name="settings">Settings</string>
   <string name="calendar">Calendar</string>

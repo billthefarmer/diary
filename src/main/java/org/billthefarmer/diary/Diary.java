@@ -79,11 +79,9 @@ public class Diary extends Activity
     public final static int VERSION_NOUGAT = 24;
 
     private final static int DATE_DIALOG = 0;
-    private final static int GET_IMAGE = 1;
+    private final static int ADD_IMAGE = 1;
 
     private final static int BUFFER_SIZE = 1024;
-
-    private final static int DELAY = 500;
 
     public static final String PREF_ABOUT = "pref_about";
     public static final String PREF_CUSTOM = "pref_custom";
@@ -169,11 +167,7 @@ public class Diary extends Activity
         }
 
         // Get preferences
-        SharedPreferences preferences =
-            PreferenceManager.getDefaultSharedPreferences(this);
-
-        custom = preferences.getBoolean(PREF_CUSTOM, true);
-        markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        getPreferences();
 
         // Check for sent images
         imageCheck();
@@ -190,11 +184,7 @@ public class Diary extends Activity
         super.onResume();
 
         // Get preferences
-        SharedPreferences preferences =
-            PreferenceManager.getDefaultSharedPreferences(this);
-
-        custom = preferences.getBoolean(PREF_CUSTOM, true);
-        markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        getPreferences();
 
         if (markdown && dirty)
         {
@@ -270,8 +260,8 @@ public class Diary extends Activity
         case R.id.goToDate:
             goToDate(currEntry);
             break;
-        case R.id.getImage:
-            getImage();
+        case R.id.addImage:
+            addImage();
             break;
         case R.id.settings:
             settings();
@@ -305,7 +295,7 @@ public class Diary extends Activity
                 imageAdd(getIntent());
             break;
 
-        case GET_IMAGE:
+        case ADD_IMAGE:
             Uri uri = data.getData();
             addImage(uri, false);
             break;
@@ -471,6 +461,17 @@ public class Diary extends Activity
         accept.startAnimation(buttonFlipIn);
     }
 
+    // getPreferences
+    private void getPreferences()
+    {
+        // Get preferences
+        SharedPreferences preferences =
+            PreferenceManager.getDefaultSharedPreferences(this);
+
+        custom = preferences.getBoolean(PREF_CUSTOM, true);
+        markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+    }
+
     // imageCheck
     private void imageCheck()
     {
@@ -489,13 +490,10 @@ public class Diary extends Activity
     {
         if (intent.getAction().equals(Intent.ACTION_SEND))
         {
-            haveImage = false;
-            intent.setAction(Intent.ACTION_MAIN);
-
             try
             {
-                Uri item = (Uri) intent.getExtras().get(Intent.EXTRA_STREAM);
-                addImage(item, true);
+                Uri image = (Uri) intent.getExtras().get(Intent.EXTRA_STREAM);
+                addImage(image, true);
             }
 
             catch (Exception e) {}
@@ -503,18 +501,19 @@ public class Diary extends Activity
 
         else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
-            haveImage = false;
-            intent.setAction(Intent.ACTION_MAIN);
-
             try
             {
-                List<Uri> items = (List<Uri>)
+                List<Uri> images = (List<Uri>)
                     intent.getExtras().get(Intent.EXTRA_STREAM);
-                addImages(items, true);
+                for (Uri image: images)
+                    addImage(image, true);
             }
 
             catch (Exception e) {}
         }
+
+        haveImage = false;
+        intent.setAction(Intent.ACTION_MAIN);
     }
 
     // getBaseUrl
@@ -620,13 +619,13 @@ public class Diary extends Activity
         fragment.show(getFragmentManager(), DATEPICKER);
     }
 
-    public void getImage()
+    public void addImage()
     {
         Intent intent = new Intent();  
         intent.setAction(Intent.ACTION_GET_CONTENT);  
         intent.setType("image/*");  
         startActivityForResult(Intent.createChooser(intent, null),
-                               GET_IMAGE);
+                               ADD_IMAGE);
     }
 
     // settings
@@ -1060,21 +1059,8 @@ public class Diary extends Activity
     // addImage
     private  void addImage(Uri image, boolean append)
     {
-        if (image != null && image.getScheme().equals("content"))
-        {
-            String projection[] =
-                { MediaStore.MediaColumns.DATA };
-            Cursor cursor = getContentResolver()
-                .query(image, projection, null, null, null);
-            if (cursor.moveToFirst())
-            {
-                int index = cursor.getColumnIndex(projection[0]);
-                String path = cursor.getString(index);
-                if (path != null)
-                    image = Uri.fromFile(new File(path));
-            }
-            cursor.close();
-        }
+        if (image.getScheme().equals("content"))
+            image = resolveContent(image);
 
         String text = String.format(IMAGE, image.getLastPathSegment(),
                                     image.toString());
@@ -1092,11 +1078,25 @@ public class Diary extends Activity
         markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
     }
 
-    // addImages
-    private void addImages(List<Uri> images, boolean append)
+    // resolveContent
+    private Uri resolveContent(Uri uri)
     {
-        for (Uri image: images)
-            addImage(image, append);
+        String projection[] =
+            { MediaStore.MediaColumns.DATA };
+        Cursor cursor = getContentResolver()
+            .query(uri, projection, null, null, null);
+        if (cursor.moveToFirst())
+        {
+            int index = cursor.getColumnIndex(projection[0]);
+            String path = cursor.getString(index);
+
+            if (path != null)
+                uri = Uri.fromFile(new File(path));
+        }
+
+        cursor.close();
+
+        return uri;
     }
 
     // getNextCalendarDay

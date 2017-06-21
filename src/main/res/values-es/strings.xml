@@ -25,6 +25,7 @@
   <string name="prevEntry">Anterior</string>
   <string name="nextEntry">Siguiente</string>
   <string name="goToDate">Ir a fecha…</string>
+  <string name="addImage">Añadir imagen…</string>
   <string name="done">Terminado</string>
   <string name="settings">Ajustes</string>
   <string name="calendar">Calendario</string>
