@@ -78,7 +78,7 @@ public class DiaryCalendar extends Activity
 
         long longEntries[] = bundle.getLongArray(Diary.ENTRIES);
         List<Calendar> entries = new ArrayList<Calendar>();
-        for (long time: longEntries)
+        for (long time : longEntries)
         {
             Calendar entry = Calendar.getInstance();
             entry.setTimeInMillis(time);
@@ -100,41 +100,41 @@ public class DiaryCalendar extends Activity
     {
         // Handling custom calendar events
         calendarView.setCalendarListener(new CalendarListener()
+        {
+            @Override
+            public void onDateSelected(Calendar date)
             {
-                @Override
-                public void onDateSelected(Calendar date)
-                {
-                    time = date.getTime();
-                    setTitle(DateFormat.getDateInstance(DateFormat.FULL)
-                             .format(time));
-                }
+                time = date.getTime();
+                setTitle(DateFormat.getDateInstance(DateFormat.FULL)
+                         .format(time));
+            }
 
-                @Override
-                public void onMonthChanged(Calendar date) {}
-            });
+            @Override
+            public void onMonthChanged(Calendar date) {}
+        });
 
         Button button = (Button) findViewById(R.id.done);
         button.setOnClickListener(new View.OnClickListener()
+        {
+            // On click
+            @Override
+            public void onClick(View v)
             {
-                // On click
-                @Override
-                public void onClick(View v)
-                {
-                    int id = v.getId();
+                int id = v.getId();
 
-                    switch(id)
-                    {
-                        // Done
-                    case R.id.done:
-                        // Return new date in intent
-                        Intent intent = new Intent();
-                        intent.putExtra(Diary.DATE, time.getTime());
-                        setResult(RESULT_OK, intent);
-                        finish();
-                        break;
-                    }
+                switch(id)
+                {
+                // Done
+                case R.id.done:
+                    // Return new date in intent
+                    Intent intent = new Intent();
+                    intent.putExtra(Diary.DATE, time.getTime());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    break;
                 }
-            });
+            }
+        });
     }
 
     // EntryDecorator
@@ -153,10 +153,10 @@ public class DiaryCalendar extends Activity
         public void decorate(DayView dayView)
         {
             Calendar cellDate = dayView.getDate();
-            for (Calendar entry: entries)
+            for (Calendar entry : entries)
                 if (cellDate.get(Calendar.DATE) == entry.get(Calendar.DATE) &&
-                    cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
-                    cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
+                        cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
+                        cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
                     dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }

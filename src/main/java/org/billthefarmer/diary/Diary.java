@@ -105,7 +105,7 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
     private final static String IMAGE = "![%s](%s)\n";
-    
+
     private boolean custom = true;
     private boolean markdown = true;
 
@@ -234,9 +234,9 @@ public class Diary extends Activity
     {
         Calendar today = GregorianCalendar.getInstance();
         menu.findItem(R.id.today).setEnabled(currEntry == null ||
-            currEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR) ||
-            currEntry.get(Calendar.MONTH) != today.get(Calendar.MONTH) ||
-            currEntry.get(Calendar.DATE) != today.get(Calendar.DATE));
+                                             currEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR) ||
+                                             currEntry.get(Calendar.MONTH) != today.get(Calendar.MONTH) ||
+                                             currEntry.get(Calendar.DATE) != today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
         return true;
@@ -324,98 +324,98 @@ public class Diary extends Activity
     {
         if (textView != null)
             textView.addTextChangedListener(new TextWatcher()
-                {
-                    // afterTextChanged
-                    @Override
-                    public void afterTextChanged (Editable s) {}
+        {
+            // afterTextChanged
+            @Override
+            public void afterTextChanged (Editable s) {}
 
-                    // beforeTextChanged
-                    @Override
-                    public void beforeTextChanged (CharSequence s,
-                                                   int start,
-                                                   int count,
-                                                   int after) {}
-                    // onTextChanged
-                    @Override
-                    public void onTextChanged (CharSequence s,
-                                               int start,
-                                               int before,
-                                               int count)
-                    {
-                        // Check markdown
-                        if (markdown)
-                            // Set flag
-                            dirty = true;
-                    }
-                });
+            // beforeTextChanged
+            @Override
+            public void beforeTextChanged (CharSequence s,
+                                           int start,
+                                           int count,
+                                           int after) {}
+            // onTextChanged
+            @Override
+            public void onTextChanged (CharSequence s,
+                                       int start,
+                                       int before,
+                                       int count)
+            {
+                // Check markdown
+                if (markdown)
+                    // Set flag
+                    dirty = true;
+            }
+        });
 
         if (markdownView != null)
             markdownView.setWebViewClient(new WebViewClient()
-                {
-                    // onScaleChanged
-                    @Override
-                    public void onScaleChanged (WebView view,
-                                                float oldScale,
-                                                float newScale)
-                    {
-                        if (minScale > oldScale)
-                            minScale = oldScale;
-                        canSwipe = (Math.abs(newScale - minScale) <
-                                    minScale / 100);
-                    }
-                });
+        {
+            // onScaleChanged
+            @Override
+            public void onScaleChanged (WebView view,
+                                        float oldScale,
+                                        float newScale)
+            {
+                if (minScale > oldScale)
+                    minScale = oldScale;
+                canSwipe = (Math.abs(newScale - minScale) <
+                            minScale / 100);
+            }
+        });
 
         if (accept != null)
             accept.setOnClickListener(new View.OnClickListener()
+        {
+            // On click
+            @Override
+            public void onClick(View v)
+            {
+                // Check flag
+                if (dirty)
                 {
-                    // On click
-                    @Override
-                    public void onClick(View v)
-                    {
-                        // Check flag
-                        if (dirty)
-                        {
-                            // Get text
-                            String string = textView.getText().toString();
-                            markdownView.loadMarkdown(getBaseUrl(), string,
-                                                      getStyles());
-                            // Clear flag
-                            dirty = false;
-                        }
+                    // Get text
+                    String string = textView.getText().toString();
+                    markdownView.loadMarkdown(getBaseUrl(), string,
+                                              getStyles());
+                    // Clear flag
+                    dirty = false;
+                }
 
-                        // Animation
-                        animateAccept();
+                // Animation
+                animateAccept();
 
-                        // Set visibility
-                        markdownView.setVisibility(View.VISIBLE);
-                        scrollView.setVisibility(View.INVISIBLE);
-                        accept.setVisibility(View.INVISIBLE);
-                        edit.setVisibility(View.VISIBLE);
+                // Set visibility
+                markdownView.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.INVISIBLE);
+                accept.setVisibility(View.INVISIBLE);
+                edit.setVisibility(View.VISIBLE);
 
-                        shown = true;
-                    }
-                });
+                shown = true;
+            }
+        });
 
         if (edit != null)
             edit.setOnClickListener(new View.OnClickListener()
-                {
-                    // On click
-                    @Override
-                    public void onClick(View v)
-                    {
+        {
+            // On click
+            @Override
+            public void onClick(View v)
+            {
 
-                        // Animation
-                        animateEdit();
+                // Animation
+                animateEdit();
 
-                        // Set visibility
-                        markdownView.setVisibility(View.INVISIBLE);
-                        scrollView.setVisibility(View.VISIBLE);
-                        accept.setVisibility(View.VISIBLE);
-                        edit.setVisibility(View.INVISIBLE);
+                // Set visibility
+                markdownView.setVisibility(View.INVISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
+                accept.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.INVISIBLE);
 
-                        shown = false;
-                    }
-                });
+                shown = false;
+            }
+        });
     }
 
     // animateAccept
@@ -478,7 +478,7 @@ public class Diary extends Activity
         // Check for sent images
         Intent intent = getIntent();
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
-            intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+                intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
             haveImage = true;
             goToDate(currEntry);
@@ -504,8 +504,8 @@ public class Diary extends Activity
             try
             {
                 List<Uri> images = (List<Uri>)
-                    intent.getExtras().get(Intent.EXTRA_STREAM);
-                for (Uri image: images)
+                                   intent.getExtras().get(Intent.EXTRA_STREAM);
+                for (Uri image : images)
                     addImage(image, true);
             }
 
@@ -605,7 +605,7 @@ public class Diary extends Activity
         List<Calendar> entryList = getEntries();
         long entries[] = new long[entryList.size()];
         int i = 0;
-        for (Calendar entry: entryList)
+        for (Calendar entry : entryList)
             entries[i++] = entry.getTimeInMillis();
         bundle.putLongArray(ENTRIES, entries);
         intent.putExtras(bundle);
@@ -621,9 +621,9 @@ public class Diary extends Activity
 
     public void addImage()
     {
-        Intent intent = new Intent();  
-        intent.setAction(Intent.ACTION_GET_CONTENT);  
-        intent.setType("image/*");  
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, null),
                                ADD_IMAGE);
     }
@@ -645,22 +645,22 @@ public class Diary extends Activity
     private File getYear(int year)
     {
         return new File(getHome(), String.format(Locale.getDefault(),
-                                                 "%04d", year));
+                        "%04d", year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
         return new File(getYear(year), String.format(Locale.getDefault(),
-                                                     "%02d", month + 1));
+                        "%02d", month + 1));
     }
 
     // getDay
     private File getDay(int year, int month, int day)
     {
         return new
-            File(getMonth(year, month), String.format(Locale.getDefault(),
-                                                      "%02d.txt", day));
+               File(getMonth(year, month), String.format(Locale.getDefault(),
+                       "%02d.txt", day));
     }
 
     // getFile
@@ -994,12 +994,12 @@ public class Diary extends Activity
 
         prevEntry = getPrevEntry(year, month, day);
         if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
-            today.compareTo(date) < 0)
+                today.compareTo(date) < 0)
             prevEntry = today;
         currEntry = date;
         nextEntry = getNextEntry(year, month, day);
         if ((nextEntry == null || today.compareTo(nextEntry) < 0) &&
-            today.compareTo(date) > 0)
+                today.compareTo(date) > 0)
             nextEntry = today;
 
         invalidateOptionsMenu();
@@ -1033,7 +1033,7 @@ public class Diary extends Activity
 
         default:
             setTitle(DateFormat.getDateInstance(DateFormat.FULL)
-                 .format(date));
+                     .format(date));
             break;
         }
     }
@@ -1082,9 +1082,9 @@ public class Diary extends Activity
     private Uri resolveContent(Uri uri)
     {
         String projection[] =
-            { MediaStore.MediaColumns.DATA };
+        { MediaStore.MediaColumns.DATA };
         Cursor cursor = getContentResolver()
-            .query(uri, projection, null, null, null);
+                        .query(uri, projection, null, null, null);
         if (cursor.moveToFirst())
         {
             int index = cursor.getColumnIndex(projection[0]);
@@ -1103,8 +1103,8 @@ public class Diary extends Activity
     private Calendar getNextCalendarDay()
     {
         Calendar nextDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
-                                                 currEntry.get(Calendar.MONTH),
-                                                 currEntry.get(Calendar.DATE));
+                currEntry.get(Calendar.MONTH),
+                currEntry.get(Calendar.DATE));
         nextDay.add(Calendar.DATE, 1);
         return nextDay;
     }
@@ -1193,7 +1193,7 @@ public class Diary extends Activity
                 if (Math.abs(diffX) > Math.abs(diffY))
                 {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD &&
-                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
+                            Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
                     {
                         if (diffX > 0)
                         {
