@@ -234,9 +234,12 @@ public class Diary extends Activity
     {
         Calendar today = GregorianCalendar.getInstance();
         menu.findItem(R.id.today).setEnabled(currEntry == null ||
-                                             currEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR) ||
-                                             currEntry.get(Calendar.MONTH) != today.get(Calendar.MONTH) ||
-                                             currEntry.get(Calendar.DATE) != today.get(Calendar.DATE));
+                                             currEntry.get(Calendar.YEAR) !=
+                                             today.get(Calendar.YEAR) ||
+                                             currEntry.get(Calendar.MONTH) !=
+                                             today.get(Calendar.MONTH) ||
+                                             currEntry.get(Calendar.DATE) !=
+                                             today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
         return true;
@@ -486,6 +489,7 @@ public class Diary extends Activity
     }
 
     // imageAdd
+    @SuppressWarnings("unchecked")
     private void imageAdd(Intent intent)
     {
         if (intent.getAction().equals(Intent.ACTION_SEND))
@@ -503,8 +507,8 @@ public class Diary extends Activity
         {
             try
             {
-                List<Uri> images = (List<Uri>)
-                                   intent.getExtras().get(Intent.EXTRA_STREAM);
+                List<Uri> images = (List<Uri>) intent.getExtras()
+                    .get(Intent.EXTRA_STREAM);
                 for (Uri image : images)
                     addImage(image, true);
             }
@@ -1081,20 +1085,10 @@ public class Diary extends Activity
     // resolveContent
     private Uri resolveContent(Uri uri)
     {
-        String projection[] =
-        { MediaStore.MediaColumns.DATA };
-        Cursor cursor = getContentResolver()
-                        .query(uri, projection, null, null, null);
-        if (cursor.moveToFirst())
-        {
-            int index = cursor.getColumnIndex(projection[0]);
-            String path = cursor.getString(index);
+        String path = FileUtils.getPath(this, uri);
 
-            if (path != null)
-                uri = Uri.fromFile(new File(path));
-        }
-
-        cursor.close();
+        if (path != null)
+            uri = Uri.fromFile(new File(path));
 
         return uri;
     }
@@ -1102,9 +1096,10 @@ public class Diary extends Activity
     // getNextCalendarDay
     private Calendar getNextCalendarDay()
     {
-        Calendar nextDay = new GregorianCalendar(currEntry.get(Calendar.YEAR),
-                currEntry.get(Calendar.MONTH),
-                currEntry.get(Calendar.DATE));
+        Calendar nextDay =
+            new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                  currEntry.get(Calendar.MONTH),
+                                  currEntry.get(Calendar.DATE));
         nextDay.add(Calendar.DATE, 1);
         return nextDay;
     }
