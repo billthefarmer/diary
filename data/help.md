@@ -8,6 +8,8 @@
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Display images stored in diary folders
+* Add images from media providers
+* Receive images from other apps
 
 ## Toolbar
 The toolbar icons are, from left to right:
@@ -16,6 +18,7 @@ The toolbar icons are, from left to right:
 * **Next** - show the next entry or today if next
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
+* **Add image** - show a media picker to select an image
 * **Settings** - show the settings
 
 Depending on the device and orientation, some items may be on the
@@ -33,10 +36,18 @@ cut and paste this text into another page if you don't want it here.
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
 
+## Images
 You may store images in the diary storage folders and reference them
 in diary entries so markdown text `![cat](cat.jpg)` will display
 `cat.jpg` stored in the current month folder which is
 `Diary/<year>/<month>` on the sdcard.
+
+You may either add images from media providers like file managers or
+image managers or receive images sent by other apps. Images added will
+be added at the current cursor position. Images sent by other apps
+will pop up a date picker. The image or images will be appended to the
+selected page. Content URIs (`content://`) sent by some media
+providers will be resolved to file URIs (`file:///`) if possible.
 
 ## Styles
 You may add custom styles to the markdown formatting by placing a
