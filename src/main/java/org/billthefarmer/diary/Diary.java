@@ -479,7 +479,7 @@ public class Diary extends Activity
         // Check for sent images
         Intent intent = getIntent();
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
-                intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+            intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
             haveImage = true;
             goToDate(currEntry);
@@ -505,8 +505,8 @@ public class Diary extends Activity
         {
             try
             {
-                List<Uri> images = (List<Uri>) intent.getExtras()
-                    .get(Intent.EXTRA_STREAM);
+                List<Uri> images = (List<Uri>)
+                    intent.getExtras().get(Intent.EXTRA_STREAM);
                 for (Uri image : images)
                     addImage(image, true);
             }
@@ -621,6 +621,7 @@ public class Diary extends Activity
         fragment.show(getFragmentManager(), DATEPICKER);
     }
 
+    // addImage
     public void addImage()
     {
         Intent intent = new Intent();
@@ -1086,7 +1087,11 @@ public class Diary extends Activity
         String path = FileUtils.getPath(this, uri);
 
         if (path != null)
-            uri = Uri.fromFile(new File(path));
+        {
+            File file = new File(path);
+            if (file.canRead())
+                uri = Uri.fromFile(file);
+        }
 
         return uri;
     }
