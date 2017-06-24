@@ -153,25 +153,24 @@ public class Diary extends Activity
         if (savedInstanceState == null)
             today();
 
-        else
-        {
-            setDate(new GregorianCalendar(
-                        (Integer) savedInstanceState.get(YEAR),
-                        (Integer) savedInstanceState.get(MONTH),
-                        (Integer) savedInstanceState.get(DAY)));
-
-            shown = (Boolean) savedInstanceState.get(SHOWN);
-        }
-
         // Get preferences
         getPreferences();
 
         // Check for sent images
         imageCheck();
+    }
 
-        // Copy help text to today's page if no entries
-        if (prevEntry == null && nextEntry == null && textView.length() == 0)
-            textView.setText(readAssetFile(HELP));
+    // onRestoreInstanceState
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        setDate(new GregorianCalendar((Integer) savedInstanceState.get(YEAR),
+                                      (Integer) savedInstanceState.get(MONTH),
+                                      (Integer) savedInstanceState.get(DAY)));
+
+        shown = (Boolean) savedInstanceState.get(SHOWN);
     }
 
     // onResume
@@ -182,6 +181,10 @@ public class Diary extends Activity
 
         // Get preferences
         getPreferences();
+
+        // Copy help text to today's page if no entries
+        if (prevEntry == null && nextEntry == null && textView.length() == 0)
+            textView.setText(readAssetFile(HELP));
 
         if (markdown && dirty)
         {
@@ -514,7 +517,7 @@ public class Diary extends Activity
         }
 
         haveImage = false;
-        intent.setAction(Intent.ACTION_MAIN);
+        intent.setAction(Intent.ACTION_DEFAULT);
     }
 
     // getBaseUrl
