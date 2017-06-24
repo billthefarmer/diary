@@ -72,7 +72,6 @@ import org.billthefarmer.markdown.MarkdownView;
 // Diary
 public class Diary extends Activity
     implements DatePickerDialog.OnDateSetListener
-
 {
     public final static int VERSION_NOUGAT = 24;
 
@@ -81,9 +80,9 @@ public class Diary extends Activity
 
     private final static int BUFFER_SIZE = 1024;
 
-    public static final String PREF_ABOUT = "pref_about";
-    public static final String PREF_CUSTOM = "pref_custom";
-    public static final String PREF_MARKDOWN = "pref_markdown";
+    public final static String PREF_ABOUT = "pref_about";
+    public final static String PREF_CUSTOM = "pref_custom";
+    public final static String PREF_MARKDOWN = "pref_markdown";
 
     private final static String TAG = "Diary";
 
@@ -922,10 +921,10 @@ public class Diary extends Activity
         try
         {
             FileReader fileReader = new FileReader(file);
-            char buf[] = new char[BUFFER_SIZE];
+            char buffer[] = new char[BUFFER_SIZE];
             int n;
-            while ((n = fileReader.read(buf)) != -1)
-                text.append(String.valueOf(buf, 0, n));
+            while ((n = fileReader.read(buffer)) != -1)
+                text.append(String.valueOf(buffer, 0, n));
             fileReader.close();
         }
 
