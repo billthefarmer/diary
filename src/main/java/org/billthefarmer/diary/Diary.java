@@ -1064,7 +1064,7 @@ public class Diary extends Activity
     // addImage
     private  void addImage(Uri image, boolean append)
     {
-        if (image.getScheme().equals("content"))
+        if (image.getScheme().equalsIgnoreCase("content"))
             image = resolveContent(image);
 
         String text = String.format(IMAGE, image.getLastPathSegment(),
