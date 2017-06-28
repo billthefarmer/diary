@@ -8,9 +8,11 @@ and [here](https://github.com/billthefarmer/diary/releases).
 ![Calendar](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Calendar-landscape.png)
 
 There is a
-[help](https://github.com/billthefarmer/diary/blob/master/data/help.md)
-and a
+[help](https://github.com/billthefarmer/diary/blob/master/data/help.md),
+a
 [test](https://github.com/billthefarmer/diary/blob/master/data/test.md)
+and an example
+[styles](https://github.com/billthefarmer/diary/blob/master/data/styles.md)
 file, which may be copied in to an entry for reference if required.
 
 * Entries saved in plain text files
