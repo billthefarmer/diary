@@ -252,10 +252,10 @@ public class Diary extends Activity
         switch (item.getItemId())
         {
         case R.id.prevEntry:
-            changeDate(prevEntry);
+            prevEntry();
             break;
         case R.id.nextEntry:
-            changeDate(nextEntry);
+            nextEntry();
             break;
         case R.id.today:
             today();
@@ -273,6 +273,25 @@ public class Diary extends Activity
         }
 
         return true;
+    }
+
+    // onBackPressed
+    @Override
+    public void onBackPressed()
+    {
+        if (markdown && shown && markdownView.canGoBack())
+        {
+            markdownView.goBack();
+            if (markdownView.copyBackForwardList().getCurrentIndex() == 0)
+            {
+                String string = textView.getText().toString();
+                markdownView.loadMarkdown(getBaseUrl(), string,
+                                              getStyles());
+            }
+        }
+
+        else
+            super.onBackPressed();
     }
 
     // onActivityResult
@@ -462,6 +481,34 @@ public class Diary extends Activity
 
         edit.startAnimation(buttonFlipOut);
         accept.startAnimation(buttonFlipIn);
+    }
+
+    // prevEntry
+    private void prevEntry()
+    {
+        if (markdown && shown && markdownView.canGoBack())
+        {
+            markdownView.goBack();
+            if (markdownView.copyBackForwardList().getCurrentIndex() == 0)
+            {
+                String string = textView.getText().toString();
+                markdownView.loadMarkdown(getBaseUrl(), string,
+                                              getStyles());
+            }
+        }
+
+        else
+            changeDate(prevEntry);
+    }
+
+    // nextEntry
+    private void nextEntry()
+    {
+        if (markdown && shown && markdownView.canGoForward())
+            markdownView.goForward();
+
+        else
+            changeDate(nextEntry);
     }
 
     // getPreferences
