@@ -4,7 +4,7 @@
 
 * Entries saved in plain text files
 * Browse entries
-* English, Catalan, Spanish, Japanese and German
+* English, Catalan, Spanish, Japanese, German and French
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Display images stored in diary folders
