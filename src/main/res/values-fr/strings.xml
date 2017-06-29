@@ -21,7 +21,7 @@
 
 <resources>
   <string name="appName">Diary</string>
-  <string name="today">Aujourd'hui</string>
+  <string name="today">Aujourd\'hui</string>
   <string name="prevEntry">Précédent</string>
   <string name="nextEntry">Suivant</string>
   <string name="goToDate">Aller à la date…</string>
