@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Diary - Personal diary for Android
+    Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  -->
+
+<resources>
+  <string name="appName">Diary</string>
+  <string name="today">Aujourd\'hui</string>
+  <string name="prevEntry">Précédent</string>
+  <string name="nextEntry">Suivant</string>
+  <string name="goToDate">Aller à la date…</string>
+  <string name="addImage">Ajouter une image…</string>
+  <string name="done">Prêt</string>
+  <string name="settings">Paramètres</string>
+  <string name="calendar">Calendrier</string>
+  <string name="pref_calendar">Utiliser un calendrier alternatif</string>
+  <string name="pref_calendar_summ">
+      Utiliser un calendrier alternatif pour sélectionner la date
+  </string>
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Utiliser markdown</string>
+  <string name="pref_markdown_summ">
+    Utiliser markdown pour le formatage du text
+  </string>
+  <string name="about">À propos</string>
+  <string name="pref_about_summ">Diary version %s</string>
+  <string name="licence">GNU GPLv3</string>
+  <string name="copyright">
+    Copyright \u00A9 2012 <a
+    href="mailto:hola@josep-portella.com">Josep Portella
+    Florit</a>\nCopyright \u00A9 2017 <a
+    href="http://billthefarmer.github.io">Bill Farmer</a>\n Calendrier
+    alternatif<a
+    href="https://github.com/npanigrahy/Custom-Calendar-View">Rendu de 
+    calendrier alternatif</a>\n Markdown view by <a
+    href="https://github.com/falnatsheh/MarkdownView">Markdown
+    rendu</a>\n Traduction Japonaise par <a
+    href="https://github.com/naofum">naofum</a>\n Traduction 
+    Allemande par <a href="https://github.com/jaller94">Christian 
+    Paul</a>\n Traduction Française par <a
+    href="https://github.com/comptuzus">David Ta</a>\n Gestion de
+    fichier par <a href="https://github.com/iPaulPro">Paul Burke</a>
+  </string>
+</resources>
