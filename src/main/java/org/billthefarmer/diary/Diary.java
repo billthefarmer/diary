@@ -251,6 +251,9 @@ public class Diary extends Activity
     {
         switch (item.getItemId())
         {
+        case android.R.id.home:
+            onBackPressed();
+            break;
         case R.id.prevEntry:
             prevEntry();
             break;
@@ -279,16 +282,21 @@ public class Diary extends Activity
     @Override
     public void onBackPressed()
     {
-        if (markdown && shown && markdownView.canGoBack())
+        if (markdown && shown && Build.VERSION.SDK_INT >
+            Build.VERSION_CODES.LOLLIPOP && markdownView.canGoBack())
         {
             markdownView.goBack();
-            if (markdownView.copyBackForwardList().getCurrentIndex() == 0)
+
+            int index = markdownView.copyBackForwardList().getCurrentIndex();
+            Log.d(TAG, "Index " + index);
+            if (index == 0)
             {
+                getActionBar().setDisplayHomeAsUpEnabled(false);
                 String string = textView.getText().toString();
-                markdownView.loadMarkdown(getBaseUrl(), string,
-                                              getStyles());
+                markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
             }
-        }
+
+       }
 
         else
             super.onBackPressed();
@@ -374,6 +382,22 @@ public class Diary extends Activity
         if (markdownView != null)
             markdownView.setWebViewClient(new WebViewClient()
         {
+            // onPageFinished
+            @Override
+            public void onPageFinished (WebView view, 
+                                        String url)
+            {
+                int index =
+                    markdownView.copyBackForwardList().getCurrentIndex();
+                Log.d(TAG, "Index " + index);
+                if (Build.VERSION.SDK_INT >
+                    Build.VERSION_CODES.LOLLIPOP && view.canGoBack())
+                {
+                    getActionBar().setDisplayHomeAsUpEnabled(true);
+                    dirty = true;
+                }
+            }
+
             // onScaleChanged
             @Override
             public void onScaleChanged (WebView view,
@@ -414,6 +438,7 @@ public class Diary extends Activity
                 accept.setVisibility(View.INVISIBLE);
                 edit.setVisibility(View.VISIBLE);
 
+                markdownView.clearHistory();
                 shown = true;
             }
         });
@@ -435,6 +460,7 @@ public class Diary extends Activity
                 accept.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.INVISIBLE);
 
+                getActionBar().setDisplayHomeAsUpEnabled(false);
                 shown = false;
             }
         });
@@ -481,34 +507,6 @@ public class Diary extends Activity
 
         edit.startAnimation(buttonFlipOut);
         accept.startAnimation(buttonFlipIn);
-    }
-
-    // prevEntry
-    private void prevEntry()
-    {
-        if (markdown && shown && markdownView.canGoBack())
-        {
-            markdownView.goBack();
-            if (markdownView.copyBackForwardList().getCurrentIndex() == 0)
-            {
-                String string = textView.getText().toString();
-                markdownView.loadMarkdown(getBaseUrl(), string,
-                                              getStyles());
-            }
-        }
-
-        else
-            changeDate(prevEntry);
-    }
-
-    // nextEntry
-    private void nextEntry()
-    {
-        if (markdown && shown && markdownView.canGoForward())
-            markdownView.goForward();
-
-        else
-            changeDate(nextEntry);
     }
 
     // getPreferences
@@ -1054,6 +1052,9 @@ public class Diary extends Activity
                 today.compareTo(date) > 0)
             nextEntry = today;
 
+        if (markdown)
+            markdownView.clearHistory();
+
         invalidateOptionsMenu();
     }
 
@@ -1096,6 +1097,18 @@ public class Diary extends Activity
         save();
         setDate(date);
         load();
+    }
+
+    // prevEntry
+    private void prevEntry()
+    {
+        changeDate(prevEntry);
+    }
+
+    // nextEntry
+    private void nextEntry()
+    {
+        changeDate(nextEntry);
     }
 
     // today
