@@ -288,7 +288,6 @@ public class Diary extends Activity
             markdownView.goBack();
 
             int index = markdownView.copyBackForwardList().getCurrentIndex();
-            Log.d(TAG, "Index " + index);
             if (index == 0)
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
@@ -389,7 +388,6 @@ public class Diary extends Activity
             {
                 int index =
                     markdownView.copyBackForwardList().getCurrentIndex();
-                Log.d(TAG, "Index " + index);
                 if (Build.VERSION.SDK_INT >
                     Build.VERSION_CODES.LOLLIPOP && view.canGoBack())
                 {
