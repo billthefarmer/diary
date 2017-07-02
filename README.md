@@ -7,6 +7,8 @@ and [here](https://github.com/billthefarmer/diary/releases).
 
 ![Calendar](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Calendar-landscape.png)
 
+![Web browser](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Web.png)
+
 There is a
 [help](https://github.com/billthefarmer/diary/blob/master/data/help.md),
 a
