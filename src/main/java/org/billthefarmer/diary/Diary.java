@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -671,8 +670,7 @@ public class Diary extends Activity
     // addImage
     public void addImage()
     {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, null),
                                ADD_IMAGE);
