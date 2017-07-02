@@ -101,7 +101,7 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
     private final static String IMAGE = "![%s](%s)\n";
-    private final static String FILE = "file:";
+    private final static String FILE = "file:///";
 
     private boolean custom = true;
     private boolean markdown = true;
