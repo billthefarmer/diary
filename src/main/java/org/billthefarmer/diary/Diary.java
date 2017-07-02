@@ -102,6 +102,7 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
     private final static String IMAGE = "![%s](%s)\n";
+    private final static String FILE = "file:";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -282,13 +283,11 @@ public class Diary extends Activity
     @Override
     public void onBackPressed()
     {
-        if (markdown && shown && Build.VERSION.SDK_INT >
-            Build.VERSION_CODES.LOLLIPOP && markdownView.canGoBack())
+        if (markdownView.canGoBack())
         {
             markdownView.goBack();
 
-            int index = markdownView.copyBackForwardList().getCurrentIndex();
-            if (index == 0)
+            if (!markdownView.canGoBack())
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
                 String string = textView.getText().toString();
@@ -386,13 +385,16 @@ public class Diary extends Activity
             public void onPageFinished (WebView view, 
                                         String url)
             {
-                int index =
-                    markdownView.copyBackForwardList().getCurrentIndex();
-                if (Build.VERSION.SDK_INT >
-                    Build.VERSION_CODES.LOLLIPOP && view.canGoBack())
+                if (view.canGoBack() && !url.startsWith(FILE))
                 {
                     getActionBar().setDisplayHomeAsUpEnabled(true);
                     dirty = true;
+                }
+
+                else
+                {
+                    getActionBar().setDisplayHomeAsUpEnabled(false);
+                    markdownView.clearHistory();
                 }
             }
 
@@ -436,7 +438,6 @@ public class Diary extends Activity
                 accept.setVisibility(View.INVISIBLE);
                 edit.setVisibility(View.VISIBLE);
 
-                markdownView.clearHistory();
                 shown = true;
             }
         });
@@ -459,6 +460,7 @@ public class Diary extends Activity
                 edit.setVisibility(View.INVISIBLE);
 
                 getActionBar().setDisplayHomeAsUpEnabled(false);
+                markdownView.clearHistory();
                 shown = false;
             }
         });
@@ -1049,9 +1051,6 @@ public class Diary extends Activity
         if ((nextEntry == null || today.compareTo(nextEntry) < 0) &&
                 today.compareTo(date) > 0)
             nextEntry = today;
-
-        if (markdown)
-            markdownView.clearHistory();
 
         invalidateOptionsMenu();
     }
