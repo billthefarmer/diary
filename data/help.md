@@ -47,7 +47,14 @@ image managers or receive images sent by other apps. Images added will
 be added at the current cursor position. Images sent by other apps
 will pop up a date picker. The image or images will be appended to the
 selected page. Content URIs (`content://`) sent by some media
-providers will be resolved to file URIs (`file:///`) if possible.
+providers and apps will be resolved to file URIs (`file:///`) if
+possible.
+
+## Links
+You may put links in diary pages, so
+`[DuckDuckGo](https://duckduckgo.com)` will show a link to
+DuckDuckGo. Links will be followed if touched. Use the back button in
+the toolbar or the navigation bar to return to the diary page.
 
 ## Styles
 You may add custom styles to the markdown formatting by placing a
