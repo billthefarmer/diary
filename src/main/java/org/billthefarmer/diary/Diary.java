@@ -269,6 +269,12 @@ public class Diary extends Activity
         case R.id.addImage:
             addImage();
             break;
+        case R.id.copyFromStyles:
+            copyFromStyles();
+            break;
+        case R.id.saveToStyles:
+            saveToStyles();
+            break;
         case R.id.settings:
             settings();
         default:
@@ -674,6 +680,40 @@ public class Diary extends Activity
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, null),
                                ADD_IMAGE);
+    }
+
+    // copyFromStyles
+    public void copyFromStyles()
+    {
+        File cssFile = new File(getHome(), CSS);
+        if (cssFile.exists())
+        {
+            String text = read(cssFile);
+            textView.append(text);
+        }
+
+        if (shown)
+            edit.callOnClick();
+    }
+
+    // saveToStyles
+    public void saveToStyles()
+    {
+        if (textView.length() > 0)
+        {
+            String string = textView.getText().toString();
+            File cssFile = new File(getHome(), CSS);
+            if (!cssFile.exists())
+                cssFile.getParentFile().mkdirs();
+
+            try
+            {
+                FileWriter fileWriter = new FileWriter(cssFile);
+                fileWriter.write(string);
+                fileWriter.close();
+            }
+            catch (Exception e) {}
+        }
     }
 
     // settings

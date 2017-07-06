@@ -27,6 +27,9 @@
   <string name="goToDate">Go to date…</string>
   <string name="addImage">Add image…</string>
   <string name="done">Done</string>
+  <string name="styles">Styles</string>
+  <string name="copyFromStyles">Copy from styles</string>
+  <string name="saveToStyles">Save to styles</string>
   <string name="settings">Settings</string>
   <string name="calendar">Calendar</string>
   <string name="pref_calendar">Use custom calendar</string>
