@@ -63,6 +63,18 @@
         android:theme="@style/DialogTheme" />
 
     <activity
+        android:name="Editor"
+        android:icon="@drawable/ic_launcher_edit"
+        android:windowSoftInputMode="stateHidden|adjustResize">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <action android:name="android.intent.action.EDIT" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/*" />
+      </intent-filter>
+    </activity>
+
+    <activity
         android:label="@string/settings"
         android:name="Settings" />
 

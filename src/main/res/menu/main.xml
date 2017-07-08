@@ -49,21 +49,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/addImage"
       android:icon="@drawable/ic_action_picture" />
   <item
-      android:id="@+id/styles"
+      android:id="@+id/editStyles"
       android:showAsAction="ifRoom"
-      android:title="@string/styles"
-      android:icon="@drawable/ic_action_bightness_low">
-    <item
-        android:id="@+id/copyFromStyles"
-        android:showAsAction="ifRoom"
-        android:title="@string/copyFromStyles"
-        android:icon="@drawable/ic_action_save" />
-    <item
-        android:id="@+id/saveToStyles"
-        android:showAsAction="ifRoom"
-        android:title="@string/saveToStyles"
-        android:icon="@drawable/ic_action_save" />
-  </item>
+      android:title="@string/editStyles"
+      android:icon="@drawable/ic_action_save" />
   <item
       android:id="@+id/settings"
       android:showAsAction="ifRoom"
