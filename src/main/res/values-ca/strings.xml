@@ -26,9 +26,10 @@
   <string name="nextEntry">Següent</string>
   <string name="goToDate">Ves a data…</string>
   <string name="addImage">Afegeix una imatge…</string>
-  <string name="done">Fet</string>
+  <string name="editStyles">Edita estils…</string>
   <string name="settings">Ajustos</string>
   <string name="calendar">Calendari</string>
+  <string name="done">Fet</string>
   <string name="pref_calendar">Utilitza calendari personalitzat</string>
   <string name="pref_calendar_summ">
     Utilitza calendari personalitzat en lloc d\'un selector de data

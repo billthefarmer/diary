@@ -26,9 +26,10 @@
   <string name="nextEntry">Nächster</string>
   <string name="goToDate">Gehe zu Datum…</string>
   <string name="addImage">Bild hinzufügen…</string>
-  <string name="done">Fertig</string>
+  <string name="editStyles">Stile bearbeiten…</string>
   <string name="settings">Einstellungen</string>
   <string name="calendar">Kalender</string>
+  <string name="done">Fertig</string>
   <string name="pref_calendar">Verwende app-eigenen Kalender</string>
   <string name="pref_calendar_summ">
     Nutze den app-eigenen Kalender statt der nativen Datumsauswahl

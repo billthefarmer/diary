@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -53,6 +54,8 @@ public class Editor extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         textView = (EditText) findViewById(R.id.text);
 
@@ -110,6 +113,29 @@ public class Editor extends Activity
                 finish();
             }
             });
+    }
+
+    // onOptionsItemSelected
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case android.R.id.home:
+            onBackPressed();
+            break;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+    // onBackPressed
+    @Override
+    public void onBackPressed()
+    {
+        finish();
     }
 
     // read
