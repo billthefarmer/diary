@@ -569,7 +569,9 @@ public class Diary extends Activity
     // getBaseUrl
     private String getBaseUrl()
     {
-        return Uri.fromFile(getCurrent()).toString();
+        StringBuilder url = new
+            StringBuilder(Uri.fromFile(getCurrent()).toString());
+        return url.append(File.separator).toString();
     }
 
     // getCurrent
