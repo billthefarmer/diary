@@ -25,6 +25,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -42,6 +44,8 @@ public class Editor extends Activity
 
     private File file;
     private EditText textView;
+
+    private boolean dirty = false;
 
     // onCreate
     @Override
@@ -68,6 +72,31 @@ public class Editor extends Activity
     // setListeners
     private void setListeners()
     {
+
+        if (textView != null)
+            textView.addTextChangedListener(new TextWatcher()
+        {
+            // afterTextChanged
+            @Override
+            public void afterTextChanged (Editable s)
+            {
+                dirty = true;
+            }
+
+            // beforeTextChanged
+            @Override
+            public void beforeTextChanged (CharSequence s,
+                                           int start,
+                                           int count,
+                                           int after) {}
+            // onTextChanged
+            @Override
+            public void onTextChanged (CharSequence s,
+                                       int start,
+                                       int before,
+                                       int count) {}
+        });
+
         ImageButton accept = (ImageButton) findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener()
         {
@@ -76,7 +105,8 @@ public class Editor extends Activity
             public void onClick(View v)
             {
                 String text = textView.getText().toString();
-                write(text, file);
+                if (dirty)
+                    write(text, file);
                 finish();
             }
             });

@@ -357,7 +357,12 @@ public class Diary extends Activity
         {
             // afterTextChanged
             @Override
-            public void afterTextChanged (Editable s) {}
+            public void afterTextChanged (Editable s)
+            {
+                // Check markdown
+                if (markdown)
+                    dirty = true;
+            }
 
             // beforeTextChanged
             @Override
@@ -370,13 +375,7 @@ public class Diary extends Activity
             public void onTextChanged (CharSequence s,
                                        int start,
                                        int before,
-                                       int count)
-            {
-                // Check markdown
-                if (markdown)
-                    // Set flag
-                    dirty = true;
-            }
+                                       int count) {}
         });
 
         if (markdownView != null)
