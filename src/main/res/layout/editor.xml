@@ -28,18 +28,24 @@
     tools:ignore="RtlHardcoded">
 
   <ScrollView
-      android:id="@+id/scroll"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/text"
-        android:inputType="text|textMultiLine"
-        android:typeface="monospace"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top" />
+        android:fillViewport="true">
+
+      <EditText
+          android:id="@+id/text"
+          android:typeface="monospace"
+          android:inputType="text|textMultiLine"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="top" />
+
+    </HorizontalScrollView>
 
   </ScrollView>
 

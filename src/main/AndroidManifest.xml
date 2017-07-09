@@ -64,7 +64,6 @@
 
     <activity
         android:name="Editor"
-        android:icon="@drawable/ic_launcher_edit"
         android:windowSoftInputMode="stateHidden|adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
