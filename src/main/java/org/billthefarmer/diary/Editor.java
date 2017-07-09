@@ -40,10 +40,11 @@ import java.io.FileWriter;
 public class Editor extends Activity
 {
     public final static String TAG = "Editor";
+    public final static String DIRTY = "dirty";
 
     private final static int BUFFER_SIZE = 1024;
 
-    private File file;
+    private File file = null;
     private EditText textView;
 
     private boolean dirty = false;
@@ -61,6 +62,9 @@ public class Editor extends Activity
 
         Intent intent = getIntent();
         Uri uri = intent.getData();
+
+        if (uri.getScheme().equalsIgnoreCase("content"))
+            uri = resolveContent(uri);
 
         String title = uri.getLastPathSegment();
         setTitle(title);
@@ -84,6 +88,7 @@ public class Editor extends Activity
             public void afterTextChanged (Editable s)
             {
                 dirty = true;
+                invalidateOptionsMenu();
             }
 
             // beforeTextChanged
@@ -115,6 +120,23 @@ public class Editor extends Activity
             });
     }
 
+    // onRestoreInstanceState
+    @Override
+    public void onRestoreInstanceState (Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        dirty = savedInstanceState.getBoolean(DIRTY);
+        invalidateOptionsMenu();
+    }
+
+    // onSaveInstanceState
+    @Override
+    public void onSaveInstanceState (Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(DIRTY, dirty);
+    }
+
     // onOptionsItemSelected
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -136,6 +158,21 @@ public class Editor extends Activity
     public void onBackPressed()
     {
         finish();
+    }
+
+    // resolveContent
+    private Uri resolveContent(Uri uri)
+    {
+        String path = FileUtils.getPath(this, uri);
+
+        if (path != null)
+        {
+            File file = new File(path);
+            if (file.canRead())
+                uri = Uri.fromFile(file);
+        }
+
+        return uri;
     }
 
     // read
