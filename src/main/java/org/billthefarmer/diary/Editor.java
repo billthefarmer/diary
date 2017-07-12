@@ -41,10 +41,12 @@ public class Editor extends Activity
 {
     public final static String TAG = "Editor";
     public final static String DIRTY = "dirty";
+    public final static String CONTENT = "content";
 
     private final static int BUFFER_SIZE = 1024;
 
-    private File file = null;
+    private File file;
+
     private EditText textView;
 
     private boolean dirty = false;
@@ -63,15 +65,24 @@ public class Editor extends Activity
         Intent intent = getIntent();
         Uri uri = intent.getData();
 
-        if (uri.getScheme().equalsIgnoreCase("content"))
+        if (uri.getScheme().equalsIgnoreCase(CONTENT))
             uri = resolveContent(uri);
 
         String title = uri.getLastPathSegment();
         setTitle(title);
 
         file = new File(uri.getPath());
-        String text = read(file);
-        textView.setText(text);
+
+        if (savedInstanceState == null)
+        {
+            String text = read(file);
+            textView.setText(text);
+        }
+
+        else
+        {
+            dirty = savedInstanceState.getBoolean(DIRTY);
+        }
 
         setListeners();
     }
@@ -118,15 +129,6 @@ public class Editor extends Activity
                 finish();
             }
             });
-    }
-
-    // onRestoreInstanceState
-    @Override
-    public void onRestoreInstanceState (Bundle savedInstanceState)
-    {
-        super.onRestoreInstanceState(savedInstanceState);
-        dirty = savedInstanceState.getBoolean(DIRTY);
-        invalidateOptionsMenu();
     }
 
     // onSaveInstanceState
