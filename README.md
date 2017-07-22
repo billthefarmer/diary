@@ -34,6 +34,7 @@ The toolbar icons are, from left to right:
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
 * **Add image** - show a media picker to select an image
+* **Edit styles** - show an editor to edit the custom styles
 * **Settings** - show the settings
 
 Depending on the device and orientation, some items may be on the
@@ -42,6 +43,10 @@ menu.
 ## Swipe left and right
 Swipe left and right in the diary will show the next or previous day,
 or in the custom calendar will show the next or previous month.
+
+## Swipe up and down
+Swipe up and down in the custom calendar will show previous or next
+year.
 
 ## Editing
 In markdown mode the floating **Edit** button floating above the page
