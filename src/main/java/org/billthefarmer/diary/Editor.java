@@ -80,9 +80,7 @@ public class Editor extends Activity
         }
 
         else
-        {
             dirty = savedInstanceState.getBoolean(DIRTY);
-        }
 
         setListeners();
     }
@@ -206,6 +204,7 @@ public class Editor extends Activity
             fileWriter.write(text);
             fileWriter.close();
         }
+
         catch (Exception e) {}
     }
 }
