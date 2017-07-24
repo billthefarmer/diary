@@ -79,9 +79,6 @@ public class Editor extends Activity
             textView.setText(text);
         }
 
-        else
-            dirty = savedInstanceState.getBoolean(DIRTY);
-
         setListeners();
     }
 
@@ -116,17 +113,26 @@ public class Editor extends Activity
 
         ImageButton accept = (ImageButton) findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener()
-        {
-            // On click
-            @Override
-            public void onClick(View v)
             {
-                String text = textView.getText().toString();
-                if (dirty)
-                    write(text, file);
-                finish();
-            }
+                // On click
+                @Override
+                public void onClick(View v)
+                {
+                    String text = textView.getText().toString();
+                    if (dirty)
+                        write(text, file);
+                    finish();
+                }
             });
+    }
+
+    // onRestoreInstanceState
+    @Override
+    public void onRestoreInstanceState (Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        dirty = savedInstanceState.getBoolean(DIRTY);
     }
 
     // onSaveInstanceState
