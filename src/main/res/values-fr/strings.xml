@@ -39,6 +39,7 @@
   <string name="pref_markdown_summ">
     Utiliser markdown pour le formatage du text
   </string>
+  <string name="folder">Dossier</string>
   <string name="about">À propos</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="licence">GNU GPLv3</string>

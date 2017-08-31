@@ -39,6 +39,7 @@
   <string name="pref_markdown_summ">
     Use markdown to format entries
   </string>
+  <string name="folder">Folder</string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="licence">GNU GPLv3</string>

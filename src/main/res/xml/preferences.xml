@@ -52,6 +52,20 @@
   </PreferenceCategory>
 
   <PreferenceCategory
+      android:key="pref_folder_category"
+      android:title="@string/folder">
+
+    <EditTextPreference
+        android:key="pref_folder"
+	android:icon="@drawable/ic_pref_folder"
+	android:title="@string/folder"
+	android:summary="@string/appName"
+	android:persistent="true"
+	android:defaultValue="@string/appName" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
       android:key="pref_about_category"
       android:title="@string/about">
 

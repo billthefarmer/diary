@@ -81,6 +81,7 @@ public class Diary extends Activity
 
     public final static String PREF_ABOUT = "pref_about";
     public final static String PREF_CUSTOM = "pref_custom";
+    public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_MARKDOWN = "pref_markdown";
 
     private final static String TAG = "Diary";
@@ -112,6 +113,8 @@ public class Diary extends Activity
     private float minScale = 1000;
     private boolean canSwipe = true;
     private boolean haveImage = false;
+
+    private String folder = DIARY;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -181,6 +184,7 @@ public class Diary extends Activity
 
         // Get preferences
         getPreferences();
+        setDate(currEntry);
 
         // Copy help text to today's page if no entries
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
@@ -519,6 +523,8 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+
+        folder = preferences.getString(PREF_FOLDER, DIARY);
     }
 
     // imageCheck
@@ -694,7 +700,7 @@ public class Diary extends Activity
     // getHome
     private File getHome()
     {
-        return new File(Environment.getExternalStorageDirectory(), DIARY);
+        return new File(Environment.getExternalStorageDirectory(), folder);
     }
 
     // getYear

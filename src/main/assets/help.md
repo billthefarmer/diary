@@ -82,4 +82,6 @@ the first line.
 * **Use custom calendar** - Use custom calendar that shows diary
   entries rather than date picker calendar
 * **Use markdown** - Use markdown formatting for diary entries
+* **Folder** - Change diary entry storage folder. Caution - diary
+  entries and styles will not be moved
 * **About** - Show app version, licence and credits

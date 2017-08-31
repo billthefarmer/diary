@@ -28,6 +28,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -36,6 +37,7 @@ import android.preference.PreferenceScreen;
 
 // SettingsFragment class
 public class SettingsFragment extends PreferenceFragment
+    implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     // On create
     @Override
@@ -49,6 +51,14 @@ public class SettingsFragment extends PreferenceFragment
         SharedPreferences preferences =
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        // Get folder summary
+        EditTextPreference folder =
+            (EditTextPreference) findPreference(Diary.PREF_FOLDER);
+
+        // Set folder in text view
+        folder.setSummary(preferences.getString(Diary.PREF_FOLDER,
+                                                Diary.DIARY));
+
         // Get about summary
         Preference about = findPreference(Diary.PREF_ABOUT);
         String sum = (String) about.getSummary();
@@ -56,6 +66,24 @@ public class SettingsFragment extends PreferenceFragment
         // Set version in text view
         String s = String.format(sum, BuildConfig.VERSION_NAME);
         about.setSummary(s);
+    }
+
+    // on Resume
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences()
+            .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    // on Pause
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+            .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     // On preference tree click
@@ -75,5 +103,21 @@ public class SettingsFragment extends PreferenceFragment
         }
 
         return result;
+    }
+
+    // On shared preference changed
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences preferences,
+                                          String key)
+    {
+        if (key.equals(Diary.PREF_FOLDER))
+        {
+            // Get folder summary
+            EditTextPreference folder =
+                (EditTextPreference) findPreference(key);
+
+            // Set folder in text view
+            folder.setSummary(preferences.getString(key, Diary.DIARY));
+        }
     }
 }

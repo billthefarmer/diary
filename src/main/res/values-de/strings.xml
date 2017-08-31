@@ -39,6 +39,7 @@
   <string name="pref_markdown_summ">
     Nutze Markdown zur Textformatierung
   </string>
+  <string name="folder">Mappe</string>
   <string name="about">Über</string>
   <string name="pref_about_summ">Tagebuchversion %s</string>
   <string name="licence">GNU GPLv3</string>
