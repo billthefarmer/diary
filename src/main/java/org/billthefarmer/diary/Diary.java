@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -559,12 +558,11 @@ public class Diary extends Activity
 
         Pattern pattern = Pattern.compile(PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
+        DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 
         while (matcher.find())
         {
             // Parse time
-            DateFormat dateFormat =
-                DateFormat.getTimeInstance(DateFormat.SHORT);
             Date date = null;
             try
             {
