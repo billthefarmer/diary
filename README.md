@@ -25,6 +25,7 @@ file, which may be copied in to an entry for reference if required.
 * Display images stored in diary folders
 * Add images from media providers
 * Receive images from other apps
+* Add events to calendar
 
 ## Toolbar
 The toolbar icons are, from left to right:
@@ -92,6 +93,16 @@ You may include the built in styles file with an `@import` statement
 `@import "file:///android_asset/styles.css";` or `@import
 url("file:///android_asset/styles.css");`, which should be on the
 first line.
+
+## Events
+You may add events to the calendar by adding lines to an entry which
+begin with an `@` character followed by a time and a title, like
+this:
+
+    @ 10:30 Dentist
+
+This will dispatch the event to the device calendar. The blank space
+between the `@` and the time is optional.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
