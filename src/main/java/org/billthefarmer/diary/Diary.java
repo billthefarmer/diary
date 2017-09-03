@@ -106,7 +106,7 @@ public class Diary extends Activity
     private final static String CSS = "css/styles.css";
     private final static String IMAGE = "![%s](%s)\n";
     private final static String FILE = "file:///";
-    private final static String PATTERN = "^@ *(\\d{2}:\\d{2}) +(.+)$";
+    private final static String PATTERN = "^@ ?(\\d{1,2}:\\d{2}) +(.+)$";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -197,8 +197,8 @@ public class Diary extends Activity
         if (markdown && dirty)
         {
             // Get text
-            String string = textView.getText().toString();
-            markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
+            String text = textView.getText().toString();
+            markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
         }
 
         setVisibility();
@@ -300,8 +300,8 @@ public class Diary extends Activity
             if (!markdownView.canGoBack())
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
-                String string = textView.getText().toString();
-                markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
+                String text = textView.getText().toString();
+                markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
             }
 
        }
@@ -431,10 +431,16 @@ public class Diary extends Activity
                 if (dirty)
                 {
                     // Get text
-                    String string = textView.getText().toString();
-                    eventCheck(string);
-                    markdownView.loadMarkdown(getBaseUrl(), string,
+                    String text = textView.getText().toString();
+
+                    // Check for events
+                    String eventText = eventCheck(text);
+                    markdownView.loadMarkdown(getBaseUrl(), eventText,
                                               getStyles());
+                    // Check text
+                    if (!text.equals(eventText))
+                        textView.setText(eventText);
+                        
                     // Clear flag
                     dirty = false;
                 }
@@ -546,15 +552,16 @@ public class Diary extends Activity
     }
 
     // eventCheck
-    private void eventCheck(String text)
+    private String eventCheck(String text)
     {
+        StringBuilder builder = new StringBuilder(text);
+        int index = 1;
+
         Pattern pattern = Pattern.compile(PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
 
         while (matcher.find())
         {
-            // Log.d(TAG, matcher.group());
-
             // Parse time
             DateFormat dateFormat =
                 DateFormat.getTimeInstance(DateFormat.SHORT);
@@ -564,7 +571,10 @@ public class Diary extends Activity
                 date = dateFormat.parse(matcher.group(1));
             }
 
-            catch (Exception e) {}
+            catch (Exception e)
+            {
+                continue;
+            }
 
             Calendar time = GregorianCalendar.getInstance();
             time.setTime(date);
@@ -595,7 +605,12 @@ public class Diary extends Activity
                           endTime.getTimeInMillis())
                 .putExtra(CalendarContract.Events.TITLE, title);
             startActivity(intent);
+
+            // Insert ':' char
+            builder.insert(matcher.start() + index++, ':');
         }
+
+        return builder.toString();
     }
 
     // imageAdd
@@ -817,7 +832,7 @@ public class Diary extends Activity
             @Override
             public boolean accept(File dir, String filename)
             {
-                return Pattern.matches("^[0-9]{4}$", filename);
+                return filename.matches("^[0-9]{4}$");
             }
         }));
     }
@@ -831,7 +846,7 @@ public class Diary extends Activity
             @Override
             public boolean accept(File dir, String filename)
             {
-                return Pattern.matches("^[0-9]{2}$", filename);
+                return filename.matches("^[0-9]{2}$");
             }
         }));
     }
@@ -845,7 +860,7 @@ public class Diary extends Activity
             @Override
             public boolean accept(File dir, String filename)
             {
-                return Pattern.matches("^[0-9]{2}.txt$", filename);
+                return filename.matches("^[0-9]{2}.txt$");
             }
         }));
     }
@@ -1001,9 +1016,9 @@ public class Diary extends Activity
     {
         if (currEntry != null)
         {
-            String string = textView.getText().toString();
+            String text = textView.getText().toString();
             File file = getFile();
-            if (string.length() == 0)
+            if (text.length() == 0)
             {
                 if (file.exists())
                     file.delete();
@@ -1024,7 +1039,7 @@ public class Diary extends Activity
                 try
                 {
                     FileWriter fileWriter = new FileWriter(file);
-                    fileWriter.write(string);
+                    fileWriter.write(text);
                     fileWriter.close();
                 }
                 catch (Exception e) {}
@@ -1088,12 +1103,12 @@ public class Diary extends Activity
     // load
     private void load()
     {
-        String string = read(getFile());
-        textView.setText(string);
+        String text = read(getFile());
+        textView.setText(text);
         if (markdown)
         {
             dirty = false;
-            markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
+            markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
         }
         textView.setSelection(0);
     }
@@ -1194,20 +1209,20 @@ public class Diary extends Activity
         if (image.getScheme().equalsIgnoreCase("content"))
             image = resolveContent(image);
 
-        String text = String.format(IMAGE, image.getLastPathSegment(),
+        String imageText = String.format(IMAGE, image.getLastPathSegment(),
                                     image.toString());
         if (append)
-            textView.append(text);
+            textView.append(imageText);
 
         else
         {
             Editable editable = textView.getEditableText();
             int position = textView.getSelectionStart();
-            editable.insert(position, text);
+            editable.insert(position, imageText);
         }
 
-        String string = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), string, getStyles());
+        String text = textView.getText().toString();
+        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // resolveContent
