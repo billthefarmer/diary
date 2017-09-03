@@ -81,7 +81,7 @@ the first line.
 ## Events
 You may add events to the calendar by adding lines to an entry which
 begin with an `@` character followed by a time and a title, like this:
-`@ 10:30 Dentist`. This will dispatch the event to the device calendar
+`@ 10:30 Dentist`. This will dispatch the event to the calendar app
 when the **Done** button is touched. A colon (`:`) character will be
 added after the `@` character to mark the event as dispatched.
 
