@@ -78,6 +78,12 @@ You may include the built in styles file with an `@import` statement
 `@import url("file:///android_asset/styles.css");`, which should be on
 the first line.
 
+## Events
+You may add events to the calendar by adding lines to an entry which
+begin with an `@` character followed by a time and a title, like this:
+`@ 10:30 Dentist`. This will dispatch the event to the device
+calendar. The blank space between the `@` and the time is optional.
+
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
   entries rather than date picker calendar
