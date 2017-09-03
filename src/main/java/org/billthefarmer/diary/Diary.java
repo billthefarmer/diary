@@ -65,6 +65,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import org.billthefarmer.markdown.MarkdownView;
 
@@ -103,6 +104,7 @@ public class Diary extends Activity
     private final static String CSS = "css/styles.css";
     private final static String IMAGE = "![%s](%s)\n";
     private final static String FILE = "file:///";
+    private final static String PATTERN = "^@ ?(\\d{2}:\\d{2}) +(.+)$";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -428,6 +430,7 @@ public class Diary extends Activity
                 {
                     // Get text
                     String string = textView.getText().toString();
+                    eventCheck(string);
                     markdownView.loadMarkdown(getBaseUrl(), string,
                                               getStyles());
                     // Clear flag
@@ -537,6 +540,18 @@ public class Diary extends Activity
         {
             haveImage = true;
             goToDate(currEntry);
+        }
+    }
+
+    // eventCheck
+    private void eventCheck(String text)
+    {
+        Pattern pattern = Pattern.compile(PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find())
+        {
+            Log.d(TAG, matcher.group());
         }
     }
 
