@@ -431,15 +431,8 @@ public class Diary extends Activity
                 {
                     // Get text
                     String text = textView.getText().toString();
-
-                    // Check for events
-                    String eventText = eventCheck(text);
-                    markdownView.loadMarkdown(getBaseUrl(), eventText,
+                    markdownView.loadMarkdown(getBaseUrl(), text,
                                               getStyles());
-                    // Check text
-                    if (!text.equals(eventText))
-                        textView.setText(eventText);
-                        
                     // Clear flag
                     dirty = false;
                 }
@@ -1018,13 +1011,16 @@ public class Diary extends Activity
                     parent.delete();
                     File grandParent = parent.getParentFile();
                     if (grandParent.exists()
-                            && grandParent.list().length == 0)
+                        && grandParent.list().length == 0)
                         grandParent.delete();
                 }
             }
 
             else
             {
+                // Check for events
+                text = eventCheck(text);
+
                 file.getParentFile().mkdirs();
                 try
                 {
