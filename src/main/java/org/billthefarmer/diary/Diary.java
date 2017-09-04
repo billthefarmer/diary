@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.CalendarContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -65,6 +64,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -105,7 +105,7 @@ public class Diary extends Activity
     private final static String CSS = "css/styles.css";
     private final static String IMAGE = "![%s](%s)\n";
     private final static String FILE = "file:///";
-    private final static String PATTERN = "^@ ?(\\d{1,2}:\\d{2}) +(.+)$";
+    private final static String PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -574,36 +574,28 @@ public class Diary extends Activity
                 continue;
             }
 
-            Calendar time = GregorianCalendar.getInstance();
+            Calendar time = Calendar.getInstance();
             time.setTime(date);
 
-            Calendar beginTime =
+            Calendar startTime =
                 new GregorianCalendar(currEntry.get(Calendar.YEAR),
                                       currEntry.get(Calendar.MONTH),
                                       currEntry.get(Calendar.DATE),
-                                      time.get(Calendar.HOUR),
+                                      time.get(Calendar.HOUR_OF_DAY),
                                       time.get(Calendar.MINUTE));
             Calendar endTime =
                 new GregorianCalendar(currEntry.get(Calendar.YEAR),
                                       currEntry.get(Calendar.MONTH),
                                       currEntry.get(Calendar.DATE),
-                                      time.get(Calendar.HOUR),
+                                      time.get(Calendar.HOUR_OF_DAY),
                                       time.get(Calendar.MINUTE));
             // Add an hour
             endTime.add(Calendar.HOUR, 1);
 
             String title = matcher.group(2);
 
-            // Insert calendar event
-            Intent intent = new Intent(Intent.ACTION_INSERT)
-                .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                          beginTime.getTimeInMillis())
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
-                          endTime.getTimeInMillis())
-                .putExtra(CalendarContract.Events.TITLE, title);
-            startActivity(intent);
-
+            QueryHandler.insertEvent(this, startTime.getTimeInMillis(),
+                                      endTime.getTimeInMillis(), title);
             // Insert ':' char
             builder.insert(matcher.start() + index++, ':');
         }
