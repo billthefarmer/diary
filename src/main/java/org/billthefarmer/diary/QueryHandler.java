@@ -28,7 +28,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
-import android.provider.CalendarContract.Reminders;
 import android.net.Uri;
 import android.util.Log;
 

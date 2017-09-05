@@ -553,6 +553,7 @@ public class Diary extends Activity
         Matcher matcher = pattern.matcher(text);
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 
+        // Find matches
         while (matcher.find())
         {
             // Parse time
