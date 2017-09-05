@@ -28,6 +28,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
+import android.provider.CalendarContract.Reminders;
 import android.net.Uri;
 import android.util.Log;
 
@@ -38,14 +39,10 @@ public class QueryHandler extends AsyncQueryHandler
 {
     private static final String TAG = "QueryHandler";
 
-    private long startTime;
-    private long endTime;
-    private String title;
-
-    // Projection array
+    // Projection arrays
     private static final String[] CALENDAR_PROJECTION = new String[]
         {
-            Calendars._ID // 0
+            Calendars._ID
         };
 
     // The indices for the projection array above.
@@ -54,14 +51,9 @@ public class QueryHandler extends AsyncQueryHandler
     private static QueryHandler queryHandler;
 
     // QueryHandler
-    public QueryHandler(ContentResolver resolver, long startTime,
-                        long endTime, String title)
+    public QueryHandler(ContentResolver resolver)
     {
         super(resolver);
-
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.title = title;
     }
 
     // insertEvent
@@ -71,10 +63,16 @@ public class QueryHandler extends AsyncQueryHandler
         ContentResolver resolver = context.getContentResolver();
 
         if (queryHandler == null)
-            queryHandler = new QueryHandler(resolver, startTime,
-                                            endTime, title);
+            queryHandler = new QueryHandler(resolver);
 
-        queryHandler.startQuery(0, null, Calendars.CONTENT_URI,
+        ContentValues values = new ContentValues();
+        values.put(Events.DTSTART, startTime);
+        values.put(Events.DTEND, endTime);
+        values.put(Events.TITLE, title);
+
+        Log.d(TAG, "Event insert start");
+
+        queryHandler.startQuery(0, values, Calendars.CONTENT_URI,
                                 CALENDAR_PROJECTION, null, null, null);
     }
 
@@ -87,14 +85,17 @@ public class QueryHandler extends AsyncQueryHandler
         // Get the field values
         long calendarID = cursor.getLong(PROJECTION_ID_INDEX);
 
-        ContentValues values = new ContentValues();
-        values.put(Events.DTSTART, startTime);
-        values.put(Events.DTEND, endTime);
-        values.put(Events.TITLE, title);
+        ContentValues values = (ContentValues) cookie;
         values.put(Events.CALENDAR_ID, calendarID);
         values.put(Events.EVENT_TIMEZONE,
                    TimeZone.getDefault().getDisplayName());
 
         startInsert(0, null, Events.CONTENT_URI, values);
+    }
+
+    // onInsertComplete
+    public void onInsertComplete(int token, Object cookie, Uri uri)
+    {
+        Log.d(TAG, "Event insert complete " + uri);
     }
 }
