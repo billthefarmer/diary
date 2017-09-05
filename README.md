@@ -95,20 +95,18 @@ url("file:///android_asset/styles.css");`, which should be on the
 first line.
 
 ## Events
-You may add an event to the calendar by adding a line to a diary entry which
-begin with an ampersand followed by a time and an event
-title.
-```
-@ 10:30 Dentist
-```
-An event will be added to the calendar when the
-entry is saved. A colon will be added after the
-ampersand when the event has been added.
-```
-@: 10:30 Dentist
-```
-Use the Calendar app to remove or edit events. Do not remove the colon from
-the diary entry or the event will be added again.
+You may add an event to the calendar by adding a line to a diary entry
+which begins with an ampersand followed by a time and an event title.
+
+    @ 10:30 Dentist
+
+An event will be added to the calendar when the entry is saved. A
+colon will be added after the ampersand when the event has been added.
+
+    @: 10:30 Dentist
+
+Use the Calendar app to remove or edit events. Do not remove the colon
+from the diary entry or the event will be added again.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary

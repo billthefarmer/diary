@@ -79,12 +79,18 @@ You may include the built in styles file with an `@import` statement
 the first line.
 
 ## Events
-You may add events to the calendar by adding lines to an entry which
-begin with an `@` character followed by a time and a title, like this:
-`@ 10:30 Dentist`. This will insert an event in the calendar when the
-entry is saved. A colon (`:`) character will be added after the `@`
-character to mark the event as inserted. Use the Calendar app to
-remove or update events.
+You may add an event to the calendar by adding a line to a diary entry
+which begins with an ampersand followed by a time and an event title.
+
+    @ 10:30 Dentist
+
+An event will be added to the calendar when the entry is saved. A
+colon will be added after the ampersand when the event has been added.
+
+    @: 10:30 Dentist
+
+Use the Calendar app to remove or edit events. Do not remove the colon
+from the diary entry or the event will be added again.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
