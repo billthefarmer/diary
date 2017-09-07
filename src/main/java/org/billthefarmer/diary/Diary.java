@@ -589,7 +589,7 @@ public class Diary extends Activity
             String title = matcher.group(2);
 
             QueryHandler.insertEvent(this, startTime.getTimeInMillis(),
-                                      endTime.getTimeInMillis(), title);
+                                     endTime.getTimeInMillis(), title);
             // Insert ':' char
             builder.insert(matcher.start() + index++, ':');
         }
