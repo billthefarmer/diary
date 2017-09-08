@@ -52,11 +52,9 @@ public class QueryHandler extends AsyncQueryHandler
     // The indices for the projection array above.
     private static final int CALENDAR_ID_INDEX = 0;
 
-    private static final int CALENDAR = 0;
-    private static final int EVENT    = 1;
-    private static final int REMINDER = 2;
-
-    private static final int REMINDER_MESSAGE = -2;
+    private static final int CALENDAR = -1;
+    private static final int EVENT    = -2;
+    private static final int REMINDER = -3;
 
     private static QueryHandler queryHandler;
 
@@ -88,7 +86,7 @@ public class QueryHandler extends AsyncQueryHandler
 
     // onQueryComplete
     @Override
-    public void onQueryComplete(int token, Object cookie, Cursor cursor)
+    public void onQueryComplete(int token, Object object, Cursor cursor)
     {
         // Use the cursor to move through the returned records
         cursor.moveToFirst();
@@ -98,7 +96,7 @@ public class QueryHandler extends AsyncQueryHandler
 
         Log.d(TAG, "Calendar query complete " + calendarID);
 
-        ContentValues values = (ContentValues) cookie;
+        ContentValues values = (ContentValues) object;
         values.put(Events.CALENDAR_ID, calendarID);
         values.put(Events.EVENT_TIMEZONE,
                    TimeZone.getDefault().getDisplayName());
@@ -108,18 +106,18 @@ public class QueryHandler extends AsyncQueryHandler
 
     // onInsertComplete
     @Override
-    public void onInsertComplete(int token, Object cookie, Uri uri)
+    public void onInsertComplete(int token, Object object, Uri uri)
     {
         Log.d(TAG, "Event insert complete " + uri.getLastPathSegment());
 
         Message msg =
-            obtainMessage(REMINDER_MESSAGE, uri.getLastPathSegment());
+            obtainMessage(REMINDER, uri.getLastPathSegment());
         sendMessageDelayed(msg, 60000);
     }
 
     // onDeleteComplete
     @Override
-    public void onDeleteComplete(int token, Object cookie, int result)
+    public void onDeleteComplete(int token, Object object, int result)
     {
         Log.d(TAG, "Reminder delete complete " + result);
     }
@@ -130,10 +128,10 @@ public class QueryHandler extends AsyncQueryHandler
     {
         switch (msg.what)
         {
-        case REMINDER_MESSAGE:
+        case REMINDER:
             Log.d(TAG, "Reminder delete start");
 
-            String selectionArgs[] = new String[]
+            String selectionArgs[] = 
                 {(String) msg.obj, String.valueOf(Reminders.METHOD_EMAIL)};
 
             startDelete(REMINDER, null, Reminders.CONTENT_URI,
