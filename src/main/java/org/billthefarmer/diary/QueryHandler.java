@@ -52,9 +52,11 @@ public class QueryHandler extends AsyncQueryHandler
     // The indices for the projection array above.
     private static final int CALENDAR_ID_INDEX = 0;
 
-    private static final int CALENDAR = -1;
-    private static final int EVENT    = -2;
-    private static final int REMINDER = -3;
+    private static final int CALENDAR = 0;
+    private static final int EVENT    = 1;
+    private static final int REMINDER = 2;
+
+    private static final int REMINDER_MESSAGE = -2;
 
     private static QueryHandler queryHandler;
 
@@ -111,7 +113,7 @@ public class QueryHandler extends AsyncQueryHandler
         Log.d(TAG, "Event insert complete " + uri.getLastPathSegment());
 
         Message msg =
-            obtainMessage(REMINDER, uri.getLastPathSegment());
+            obtainMessage(REMINDER_MESSAGE, uri.getLastPathSegment());
         sendMessageDelayed(msg, 60000);
     }
 
@@ -128,7 +130,7 @@ public class QueryHandler extends AsyncQueryHandler
     {
         switch (msg.what)
         {
-        case REMINDER:
+        case REMINDER_MESSAGE:
             Log.d(TAG, "Reminder delete start");
 
             String selectionArgs[] = 
