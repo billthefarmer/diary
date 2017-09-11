@@ -40,9 +40,6 @@ public class QueryHandler extends AsyncQueryHandler
 {
     private static final String TAG = "QueryHandler";
 
-    private static final String REMINDER_SELECT =
-        "((" + Reminders.EVENT_ID + "=?) AND (" + Reminders.METHOD + "=?))";
-
     // Projection arrays
     private static final String[] CALENDAR_PROJECTION = new String[]
         {
