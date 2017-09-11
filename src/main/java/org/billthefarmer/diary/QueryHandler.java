@@ -56,8 +56,6 @@ public class QueryHandler extends AsyncQueryHandler
     private static final int EVENT    = 1;
     private static final int REMINDER = 2;
 
-    private static final int REMINDER_MESSAGE = -2;
-
     private static QueryHandler queryHandler;
 
     // QueryHandler
@@ -80,7 +78,8 @@ public class QueryHandler extends AsyncQueryHandler
         values.put(Events.DTEND, endTime);
         values.put(Events.TITLE, title);
 
-        Log.d(TAG, "Calendar query start");
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Calendar query start");
 
         queryHandler.startQuery(CALENDAR, values, Calendars.CONTENT_URI,
                                 CALENDAR_PROJECTION, null, null, null);
@@ -96,7 +95,8 @@ public class QueryHandler extends AsyncQueryHandler
         // Get the field values
         long calendarID = cursor.getLong(CALENDAR_ID_INDEX);
 
-        Log.d(TAG, "Calendar query complete " + calendarID);
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Calendar query complete " + calendarID);
 
         ContentValues values = (ContentValues) object;
         values.put(Events.CALENDAR_ID, calendarID);
@@ -110,50 +110,22 @@ public class QueryHandler extends AsyncQueryHandler
     @Override
     public void onInsertComplete(int token, Object object, Uri uri)
     {
-        Log.d(TAG, "Event insert complete " + uri.getLastPathSegment());
-
-        switch (token)
+        if (uri != null)
         {
-        case EVENT:
-            long eventID = Long.parseLong(uri.getLastPathSegment());
-            ContentValues values = new ContentValues();
-            values.put(Reminders.MINUTES, 10);
-            values.put(Reminders.EVENT_ID, eventID);
-            values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
-            startInsert(REMINDER, null, Events.CONTENT_URI, values);
-            break;
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "Insert complete " + uri.getLastPathSegment());
+
+            switch (token)
+            {
+            case EVENT:
+                long eventID = Long.parseLong(uri.getLastPathSegment());
+                ContentValues values = new ContentValues();
+                values.put(Reminders.MINUTES, 10);
+                values.put(Reminders.EVENT_ID, eventID);
+                values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
+                startInsert(REMINDER, null, Reminders.CONTENT_URI, values);
+                break;
+            }
         }
-
-        // Message msg =
-        //     obtainMessage(REMINDER_MESSAGE, uri.getLastPathSegment());
-        // sendMessageDelayed(msg, 60000);
     }
-
-    // onDeleteComplete
-    // @Override
-    // public void onDeleteComplete(int token, Object object, int result)
-    // {
-    //     Log.d(TAG, "Reminder delete complete " + result);
-    // }
-
-    // handleMessage
-    // @Override
-    // public void handleMessage(Message msg)
-    // {
-    //     switch (msg.what)
-    //     {
-    //     case REMINDER_MESSAGE:
-    //         Log.d(TAG, "Reminder delete start");
-
-    //         String selectionArgs[] = 
-    //             {(String) msg.obj, String.valueOf(Reminders.METHOD_EMAIL)};
-
-    //         startDelete(REMINDER, null, Reminders.CONTENT_URI,
-    //                     REMINDER_SELECT, selectionArgs);
-    //         break;
-
-    //     default:
-    //         super.handleMessage(msg);
-    //     }
-    // }
 }
