@@ -112,36 +112,48 @@ public class QueryHandler extends AsyncQueryHandler
     {
         Log.d(TAG, "Event insert complete " + uri.getLastPathSegment());
 
-        Message msg =
-            obtainMessage(REMINDER_MESSAGE, uri.getLastPathSegment());
-        sendMessageDelayed(msg, 60000);
+        switch (token)
+        {
+        case EVENT:
+            long eventID = Long.parseLong(uri.getLastPathSegment());
+            ContentValues values = new ContentValues();
+            values.put(Reminders.MINUTES, 10);
+            values.put(Reminders.EVENT_ID, eventID);
+            values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
+            startInsert(REMINDER, null, Events.CONTENT_URI, values);
+            break;
+        }
+
+        // Message msg =
+        //     obtainMessage(REMINDER_MESSAGE, uri.getLastPathSegment());
+        // sendMessageDelayed(msg, 60000);
     }
 
     // onDeleteComplete
-    @Override
-    public void onDeleteComplete(int token, Object object, int result)
-    {
-        Log.d(TAG, "Reminder delete complete " + result);
-    }
+    // @Override
+    // public void onDeleteComplete(int token, Object object, int result)
+    // {
+    //     Log.d(TAG, "Reminder delete complete " + result);
+    // }
 
     // handleMessage
-    @Override
-    public void handleMessage(Message msg)
-    {
-        switch (msg.what)
-        {
-        case REMINDER_MESSAGE:
-            Log.d(TAG, "Reminder delete start");
+    // @Override
+    // public void handleMessage(Message msg)
+    // {
+    //     switch (msg.what)
+    //     {
+    //     case REMINDER_MESSAGE:
+    //         Log.d(TAG, "Reminder delete start");
 
-            String selectionArgs[] = 
-                {(String) msg.obj, String.valueOf(Reminders.METHOD_EMAIL)};
+    //         String selectionArgs[] = 
+    //             {(String) msg.obj, String.valueOf(Reminders.METHOD_EMAIL)};
 
-            startDelete(REMINDER, null, Reminders.CONTENT_URI,
-                        REMINDER_SELECT, selectionArgs);
-            break;
+    //         startDelete(REMINDER, null, Reminders.CONTENT_URI,
+    //                     REMINDER_SELECT, selectionArgs);
+    //         break;
 
-        default:
-            super.handleMessage(msg);
-        }
-    }
+    //     default:
+    //         super.handleMessage(msg);
+    //     }
+    // }
 }
