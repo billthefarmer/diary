@@ -21,9 +21,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.ClipData;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -103,9 +105,16 @@ public class Diary extends Activity
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
-    private final static String IMAGE = "![%s](%s)\n";
+    private final static String IMAGE_TEMPLATE = "![%s](%s)\n";
     private final static String FILE = "file:///";
     private final static String PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
+    private final static String ANDROID_DATA = "Android/data";
+    private final static String HTTP = "http";
+    private final static String HTTPS = "https";
+    private final static String CONTENT = "content";
+    private final static String TEXT_PLAIN = "text/plain";
+    private final static String IMAGE_WILD = "image/*";
+    private final static String IMAGE = "image/";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -600,30 +609,40 @@ public class Diary extends Activity
     // fileAdd
     private void fileAdd(Intent intent)
     {
-        if (BuildConfig.DEBUG)
-        {
-            Log.d(TAG, "Extra " + intent.getExtras());
-            Log.d(TAG, "Uri " + intent.getParcelableExtra(Intent.EXTRA_STREAM));
-        }
-
-        if (intent.getType().equals("text/plain"))
+        if (intent.getType().equals(TEXT_PLAIN))
         {
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             textView.append(text);
         }
 
-        else if (intent.getType().startsWith("image/"))
+        else if (intent.getType().startsWith(IMAGE))
         {
             if (intent.getAction().equals(Intent.ACTION_SEND))
             {
-                try
+                Uri image =
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+                if (image.toString().contains(ANDROID_DATA) &&
+                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN))
                 {
-                    Uri image =
-                        intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                    addImage(image, true);
+                    // Get clip
+                    ClipData clip = intent.getClipData();
+
+                    // Gets the first item from the clipboard data
+                    ClipData.Item item = clip.getItemAt(0);
+
+                    // Tries to get the item's contents as an uri
+                    Uri uri = Uri.parse(item.getText().toString());
+
+                    if ((uri != null) &&
+                        ((uri.getScheme().equalsIgnoreCase(HTTP)) ||
+                         (uri.getScheme().equalsIgnoreCase(HTTPS))))
+                    {
+                        image = uri;
+                    }
                 }
 
-                catch (Exception e) {}
+                addImage(image, true);
             }
 
             else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
@@ -746,9 +765,8 @@ public class Diary extends Activity
     public void addImage()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, null),
-                               ADD_IMAGE);
+        intent.setType(IMAGE_WILD);
+        startActivityForResult(Intent.createChooser(intent, null), ADD_IMAGE);
     }
 
     // editStyles
@@ -1208,11 +1226,12 @@ public class Diary extends Activity
     // addImage
     private  void addImage(Uri image, boolean append)
     {
-        if (image.getScheme().equalsIgnoreCase("content"))
+        if (image.getScheme().equalsIgnoreCase(CONTENT))
             image = resolveContent(image);
 
-        String imageText = String.format(IMAGE, image.getLastPathSegment(),
-                                    image.toString());
+        String imageText = String.format(IMAGE_TEMPLATE,
+                                         image.getLastPathSegment(),
+                                         image.toString());
         if (append)
             textView.append(imageText);
 
