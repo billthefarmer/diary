@@ -600,10 +600,16 @@ public class Diary extends Activity
     // fileAdd
     private void fileAdd(Intent intent)
     {
+        if (BuildConfig.DEBUG)
+        {
+            Log.d(TAG, "Extra " + intent.getExtras());
+            Log.d(TAG, "Uri " + intent.getParcelableExtra(Intent.EXTRA_STREAM));
+        }
+
         if (intent.getType().equals("text/plain"))
         {
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            // addText(text);
+            textView.append(text);
         }
 
         else if (intent.getType().startsWith("image/"))
