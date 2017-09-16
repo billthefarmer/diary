@@ -59,11 +59,11 @@ public class DiaryCalendar extends Activity
         calendarView = (CustomCalendarView) findViewById(R.id.calendar);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
+        // Bundle bundle = intent.getExtras();
 
         // Initialize calendar with date
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
-        currentCalendar.setTimeInMillis(bundle.getLong(Diary.DATE));
+        currentCalendar.setTimeInMillis(intent.getLongExtra(Diary.DATE, 0));
 
         // Get date
         time = currentCalendar.getTime();
@@ -76,7 +76,7 @@ public class DiaryCalendar extends Activity
         // Show/hide overflow days of a month
         // calendarView.setShowOverflowDate(false);
 
-        long longEntries[] = bundle.getLongArray(Diary.ENTRIES);
+        long longEntries[] = intent.getLongArrayExtra(Diary.ENTRIES);
         List<Calendar> entries = new ArrayList<Calendar>();
         for (long time : longEntries)
         {

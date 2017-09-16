@@ -311,7 +311,6 @@ public class Diary extends Activity
                 String text = textView.getText().toString();
                 markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
             }
-
        }
 
         else
@@ -622,7 +621,8 @@ public class Diary extends Activity
                 Uri image =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-                if (image.toString().contains(ANDROID_DATA) &&
+                if ((image != null) &&
+                    (image.toString().contains(ANDROID_DATA)) &&
                     (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN))
                 {
                     // Get clip
@@ -637,9 +637,7 @@ public class Diary extends Activity
                     if ((uri != null) &&
                         ((uri.getScheme().equalsIgnoreCase(HTTP)) ||
                          (uri.getScheme().equalsIgnoreCase(HTTPS))))
-                    {
                         image = uri;
-                    }
                 }
 
                 addImage(image, true);
@@ -742,15 +740,15 @@ public class Diary extends Activity
     public void showCustomCalendar(Calendar date)
     {
         Intent intent = new Intent(this, DiaryCalendar.class);
-        Bundle bundle = new Bundle();
-        bundle.putLong(DATE, date.getTimeInMillis());
+        // Bundle bundle = new Bundle();
+        intent.putExtra(DATE, date.getTimeInMillis());
         List<Calendar> entryList = getEntries();
         long entries[] = new long[entryList.size()];
         int i = 0;
         for (Calendar entry : entryList)
             entries[i++] = entry.getTimeInMillis();
-        bundle.putLongArray(ENTRIES, entries);
-        intent.putExtras(bundle);
+        intent.putExtra(ENTRIES, entries);
+        // intent.putExtras(bundle);
         startActivityForResult(intent, DATE_DIALOG);
     }
 
