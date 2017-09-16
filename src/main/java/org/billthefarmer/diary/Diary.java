@@ -115,7 +115,7 @@ public class Diary extends Activity
 
     private float minScale = 1000;
     private boolean canSwipe = true;
-    private boolean haveImage = false;
+    private boolean haveFile = false;
 
     private String folder = DIARY;
 
@@ -162,8 +162,8 @@ public class Diary extends Activity
         // Get preferences
         getPreferences();
 
-        // Check for sent images
-        imageCheck();
+        // Check for sent files
+        fileCheck();
     }
 
     // onRestoreInstanceState
@@ -328,8 +328,8 @@ public class Diary extends Activity
             calendar.setTimeInMillis(time);
             changeDate(calendar);
 
-            if (haveImage)
-                imageAdd(getIntent());
+            if (haveFile)
+                fileAdd(getIntent());
             break;
 
         case ADD_IMAGE:
@@ -345,8 +345,8 @@ public class Diary extends Activity
     {
         changeDate(new GregorianCalendar(year, month, day));
 
-        if (haveImage)
-            imageAdd(getIntent());
+        if (haveFile)
+            fileAdd(getIntent());
     }
 
     // dispatchTouchEvent
@@ -530,15 +530,15 @@ public class Diary extends Activity
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
 
-    // imageCheck
-    private void imageCheck()
+    // fileCheck
+    private void fileCheck()
     {
-        // Check for sent images
+        // Check for sent files
         Intent intent = getIntent();
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
             intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
-            haveImage = true;
+            haveFile = true;
             goToDate(currEntry);
         }
     }
@@ -597,35 +597,44 @@ public class Diary extends Activity
         return builder.toString();
     }
 
-    // imageAdd
-    @SuppressWarnings("unchecked")
-    private void imageAdd(Intent intent)
+    // fileAdd
+    private void fileAdd(Intent intent)
     {
-        if (intent.getAction().equals(Intent.ACTION_SEND))
+        if (intent.getType().equals("text/plain"))
         {
-            try
-            {
-                Uri image = (Uri) intent.getExtras().get(Intent.EXTRA_STREAM);
-                addImage(image, true);
-            }
-
-            catch (Exception e) {}
+            String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            // addText(text);
         }
 
-        else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+        else if (intent.getType().startsWith("image/"))
         {
-            try
+            if (intent.getAction().equals(Intent.ACTION_SEND))
             {
-                List<Uri> images = (List<Uri>)
-                    intent.getExtras().get(Intent.EXTRA_STREAM);
-                for (Uri image : images)
+                try
+                {
+                    Uri image =
+                        intent.getParcelableExtra(Intent.EXTRA_STREAM);
                     addImage(image, true);
+                }
+
+                catch (Exception e) {}
             }
 
-            catch (Exception e) {}
+            else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+            {
+                try
+                {
+                    ArrayList<Uri> images =
+                        intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                    for (Uri image : images)
+                        addImage(image, true);
+                }
+
+                catch (Exception e) {}
+            }
         }
 
-        haveImage = false;
+        haveFile = false;
         intent.setAction(Intent.ACTION_DEFAULT);
     }
 
