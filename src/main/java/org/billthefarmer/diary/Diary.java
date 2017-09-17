@@ -740,7 +740,6 @@ public class Diary extends Activity
     public void showCustomCalendar(Calendar date)
     {
         Intent intent = new Intent(this, DiaryCalendar.class);
-        // Bundle bundle = new Bundle();
         intent.putExtra(DATE, date.getTimeInMillis());
         List<Calendar> entryList = getEntries();
         long entries[] = new long[entryList.size()];
@@ -748,7 +747,6 @@ public class Diary extends Activity
         for (Calendar entry : entryList)
             entries[i++] = entry.getTimeInMillis();
         intent.putExtra(ENTRIES, entries);
-        // intent.putExtras(bundle);
         startActivityForResult(intent, DATE_DIALOG);
     }
 
