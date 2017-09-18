@@ -19,7 +19,7 @@ file, which may be copied in to an entry for reference if required.
 
 * Entries saved in plain text files
 * Browse entries
-* English, Catalan, Spanish, Japanese, German and French
+* English, Catalan, Spanish, Italian, Japanese, German and French
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Display images stored in diary folders
