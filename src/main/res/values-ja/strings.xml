@@ -43,20 +43,19 @@
   <string name="about">アプリについて</string>
   <string name="pref_about_summ">Diary バージョン %s</string>
   <string name="licence">GNU GPLv3</string>
-  <string name="copyright">
-    Copyright \u00A9 2012 <a
-    href="mailto:hola@josep-portella.com">Josep Portella
-    Florit</a>\nCopyright \u00A9 2017 <a
-    href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
-    calendar by <a
-    href="https://github.com/npanigrahy/Custom-Calendar-View"> Custom
-    Calendar View</a>\nMarkdown view by <a
-    href="https://github.com/falnatsheh/MarkdownView">Markdown
-    View</a>\n による日本語翻訳 <a
-    href="https://github.com/naofum">naofum</a>\n ドイツ語翻訳 <a
-    href="https://github.com/jaller94">Christian Paul</a>\nによるフラ
-    ンス語翻訳 <a href="https://github.com/comptuzus">David Ta</a>\n
-    ファイルユーティリティ <a href="https://github.com/iPaulPro">Paul
-    Burke</a>
+  <string name="copyright">Copyright \u00A9 2012 <a
+  href="mailto:hola@josep-portella.com">Josep Portella
+  Florit</a>\nCopyright \u00A9 2017 <a
+  href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
+  calendar by <a
+  href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>\nMarkdown view by <a
+  href="https://github.com/falnatsheh/MarkdownView">Markdown
+  View</a>\nによる日本語翻訳 <a
+  href="https://github.com/naofum">naofum</a>\nドイツ語翻訳 <a
+  href="https://github.com/jaller94">Christian Paul</a>\nによるフラン
+  ス語翻訳 <a href="https://github.com/comptuzus">David Ta</a>\nファイ
+  ルユーティリティ <a href="https://github.com/iPaulPro">Paul
+  Burke</a>
   </string>
 </resources>
