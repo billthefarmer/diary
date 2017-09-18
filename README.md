@@ -57,6 +57,10 @@ view.
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
 
+## Text
+You may receive text clips from another app. A date picker will pop
+up. The text will be appended to the entry selected.
+
 ## Images
 You may store images in the diary storage folders and reference them
 in diary entries, so markdown text `![cat](cat.jpg)` will display

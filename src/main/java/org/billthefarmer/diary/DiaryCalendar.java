@@ -154,8 +154,8 @@ public class DiaryCalendar extends Activity
             Calendar cellDate = dayView.getDate();
             for (Calendar entry : entries)
                 if (cellDate.get(Calendar.DATE) == entry.get(Calendar.DATE) &&
-                        cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
-                        cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
+                    cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
+                    cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
                     dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }

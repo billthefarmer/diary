@@ -621,17 +621,16 @@ public class Diary extends Activity
                 Uri image =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-                if ((image != null) &&
-                    (image.toString().contains(ANDROID_DATA)) &&
-                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN))
+                // Attempt to get web uri from clip 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 {
                     // Get clip
                     ClipData clip = intent.getClipData();
 
-                    // Gets the first item from the clipboard data
+                    // Get the first item from the clipboard data
                     ClipData.Item item = clip.getItemAt(0);
 
-                    // Tries to get the item's contents as an uri
+                    // Try to get the item's contents as an uri
                     Uri uri = Uri.parse(item.getText().toString());
 
                     if ((uri != null) &&
