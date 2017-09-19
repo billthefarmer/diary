@@ -44,18 +44,19 @@
   <string name="pref_about_summ">Diary version %s</string>
   <string name="licence">GNU GPLv3</string>
   <string name="copyright">Copyright \u00A9 2012 <a
-    href="mailto:hola@josep-portella.com">Josep Portella
-    Florit</a>\nCopyright \u00A9 2017 <a
-    href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
-    calendar by <a
-    href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
-    Calendar View</a>\nMarkdown view by <a
-    href="https://github.com/falnatsheh/MarkdownView">Markdown
-    View</a>\nJapanese translation by <a
-    href="https://github.com/naofum">naofum</a>\nGerman translation by
-    <a href="https://github.com/jaller94">Christian Paul</a>\nFrench
-    translation by <a href="https://github.com/comptuzus">David
-    Ta</a>\nFile utilities by <a
-    href="https://github.com/iPaulPro">Paul Burke</a>
+  href="mailto:hola@josep-portella.com">Josep Portella
+  Florit</a>\nCopyright \u00A9 2017 <a
+  href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
+  calendar by <a
+  href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>\nMarkdown view by <a
+  href="https://github.com/falnatsheh/MarkdownView">Markdown
+  View</a>\nJapanese translation by <a
+  href="https://github.com/naofum">naofum</a>\nGerman translation by
+  <a href="https://github.com/jaller94">Christian Paul</a>\nFrench
+  translation by <a href="https://github.com/comptuzus">David
+  Ta</a>\nItalian translation by <a
+  href="https://github.com/marcoM32">Marco Magliano</a>\nFile
+  utilities by <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>
