@@ -615,6 +615,7 @@ public class Diary extends Activity
 
             Uri uri = Uri.parse(text);
             if ((uri != null) &&
+                (uri.getScheme() != null) &&
                 (uri.getScheme().equalsIgnoreCase(HTTP) ||
                  uri.getScheme().equalsIgnoreCase(HTTPS)))
                 addLink(text);
