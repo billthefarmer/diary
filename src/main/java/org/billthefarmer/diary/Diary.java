@@ -614,8 +614,7 @@ public class Diary extends Activity
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
             Uri uri = Uri.parse(text);
-            if ((uri != null) &&
-                (uri.getScheme() != null) &&
+            if ((uri != null) && (uri.getScheme() != null) &&
                 (uri.getScheme().equalsIgnoreCase(HTTP) ||
                  uri.getScheme().equalsIgnoreCase(HTTPS)))
                 addLink(text);
@@ -643,7 +642,7 @@ public class Diary extends Activity
                     // Try to get the item's contents as an uri
                     Uri uri = Uri.parse(item.getText().toString());
 
-                    if ((uri != null) &&
+                    if ((uri != null) && (uri.getScheme() != null) &&
                         (uri.getScheme().equalsIgnoreCase(HTTP) ||
                          uri.getScheme().equalsIgnoreCase(HTTPS)))
                         image = uri;
