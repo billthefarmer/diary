@@ -106,6 +106,7 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS = "css/styles.css";
     private final static String IMAGE_TEMPLATE = "![%s](%s)\n";
+    private final static String LINK_TEMPLATE = "[%s](%s)\n";    
     private final static String FILE = "file:///";
     private final static String PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String ANDROID_DATA = "Android/data";
@@ -611,7 +612,15 @@ public class Diary extends Activity
         if (intent.getType().equals(TEXT_PLAIN))
         {
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            textView.append(text);
+
+            Uri uri = Uri.parse(text);
+            if ((uri != null) &&
+                (uri.getScheme().equalsIgnoreCase(HTTP) ||
+                 uri.getScheme().equalsIgnoreCase(HTTPS)))
+                addLink(text);
+
+            else
+                textView.append(text);
         }
 
         else if (intent.getType().startsWith(IMAGE))
@@ -634,8 +643,8 @@ public class Diary extends Activity
                     Uri uri = Uri.parse(item.getText().toString());
 
                     if ((uri != null) &&
-                        ((uri.getScheme().equalsIgnoreCase(HTTP)) ||
-                         (uri.getScheme().equalsIgnoreCase(HTTPS))))
+                        (uri.getScheme().equalsIgnoreCase(HTTP) ||
+                         uri.getScheme().equalsIgnoreCase(HTTPS)))
                         image = uri;
                 }
 
@@ -1239,6 +1248,13 @@ public class Diary extends Activity
 
         String text = textView.getText().toString();
         markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+    }
+
+    // addLink
+    private void addLink(String url)
+    {
+        String linkText = String.format(LINK_TEMPLATE, url, url);
+        textView.append(linkText);
     }
 
     // resolveContent
