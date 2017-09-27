@@ -29,7 +29,6 @@
   <string name="editStyles">Editar estilo…s</string>
   <string name="settings">Ajustes</string>
   <string name="calendar">Calendario</string>
-  <string name="done">Terminado</string>
   <string name="pref_calendar">Usar calendario personalizado</string>
   <string name="pref_calendar_summ">
     Usar un calendario personalizado en lugar de un selector de fechas

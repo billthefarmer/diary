@@ -17,11 +17,12 @@
 package org.billthefarmer.diary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Intent;
 import android.content.ClipData;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -72,9 +73,15 @@ import java.util.regex.Matcher;
 
 import org.billthefarmer.markdown.MarkdownView;
 
+import org.billthefarmer.view.CustomCalendarDialog;
+import org.billthefarmer.view.CustomCalendarView;
+import org.billthefarmer.view.DayDecorator;
+import org.billthefarmer.view.DayView;
+
 // Diary
 public class Diary extends Activity
-    implements DatePickerDialog.OnDateSetListener
+    implements DatePickerDialog.OnDateSetListener,
+               CustomCalendarDialog.OnDateSetListener
 {
     public final static int VERSION_NOUGAT = 24;
 
@@ -351,6 +358,17 @@ public class Diary extends Activity
     // onDateSet
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day)
+    {
+        changeDate(new GregorianCalendar(year, month, day));
+
+        if (haveFile)
+            fileAdd(getIntent());
+    }
+
+    // onDateSet
+    @Override
+    public void onDateSet(CustomCalendarView view, int year,
+                          int month, int day)
     {
         changeDate(new GregorianCalendar(year, month, day));
 
@@ -738,31 +756,53 @@ public class Diary extends Activity
     private void goToDate(Calendar date)
     {
         if (custom)
-            showCustomCalendar(date);
+            showCustomCalendarDialog(date);
 
         else
             showDatePickerDialog(date);
     }
 
     // showCustomCalendar
-    public void showCustomCalendar(Calendar date)
+    public void showCustomCalendarDialog(Calendar date)
     {
-        Intent intent = new Intent(this, DiaryCalendar.class);
-        intent.putExtra(DATE, date.getTimeInMillis());
-        List<Calendar> entryList = getEntries();
-        long entries[] = new long[entryList.size()];
-        int i = 0;
-        for (Calendar entry : entryList)
-            entries[i++] = entry.getTimeInMillis();
-        intent.putExtra(ENTRIES, entries);
-        startActivityForResult(intent, DATE_DIALOG);
+        CustomCalendarDialog dialog = new
+            CustomCalendarDialog(this, this,
+                                 date.get(Calendar.YEAR),
+                                 date.get(Calendar.MONTH),
+                                 date.get(Calendar.DATE));
+
+        List<DayDecorator> decorators = new ArrayList<DayDecorator>();
+        decorators.add(new EntryDecorator(getEntries()));
+        CustomCalendarView calendarView = dialog.getCalendarView();
+        calendarView.setDecorators(decorators);
+        dialog.show();
     }
 
     // showDatePickerDialog
     public void showDatePickerDialog(Calendar date)
     {
-        DialogFragment fragment = DatePickerFragment.newInstance(date);
-        fragment.show(getFragmentManager(), DATEPICKER);
+        DatePickerDialog dialog = new
+            DatePickerDialog(this, this,
+                             date.get(Calendar.YEAR),
+                             date.get(Calendar.MONTH),
+                             date.get(Calendar.DATE));
+        dialog.show();
+    }
+
+    // alertDialog
+    private AlertDialog alertDialog(int title, int message,
+                                    DialogInterface.OnClickListener listener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        // Add the buttons
+        builder.setPositiveButton(android.R.string.ok, listener);
+        builder.setNegativeButton(android.R.string.cancel, listener);
+
+        // Create the AlertDialog
+        return builder.create();
     }
 
     // addImage
@@ -1387,6 +1427,30 @@ public class Diary extends Activity
             catch (Exception e) {}
 
             return result;
+        }
+    }
+
+    // EntryDecorator
+    private class EntryDecorator
+        implements DayDecorator
+    {
+        private List<Calendar> entries;
+
+        private EntryDecorator(List<Calendar> entries)
+        {
+            this.entries = entries;
+        }
+
+        // decorate
+        @Override
+        public void decorate(DayView dayView)
+        {
+            Calendar cellDate = dayView.getDate();
+            for (Calendar entry : entries)
+                if (cellDate.get(Calendar.DATE) == entry.get(Calendar.DATE) &&
+                    cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
+                    cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
+                    dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }
 }

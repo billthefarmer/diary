@@ -29,7 +29,6 @@
   <string name="editStyles">Edit styles…</string>
   <string name="settings">Settings</string>
   <string name="calendar">Calendar</string>
-  <string name="done">Done</string>
   <string name="pref_calendar">Use custom calendar</string>
   <string name="pref_calendar_summ">
     Use custom calendar rather than date picker
