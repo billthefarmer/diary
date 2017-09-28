@@ -127,9 +127,9 @@ public class Diary extends Activity
     private final static String TEXT_PLAIN = "text/plain";
     private final static String IMAGE_WILD = "image/*";
     private final static String WILD_WILD = "*/*";
-    private final static String IMAGE = "image/";
-    private final static String AUDIO = "audio/";
-    private final static String VIDEO = "video/";
+    private final static String IMAGE = "image";
+    private final static String AUDIO = "audio";
+    private final static String VIDEO = "video";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -341,41 +341,20 @@ public class Diary extends Activity
         if (resultCode != RESULT_OK)
             return;
 
-        if (BuildConfig.DEBUG)
-        {
-            Bundle bundle = data.getExtras();
-            if (bundle != null)
-            {
-                for (String key : bundle.keySet())
-                {
-                    Object value = bundle.get(key);
-                    Log.d(TAG, String.format("%s %s (%s)", key,
-                                             value.toString(),
-                                             value.getClass().getName()));
-                }
-            }
-
-            else
-                Log.d(TAG, data.toString());
-        }
-
-        // if (data.getType() == null)
-        //     return;
-
         switch (requestCode)
         {
         case ADD_MEDIA:
             Uri uri = data.getData();
-            // String type = data.getType();
+            String type = uri.getLastPathSegment();
 
-            // if (type.startsWith(IMAGE))
+            if (type.startsWith(IMAGE))
                 addImage(uri, false);
 
-            // else if (type.startsWith(AUDIO))
-            //     addAudio(uri, type, false);
+            else if (type.startsWith(AUDIO))
+                addAudio(uri, type, false);
 
-            // else if (type.startsWith(VIDEO))
-            //     addVideo(uri, type, false);
+            else if (type.startsWith(VIDEO))
+                addVideo(uri, type, false);
             break;
         }
     }
@@ -669,8 +648,10 @@ public class Diary extends Activity
 
         if (intent.getType().equals(TEXT_PLAIN))
         {
+            // Get the text
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
+            // Check if it's an URL
             Uri uri = Uri.parse(text);
             if ((uri != null) && (uri.getScheme() != null) &&
                 (uri.getScheme().equalsIgnoreCase(HTTP) ||
@@ -685,21 +666,18 @@ public class Diary extends Activity
         {
             if (intent.getAction().equals(Intent.ACTION_SEND))
             {
+                // Get the image uri
                 Uri image =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-                // Attempt to get web uri from clip 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                // Attempt to get web uri
+                String path = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+                if (path != null)
                 {
-                    // Get clip
-                    ClipData clip = intent.getClipData();
-
-                    // Get the first item from the clipboard data
-                    ClipData.Item item = clip.getItemAt(0);
-
-                    // Try to get the item's contents as an uri
-                    Uri uri = Uri.parse(item.getText().toString());
-
+                    // Try to get the path as an uri
+                    Uri uri = Uri.parse(path);
+                    // Check if it's an URL
                     if ((uri != null) && (uri.getScheme() != null) &&
                         (uri.getScheme().equalsIgnoreCase(HTTP) ||
                          uri.getScheme().equalsIgnoreCase(HTTPS)))
@@ -867,7 +845,7 @@ public class Diary extends Activity
     public void addImage()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        // intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(WILD_WILD);
         startActivityForResult(Intent.createChooser(intent, null), ADD_MEDIA);
     }
