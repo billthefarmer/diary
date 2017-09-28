@@ -85,10 +85,10 @@ public class Diary extends Activity
 {
     public final static int VERSION_NOUGAT = 24;
 
-    private final static int DATE_DIALOG = 0;
     private final static int ADD_IMAGE = 1;
 
     private final static int BUFFER_SIZE = 1024;
+    private final static int SCALE_RATIO = 100;
 
     public final static String PREF_ABOUT = "pref_about";
     public final static String PREF_CUSTOM = "pref_custom";
@@ -336,18 +336,6 @@ public class Diary extends Activity
 
         switch (requestCode)
         {
-        case DATE_DIALOG:
-            // Get date from intent
-            Bundle extra = data.getExtras();
-            long time = extra.getLong(DATE);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTimeInMillis(time);
-            changeDate(calendar);
-
-            if (haveFile)
-                fileAdd(getIntent());
-            break;
-
         case ADD_IMAGE:
             Uri uri = data.getData();
             addImage(uri, false);
@@ -442,7 +430,7 @@ public class Diary extends Activity
                 if (minScale > oldScale)
                     minScale = oldScale;
                 canSwipe = (Math.abs(newScale - minScale) <
-                            minScale / 100);
+                            minScale / SCALE_RATIO);
             }
         });
 
@@ -762,8 +750,8 @@ public class Diary extends Activity
             showDatePickerDialog(date);
     }
 
-    // showCustomCalendar
-    public void showCustomCalendarDialog(Calendar date)
+    // showCustomCalendarDialog
+    private void showCustomCalendarDialog(Calendar date)
     {
         CustomCalendarDialog dialog = new
             CustomCalendarDialog(this, this,
@@ -779,7 +767,7 @@ public class Diary extends Activity
     }
 
     // showDatePickerDialog
-    public void showDatePickerDialog(Calendar date)
+    private void showDatePickerDialog(Calendar date)
     {
         DatePickerDialog dialog = new
             DatePickerDialog(this, this,
