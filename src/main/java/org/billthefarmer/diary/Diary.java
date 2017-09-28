@@ -41,6 +41,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -119,7 +120,7 @@ public class Diary extends Activity
     private final static String VIDEO_TEMPLATE =
         "<video controls>\n  <source src=\"%s\" type=\"%s\" />\n</video>\n";
     private final static String FILE = "file:///";
-    private final static String PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
+    private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String ANDROID_DATA = "Android/data";
     private final static String HTTP = "http";
     private final static String HTTPS = "https";
@@ -345,16 +346,24 @@ public class Diary extends Activity
         {
         case ADD_MEDIA:
             Uri uri = data.getData();
-            String type = uri.getLastPathSegment();
+            String path = FileUtils.getPath(this, uri);
+            String type = null;
 
-            if (type.startsWith(IMAGE))
-                addImage(uri, false);
+            if (path != null)
+            {
+                MimeTypeMap map = MimeTypeMap.getSingleton();
+                String extension = map.getFileExtensionFromUrl(path);
+                type = map.getMimeTypeFromExtension(extension);
 
-            else if (type.startsWith(AUDIO))
-                addAudio(uri, type, false);
+                if (type.startsWith(IMAGE))
+                    addImage(uri, false);
 
-            else if (type.startsWith(VIDEO))
-                addVideo(uri, type, false);
+                else if (type.startsWith(AUDIO))
+                    addAudio(uri, type, false);
+
+                else if (type.startsWith(VIDEO))
+                    addVideo(uri, type, false);
+            }
             break;
         }
     }
@@ -580,7 +589,7 @@ public class Diary extends Activity
         StringBuilder builder = new StringBuilder(text);
         int index = 1;
 
-        Pattern pattern = Pattern.compile(PATTERN, Pattern.MULTILINE);
+        Pattern pattern = Pattern.compile(EVENT_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 
