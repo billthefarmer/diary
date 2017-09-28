@@ -85,7 +85,7 @@ public class Diary extends Activity
 {
     public final static int VERSION_NOUGAT = 24;
 
-    private final static int ADD_IMAGE = 1;
+    private final static int ADD_MEDIA = 1;
 
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 100;
@@ -114,6 +114,10 @@ public class Diary extends Activity
     private final static String CSS = "css/styles.css";
     private final static String IMAGE_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";    
+    private final static String AUDIO_TEMPLATE =
+        "<audio controls>\n  <source src=\"%s\" type=\"%s\" />\n</audio>\n";
+    private final static String VIDEO_TEMPLATE =
+        "<video controls>\n  <source src=\"%s\" type=\"%s\" />\n</video>\n";
     private final static String FILE = "file:///";
     private final static String PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String ANDROID_DATA = "Android/data";
@@ -122,7 +126,10 @@ public class Diary extends Activity
     private final static String CONTENT = "content";
     private final static String TEXT_PLAIN = "text/plain";
     private final static String IMAGE_WILD = "image/*";
+    private final static String WILD_WILD = "*/*";
     private final static String IMAGE = "image/";
+    private final static String AUDIO = "audio/";
+    private final static String VIDEO = "video/";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -334,11 +341,41 @@ public class Diary extends Activity
         if (resultCode != RESULT_OK)
             return;
 
+        if (BuildConfig.DEBUG)
+        {
+            Bundle bundle = data.getExtras();
+            if (bundle != null)
+            {
+                for (String key : bundle.keySet())
+                {
+                    Object value = bundle.get(key);
+                    Log.d(TAG, String.format("%s %s (%s)", key,
+                                             value.toString(),
+                                             value.getClass().getName()));
+                }
+            }
+
+            else
+                Log.d(TAG, data.toString());
+        }
+
+        // if (data.getType() == null)
+        //     return;
+
         switch (requestCode)
         {
-        case ADD_IMAGE:
+        case ADD_MEDIA:
             Uri uri = data.getData();
-            addImage(uri, false);
+            // String type = data.getType();
+
+            // if (type.startsWith(IMAGE))
+                addImage(uri, false);
+
+            // else if (type.startsWith(AUDIO))
+            //     addAudio(uri, type, false);
+
+            // else if (type.startsWith(VIDEO))
+            //     addVideo(uri, type, false);
             break;
         }
     }
@@ -615,6 +652,21 @@ public class Diary extends Activity
     // fileAdd
     private void fileAdd(Intent intent)
     {
+        if (BuildConfig.DEBUG)
+        {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null)
+            {
+                for (String key : bundle.keySet())
+                {
+                    Object value = bundle.get(key);
+                    Log.d(TAG, String.format("%s %s (%s)", key,
+                                             value.toString(),
+                                             value.getClass().getName()));
+                }
+            }
+        }
+
         if (intent.getType().equals(TEXT_PLAIN))
         {
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -623,7 +675,7 @@ public class Diary extends Activity
             if ((uri != null) && (uri.getScheme() != null) &&
                 (uri.getScheme().equalsIgnoreCase(HTTP) ||
                  uri.getScheme().equalsIgnoreCase(HTTPS)))
-                addLink(text);
+                addLink(text, intent.getStringExtra(Intent.EXTRA_TITLE));
 
             else
                 textView.append(text);
@@ -669,6 +721,24 @@ public class Diary extends Activity
 
                 catch (Exception e) {}
             }
+        }
+
+        else if (intent.getType().startsWith(AUDIO))
+        {
+                Uri audio =
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                String type = intent.getType();
+
+                addAudio(audio, type, true);
+        }
+
+        else if (intent.getType().startsWith(VIDEO))
+        {
+                Uri video =
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                String type = intent.getType();
+
+                addVideo(video, type, true);
         }
 
         haveFile = false;
@@ -797,8 +867,9 @@ public class Diary extends Activity
     public void addImage()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(IMAGE_WILD);
-        startActivityForResult(Intent.createChooser(intent, null), ADD_IMAGE);
+        // intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(WILD_WILD);
+        startActivityForResult(Intent.createChooser(intent, null), ADD_MEDIA);
     }
 
     // editStyles
@@ -1279,10 +1350,60 @@ public class Diary extends Activity
     }
 
     // addLink
-    private void addLink(String url)
+    private void addLink(String url, String title)
     {
-        String linkText = String.format(LINK_TEMPLATE, url, url);
+        if (title == null)
+            title = url;
+
+        String linkText = String.format(LINK_TEMPLATE, title, url);
         textView.append(linkText);
+
+        String text = textView.getText().toString();
+        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+    }
+
+    // addAudio
+    private void addAudio(Uri audio, String type, boolean append)
+    {
+        if (audio.getScheme().equalsIgnoreCase(CONTENT))
+            audio = resolveContent(audio);
+
+        String audioText = String.format(AUDIO_TEMPLATE,
+                                         audio.toString(), type);
+        if (append)
+            textView.append(audioText);
+
+        else
+        {
+            Editable editable = textView.getEditableText();
+            int position = textView.getSelectionStart();
+            editable.insert(position, audioText);
+        }
+
+        String text = textView.getText().toString();
+        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+    }
+
+    // addVideo
+    private void addVideo(Uri video, String type, boolean append)
+    {
+        if (video.getScheme().equalsIgnoreCase(CONTENT))
+            video = resolveContent(video);
+
+        String videoText = String.format(VIDEO_TEMPLATE,
+                                         video.toString(), type);
+        if (append)
+            textView.append(videoText);
+
+        else
+        {
+            Editable editable = textView.getEditableText();
+            int position = textView.getSelectionStart();
+            editable.insert(position, videoText);
+        }
+
+        String text = textView.getText().toString();
+        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // resolveContent
