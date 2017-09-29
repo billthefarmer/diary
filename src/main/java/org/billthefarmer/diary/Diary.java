@@ -17,10 +17,8 @@
 package org.billthefarmer.diary;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -126,7 +124,6 @@ public class Diary extends Activity
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
     private final static String TEXT_PLAIN = "text/plain";
-    private final static String IMAGE_WILD = "image/*";
     private final static String WILD_WILD = "*/*";
     private final static String IMAGE = "image";
     private final static String AUDIO = "audio";
@@ -187,8 +184,8 @@ public class Diary extends Activity
         // Get preferences
         getPreferences();
 
-        // Check for sent files
-        fileCheck();
+        // Check for sent media
+        mediaCheck();
     }
 
     // onRestoreInstanceState
@@ -351,13 +348,12 @@ public class Diary extends Activity
                 uri = resolveContent(uri);
 
             String path = uri.toString();
-            String type = null;
 
             if (path != null)
             {
                 MimeTypeMap map = MimeTypeMap.getSingleton();
                 String ext = map.getFileExtensionFromUrl(path);
-                type = map.getMimeTypeFromExtension(ext);
+                String type = map.getMimeTypeFromExtension(ext);
 
                 if (type.startsWith(IMAGE))
                     addImage(uri, false);
@@ -577,8 +573,8 @@ public class Diary extends Activity
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
 
-    // fileCheck
-    private void fileCheck()
+    // mediaCheck
+    private void mediaCheck()
     {
         // Check for sent files
         Intent intent = getIntent();
@@ -662,7 +658,7 @@ public class Diary extends Activity
             }
         }
 
-        if (intent.getType().equals(TEXT_PLAIN))
+        if (intent.getType().equalsIgnoreCase(TEXT_PLAIN))
         {
             // Get the text
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -675,7 +671,11 @@ public class Diary extends Activity
                 addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE), true);
 
             else
+            {
                 textView.append(text);
+                text = textView.getText().toString();
+                markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+            }
         }
 
         else if (intent.getType().startsWith(IMAGE))
@@ -686,6 +686,7 @@ public class Diary extends Activity
                 Uri image =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
+                // Resolve content uri
                 if (image.getScheme().equalsIgnoreCase(CONTENT))
                     image = resolveContent(image);
 
@@ -708,10 +709,12 @@ public class Diary extends Activity
 
             else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
             {
+                // Get the images
                 ArrayList<Uri> images =
                     intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
                 for (Uri image : images)
                 {
+                    // Resolve content uri
                     if (image.getScheme().equalsIgnoreCase(CONTENT))
                         image = resolveContent(image);
 
@@ -722,27 +725,33 @@ public class Diary extends Activity
 
         else if (intent.getType().startsWith(AUDIO))
         {
-                Uri audio =
-                    intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            // Get the audio
+            Uri audio =
+                intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-                if (audio.getScheme().equalsIgnoreCase(CONTENT))
-                    audio = resolveContent(audio);
+            // Resolve content uri
+            if (audio.getScheme().equalsIgnoreCase(CONTENT))
+                audio = resolveContent(audio);
 
-                addAudio(audio, true);
+            addAudio(audio, true);
         }
 
         else if (intent.getType().startsWith(VIDEO))
         {
-                Uri video =
-                    intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            // Get the video
+            Uri video =
+                intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-                if (video.getScheme().equalsIgnoreCase(CONTENT))
-                    video = resolveContent(video);
+            // Resolve content uri
+            if (video.getScheme().equalsIgnoreCase(CONTENT))
+                video = resolveContent(video);
 
-                addVideo(video, true);
+            addVideo(video, true);
         }
 
+        // Reset the flag
         haveMedia = false;
+        // Reset the intent
         intent.setAction(Intent.ACTION_DEFAULT);
     }
 
@@ -830,6 +839,7 @@ public class Diary extends Activity
                                  date.get(Calendar.MONTH),
                                  date.get(Calendar.DATE));
 
+        // Get the decorators
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
         decorators.add(new EntryDecorator(getEntries()));
         CustomCalendarView calendarView = dialog.getCalendarView();
@@ -846,22 +856,6 @@ public class Diary extends Activity
                              date.get(Calendar.MONTH),
                              date.get(Calendar.DATE));
         dialog.show();
-    }
-
-    // alertDialog
-    private AlertDialog alertDialog(int title, int message,
-                                    DialogInterface.OnClickListener listener)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-
-        // Add the buttons
-        builder.setPositiveButton(android.R.string.ok, listener);
-        builder.setNegativeButton(android.R.string.cancel, listener);
-
-        // Create the AlertDialog
-        return builder.create();
     }
 
     // addMedia
