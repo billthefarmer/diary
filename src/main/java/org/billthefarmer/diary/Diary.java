@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.GestureDetector;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -523,6 +524,21 @@ public class Diary extends Activity
                 getActionBar().setDisplayHomeAsUpEnabled(false);
                 markdownView.clearHistory();
                 shown = false;
+            }
+        });
+
+        if (textView != null)
+            textView.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            // onFocusChange
+            @Override
+            public void onFocusChange (View v, boolean hasFocus)
+            {
+                // Hide keyboard
+                InputMethodManager imm = (InputMethodManager)
+                    getSystemService(INPUT_METHOD_SERVICE);
+                if (!hasFocus)
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
     }
