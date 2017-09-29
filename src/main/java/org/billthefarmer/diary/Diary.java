@@ -342,20 +342,30 @@ public class Diary extends Activity
         switch (requestCode)
         {
         case ADD_MEDIA:
+            // Get uri
             Uri uri = data.getData();
 
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, uri.toString());
+
+            // Resolve content uri
             if (uri.getScheme().equalsIgnoreCase(CONTENT))
                 uri = resolveContent(uri);
 
+            // Get path
             String path = uri.toString();
 
             if (path != null)
             {
+                // Get type
                 MimeTypeMap map = MimeTypeMap.getSingleton();
                 String ext = map.getFileExtensionFromUrl(path);
                 String type = map.getMimeTypeFromExtension(ext);
 
-                if (type.startsWith(IMAGE))
+                if (type == null)
+                    addLink(uri, uri.getLastPathSegment(), false);
+
+                else if (type.startsWith(IMAGE))
                     addImage(uri, false);
 
                 else if (type.startsWith(AUDIO))
@@ -436,7 +446,7 @@ public class Diary extends Activity
             public void onPageFinished (WebView view, 
                                         String url)
             {
-                if (view.canGoBack() && !url.startsWith(FILE))
+                if (view.canGoBack())
                 {
                     getActionBar().setDisplayHomeAsUpEnabled(true);
                     dirty = true;
@@ -1344,7 +1354,7 @@ public class Diary extends Activity
     // addLink
     private void addLink(Uri uri, String title, boolean append)
     {
-        if (title == null)
+        if ((title == null) || (title.length() == 0))
             title = uri.getLastPathSegment();
 
         String url = uri.toString();
