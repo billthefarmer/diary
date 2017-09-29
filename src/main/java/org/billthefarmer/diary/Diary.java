@@ -116,9 +116,9 @@ public class Diary extends Activity
     private final static String IMAGE_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";    
     private final static String AUDIO_TEMPLATE =
-        "<audio controls>\n  <source src=\"%s\" type=\"%s\" />\n</audio>\n";
+        "<audio controls src=\"%s\"></audio>\n";
     private final static String VIDEO_TEMPLATE =
-        "<video controls>\n  <source src=\"%s\" type=\"%s\" />\n</video>\n";
+        "<video controls src=\"%s\"></video>\n";
     private final static String FILE = "file:///";
     private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String ANDROID_DATA = "Android/data";
@@ -140,7 +140,7 @@ public class Diary extends Activity
 
     private float minScale = 1000;
     private boolean canSwipe = true;
-    private boolean haveFile = false;
+    private boolean haveMedia = false;
 
     private String folder = DIARY;
 
@@ -298,8 +298,8 @@ public class Diary extends Activity
         case R.id.goToDate:
             goToDate(currEntry);
             break;
-        case R.id.addImage:
-            addImage();
+        case R.id.addMedia:
+            addMedia();
             break;
         case R.id.editStyles:
             editStyles();
@@ -346,23 +346,30 @@ public class Diary extends Activity
         {
         case ADD_MEDIA:
             Uri uri = data.getData();
-            String path = FileUtils.getPath(this, uri);
+
+            if (uri.getScheme().equalsIgnoreCase(CONTENT))
+                uri = resolveContent(uri);
+
+            String path = uri.toString();
             String type = null;
 
             if (path != null)
             {
                 MimeTypeMap map = MimeTypeMap.getSingleton();
-                String extension = map.getFileExtensionFromUrl(path);
-                type = map.getMimeTypeFromExtension(extension);
+                String ext = map.getFileExtensionFromUrl(path);
+                type = map.getMimeTypeFromExtension(ext);
 
                 if (type.startsWith(IMAGE))
                     addImage(uri, false);
 
                 else if (type.startsWith(AUDIO))
-                    addAudio(uri, type, false);
+                    addAudio(uri, false);
 
                 else if (type.startsWith(VIDEO))
-                    addVideo(uri, type, false);
+                    addVideo(uri, false);
+
+                else
+                    addLink(uri, uri.getLastPathSegment(), false);
             }
             break;
         }
@@ -374,8 +381,8 @@ public class Diary extends Activity
     {
         changeDate(new GregorianCalendar(year, month, day));
 
-        if (haveFile)
-            fileAdd(getIntent());
+        if (haveMedia)
+            addMedia(getIntent());
     }
 
     // onDateSet
@@ -385,8 +392,8 @@ public class Diary extends Activity
     {
         changeDate(new GregorianCalendar(year, month, day));
 
-        if (haveFile)
-            fileAdd(getIntent());
+        if (haveMedia)
+            addMedia(getIntent());
     }
 
     // dispatchTouchEvent
@@ -578,7 +585,7 @@ public class Diary extends Activity
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
             intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
-            haveFile = true;
+            haveMedia = true;
             goToDate(currEntry);
         }
     }
@@ -637,8 +644,8 @@ public class Diary extends Activity
         return builder.toString();
     }
 
-    // fileAdd
-    private void fileAdd(Intent intent)
+    // addMedia
+    private void addMedia(Intent intent)
     {
         if (BuildConfig.DEBUG)
         {
@@ -665,7 +672,7 @@ public class Diary extends Activity
             if ((uri != null) && (uri.getScheme() != null) &&
                 (uri.getScheme().equalsIgnoreCase(HTTP) ||
                  uri.getScheme().equalsIgnoreCase(HTTPS)))
-                addLink(text, intent.getStringExtra(Intent.EXTRA_TITLE));
+                addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE), true);
 
             else
                 textView.append(text);
@@ -678,6 +685,9 @@ public class Diary extends Activity
                 // Get the image uri
                 Uri image =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+                if (image.getScheme().equalsIgnoreCase(CONTENT))
+                    image = resolveContent(image);
 
                 // Attempt to get web uri
                 String path = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -698,15 +708,15 @@ public class Diary extends Activity
 
             else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
             {
-                try
+                ArrayList<Uri> images =
+                    intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                for (Uri image : images)
                 {
-                    ArrayList<Uri> images =
-                        intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-                    for (Uri image : images)
-                        addImage(image, true);
-                }
+                    if (image.getScheme().equalsIgnoreCase(CONTENT))
+                        image = resolveContent(image);
 
-                catch (Exception e) {}
+                    addImage(image, true);
+                }
             }
         }
 
@@ -714,21 +724,25 @@ public class Diary extends Activity
         {
                 Uri audio =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                String type = intent.getType();
 
-                addAudio(audio, type, true);
+                if (audio.getScheme().equalsIgnoreCase(CONTENT))
+                    audio = resolveContent(audio);
+
+                addAudio(audio, true);
         }
 
         else if (intent.getType().startsWith(VIDEO))
         {
                 Uri video =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                String type = intent.getType();
 
-                addVideo(video, type, true);
+                if (video.getScheme().equalsIgnoreCase(CONTENT))
+                    video = resolveContent(video);
+
+                addVideo(video, true);
         }
 
-        haveFile = false;
+        haveMedia = false;
         intent.setAction(Intent.ACTION_DEFAULT);
     }
 
@@ -850,8 +864,8 @@ public class Diary extends Activity
         return builder.create();
     }
 
-    // addImage
-    public void addImage()
+    // addMedia
+    public void addMedia()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -1316,9 +1330,6 @@ public class Diary extends Activity
     // addImage
     private  void addImage(Uri image, boolean append)
     {
-        if (image.getScheme().equalsIgnoreCase(CONTENT))
-            image = resolveContent(image);
-
         String imageText = String.format(IMAGE_TEMPLATE,
                                          image.getLastPathSegment(),
                                          image.toString());
@@ -1337,26 +1348,33 @@ public class Diary extends Activity
     }
 
     // addLink
-    private void addLink(String url, String title)
+    private void addLink(Uri uri, String title, boolean append)
     {
         if (title == null)
-            title = url;
+            title = uri.getLastPathSegment();
 
+        String url = uri.toString();
         String linkText = String.format(LINK_TEMPLATE, title, url);
-        textView.append(linkText);
+
+        if (append)
+            textView.append(linkText);
+
+        else
+        {
+            Editable editable = textView.getEditableText();
+            int position = textView.getSelectionStart();
+            editable.insert(position, linkText);
+        }
 
         String text = textView.getText().toString();
         markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // addAudio
-    private void addAudio(Uri audio, String type, boolean append)
+    private void addAudio(Uri audio, boolean append)
     {
-        if (audio.getScheme().equalsIgnoreCase(CONTENT))
-            audio = resolveContent(audio);
-
         String audioText = String.format(AUDIO_TEMPLATE,
-                                         audio.toString(), type);
+                                         audio.toString());
         if (append)
             textView.append(audioText);
 
@@ -1372,13 +1390,10 @@ public class Diary extends Activity
     }
 
     // addVideo
-    private void addVideo(Uri video, String type, boolean append)
+    private void addVideo(Uri video, boolean append)
     {
-        if (video.getScheme().equalsIgnoreCase(CONTENT))
-            video = resolveContent(video);
-
         String videoText = String.format(VIDEO_TEMPLATE,
-                                         video.toString(), type);
+                                         video.toString());
         if (append)
             textView.append(videoText);
 

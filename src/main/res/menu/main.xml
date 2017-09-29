@@ -44,9 +44,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/goToDate"
       android:icon="@drawable/ic_action_go_to_date" />
   <item
-      android:id="@+id/addImage"
+      android:id="@+id/addMedia"
       android:showAsAction="ifRoom"
-      android:title="@string/addImage"
+      android:title="@string/addMedia"
       android:icon="@drawable/ic_action_picture" />
   <item
       android:id="@+id/editStyles"

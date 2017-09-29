@@ -25,7 +25,7 @@
   <string name="prevEntry">Précédent</string>
   <string name="nextEntry">Suivant</string>
   <string name="goToDate">Aller à la date…</string>
-  <string name="addImage">Ajouter une image…</string>
+  <string name="addMedia">Ajouter des médias…</string>
   <string name="editStyles">Modifier les styles…</string>
   <string name="settings">Paramètres</string>
   <string name="calendar">Calendrier</string>
