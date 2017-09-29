@@ -18,7 +18,7 @@ The toolbar icons are, from left to right:
 * **Next** - show the next entry or today if next
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
-* **Add image** - show a media picker to select an image
+* **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Settings** - show the settings
 
@@ -51,19 +51,22 @@ in diary entries so markdown text `![cat](cat.jpg)` will display
 `cat.jpg` stored in the current month folder which is
 `Diary/<year>/<month>` on the sdcard.
 
-You may either add images from media providers like file managers or
-image managers or receive images sent by other apps. Images added will
-be added at the current cursor position. Images sent by other apps
-will pop up a date picker. The image or images will be appended to the
-selected page. Content URIs (`content://`) sent by some media
-providers and apps will be resolved to file URIs (`file:///`) if
-possible.
-
 ## Links
 You may put links in diary pages, so
 `[DuckDuckGo](https://duckduckgo.com)` will show a link to
 DuckDuckGo. Links will be followed if touched. Use the back button in
 the toolbar or the navigation bar to return to the diary page.
+
+## Media
+You may either add media from media providers like file managers or
+image managers or receive media sent by other apps. Media added will
+be added at the current cursor position. Media sent by other apps will
+pop up a date picker. The media will be appended to the selected
+page. Content URIs (`content://`) sent by some media providers and
+apps will be resolved to file URIs (`file:///`) if possible. Images
+will be added as above, audio and video will be added as an HTML5
+media player (`<audio|video controls src="<url>"></audio|video>`),
+text clips will be added as above, URLs will be added as a link.
 
 ## Styles
 You may add custom styles to the markdown formatting by placing a
