@@ -399,135 +399,191 @@ public class Diary extends Activity
     {
         if (textView != null)
             textView.addTextChangedListener(new TextWatcher()
-        {
-            // afterTextChanged
-            @Override
-            public void afterTextChanged (Editable s)
-            {
-                // Check markdown
-                if (markdown)
-                    dirty = true;
-            }
+                {
+                    // afterTextChanged
+                    @Override
+                    public void afterTextChanged (Editable s)
+                    {
+                        // Check markdown
+                        if (markdown)
+                            dirty = true;
+                    }
 
-            // beforeTextChanged
-            @Override
-            public void beforeTextChanged (CharSequence s,
-                                           int start,
-                                           int count,
-                                           int after) {}
-            // onTextChanged
-            @Override
-            public void onTextChanged (CharSequence s,
-                                       int start,
-                                       int before,
-                                       int count) {}
-        });
+                    // beforeTextChanged
+                    @Override
+                    public void beforeTextChanged (CharSequence s,
+                                                   int start,
+                                                   int count,
+                                                   int after) {}
+                    // onTextChanged
+                    @Override
+                    public void onTextChanged (CharSequence s,
+                                               int start,
+                                               int before,
+                                               int count) {}
+                });
 
         if (markdownView != null)
-            markdownView.setWebViewClient(new WebViewClient()
         {
-            // onPageFinished
-            @Override
-            public void onPageFinished (WebView view, String url)
-            {
-                // Get home folder
-                String home = Uri.fromFile(getHome()).toString();
-
-                // Check if in home folder
-                if (view.canGoBack() && !url.startsWith(home))
+            markdownView.setWebViewClient(new WebViewClient()
                 {
-                    getActionBar().setDisplayHomeAsUpEnabled(true);
-                    dirty = true;
-                }
+                    // onPageFinished
+                    @Override
+                    public void onPageFinished (WebView view, String url)
+                    {
+                        // Get home folder
+                        String home = Uri.fromFile(getHome()).toString();
 
-                else
+                        // Check if in home folder
+                        if (view.canGoBack() && !url.startsWith(home))
+                        {
+                            getActionBar().setDisplayHomeAsUpEnabled(true);
+                            dirty = true;
+                        }
+
+                        else
+                        {
+                            getActionBar().setDisplayHomeAsUpEnabled(false);
+                            markdownView.clearHistory();
+                        }
+                    }
+
+                    // onScaleChanged
+                    @Override
+                    public void onScaleChanged (WebView view,
+                                                float oldScale,
+                                                float newScale)
+                    {
+                        if (minScale > oldScale)
+                            minScale = oldScale;
+                        canSwipe = (Math.abs(newScale - minScale) <
+                                    minScale / SCALE_RATIO);
+                    }
+                });
+
+            markdownView.setOnLongClickListener(new View.OnLongClickListener()
                 {
-                    getActionBar().setDisplayHomeAsUpEnabled(false);
-                    markdownView.clearHistory();
-                }
-            }
-
-            // onScaleChanged
-            @Override
-            public void onScaleChanged (WebView view,
-                                        float oldScale,
-                                        float newScale)
-            {
-                if (minScale > oldScale)
-                    minScale = oldScale;
-                canSwipe = (Math.abs(newScale - minScale) <
-                            minScale / SCALE_RATIO);
-            }
-        });
+                    // On long click
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        // Reveal button
+                        edit.setVisibility(View.VISIBLE);
+                        return true;
+                    }
+                });
+        }
 
         if (accept != null)
-            accept.setOnClickListener(new View.OnClickListener()
         {
-            // On click
-            @Override
-            public void onClick(View v)
-            {
-                // Check flag
-                if (dirty)
+            accept.setOnClickListener(new View.OnClickListener()
                 {
-                    // Get text
-                    String text = textView.getText().toString();
-                    markdownView.loadMarkdown(getBaseUrl(), text,
-                                              getStyles());
-                    // Clear flag
-                    dirty = false;
-                }
+                    // On click
+                    @Override
+                    public void onClick(View v)
+                    {
+                        // Check flag
+                        if (dirty)
+                        {
+                            // Get text
+                            String text = textView.getText().toString();
+                            markdownView.loadMarkdown(getBaseUrl(), text,
+                                                      getStyles());
+                            // Clear flag
+                            dirty = false;
+                        }
 
-                // Animation
-                animateAccept();
+                        // Animation
+                        animateAccept();
 
-                // Set visibility
-                markdownView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.INVISIBLE);
-                accept.setVisibility(View.INVISIBLE);
-                edit.setVisibility(View.VISIBLE);
+                        // Set visibility
+                        markdownView.setVisibility(View.VISIBLE);
+                        scrollView.setVisibility(View.INVISIBLE);
+                        accept.setVisibility(View.INVISIBLE);
+                        edit.setVisibility(View.VISIBLE);
 
-                shown = true;
-            }
-        });
+                        shown = true;
+                    }
+                });
+
+            accept.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    // On long click
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        // Hide button
+                        v.setVisibility(View.INVISIBLE);
+                        return true;
+                    }
+                });
+        }
 
         if (edit != null)
-            edit.setOnClickListener(new View.OnClickListener()
         {
-            // On click
-            @Override
-            public void onClick(View v)
-            {
+            edit.setOnClickListener(new View.OnClickListener()
+                {
+                    // On click
+                    @Override
+                    public void onClick(View v)
+                    {
 
-                // Animation
-                animateEdit();
+                        // Animation
+                        animateEdit();
 
-                // Set visibility
-                markdownView.setVisibility(View.INVISIBLE);
-                scrollView.setVisibility(View.VISIBLE);
-                accept.setVisibility(View.VISIBLE);
-                edit.setVisibility(View.INVISIBLE);
+                        // Set visibility
+                        markdownView.setVisibility(View.INVISIBLE);
+                        scrollView.setVisibility(View.VISIBLE);
+                        accept.setVisibility(View.VISIBLE);
+                        edit.setVisibility(View.INVISIBLE);
 
-                getActionBar().setDisplayHomeAsUpEnabled(false);
-                markdownView.clearHistory();
-                shown = false;
-            }
-        });
+                        getActionBar().setDisplayHomeAsUpEnabled(false);
+                        markdownView.clearHistory();
+                        shown = false;
+                    }
+                });
+
+            edit.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    // On long click
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        // Hide button
+                        v.setVisibility(View.INVISIBLE);
+                        return true;
+                    }
+                });
+        }
 
         if (textView != null)
-            textView.setOnFocusChangeListener(new View.OnFocusChangeListener()
         {
-            // onFocusChange
-            @Override
-            public void onFocusChange (View v, boolean hasFocus)
-            {
-                // Hide keyboard
-                InputMethodManager imm = (InputMethodManager)
-                    getSystemService(INPUT_METHOD_SERVICE);
-                if (!hasFocus)
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            }
-        });
+            textView.setOnFocusChangeListener(new View.OnFocusChangeListener()
+                {
+                    // onFocusChange
+                    @Override
+                    public void onFocusChange (View v, boolean hasFocus)
+                    {
+                        // Hide keyboard
+                        InputMethodManager imm = (InputMethodManager)
+                            getSystemService(INPUT_METHOD_SERVICE);
+                        if (!hasFocus)
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                });
+
+            textView.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    // On long click
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        // Reveal button
+                        accept.setVisibility(View.VISIBLE);
+                        return true;
+                    }
+                });
+        }
     }
 
     // animateAccept

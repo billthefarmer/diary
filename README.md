@@ -88,8 +88,7 @@ text clips will be added as above, URLs will be added as a link.
 You may add custom styles to the markdown formatting by placing a
 `styles.css` file in the `Diary/css` folder, which will replace the
 built in styles file which simply limits the width of images to the
-page width. The simplest way to create a styles file is to write it on
-a diary page, and then use a file manager to move and rename it.
+page width. Use the built in editor to create a styles file.
 
 **Caution** - There is no such thing as a markdown syntax error, but
 syntax errors in a styles file may cause unpredictable results and

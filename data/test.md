@@ -39,10 +39,6 @@ laborum.
   2. Two items
 * Item
 
-## Ordered list
-1. One item
-2. Two items
-
 ## Link
 [Diary](https://github.com/billthefarmer/diary)
 <https://github.com/billthefarmer/diary>
