@@ -335,9 +335,6 @@ public class Diary extends Activity
             // Get uri
             Uri uri = data.getData();
 
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, uri.toString());
-
             // Resolve content uri
             if (uri.getScheme().equalsIgnoreCase(CONTENT))
                 uri = resolveContent(uri);
@@ -712,21 +709,6 @@ public class Diary extends Activity
     // addMedia
     private void addMedia(Intent intent)
     {
-        if (BuildConfig.DEBUG)
-        {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null)
-            {
-                for (String key : bundle.keySet())
-                {
-                    Object value = bundle.get(key);
-                    Log.d(TAG, String.format("%s %s (%s)", key,
-                                             value.toString(),
-                                             value.getClass().getName()));
-                }
-            }
-        }
-
         if (intent.getType().equalsIgnoreCase(TEXT_PLAIN))
         {
             // Get the text
