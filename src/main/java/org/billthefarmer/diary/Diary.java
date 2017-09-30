@@ -18,13 +18,11 @@ package org.billthefarmer.diary;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -40,7 +38,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -83,25 +80,19 @@ public class Diary extends Activity
     implements DatePickerDialog.OnDateSetListener,
                CustomCalendarDialog.OnDateSetListener
 {
-    public final static int VERSION_NOUGAT = 24;
-
     private final static int ADD_MEDIA = 1;
 
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 100;
+
+    private final static String TAG = "Diary";
 
     public final static String PREF_ABOUT = "pref_about";
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_MARKDOWN = "pref_markdown";
 
-    private final static String TAG = "Diary";
-
     public final static String DIARY = "Diary";
-    public final static String STRING = "string";
-    public final static String DATE = "date";
-    public final static String ENTRIES = "entries";
-    public final static String DATEPICKER = "datePicker";
 
     private final static String YEAR = "year";
     private final static String MONTH = "month";
@@ -111,16 +102,14 @@ public class Diary extends Activity
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
-    private final static String CSS = "css/styles.css";
+    private final static String CSS_STYLES = "css/styles.css";
     private final static String IMAGE_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";    
     private final static String AUDIO_TEMPLATE =
         "<audio controls src=\"%s\"></audio>\n";
     private final static String VIDEO_TEMPLATE =
         "<video controls src=\"%s\"></video>\n";
-    private final static String FILE = "file:///";
     private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
-    private final static String ANDROID_DATA = "Android/data";
     private final static String HTTP = "http";
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
@@ -353,15 +342,10 @@ public class Diary extends Activity
             if (uri.getScheme().equalsIgnoreCase(CONTENT))
                 uri = resolveContent(uri);
 
-            // Get path
-            String path = uri.toString();
-
-            if (path != null)
+            if (uri != null)
             {
                 // Get type
-                MimeTypeMap map = MimeTypeMap.getSingleton();
-                String ext = map.getFileExtensionFromUrl(path);
-                String type = map.getMimeTypeFromExtension(ext);
+                String type = FileUtils.getMimeType(this, uri);
 
                 if (type == null)
                     addLink(uri, uri.getLastPathSegment(), false);
@@ -444,10 +428,13 @@ public class Diary extends Activity
         {
             // onPageFinished
             @Override
-            public void onPageFinished (WebView view, 
-                                        String url)
+            public void onPageFinished (WebView view, String url)
             {
-                if (view.canGoBack())
+                // Get home folder
+                String home = Uri.fromFile(getHome()).toString();
+
+                // Check if in home folder
+                if (view.canGoBack() && !url.startsWith(home))
                 {
                     getActionBar().setDisplayHomeAsUpEnabled(true);
                     dirty = true;
@@ -602,7 +589,7 @@ public class Diary extends Activity
     // mediaCheck
     private void mediaCheck()
     {
-        // Check for sent files
+        // Check for sent media
         Intent intent = getIntent();
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
             intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
@@ -799,7 +786,7 @@ public class Diary extends Activity
     // getStyles
     private String getStyles()
     {
-        File cssFile = new File(getHome(), CSS);
+        File cssFile = new File(getHome(), CSS_STYLES);
 
         if (cssFile.exists())
         {
@@ -896,7 +883,7 @@ public class Diary extends Activity
     // editStyles
     public void editStyles()
     {
-        File file = new File(getHome(), CSS);
+        File file = new File(getHome(), CSS_STYLES);
         Uri uri = Uri.fromFile(file);
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
