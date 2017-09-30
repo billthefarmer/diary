@@ -42,17 +42,18 @@ Depending on the device and orientation, some items may be on the
 menu.
 
 ## Swipe left and right
-Swipe left and right in the diary will show the next or previous day,
-or in the custom calendar will show the next or previous month.
+Swipe left and right in the diary page will show the next or previous
+day, or in the custom calendar will show the next or previous month.
 
 ## Swipe up and down
 Swipe up and down in the custom calendar will show previous or next
 year.
 
 ## Editing
-In markdown mode the floating **Edit** button floating above the page
-allows editing entries. The **Done** button restores the formatted
-view.
+In markdown mode the **Edit** button floating above the page allows
+editing entries. The **Accept** button restores the formatted view. A
+long touch on the button hides it until the device is rotated or a
+long touch on the page.
 
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
