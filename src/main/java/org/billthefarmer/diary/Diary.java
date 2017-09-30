@@ -469,7 +469,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         edit.setVisibility(View.VISIBLE);
-                        return true;
+                        return false;
                     }
                 });
         }
@@ -580,7 +580,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         accept.setVisibility(View.VISIBLE);
-                        return true;
+                        return false;
                     }
                 });
         }
