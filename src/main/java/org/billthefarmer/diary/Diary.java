@@ -889,13 +889,17 @@ public class Diary extends Activity
                                  date.get(Calendar.YEAR),
                                  date.get(Calendar.MONTH),
                                  date.get(Calendar.DATE));
+        // Show the dialog
+        dialog.show();
 
         // Get the decorators
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
         decorators.add(new EntryDecorator(getEntries()));
         CustomCalendarView calendarView = dialog.getCalendarView();
         calendarView.setDecorators(decorators);
-        dialog.show();
+
+        // Refresh the calendar
+        calendarView.refreshCalendar(date);
     }
 
     // showDatePickerDialog
@@ -906,6 +910,7 @@ public class Diary extends Activity
                              date.get(Calendar.YEAR),
                              date.get(Calendar.MONTH),
                              date.get(Calendar.DATE));
+        // Show the dialog
         dialog.show();
     }
 
