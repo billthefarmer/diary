@@ -438,12 +438,18 @@ public class Diary extends Activity
                         if (view.canGoBack() && !url.startsWith(home))
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(true);
+
+                            // Get page title
+                            if (markdownView.getTitle() != null)
+                                setTitle(markdownView.getTitle());
+
                             dirty = true;
                         }
 
                         else
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(false);
+                            setTitleDate(currEntry.getTime());
                             markdownView.clearHistory();
                         }
                     }
@@ -717,18 +723,35 @@ public class Diary extends Activity
             // Get the text
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-            // Check if it's an URL
-            Uri uri = Uri.parse(text);
-            if ((uri != null) && (uri.getScheme() != null) &&
-                (uri.getScheme().equalsIgnoreCase(HTTP) ||
-                 uri.getScheme().equalsIgnoreCase(HTTPS)))
-                addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE), true);
-
-            else
+            // Check text
+            if (text != null)
             {
-                textView.append(text);
-                text = textView.getText().toString();
-                markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+                // Check if it's an URL
+                Uri uri = Uri.parse(text);
+                if ((uri != null) && (uri.getScheme() != null) &&
+                    (uri.getScheme().equalsIgnoreCase(HTTP) ||
+                     uri.getScheme().equalsIgnoreCase(HTTPS)))
+                    addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE),
+                            true);
+                else
+                {
+                    textView.append(text);
+                    text = textView.getText().toString();
+                    markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+                }
+            }
+
+            // Get uri
+            Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+            // Check uri
+            if (uri != null)
+            {
+                // Resolve content uri
+                if (uri.getScheme().equalsIgnoreCase(CONTENT))
+                    uri = resolveContent(uri);
+
+                addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE), true);
             }
         }
 
@@ -1293,7 +1316,7 @@ public class Diary extends Activity
     // setDate
     private void setDate(Calendar date)
     {
-        setTitleDate(new Date(date.getTimeInMillis()));
+        setTitleDate(date.getTime());
 
         int year = date.get(Calendar.YEAR);
         int month = date.get(Calendar.MONTH);
