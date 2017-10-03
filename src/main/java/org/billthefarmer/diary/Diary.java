@@ -168,14 +168,17 @@ public class Diary extends Activity
         gestureDetector =
             new GestureDetector(this, new GestureListener());
 
-        if (savedInstanceState == null)
-            today();
-
         // Get preferences
         getPreferences();
 
-        // Check for sent media
-        mediaCheck();
+        if (savedInstanceState == null)
+        {
+            // Set the date
+            today();
+
+            // Check for sent media
+            mediaCheck();
+        }
     }
 
     // onRestoreInstanceState
@@ -803,7 +806,7 @@ public class Diary extends Activity
         // Reset the flag
         haveMedia = false;
         // Reset the intent
-        intent.setAction(Intent.ACTION_DEFAULT);
+        // intent.setAction(Intent.ACTION_DEFAULT);
     }
 
     // getBaseUrl

@@ -56,7 +56,7 @@ public class QueryHandler extends AsyncQueryHandler
     private static QueryHandler queryHandler;
 
     // QueryHandler
-    public QueryHandler(ContentResolver resolver)
+    private QueryHandler(ContentResolver resolver)
     {
         super(resolver);
     }
