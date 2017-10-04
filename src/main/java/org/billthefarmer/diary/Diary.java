@@ -177,7 +177,7 @@ public class Diary extends Activity
             today();
 
             // Check for sent media
-            mediaCheck();
+            mediaCheck(getIntent());
         }
     }
 
@@ -649,10 +649,9 @@ public class Diary extends Activity
     }
 
     // mediaCheck
-    private void mediaCheck()
+    private void mediaCheck(Intent intent)
     {
         // Check for sent media
-        Intent intent = getIntent();
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
             intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
@@ -709,7 +708,8 @@ public class Diary extends Activity
             QueryHandler.insertEvent(this, startTime.getTimeInMillis(),
                                      endTime.getTimeInMillis(), title);
             // Insert ':' char
-            builder.insert(matcher.start() + index++, ':');
+            builder.insert(matcher.start() + index, ':');
+            index++;
         }
 
         return builder.toString();
@@ -828,8 +828,6 @@ public class Diary extends Activity
 
         // Reset the flag
         haveMedia = false;
-        // Reset the intent
-        // intent.setAction(Intent.ACTION_DEFAULT);
     }
 
     // getBaseUrl
@@ -921,7 +919,11 @@ public class Diary extends Activity
         // Get the decorators
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
         decorators.add(new EntryDecorator(getEntries()));
+
+        // Get the calendar
         CustomCalendarView calendarView = dialog.getCalendarView();
+
+        // Set the decorators
         calendarView.setDecorators(decorators);
 
         // Refresh the calendar
@@ -1623,6 +1625,7 @@ public class Diary extends Activity
     {
         private List<Calendar> entries;
 
+        // EntryDecorator
         private EntryDecorator(List<Calendar> entries)
         {
             this.entries = entries;
