@@ -502,12 +502,6 @@ public class Diary extends Activity
                         // Animation
                         animateAccept();
 
-                        // Set visibility
-                        markdownView.setVisibility(View.VISIBLE);
-                        scrollView.setVisibility(View.INVISIBLE);
-                        accept.setVisibility(View.INVISIBLE);
-                        edit.setVisibility(View.VISIBLE);
-
                         shown = true;
                     }
                 });
@@ -536,12 +530,6 @@ public class Diary extends Activity
 
                         // Animation
                         animateEdit();
-
-                        // Set visibility
-                        markdownView.setVisibility(View.INVISIBLE);
-                        scrollView.setVisibility(View.VISIBLE);
-                        accept.setVisibility(View.VISIBLE);
-                        edit.setVisibility(View.INVISIBLE);
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         markdownView.clearHistory();
@@ -596,43 +584,32 @@ public class Diary extends Activity
     public void animateAccept()
     {
         // Animation
-        Animation viewClose =
-            AnimationUtils.loadAnimation(this,
-                                         R.anim.activity_close_exit);
-        Animation viewOpen =
-            AnimationUtils.loadAnimation(this,
-                                         R.anim.activity_open_enter);
 
-        scrollView.startAnimation(viewClose);
-        markdownView.startAnimation(viewOpen);
+        startAnimation(scrollView, R.anim.activity_close_exit, View.INVISIBLE);
+        startAnimation(markdownView, R.anim.activity_open_enter, View.VISIBLE);
 
-        Animation buttonFlipOut =
-            AnimationUtils.loadAnimation(this, R.anim.flip_out);
-        Animation buttonFlipIn =
-            AnimationUtils.loadAnimation(this, R.anim.flip_in);
-
-        accept.startAnimation(buttonFlipOut);
-        edit.startAnimation(buttonFlipIn);
-    }
+        startAnimation(accept, R.anim.flip_out, View.INVISIBLE);
+        startAnimation(edit, R.anim.flip_in, View.VISIBLE);
+   }
 
     // animateEdit
     private void animateEdit()
     {
-        Animation viewClose =
-            AnimationUtils.loadAnimation(this, R.anim.activity_close_exit);
-        Animation viewOpen =
-            AnimationUtils.loadAnimation(this, R.anim.activity_open_enter);
+        // Animation
 
-        markdownView.startAnimation(viewClose);
-        scrollView.startAnimation(viewOpen);
+        startAnimation(markdownView, R.anim.activity_close_exit, View.INVISIBLE);
+        startAnimation(scrollView, R.anim.activity_open_enter, View.VISIBLE);
 
-        Animation buttonFlipOut =
-            AnimationUtils.loadAnimation(this, R.anim.flip_out);
-        Animation buttonFlipIn =
-            AnimationUtils.loadAnimation(this, R.anim.flip_in);
+        startAnimation(edit, R.anim.flip_out, View.INVISIBLE);
+        startAnimation(accept, R.anim.flip_in, View.VISIBLE);
+    }
 
-        edit.startAnimation(buttonFlipOut);
-        accept.startAnimation(buttonFlipIn);
+    // startAnimation
+    private void startAnimation(View view, int anim, int visibility)
+    {
+        Animation animation = AnimationUtils.loadAnimation(this, anim);
+        view.startAnimation(animation);
+        view.setVisibility(visibility);
     }
 
     // getPreferences
