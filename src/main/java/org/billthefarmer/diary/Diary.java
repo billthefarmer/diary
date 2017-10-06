@@ -138,7 +138,7 @@ public class Diary extends Activity
     private EditText textView;
     private ScrollView scrollView;
 
-    private MarkdownView markdownView;
+    private DiaryView diaryView;
 
     private GestureDetector gestureDetector;
 
@@ -154,12 +154,12 @@ public class Diary extends Activity
 
         textView = (EditText) findViewById(R.id.text);
         scrollView = (ScrollView) findViewById(R.id.scroll);
-        markdownView = (MarkdownView) findViewById(R.id.markdown);
+        diaryView = (DiaryView) findViewById(R.id.markdown);
 
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
 
-        WebSettings settings = markdownView.getSettings();
+        WebSettings settings = diaryView.getSettings();
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
 
@@ -212,7 +212,7 @@ public class Diary extends Activity
         {
             // Get text
             String text = textView.getText().toString();
-            markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+            diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
         }
 
         setVisibility();
@@ -307,15 +307,15 @@ public class Diary extends Activity
     @Override
     public void onBackPressed()
     {
-        if (markdownView.canGoBack())
+        if (diaryView.canGoBack())
         {
-            markdownView.goBack();
+            diaryView.goBack();
 
-            if (!markdownView.canGoBack())
+            if (!diaryView.canGoBack())
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
                 String text = textView.getText().toString();
-                markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+                diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
             }
        }
 
@@ -423,9 +423,9 @@ public class Diary extends Activity
                                                int count) {}
                 });
 
-        if (markdownView != null)
+        if (diaryView != null)
         {
-            markdownView.setWebViewClient(new WebViewClient()
+            diaryView.setWebViewClient(new WebViewClient()
                 {
                     // onPageFinished
                     @Override
@@ -440,8 +440,8 @@ public class Diary extends Activity
                             getActionBar().setDisplayHomeAsUpEnabled(true);
 
                             // Get page title
-                            if (markdownView.getTitle() != null)
-                                setTitle(markdownView.getTitle());
+                            if (diaryView.getTitle() != null)
+                                setTitle(diaryView.getTitle());
 
                             dirty = true;
                         }
@@ -450,7 +450,7 @@ public class Diary extends Activity
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(false);
                             setTitleDate(currEntry.getTime());
-                            markdownView.clearHistory();
+                            diaryView.clearHistory();
                         }
                     }
 
@@ -467,7 +467,7 @@ public class Diary extends Activity
                     }
                 });
 
-            markdownView.setOnLongClickListener(new View.OnLongClickListener()
+            diaryView.setOnLongClickListener(new View.OnLongClickListener()
                 {
                     // On long click
                     @Override
@@ -478,6 +478,25 @@ public class Diary extends Activity
                         return false;
                     }
                 });
+
+            diaryView
+                .setOnScrollChangedListener(new DiaryView
+                                            .OnScrollChangedListener()
+                    {
+                        // onScrollChanged
+                        public void onScrollChanged (int l, int t,
+                                                     int oldl, int oldt)
+                        {
+                            // Hide button
+                            if (t > 100)
+                                edit.setVisibility(View.INVISIBLE);
+
+                            // Reveal button
+                            else
+                                edit.setVisibility(View.VISIBLE);
+
+                        }
+                    });
         }
 
         if (accept != null)
@@ -493,7 +512,7 @@ public class Diary extends Activity
                         {
                             // Get text
                             String text = textView.getText().toString();
-                            markdownView.loadMarkdown(getBaseUrl(), text,
+                            diaryView.loadMarkdown(getBaseUrl(), text,
                                                       getStyles());
                             // Clear flag
                             dirty = false;
@@ -503,7 +522,7 @@ public class Diary extends Activity
                         animateAccept();
 
                         // Set visibility
-                        markdownView.setVisibility(View.VISIBLE);
+                        diaryView.setVisibility(View.VISIBLE);
                         scrollView.setVisibility(View.INVISIBLE);
                         accept.setVisibility(View.INVISIBLE);
                         edit.setVisibility(View.VISIBLE);
@@ -538,13 +557,13 @@ public class Diary extends Activity
                         animateEdit();
 
                         // Set visibility
-                        markdownView.setVisibility(View.INVISIBLE);
+                        diaryView.setVisibility(View.INVISIBLE);
                         scrollView.setVisibility(View.VISIBLE);
                         accept.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.INVISIBLE);
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
-                        markdownView.clearHistory();
+                        diaryView.clearHistory();
                         shown = false;
                     }
                 });
@@ -604,7 +623,7 @@ public class Diary extends Activity
                                          R.anim.activity_open_enter);
 
         scrollView.startAnimation(viewClose);
-        markdownView.startAnimation(viewOpen);
+        diaryView.startAnimation(viewOpen);
 
         Animation buttonFlipOut =
             AnimationUtils.loadAnimation(this, R.anim.flip_out);
@@ -623,7 +642,7 @@ public class Diary extends Activity
         Animation viewOpen =
             AnimationUtils.loadAnimation(this, R.anim.activity_open_enter);
 
-        markdownView.startAnimation(viewClose);
+        diaryView.startAnimation(viewClose);
         scrollView.startAnimation(viewOpen);
 
         Animation buttonFlipOut =
@@ -737,7 +756,7 @@ public class Diary extends Activity
                 {
                     textView.append(text);
                     text = textView.getText().toString();
-                    markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+                    diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
                 }
             }
 
@@ -871,7 +890,7 @@ public class Diary extends Activity
             // Check if shown
             if (shown)
             {
-                markdownView.setVisibility(View.VISIBLE);
+                diaryView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.INVISIBLE);
                 accept.setVisibility(View.INVISIBLE);
                 edit.setVisibility(View.VISIBLE);
@@ -879,7 +898,7 @@ public class Diary extends Activity
 
             else
             {
-                markdownView.setVisibility(View.INVISIBLE);
+                diaryView.setVisibility(View.INVISIBLE);
                 scrollView.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.INVISIBLE);
@@ -888,7 +907,7 @@ public class Diary extends Activity
 
         else
         {
-            markdownView.setVisibility(View.INVISIBLE);
+            diaryView.setVisibility(View.INVISIBLE);
             scrollView.setVisibility(View.VISIBLE);
             accept.setVisibility(View.INVISIBLE);
             edit.setVisibility(View.INVISIBLE);
@@ -1310,7 +1329,7 @@ public class Diary extends Activity
         if (markdown)
         {
             dirty = false;
-            markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+            diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
         }
         textView.setSelection(0);
     }
@@ -1422,7 +1441,7 @@ public class Diary extends Activity
         }
 
         String text = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // addLink
@@ -1445,7 +1464,7 @@ public class Diary extends Activity
         }
 
         String text = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // addAudio
@@ -1464,7 +1483,7 @@ public class Diary extends Activity
         }
 
         String text = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // addVideo
@@ -1483,7 +1502,7 @@ public class Diary extends Activity
         }
 
         String text = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), text, getStyles());
+        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
     }
 
     // resolveContent
@@ -1530,7 +1549,7 @@ public class Diary extends Activity
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
 
-        markdownView.startAnimation(viewSwipeIn);
+        diaryView.startAnimation(viewSwipeIn);
     }
 
     // animateSwipeRight
@@ -1539,7 +1558,7 @@ public class Diary extends Activity
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
 
-        markdownView.startAnimation(viewSwipeIn);
+        diaryView.startAnimation(viewSwipeIn);
     }
 
     // onSwipeLeft

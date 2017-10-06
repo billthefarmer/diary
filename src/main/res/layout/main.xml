@@ -42,7 +42,7 @@
 
   </ScrollView>
 
-  <org.billthefarmer.markdown.MarkdownView
+  <org.billthefarmer.diary.DiaryView
       android:id="@+id/markdown"
       android:visibility="gone"
       android:layout_width="match_parent"
