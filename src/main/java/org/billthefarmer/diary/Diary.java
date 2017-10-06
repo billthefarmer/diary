@@ -488,12 +488,12 @@ public class Diary extends Activity
                                                      int oldl, int oldt)
                         {
                             // Hide button
-                            if ((t > 100) && (oldt <= 100))
+                            if ((t > SCALE_RATIO) && (oldt <= SCALE_RATIO))
                                 startAnimation(edit, R.anim.flip_out,
                                                View.INVISIBLE);
 
                             // Reveal button
-                                else if ((t < 100) && (oldt >= 100))
+                                else if ((t < SCALE_RATIO) && (oldt >= SCALE_RATIO))
                                 startAnimation(edit, R.anim.flip_in,
                                                View.VISIBLE);
 
@@ -523,12 +523,6 @@ public class Diary extends Activity
                         // Animation
                         animateAccept();
 
-                        // Set visibility
-                        // diaryView.setVisibility(View.VISIBLE);
-                        // scrollView.setVisibility(View.INVISIBLE);
-                        // accept.setVisibility(View.INVISIBLE);
-                        // edit.setVisibility(View.VISIBLE);
-
                         shown = true;
                     }
                 });
@@ -554,15 +548,8 @@ public class Diary extends Activity
                     @Override
                     public void onClick(View v)
                     {
-
                         // Animation
                         animateEdit();
-
-                        // Set visibility
-                        // diaryView.setVisibility(View.INVISIBLE);
-                        // scrollView.setVisibility(View.VISIBLE);
-                        // accept.setVisibility(View.VISIBLE);
-                        // edit.setVisibility(View.INVISIBLE);
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         diaryView.clearHistory();
@@ -1582,8 +1569,8 @@ public class Diary extends Activity
     private class GestureListener
         extends GestureDetector.SimpleOnGestureListener
     {
-        private static final int SWIPE_THRESHOLD = 100;
-        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+        private static final int SWIPE_THRESHOLD = SCALE_RATIO;
+        private static final int SWIPE_VELOCITY_THRESHOLD = SCALE_RATIO;
 
         // onDown
         @Override
