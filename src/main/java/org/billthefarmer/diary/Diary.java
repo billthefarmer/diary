@@ -488,12 +488,14 @@ public class Diary extends Activity
                                                      int oldl, int oldt)
                         {
                             // Hide button
-                            if (t > 100)
-                                edit.setVisibility(View.INVISIBLE);
+                            if ((t > 100) && (oldt <= 100))
+                                startAnimation(edit, R.anim.flip_out,
+                                               View.INVISIBLE);
 
                             // Reveal button
-                            else
-                                edit.setVisibility(View.VISIBLE);
+                                else if ((t < 100) && (oldt >= 100))
+                                startAnimation(edit, R.anim.flip_in,
+                                               View.VISIBLE);
 
                         }
                     });
@@ -522,10 +524,10 @@ public class Diary extends Activity
                         animateAccept();
 
                         // Set visibility
-                        diaryView.setVisibility(View.VISIBLE);
-                        scrollView.setVisibility(View.INVISIBLE);
-                        accept.setVisibility(View.INVISIBLE);
-                        edit.setVisibility(View.VISIBLE);
+                        // diaryView.setVisibility(View.VISIBLE);
+                        // scrollView.setVisibility(View.INVISIBLE);
+                        // accept.setVisibility(View.INVISIBLE);
+                        // edit.setVisibility(View.VISIBLE);
 
                         shown = true;
                     }
@@ -557,10 +559,10 @@ public class Diary extends Activity
                         animateEdit();
 
                         // Set visibility
-                        diaryView.setVisibility(View.INVISIBLE);
-                        scrollView.setVisibility(View.VISIBLE);
-                        accept.setVisibility(View.VISIBLE);
-                        edit.setVisibility(View.INVISIBLE);
+                        // diaryView.setVisibility(View.INVISIBLE);
+                        // scrollView.setVisibility(View.VISIBLE);
+                        // accept.setVisibility(View.VISIBLE);
+                        // edit.setVisibility(View.INVISIBLE);
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         diaryView.clearHistory();
@@ -615,43 +617,32 @@ public class Diary extends Activity
     public void animateAccept()
     {
         // Animation
-        Animation viewClose =
-            AnimationUtils.loadAnimation(this,
-                                         R.anim.activity_close_exit);
-        Animation viewOpen =
-            AnimationUtils.loadAnimation(this,
-                                         R.anim.activity_open_enter);
 
-        scrollView.startAnimation(viewClose);
-        diaryView.startAnimation(viewOpen);
+        startAnimation(scrollView, R.anim.activity_close_exit, View.INVISIBLE);
+        startAnimation(diaryView, R.anim.activity_open_enter, View.VISIBLE);
 
-        Animation buttonFlipOut =
-            AnimationUtils.loadAnimation(this, R.anim.flip_out);
-        Animation buttonFlipIn =
-            AnimationUtils.loadAnimation(this, R.anim.flip_in);
-
-        accept.startAnimation(buttonFlipOut);
-        edit.startAnimation(buttonFlipIn);
-    }
+        startAnimation(accept, R.anim.flip_out, View.INVISIBLE);
+        startAnimation(edit, R.anim.flip_in, View.VISIBLE);
+   }
 
     // animateEdit
     private void animateEdit()
     {
-        Animation viewClose =
-            AnimationUtils.loadAnimation(this, R.anim.activity_close_exit);
-        Animation viewOpen =
-            AnimationUtils.loadAnimation(this, R.anim.activity_open_enter);
+        // Animation
 
-        diaryView.startAnimation(viewClose);
-        scrollView.startAnimation(viewOpen);
+        startAnimation(diaryView, R.anim.activity_close_exit, View.INVISIBLE);
+        startAnimation(scrollView, R.anim.activity_open_enter, View.VISIBLE);
 
-        Animation buttonFlipOut =
-            AnimationUtils.loadAnimation(this, R.anim.flip_out);
-        Animation buttonFlipIn =
-            AnimationUtils.loadAnimation(this, R.anim.flip_in);
+        startAnimation(edit, R.anim.flip_out, View.INVISIBLE);
+        startAnimation(accept, R.anim.flip_in, View.VISIBLE);
+    }
 
-        edit.startAnimation(buttonFlipOut);
-        accept.startAnimation(buttonFlipIn);
+    // startAnimation
+    private void startAnimation(View view, int anim, int visibility)
+    {
+        Animation animation = AnimationUtils.loadAnimation(this, anim);
+        view.startAnimation(animation);
+        view.setVisibility(visibility);
     }
 
     // getPreferences
