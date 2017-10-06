@@ -1549,8 +1549,8 @@ public class Diary extends Activity
     private class GestureListener
         extends GestureDetector.SimpleOnGestureListener
     {
-        private static final int SWIPE_THRESHOLD = 100;
-        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+        private static final int SWIPE_THRESHOLD = SCALE_RATIO;
+        private static final int SWIPE_VELOCITY_THRESHOLD = SCALE_RATIO;
 
         // onDown
         @Override
