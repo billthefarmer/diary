@@ -25,7 +25,7 @@
   <string name="prevEntry">Precedente</string>
   <string name="nextEntry">Prossimo</string>
   <string name="goToDate">Vai alla data</string>
-  <string name="addMedia">Aggiungi supporti…</string>
+  <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili</string>
   <string name="settings">Impostazioni</string>
   <string name="calendar">Calendario</string>
@@ -44,9 +44,9 @@
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione Diary %s</string>
   <string name="licence">GNU GPLv3</string>
-  <string name="copyright">Copyright \\u00A9 2012 <a
+  <string name="copyright">Copyright \u00A9 2012 <a
   href="mailto:hola@josep-portella.com" >Josep Portella
-  Florit</a>\nCopyright \\u00A9 2017 <a
+  Florit</a>\nCopyright \u00A9 2017 <a
   href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
   calendar by <a
   href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
