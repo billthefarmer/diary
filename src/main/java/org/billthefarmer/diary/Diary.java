@@ -440,8 +440,8 @@ public class Diary extends Activity
                             getActionBar().setDisplayHomeAsUpEnabled(true);
 
                             // Get page title
-                            if (markdownView.getTitle() != null)
-                                setTitle(markdownView.getTitle());
+                            if (view.getTitle() != null)
+                                setTitle(view.getTitle());
 
                             dirty = true;
                         }
@@ -450,7 +450,7 @@ public class Diary extends Activity
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(false);
                             setTitleDate(currEntry.getTime());
-                            markdownView.clearHistory();
+                            view.clearHistory();
                         }
                     }
 
