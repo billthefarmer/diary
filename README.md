@@ -103,12 +103,12 @@ first line.
 
 ## Events
 You may add an event to the calendar by adding a line to a diary entry
-which begins with an ampersand followed by a time and an event title.
+which begins with an "at" symbol followed by a time and an event title.
 
     @ 10:30 Dentist
 
 An event will be added to the calendar when the entry is saved. A
-colon will be added after the ampersand when the event has been added.
+colon will be added after the "at" symbol when the event has been added.
 
     @: 10:30 Dentist
 
