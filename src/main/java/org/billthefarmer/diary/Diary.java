@@ -115,7 +115,7 @@ public class Diary extends Activity
     private final static String MAP_PATTERN =
         "\\[(\\d+[,.]\\d+)[,;](\\d+[,.]\\d+)\\]";
     private final static String MAP_TEMPLATE =
-        "<iframe width=\"425\" height=\"350\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" src=\"http://www.openstreetmap.org/export/embed.html?bbox=%f,%f,%f,%f&amp;layer=mapnik\" style=\"border: 1px solid black\"></iframe><br/><small><a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">View Larger Map</a></small>\n";
+        "<iframe width=\"560\" height=\"420\" src=\"http://www.openstreetmap.org/export/embed.html?bbox=%f,%f,%f,%f&amp;layer=mapnik\" style=\"border: 1px solid black\"></iframe><br/><small><a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">View Larger Map</a></small>\n";
     private final static String HTTP = "http";
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
@@ -448,7 +448,7 @@ public class Diary extends Activity
                             if (view.getTitle() != null)
                                 setTitle(view.getTitle());
 
-                            dirty = true;
+                            // dirty = true;
                         }
 
                         else
@@ -648,6 +648,7 @@ public class Diary extends Activity
     {
         Pattern pattern = Pattern.compile(EVENT_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
+
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 
         // Find matches
@@ -660,6 +661,7 @@ public class Diary extends Activity
                 date = dateFormat.parse(matcher.group(1));
             }
 
+            // Ignore errors
             catch (Exception e)
             {
                 continue;
@@ -716,13 +718,10 @@ public class Diary extends Activity
             File file = new File(matcher.group(2));
             String type = FileUtils.getMimeType(file);
 
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Match " + matcher.group(1) +
-                      " " + matcher.group(2));
-
             if (type.startsWith(IMAGE))
             {
                 // Do nothing, handled by markdown view
+                continue;
             }
 
             else if (type.startsWith(AUDIO))
@@ -731,10 +730,7 @@ public class Diary extends Activity
                 String replace =
                     String.format(AUDIO_TEMPLATE, matcher.group(2));
 
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, replace);
-
-                // Substitute replacement
+                // Append replacement
                 matcher.appendReplacement(buffer, replace);
             }
 
@@ -744,10 +740,7 @@ public class Diary extends Activity
                 String replace =
                     String.format(VIDEO_TEMPLATE, matcher.group(2));
 
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, replace);
-
-                // Substitute replacement
+                // Append replacement
                 matcher.appendReplacement(buffer, replace);
             }
         }
@@ -790,9 +783,6 @@ public class Diary extends Activity
                               lat - 0.005, lng - 0.005,
                               lat + 0.005, lng + 0.005,
                               lng, lat);
-
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, replace);
 
             // Substitute replacement
             matcher.appendReplacement(buffer, replace);
