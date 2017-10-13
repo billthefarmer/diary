@@ -769,8 +769,20 @@ public class Diary extends Activity
         // Find matches
         while (matcher.find())
         {
-            double lat = Double.parseDouble(matcher.group(1));
-            double lng = Double.parseDouble(matcher.group(2));
+            double lat = 1.0;
+            double lng = 1.0;
+
+            try
+            {
+                lat = Double.parseDouble(matcher.group(1));
+                lng = Double.parseDouble(matcher.group(2));
+            }
+
+            // Ignore parse error
+            catch (Exception e)
+            {
+                continue;
+            }
 
             // Create replacement iframe
             String replace =
