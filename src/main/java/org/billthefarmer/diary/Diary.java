@@ -765,13 +765,13 @@ public class Diary extends Activity
         // Find matches
         while (matcher.find())
         {
-            double lat = 1.0;
             double lng = 1.0;
+            double lat = 1.0;
 
             try
             {
-                lat = Double.parseDouble(matcher.group(1));
-                lng = Double.parseDouble(matcher.group(2));
+                lng = Double.parseDouble(matcher.group(1));
+                lat = Double.parseDouble(matcher.group(2));
             }
 
             // Ignore parse error
