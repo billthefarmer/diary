@@ -9,6 +9,8 @@ and [here](https://github.com/billthefarmer/diary/releases).
 
 ![Web browser](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Web.png)
 
+![Markdown](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Media-markdown.png) ![Media](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Media-phone.png)
+
 There is a
 [help](https://github.com/billthefarmer/diary/blob/master/data/help.md),
 a

@@ -219,8 +219,7 @@ public class Diary extends Activity
         {
             // Get text
             String text = textView.getText().toString();
-            markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                      getStyles());
+            loadMarkdown(text);
         }
 
         setVisibility();
@@ -323,8 +322,7 @@ public class Diary extends Activity
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
                 String text = textView.getText().toString();
-                markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                          getStyles());
+                loadMarkdown(text);
             }
        }
 
@@ -498,9 +496,7 @@ public class Diary extends Activity
                         {
                             // Get text
                             String text = textView.getText().toString();
-                            markdownView.loadMarkdown(getBaseUrl(),
-                                                      markdownCheck(text),
-                                                      getStyles());
+                            loadMarkdown(text);
                             // Clear flag
                             dirty = false;
                         }
@@ -694,6 +690,13 @@ public class Diary extends Activity
         return matcher.replaceAll(EVENT_TEMPLATE);
     }
 
+    // loadMarkdown
+    private void loadMarkdown(String text)
+    {
+        markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
+                                  getStyles());
+    }
+
     // markdownCheck
     private String markdownCheck(String text)
     {
@@ -818,8 +821,7 @@ public class Diary extends Activity
                 {
                     textView.append(text);
                     text = textView.getText().toString();
-                    markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                              getStyles());
+                    loadMarkdown(text);
                 }
             }
 
@@ -1368,8 +1370,7 @@ public class Diary extends Activity
         if (markdown)
         {
             dirty = false;
-            markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                      getStyles());
+            loadMarkdown(text);
         }
         textView.setSelection(0);
     }
@@ -1481,8 +1482,7 @@ public class Diary extends Activity
         }
 
         String text = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                  getStyles());
+        loadMarkdown(text);
     }
 
     // addLink
@@ -1505,8 +1505,7 @@ public class Diary extends Activity
         }
 
         String text = textView.getText().toString();
-        markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                  getStyles());
+        loadMarkdown(text);
     }
 
     // resolveContent
