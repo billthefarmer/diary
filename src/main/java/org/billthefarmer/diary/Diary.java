@@ -765,13 +765,13 @@ public class Diary extends Activity
         // Find matches
         while (matcher.find())
         {
-            double lng = 1.0;
             double lat = 1.0;
+            double lng = 1.0;
 
             try
             {
-                lng = Double.parseDouble(matcher.group(1));
-                lat = Double.parseDouble(matcher.group(2));
+                lat = Double.parseDouble(matcher.group(1));
+                lng = Double.parseDouble(matcher.group(2));
             }
 
             // Ignore parse error
@@ -783,9 +783,9 @@ public class Diary extends Activity
             // Create replacement iframe
             String replace =
                 String.format(Locale.getDefault(), MAP_TEMPLATE,
-                              lat - 0.005, lng - 0.005,
-                              lat + 0.005, lng + 0.005,
-                              lng, lat);
+                              lng - 0.005, lat - 0.005,
+                              lng + 0.005, lat + 0.005,
+                              lat, lng);
 
             // Substitute replacement
             matcher.appendReplacement(buffer, replace);
