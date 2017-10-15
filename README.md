@@ -25,8 +25,8 @@ file, which may be copied in to an entry for reference if required.
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Display media stored in diary folders
-* Add media from media providers
 * Display [OpenStreetMap](http://www.openstreetmap.org) maps
+* Add media from media providers
 * Receive media from other apps
 * Add events to calendar
 
@@ -122,9 +122,9 @@ affect all diary pages. See
 [CSS Tutorial](https://www.w3schools.com/Css).
 
 You may include the built in styles file with an `@import` statement
-`@import "file:///android_asset/styles.css";` or `@import
-url("file:///android_asset/styles.css");`, which should be on the
-first line.
+`@import "file:///android_asset/styles.css";` or
+`@import url("file:///android_asset/styles.css");`, which should be on
+the first line.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
