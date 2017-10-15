@@ -113,7 +113,7 @@ public class Diary extends Activity
     private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String EVENT_TEMPLATE = "@:$1 $2";
     private final static String MAP_PATTERN =
-        "\\[(\\d+[,.]\\d+)[,;](\\d+[,.]\\d+)\\]";
+        "\\[(-?\\d+[,.]\\d+)[,;](-?\\d+[,.]\\d+)\\]";
     private final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" src=\"http://www.openstreetmap.org/export/embed.html?bbox=%f,%f,%f,%f&amp;layer=mapnik\" style=\"border: 1px solid black\"></iframe><br/><small><a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">View Larger Map</a></small>\n";
     private final static String HTTP = "http";
@@ -782,7 +782,7 @@ public class Diary extends Activity
 
             // Create replacement iframe
             String replace =
-                String.format(Locale.getDefault(), MAP_TEMPLATE,
+                String.format(new Locale("en"), MAP_TEMPLATE,
                               lng - 0.005, lat - 0.005,
                               lng + 0.005, lat + 0.005,
                               lat, lng);
