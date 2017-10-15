@@ -103,7 +103,7 @@ public class Diary extends Activity
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS_STYLES = "css/styles.css";
-    private final static String MEDIA_PATTERN = "!\\[(.+)\\]\\((.+)\\)";
+    private final static String MEDIA_PATTERN = "!\\[(.*)\\]\\((.+)\\)";
     private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";    
     private final static String AUDIO_TEMPLATE =
@@ -113,9 +113,15 @@ public class Diary extends Activity
     private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String EVENT_TEMPLATE = "@:$1 $2";
     private final static String MAP_PATTERN =
-        "\\[(-?\\d+[,.]\\d+)[,;](-?\\d+[,.]\\d+)\\]";
+        "\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]";
     private final static String MAP_TEMPLATE =
-        "<iframe width=\"560\" height=\"420\" src=\"http://www.openstreetmap.org/export/embed.html?bbox=%f,%f,%f,%f&amp;layer=mapnik\" style=\"border: 1px solid black\"></iframe><br/><small><a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">View Larger Map</a></small>\n";
+        "<iframe width=\"560\" height=\"420\" " +
+        "src=\"http://www.openstreetmap.org/export/embed.html?" +
+        "bbox=%f,%f,%f,%f&amp;layer=mapnik\" " +
+        "style=\"border: 1px solid black\">" +
+        "</iframe><br/><small>" +
+        "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
+        "View Larger Map</a></small>\n";
     private final static String HTTP = "http";
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
@@ -497,6 +503,8 @@ public class Diary extends Activity
                             // Get text
                             String text = textView.getText().toString();
                             loadMarkdown(text);
+                            // Save text
+                            save(text);
                             // Clear flag
                             dirty = false;
                         }
@@ -1276,36 +1284,42 @@ public class Diary extends Activity
         if (currEntry != null)
         {
             String text = textView.getText().toString();
-            File file = getFile();
-            if (text.length() == 0)
-            {
-                if (file.exists())
-                    file.delete();
-                File parent = file.getParentFile();
-                if (parent.exists() && parent.list().length == 0)
-                {
-                    parent.delete();
-                    File grandParent = parent.getParentFile();
-                    if (grandParent.exists()
-                        && grandParent.list().length == 0)
-                        grandParent.delete();
-                }
-            }
+            save(text);
+        }
+    }
 
-            else
+    // save
+    private void save(String text)
+    {
+        File file = getFile();
+        if (text.length() == 0)
+        {
+            if (file.exists())
+                file.delete();
+            File parent = file.getParentFile();
+            if (parent.exists() && parent.list().length == 0)
             {
-                // Check for events
-                text = eventCheck(text);
-
-                file.getParentFile().mkdirs();
-                try
-                {
-                    FileWriter fileWriter = new FileWriter(file);
-                    fileWriter.write(text);
-                    fileWriter.close();
-                }
-                catch (Exception e) {}
+                parent.delete();
+                File grandParent = parent.getParentFile();
+                if (grandParent.exists()
+                    && grandParent.list().length == 0)
+                    grandParent.delete();
             }
+        }
+
+        else
+        {
+            // Check for events
+            text = eventCheck(text);
+
+            file.getParentFile().mkdirs();
+            try
+            {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(text);
+                fileWriter.close();
+            }
+            catch (Exception e) {}
         }
     }
 

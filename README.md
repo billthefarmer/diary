@@ -88,11 +88,11 @@ the toolbar or the navigation bar to return to the diary page.
 
 ## Maps
 You may put [OpenStreetMap](http://www.openstreetmap.org) maps in
-diary pages with the syntax `[<lat>,<lng>]`. Because of differing
-conventions in different locales, the app parser will accept a comma
-or a dot (`[,.]`) for the decimal point, and a comma or a semicolon
-(`[,;]`) for the co-ordinate separator. Use the correct convention for
-your locale.
+diary pages with the syntax `[<lat>,<lng>]`, or
+`[osm:<lat>,<lng>]`. Because of differing conventions in different
+locales, the app parser will accept a comma or a dot (`[,.]`) for the
+decimal point, and a comma or a semicolon (`[,;]`) for the co-ordinate
+separator. Use the correct convention for your locale.
 
 ## Events
 You may add an event to the calendar by adding a line to a diary entry
