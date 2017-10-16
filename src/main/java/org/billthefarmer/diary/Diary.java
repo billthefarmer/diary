@@ -221,11 +221,7 @@ public class Diary extends Activity
             textView.setText(readAssetFile(HELP));
 
         if (markdown && dirty)
-        {
-            // Get text
-            String text = textView.getText().toString();
-            loadMarkdown(text);
-        }
+            loadMarkdown();
 
         setVisibility();
     }
@@ -326,8 +322,7 @@ public class Diary extends Activity
             if (!markdownView.canGoBack())
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
-                String text = textView.getText().toString();
-                loadMarkdown(text);
+                loadMarkdown();
             }
        }
 
@@ -500,10 +495,9 @@ public class Diary extends Activity
                         if (dirty)
                         {
                             // Get text
-                            String text = textView.getText().toString();
-                            loadMarkdown(text);
+                            loadMarkdown();
                             // Save text
-                            save(text);
+                            save();
                             // Clear flag
                             dirty = false;
                         }
@@ -698,6 +692,13 @@ public class Diary extends Activity
     }
 
     // loadMarkdown
+    private void loadMarkdown()
+    {
+        String text = textView.getText().toString();
+        loadMarkdown(text);
+    }
+
+    // loadMarkdown
     private void loadMarkdown(String text)
     {
         markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
@@ -827,8 +828,7 @@ public class Diary extends Activity
                 else
                 {
                     textView.append(text);
-                    text = textView.getText().toString();
-                    loadMarkdown(text);
+                    loadMarkdown();
                 }
             }
 
@@ -1383,7 +1383,7 @@ public class Diary extends Activity
         if (markdown)
         {
             dirty = false;
-            loadMarkdown(text);
+            loadMarkdown();
         }
         textView.setSelection(0);
     }
@@ -1494,8 +1494,7 @@ public class Diary extends Activity
             editable.insert(position, mediaText);
         }
 
-        String text = textView.getText().toString();
-        loadMarkdown(text);
+        loadMarkdown();
     }
 
     // addLink
@@ -1517,8 +1516,7 @@ public class Diary extends Activity
             editable.insert(position, linkText);
         }
 
-        String text = textView.getText().toString();
-        loadMarkdown(text);
+        loadMarkdown();
     }
 
     // resolveContent
