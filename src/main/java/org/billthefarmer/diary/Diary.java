@@ -117,8 +117,7 @@ public class Diary extends Activity
     private final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" " +
         "src=\"http://www.openstreetmap.org/export/embed.html?" +
-        "bbox=%f,%f,%f,%f&amp;layer=mapnik\" " +
-        "style=\"border: 1px solid black\">" +
+        "bbox=%f,%f,%f,%f&amp;layer=mapnik\">" +
         "</iframe><br/><small>" +
         "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
