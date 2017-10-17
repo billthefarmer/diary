@@ -83,7 +83,7 @@ public class Diary extends Activity
     private final static int ADD_MEDIA = 1;
 
     private final static int BUFFER_SIZE = 1024;
-    private final static int SCALE_RATIO = 100;
+    private final static int SCALE_RATIO = 128;
 
     private final static String TAG = "Diary";
 
@@ -1557,6 +1557,29 @@ public class Diary extends Activity
         return prevDay;
     }
 
+    // getNextCalendarMonth
+    private Calendar getNextCalendarMonth()
+    {
+        Calendar nextMonth =
+            new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                  currEntry.get(Calendar.MONTH),
+                                  currEntry.get(Calendar.DATE));
+        nextMonth.add(Calendar.MONTH, 1);
+        return nextMonth;
+    }
+
+    // getPrevCalendarMonth
+    private Calendar getPrevCalendarMonth()
+    {
+        Calendar prevMonth =
+            new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                  currEntry.get(Calendar.MONTH),
+                                  currEntry.get(Calendar.DATE));
+
+        prevMonth.add(Calendar.MONTH, -1);
+        return prevMonth;
+    }
+
     // animateSwipeLeft
     private void animateSwipeLeft()
     {
@@ -1601,12 +1624,38 @@ public class Diary extends Activity
             animateSwipeRight();
     }
 
+    // onSwipeDown
+    private void onSwipeDown()
+    {
+        if (!canSwipe && shown)
+            return;
+
+        Calendar prevMonth = getPrevCalendarMonth();
+        changeDate(prevMonth);
+
+        if (markdown && shown)
+            animateSwipeRight();
+    }
+
+    // onSwipeUp
+    private void onSwipeUp()
+    {
+        if (!canSwipe && shown)
+            return;
+
+        Calendar nextMonth = getNextCalendarMonth();
+        changeDate(nextMonth);
+
+        if (markdown && shown)
+            animateSwipeLeft();
+    }
+
     // GestureListener
     private class GestureListener
         extends GestureDetector.SimpleOnGestureListener
     {
-        private static final int SWIPE_THRESHOLD = SCALE_RATIO;
-        private static final int SWIPE_VELOCITY_THRESHOLD = SCALE_RATIO;
+        private static final int SWIPE_THRESHOLD = 256;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 256;
 
         // onDown
         @Override
@@ -1629,7 +1678,7 @@ public class Diary extends Activity
                 if (Math.abs(diffX) > Math.abs(diffY))
                 {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD &&
-                            Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
+                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
                     {
                         if (diffX > 0)
                         {
@@ -1639,6 +1688,25 @@ public class Diary extends Activity
                         else
                         {
                             onSwipeLeft();
+                        }
+                    }
+
+                    result = true;
+                }
+
+                else
+                {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD &&
+                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)
+                    {
+                        if (diffY > 0)
+                        {
+                            onSwipeDown();
+                        }
+
+                        else
+                        {
+                            onSwipeUp();
                         }
                     }
 
