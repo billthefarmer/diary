@@ -259,6 +259,34 @@ public class Diary extends Activity
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
+        searchItem = menu.findItem(R.id.find);
+        searchView = (SearchView) searchItem.getActionView();
+        if (searchView != null)
+        {
+            searchView.setQueryHint(getText(R.string.hint));
+            searchView.setOnQueryTextListener(new SearchView
+                                              .OnQueryTextListener()
+                {
+                    // onQueryTextChange
+                    @Override
+                    public boolean onQueryTextChange (String newText)
+                    {
+                        markdownView.findAll(newText);
+                        return true;
+                    }
+
+                    // onQueryTextSubmit
+                    @Override
+                    public boolean onQueryTextSubmit (String query)
+                    {
+                        markdownView.findNext(true);
+                        return true;
+                    }
+
+                });
+        }
+
         return true;
     }
 
@@ -277,15 +305,7 @@ public class Diary extends Activity
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
 
-        if (searchItem == null)
-        {
-            searchItem = menu.findItem(R.id.find);
-            searchItem.setEnabled(shown);
-
-            searchView = (SearchView) searchItem.getActionView();
-            if (searchView != null)
-                searchView.setQueryHint(getText(R.string.hint));
-        }
+        menu.findItem(R.id.find).setEnabled(shown);
 
         return true;
     }
@@ -596,28 +616,6 @@ public class Diary extends Activity
                     }
                 });
         }
-
-        if (searchView != null)
-            searchView.setOnQueryTextListener(new SearchView
-                                              .OnQueryTextListener()
-                {
-                    // onQueryTextChange
-                    @Override
-                    public boolean onQueryTextChange (String newText)
-                    {
-                        markdownView.findAll(newText);
-                        return true;
-                    }
-
-                    // onQueryTextSubmit
-                    @Override
-                    public boolean onQueryTextSubmit (String query)
-                    {
-                        markdownView.findNext(true);
-                        return true;
-                    }
-
-                });
     }
 
     // animateAccept
