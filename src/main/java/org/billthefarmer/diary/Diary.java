@@ -83,7 +83,7 @@ public class Diary extends Activity
     private final static int ADD_MEDIA = 1;
 
     private final static int BUFFER_SIZE = 1024;
-    private final static int SCALE_RATIO = 100;
+    private final static int SCALE_RATIO = 128;
 
     private final static String TAG = "Diary";
 
@@ -103,13 +103,24 @@ public class Diary extends Activity
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String CSS_STYLES = "css/styles.css";
-    private final static String IMAGE_TEMPLATE = "![%s](%s)\n";
+    private final static String MEDIA_PATTERN = "!\\[(.*)\\]\\((.+)\\)";
+    private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";    
     private final static String AUDIO_TEMPLATE =
         "<audio controls src=\"%s\"></audio>\n";
     private final static String VIDEO_TEMPLATE =
         "<video controls src=\"%s\"></video>\n";
     private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
+    private final static String EVENT_TEMPLATE = "@:$1 $2";
+    private final static String MAP_PATTERN =
+        "\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]";
+    private final static String MAP_TEMPLATE =
+        "<iframe width=\"560\" height=\"420\" " +
+        "src=\"http://www.openstreetmap.org/export/embed.html?" +
+        "bbox=%f,%f,%f,%f&amp;layer=mapnik\">" +
+        "</iframe><br/><small>" +
+        "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
+        "View Larger Map</a></small>\n";
     private final static String HTTP = "http";
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
@@ -138,7 +149,7 @@ public class Diary extends Activity
     private EditText textView;
     private ScrollView scrollView;
 
-    private DiaryView diaryView;
+    private MarkdownView markdownView;
 
     private GestureDetector gestureDetector;
 
@@ -154,12 +165,13 @@ public class Diary extends Activity
 
         textView = (EditText) findViewById(R.id.text);
         scrollView = (ScrollView) findViewById(R.id.scroll);
-        diaryView = (DiaryView) findViewById(R.id.markdown);
+        markdownView = (MarkdownView) findViewById(R.id.markdown);
 
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
 
-        WebSettings settings = diaryView.getSettings();
+        WebSettings settings = markdownView.getSettings();
+        settings.setJavaScriptEnabled(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
 
@@ -209,11 +221,7 @@ public class Diary extends Activity
             textView.setText(readAssetFile(HELP));
 
         if (markdown && dirty)
-        {
-            // Get text
-            String text = textView.getText().toString();
-            diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
-        }
+            loadMarkdown();
 
         setVisibility();
     }
@@ -307,15 +315,14 @@ public class Diary extends Activity
     @Override
     public void onBackPressed()
     {
-        if (diaryView.canGoBack())
+        if (markdownView.canGoBack())
         {
-            diaryView.goBack();
+            markdownView.goBack();
 
-            if (!diaryView.canGoBack())
+            if (!markdownView.canGoBack())
             {
                 getActionBar().setDisplayHomeAsUpEnabled(false);
-                String text = textView.getText().toString();
-                diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
+                loadMarkdown();
             }
        }
 
@@ -350,14 +357,10 @@ public class Diary extends Activity
                 if (type == null)
                     addLink(uri, uri.getLastPathSegment(), false);
 
-                else if (type.startsWith(IMAGE))
-                    addImage(uri, false);
-
-                else if (type.startsWith(AUDIO))
-                    addAudio(uri, false);
-
-                else if (type.startsWith(VIDEO))
-                    addVideo(uri, false);
+                else if (type.startsWith(IMAGE) ||
+                         type.startsWith(AUDIO) ||
+                         type.startsWith(VIDEO))
+                    addMedia(uri, false);
 
                 else
                     addLink(uri, uri.getLastPathSegment(), false);
@@ -423,9 +426,9 @@ public class Diary extends Activity
                                                int count) {}
                 });
 
-        if (diaryView != null)
+        if (markdownView != null)
         {
-            diaryView.setWebViewClient(new WebViewClient()
+            markdownView.setWebViewClient(new WebViewClient()
                 {
                     // onPageFinished
                     @Override
@@ -440,17 +443,15 @@ public class Diary extends Activity
                             getActionBar().setDisplayHomeAsUpEnabled(true);
 
                             // Get page title
-                            if (diaryView.getTitle() != null)
-                                setTitle(diaryView.getTitle());
-
-                            dirty = true;
+                            if (view.getTitle() != null)
+                                setTitle(view.getTitle());
                         }
 
                         else
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(false);
                             setTitleDate(currEntry.getTime());
-                            diaryView.clearHistory();
+                            view.clearHistory();
                         }
                     }
 
@@ -467,7 +468,7 @@ public class Diary extends Activity
                     }
                 });
 
-            diaryView.setOnLongClickListener(new View.OnLongClickListener()
+            markdownView.setOnLongClickListener(new View.OnLongClickListener()
                 {
                     // On long click
                     @Override
@@ -479,26 +480,26 @@ public class Diary extends Activity
                     }
                 });
 
-            diaryView
-                .setOnScrollChangedListener(new DiaryView
-                                            .OnScrollChangedListener()
-                    {
-                        // onScrollChanged
-                        public void onScrollChanged (int l, int t,
-                                                     int oldl, int oldt)
-                        {
-                            // Hide button
-                            if ((t > SCALE_RATIO) && (oldt <= SCALE_RATIO))
-                                startAnimation(edit, R.anim.flip_out,
-                                               View.INVISIBLE);
+            // markdownView
+            //     .setOnScrollChangedListener(new MarkdownView
+            //                                 .OnScrollChangedListener()
+            //         {
+            //             // onScrollChanged
+            //             public void onScrollChanged (int l, int t,
+            //                                          int oldl, int oldt)
+            //             {
+            //                 // Hide button
+            //                 if ((t > SCALE_RATIO) && (oldt <= SCALE_RATIO))
+            //                     startAnimation(edit, R.anim.flip_out,
+            //                                    View.INVISIBLE);
 
-                            // Reveal button
-                                else if ((t < SCALE_RATIO) && (oldt >= SCALE_RATIO))
-                                startAnimation(edit, R.anim.flip_in,
-                                               View.VISIBLE);
+            //                 // Reveal button
+            //                     else if ((t < SCALE_RATIO) && (oldt >= SCALE_RATIO))
+            //                     startAnimation(edit, R.anim.flip_in,
+            //                                    View.VISIBLE);
 
-                        }
-                    });
+            //             }
+            //         });
         }
 
         if (accept != null)
@@ -513,9 +514,9 @@ public class Diary extends Activity
                         if (dirty)
                         {
                             // Get text
-                            String text = textView.getText().toString();
-                            diaryView.loadMarkdown(getBaseUrl(), text,
-                                                      getStyles());
+                            loadMarkdown();
+                            // Save text
+                            save();
                             // Clear flag
                             dirty = false;
                         }
@@ -552,7 +553,7 @@ public class Diary extends Activity
                         animateEdit();
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
-                        diaryView.clearHistory();
+                        markdownView.clearHistory();
                         shown = false;
                     }
                 });
@@ -606,7 +607,7 @@ public class Diary extends Activity
         // Animation
 
         startAnimation(scrollView, R.anim.activity_close_exit, View.INVISIBLE);
-        startAnimation(diaryView, R.anim.activity_open_enter, View.VISIBLE);
+        startAnimation(markdownView, R.anim.activity_open_enter, View.VISIBLE);
 
         startAnimation(accept, R.anim.flip_out, View.INVISIBLE);
         startAnimation(edit, R.anim.flip_in, View.VISIBLE);
@@ -617,7 +618,7 @@ public class Diary extends Activity
     {
         // Animation
 
-        startAnimation(diaryView, R.anim.activity_close_exit, View.INVISIBLE);
+        startAnimation(markdownView, R.anim.activity_close_exit, View.INVISIBLE);
         startAnimation(scrollView, R.anim.activity_open_enter, View.VISIBLE);
 
         startAnimation(edit, R.anim.flip_out, View.INVISIBLE);
@@ -660,11 +661,9 @@ public class Diary extends Activity
     // eventCheck
     private String eventCheck(String text)
     {
-        StringBuilder builder = new StringBuilder(text);
-        int index = 1;
-
         Pattern pattern = Pattern.compile(EVENT_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
+
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 
         // Find matches
@@ -677,6 +676,7 @@ public class Diary extends Activity
                 date = dateFormat.parse(matcher.group(1));
             }
 
+            // Ignore errors
             catch (Exception e)
             {
                 continue;
@@ -704,18 +704,131 @@ public class Diary extends Activity
 
             QueryHandler.insertEvent(this, startTime.getTimeInMillis(),
                                      endTime.getTimeInMillis(), title);
-            // Insert ':' char
-            builder.insert(matcher.start() + index, ':');
-            index++;
         }
 
-        return builder.toString();
+        return matcher.replaceAll(EVENT_TEMPLATE);
+    }
+
+    // loadMarkdown
+    private void loadMarkdown()
+    {
+        String text = textView.getText().toString();
+        loadMarkdown(text);
+    }
+
+    // loadMarkdown
+    private void loadMarkdown(String text)
+    {
+        markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
+                                  getStyles());
+    }
+
+    // markdownCheck
+    private String markdownCheck(String text)
+    {
+        // Check for media
+        text = mediaCheck(text);
+
+        // Check for map
+        return mapCheck(text);
+    }
+
+    // mediaCheck
+    private String mediaCheck(String text)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Pattern pattern = Pattern.compile(MEDIA_PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+
+        // Find matches
+        while (matcher.find())
+        {
+            File file = new File(matcher.group(2));
+            String type = FileUtils.getMimeType(file);
+
+            if (type.startsWith(IMAGE))
+            {
+                // Do nothing, handled by markdown view
+                continue;
+            }
+
+            else if (type.startsWith(AUDIO))
+            {
+                // Create replacement
+                String replace =
+                    String.format(AUDIO_TEMPLATE, matcher.group(2));
+
+                // Append replacement
+                matcher.appendReplacement(buffer, replace);
+            }
+
+            else if (type.startsWith(VIDEO))
+            {
+                // Create replacement
+                String replace =
+                    String.format(VIDEO_TEMPLATE, matcher.group(2));
+
+                // Append replacement
+                matcher.appendReplacement(buffer, replace);
+            }
+        }
+
+        // Append rest of entry
+        matcher.appendTail(buffer);
+
+        return buffer.toString();
+    }
+
+    // mapCheck
+    private String mapCheck(String text)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Pattern pattern = Pattern.compile(MAP_PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+
+        // Find matches
+        while (matcher.find())
+        {
+            double lat = 1.0;
+            double lng = 1.0;
+
+            try
+            {
+                lat = Double.parseDouble(matcher.group(1));
+                lng = Double.parseDouble(matcher.group(2));
+            }
+
+            // Ignore parse error
+            catch (Exception e)
+            {
+                continue;
+            }
+
+            // Create replacement iframe
+            String replace =
+                String.format(new Locale("en"), MAP_TEMPLATE,
+                              lng - 0.005, lat - 0.005,
+                              lng + 0.005, lat + 0.005,
+                              lat, lng);
+
+            // Substitute replacement
+            matcher.appendReplacement(buffer, replace);
+        }
+
+        // Append rest of entry
+        matcher.appendTail(buffer);
+
+        return buffer.toString();
     }
 
     // addMedia
     private void addMedia(Intent intent)
     {
-        if (intent.getType().equalsIgnoreCase(TEXT_PLAIN))
+        String type = intent.getType();
+
+        if (type.equalsIgnoreCase(TEXT_PLAIN))
         {
             // Get the text
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -733,8 +846,7 @@ public class Diary extends Activity
                 else
                 {
                     textView.append(text);
-                    text = textView.getText().toString();
-                    diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
+                    loadMarkdown();
                 }
             }
 
@@ -752,17 +864,19 @@ public class Diary extends Activity
             }
         }
 
-        else if (intent.getType().startsWith(IMAGE))
+        else if (type.startsWith(IMAGE) ||
+                 type.startsWith(AUDIO) ||
+                 type.startsWith(VIDEO))
         {
             if (intent.getAction().equals(Intent.ACTION_SEND))
             {
-                // Get the image uri
-                Uri image =
+                // Get the media uri
+                Uri media =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
                 // Resolve content uri
-                if (image.getScheme().equalsIgnoreCase(CONTENT))
-                    image = resolveContent(image);
+                if (media.getScheme().equalsIgnoreCase(CONTENT))
+                    media = resolveContent(media);
 
                 // Attempt to get web uri
                 String path = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -775,52 +889,26 @@ public class Diary extends Activity
                     if ((uri != null) && (uri.getScheme() != null) &&
                         (uri.getScheme().equalsIgnoreCase(HTTP) ||
                          uri.getScheme().equalsIgnoreCase(HTTPS)))
-                        image = uri;
+                        media = uri;
                 }
 
-                addImage(image, true);
+                addMedia(media, true);
             }
 
             else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
             {
-                // Get the images
-                ArrayList<Uri> images =
+                // Get the media
+                ArrayList<Uri> media =
                     intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-                for (Uri image : images)
+                for (Uri uri : media)
                 {
                     // Resolve content uri
-                    if (image.getScheme().equalsIgnoreCase(CONTENT))
-                        image = resolveContent(image);
+                    if (uri.getScheme().equalsIgnoreCase(CONTENT))
+                        uri = resolveContent(uri);
 
-                    addImage(image, true);
+                    addMedia(uri, true);
                 }
             }
-        }
-
-        else if (intent.getType().startsWith(AUDIO))
-        {
-            // Get the audio
-            Uri audio =
-                intent.getParcelableExtra(Intent.EXTRA_STREAM);
-
-            // Resolve content uri
-            if (audio.getScheme().equalsIgnoreCase(CONTENT))
-                audio = resolveContent(audio);
-
-            addAudio(audio, true);
-        }
-
-        else if (intent.getType().startsWith(VIDEO))
-        {
-            // Get the video
-            Uri video =
-                intent.getParcelableExtra(Intent.EXTRA_STREAM);
-
-            // Resolve content uri
-            if (video.getScheme().equalsIgnoreCase(CONTENT))
-                video = resolveContent(video);
-
-            addVideo(video, true);
         }
 
         // Reset the flag
@@ -868,7 +956,7 @@ public class Diary extends Activity
             // Check if shown
             if (shown)
             {
-                diaryView.setVisibility(View.VISIBLE);
+                markdownView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.INVISIBLE);
                 accept.setVisibility(View.INVISIBLE);
                 edit.setVisibility(View.VISIBLE);
@@ -876,7 +964,7 @@ public class Diary extends Activity
 
             else
             {
-                diaryView.setVisibility(View.INVISIBLE);
+                markdownView.setVisibility(View.INVISIBLE);
                 scrollView.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.INVISIBLE);
@@ -885,7 +973,7 @@ public class Diary extends Activity
 
         else
         {
-            diaryView.setVisibility(View.INVISIBLE);
+            markdownView.setVisibility(View.INVISIBLE);
             scrollView.setVisibility(View.VISIBLE);
             accept.setVisibility(View.INVISIBLE);
             edit.setVisibility(View.INVISIBLE);
@@ -1213,36 +1301,42 @@ public class Diary extends Activity
         if (currEntry != null)
         {
             String text = textView.getText().toString();
-            File file = getFile();
-            if (text.length() == 0)
-            {
-                if (file.exists())
-                    file.delete();
-                File parent = file.getParentFile();
-                if (parent.exists() && parent.list().length == 0)
-                {
-                    parent.delete();
-                    File grandParent = parent.getParentFile();
-                    if (grandParent.exists()
-                        && grandParent.list().length == 0)
-                        grandParent.delete();
-                }
-            }
+            save(text);
+        }
+    }
 
-            else
+    // save
+    private void save(String text)
+    {
+        File file = getFile();
+        if (text.length() == 0)
+        {
+            if (file.exists())
+                file.delete();
+            File parent = file.getParentFile();
+            if (parent.exists() && parent.list().length == 0)
             {
-                // Check for events
-                text = eventCheck(text);
-
-                file.getParentFile().mkdirs();
-                try
-                {
-                    FileWriter fileWriter = new FileWriter(file);
-                    fileWriter.write(text);
-                    fileWriter.close();
-                }
-                catch (Exception e) {}
+                parent.delete();
+                File grandParent = parent.getParentFile();
+                if (grandParent.exists()
+                    && grandParent.list().length == 0)
+                    grandParent.delete();
             }
+        }
+
+        else
+        {
+            // Check for events
+            text = eventCheck(text);
+
+            file.getParentFile().mkdirs();
+            try
+            {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(text);
+                fileWriter.close();
+            }
+            catch (Exception e) {}
         }
     }
 
@@ -1307,7 +1401,7 @@ public class Diary extends Activity
         if (markdown)
         {
             dirty = false;
-            diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
+            loadMarkdown();
         }
         textView.setSelection(0);
     }
@@ -1402,24 +1496,23 @@ public class Diary extends Activity
         changeDate(today);
     }
 
-    // addImage
-    private  void addImage(Uri image, boolean append)
+    // addMedia
+    private  void addMedia(Uri media, boolean append)
     {
-        String imageText = String.format(IMAGE_TEMPLATE,
-                                         image.getLastPathSegment(),
-                                         image.toString());
+        String mediaText = String.format(MEDIA_TEMPLATE,
+                                         media.getLastPathSegment(),
+                                         media.toString());
         if (append)
-            textView.append(imageText);
+            textView.append(mediaText);
 
         else
         {
             Editable editable = textView.getEditableText();
             int position = textView.getSelectionStart();
-            editable.insert(position, imageText);
+            editable.insert(position, mediaText);
         }
 
-        String text = textView.getText().toString();
-        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
+        loadMarkdown();
     }
 
     // addLink
@@ -1441,46 +1534,7 @@ public class Diary extends Activity
             editable.insert(position, linkText);
         }
 
-        String text = textView.getText().toString();
-        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
-    }
-
-    // addAudio
-    private void addAudio(Uri audio, boolean append)
-    {
-        String audioText = String.format(AUDIO_TEMPLATE,
-                                         audio.toString());
-        if (append)
-            textView.append(audioText);
-
-        else
-        {
-            Editable editable = textView.getEditableText();
-            int position = textView.getSelectionStart();
-            editable.insert(position, audioText);
-        }
-
-        String text = textView.getText().toString();
-        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
-    }
-
-    // addVideo
-    private void addVideo(Uri video, boolean append)
-    {
-        String videoText = String.format(VIDEO_TEMPLATE,
-                                         video.toString());
-        if (append)
-            textView.append(videoText);
-
-        else
-        {
-            Editable editable = textView.getEditableText();
-            int position = textView.getSelectionStart();
-            editable.insert(position, videoText);
-        }
-
-        String text = textView.getText().toString();
-        diaryView.loadMarkdown(getBaseUrl(), text, getStyles());
+        loadMarkdown();
     }
 
     // resolveContent
@@ -1521,13 +1575,36 @@ public class Diary extends Activity
         return prevDay;
     }
 
+    // getNextCalendarMonth
+    private Calendar getNextCalendarMonth()
+    {
+        Calendar nextMonth =
+            new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                  currEntry.get(Calendar.MONTH),
+                                  currEntry.get(Calendar.DATE));
+        nextMonth.add(Calendar.MONTH, 1);
+        return nextMonth;
+    }
+
+    // getPrevCalendarMonth
+    private Calendar getPrevCalendarMonth()
+    {
+        Calendar prevMonth =
+            new GregorianCalendar(currEntry.get(Calendar.YEAR),
+                                  currEntry.get(Calendar.MONTH),
+                                  currEntry.get(Calendar.DATE));
+
+        prevMonth.add(Calendar.MONTH, -1);
+        return prevMonth;
+    }
+
     // animateSwipeLeft
     private void animateSwipeLeft()
     {
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_left_in);
 
-        diaryView.startAnimation(viewSwipeIn);
+        markdownView.startAnimation(viewSwipeIn);
     }
 
     // animateSwipeRight
@@ -1536,7 +1613,7 @@ public class Diary extends Activity
         Animation viewSwipeIn =
             AnimationUtils.loadAnimation(this, R.anim.swipe_right_in);
 
-        diaryView.startAnimation(viewSwipeIn);
+        markdownView.startAnimation(viewSwipeIn);
     }
 
     // onSwipeLeft
@@ -1565,12 +1642,38 @@ public class Diary extends Activity
             animateSwipeRight();
     }
 
+    // onSwipeDown
+    private void onSwipeDown()
+    {
+        if (!canSwipe && shown)
+            return;
+
+        Calendar prevMonth = getPrevCalendarMonth();
+        changeDate(prevMonth);
+
+        if (markdown && shown)
+            animateSwipeRight();
+    }
+
+    // onSwipeUp
+    private void onSwipeUp()
+    {
+        if (!canSwipe && shown)
+            return;
+
+        Calendar nextMonth = getNextCalendarMonth();
+        changeDate(nextMonth);
+
+        if (markdown && shown)
+            animateSwipeLeft();
+    }
+
     // GestureListener
     private class GestureListener
         extends GestureDetector.SimpleOnGestureListener
     {
-        private static final int SWIPE_THRESHOLD = SCALE_RATIO;
-        private static final int SWIPE_VELOCITY_THRESHOLD = SCALE_RATIO;
+        private static final int SWIPE_THRESHOLD = 256;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 256;
 
         // onDown
         @Override
@@ -1593,7 +1696,7 @@ public class Diary extends Activity
                 if (Math.abs(diffX) > Math.abs(diffY))
                 {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD &&
-                            Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
+                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
                     {
                         if (diffX > 0)
                         {
@@ -1603,6 +1706,25 @@ public class Diary extends Activity
                         else
                         {
                             onSwipeLeft();
+                        }
+                    }
+
+                    result = true;
+                }
+
+                else
+                {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD &&
+                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)
+                    {
+                        if (diffY > 0)
+                        {
+                            onSwipeDown();
+                        }
+
+                        else
+                        {
+                            onSwipeUp();
                         }
                     }
 
