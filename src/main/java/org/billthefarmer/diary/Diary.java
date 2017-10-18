@@ -262,6 +262,7 @@ public class Diary extends Activity
 
         searchItem = menu.findItem(R.id.find);
         searchView = (SearchView) searchItem.getActionView();
+
         if (searchView != null)
         {
             searchView.setQueryHint(getText(R.string.hint));
