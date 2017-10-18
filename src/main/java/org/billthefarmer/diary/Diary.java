@@ -573,6 +573,9 @@ public class Diary extends Activity
 
                         shown = false;
                         searchItem.setEnabled(shown);
+
+                        if (searchItem.isActionViewExpanded())
+                            searchItem.collapseActionView();
                     }
                 });
 
