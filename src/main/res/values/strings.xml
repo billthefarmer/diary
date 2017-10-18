@@ -25,7 +25,8 @@
   <string name="prevEntry">Previous</string>
   <string name="nextEntry">Next</string>
   <string name="goToDate">Go to date…</string>
-  <string name="search">Search…</string>
+  <string name="find" translatable="false">Find…</string>
+  <string name="hint" translatable="false">Find text</string>
   <string name="addMedia">Add media…</string>
   <string name="editStyles">Edit styles…</string>
   <string name="settings">Settings</string>

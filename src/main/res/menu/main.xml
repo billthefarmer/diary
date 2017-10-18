@@ -44,9 +44,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/goToDate"
       android:icon="@drawable/ic_action_go_to_date" />
   <item
-      android:id="@+id/search"
+      android:id="@+id/find"
       android:showAsAction="ifRoom|collapseActionView"
-      android:title="@string/search"
+      android:title="@string/find"
       android:actionViewClass="android.widget.SearchView"
       android:icon="@drawable/ic_action_search" />
   <item

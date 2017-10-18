@@ -44,6 +44,7 @@ import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -150,6 +151,9 @@ public class Diary extends Activity
     private ScrollView scrollView;
 
     private MarkdownView markdownView;
+
+    private SearchView searchView;
+    private MenuItem searchItem;
 
     private GestureDetector gestureDetector;
 
@@ -272,6 +276,17 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
+
+        if (searchItem == null)
+        {
+            searchItem = menu.findItem(R.id.find);
+            searchItem.setEnabled(shown);
+
+            searchView = (SearchView) searchItem.getActionView();
+            if (searchView != null)
+                searchView.setQueryHint(getText(R.string.hint));
+        }
+
         return true;
     }
 
@@ -479,27 +494,6 @@ public class Diary extends Activity
                         return false;
                     }
                 });
-
-            // markdownView
-            //     .setOnScrollChangedListener(new MarkdownView
-            //                                 .OnScrollChangedListener()
-            //         {
-            //             // onScrollChanged
-            //             public void onScrollChanged (int l, int t,
-            //                                          int oldl, int oldt)
-            //             {
-            //                 // Hide button
-            //                 if ((t > SCALE_RATIO) && (oldt <= SCALE_RATIO))
-            //                     startAnimation(edit, R.anim.flip_out,
-            //                                    View.INVISIBLE);
-
-            //                 // Reveal button
-            //                     else if ((t < SCALE_RATIO) && (oldt >= SCALE_RATIO))
-            //                     startAnimation(edit, R.anim.flip_in,
-            //                                    View.VISIBLE);
-
-            //             }
-            //         });
         }
 
         if (accept != null)
@@ -525,6 +519,7 @@ public class Diary extends Activity
                         animateAccept();
 
                         shown = true;
+                        searchItem.setEnabled(shown);
                     }
                 });
 
@@ -554,7 +549,9 @@ public class Diary extends Activity
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         markdownView.clearHistory();
+
                         shown = false;
+                        searchItem.setEnabled(shown);
                     }
                 });
 
@@ -599,6 +596,28 @@ public class Diary extends Activity
                     }
                 });
         }
+
+        if (searchView != null)
+            searchView.setOnQueryTextListener(new SearchView
+                                              .OnQueryTextListener()
+                {
+                    // onQueryTextChange
+                    @Override
+                    public boolean onQueryTextChange (String newText)
+                    {
+                        markdownView.findAll(newText);
+                        return true;
+                    }
+
+                    // onQueryTextSubmit
+                    @Override
+                    public boolean onQueryTextSubmit (String query)
+                    {
+                        markdownView.findNext(true);
+                        return true;
+                    }
+
+                });
     }
 
     // animateAccept
