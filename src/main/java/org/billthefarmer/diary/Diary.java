@@ -265,7 +265,6 @@ public class Diary extends Activity
 
         if (searchView != null)
         {
-            searchView.setQueryHint(getText(R.string.hint));
             searchView.setOnQueryTextListener(new SearchView
                                               .OnQueryTextListener()
                 {
