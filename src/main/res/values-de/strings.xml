@@ -41,8 +41,7 @@
   <string name="folder">Mappe</string>
   <string name="about">Über</string>
   <string name="pref_about_summ">Tagebuchversion %s</string>
-  <string name="licence">GNU GPLv3</string>
-  <string name="copyright">Copyright \u00A9 2012 <a
+    <string name="copyright">Copyright \u00A9 2012 <a
   href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a
   href="http://billthefarmer.github.io">Bill Farmer</a>\n App-eigener
@@ -59,4 +58,6 @@
   Magliano</a>\nDatei Dienstprogramme von <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+  <string name="license">Lizenz</string>
+  <string name="pref_license_summ">Siehe die Lizenz von Tagebuch GNU GPL v3</string>
 </resources>
