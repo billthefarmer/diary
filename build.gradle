@@ -20,6 +20,10 @@ android {
     }
 }
 
+// tasks.withType(JavaCompile) {
+//     options.compilerArgs << "-Xlint:all"
+// }
+
 repositories {
     jcenter()
     maven {
