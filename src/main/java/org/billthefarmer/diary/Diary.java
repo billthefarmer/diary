@@ -756,10 +756,10 @@ public class Diary extends Activity
     // markdownCheck
     private String markdownCheck(String text)
     {
-        // Check for media
+        // Check for map
         text =  mapCheck(text);
 
-        // Check for map
+        // Check for media
         return mediaCheck(text);
     }
 
@@ -902,7 +902,6 @@ public class Diary extends Activity
             Uri uri = intent.getData();
             if (uri.getScheme().equalsIgnoreCase(GEO))
                 addMap(uri, true);
-
         }
 
         else if (type.equalsIgnoreCase(TEXT_PLAIN))
