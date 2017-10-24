@@ -25,6 +25,7 @@
   <string name="prevEntry">Précédent</string>
   <string name="nextEntry">Suivant</string>
   <string name="goToDate">Aller à la date…</string>
+  <string name="search">Chercher…</string>
   <string name="addMedia">Ajouter des médias…</string>
   <string name="editStyles">Modifier les styles…</string>
   <string name="settings">Paramètres</string>
@@ -46,9 +47,9 @@
   href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a
   href="http://billthefarmer.github.io">Bill Farmer</a>\nCalendrier
-  alternatif<a
+  alternatif <a
   href="https://github.com/npanigrahy/Custom-Calendar-View">Rendu de
-  calendrier alternatif</a>\nMarkdown view by <a
+  calendrier alternatif</a>\nMarkdown rendu par <a
   href="https://github.com/falnatsheh/MarkdownView">Markdown
   rendu</a>\nTraduction Japonaise par <a
   href="https://github.com/naofum">naofum</a>\nTraduction Allemande

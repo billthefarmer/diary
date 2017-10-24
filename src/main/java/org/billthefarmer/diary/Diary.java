@@ -44,6 +44,7 @@ import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -55,6 +56,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,6 +123,12 @@ public class Diary extends Activity
         "</iframe><br/><small>" +
         "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
+    private final static String GEO_PATTERN =
+        "geo:(-?\\d+.\\d+), ?(-?\\d+.\\d+).*";
+    private final static String GEO_TEMPLATE =
+        "![osm](geo:%f,%f)";
+    private final static String GEO = "geo";
+    private final static String OSM = "osm";
     private final static String HTTP = "http";
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
@@ -150,6 +158,9 @@ public class Diary extends Activity
     private ScrollView scrollView;
 
     private MarkdownView markdownView;
+
+    private SearchView searchView;
+    private MenuItem searchItem;
 
     private GestureDetector gestureDetector;
 
@@ -255,6 +266,35 @@ public class Diary extends Activity
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
+        searchItem = menu.findItem(R.id.search);
+        searchView = (SearchView) searchItem.getActionView();
+
+        if (searchView != null)
+        {
+            searchView.setOnQueryTextListener(new SearchView
+                                              .OnQueryTextListener()
+                {
+                    // onQueryTextChange
+                    @Override
+                    @SuppressWarnings("deprecation")
+                    public boolean onQueryTextChange (String newText)
+                    {
+                        markdownView.findAll(newText);
+                        return true;
+                    }
+
+                    // onQueryTextSubmit
+                    @Override
+                    public boolean onQueryTextSubmit (String query)
+                    {
+                        markdownView.findNext(true);
+                        return true;
+                    }
+
+                });
+        }
+
         return true;
     }
 
@@ -272,6 +312,9 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
+
+        menu.findItem(R.id.search).setEnabled(shown);
+
         return true;
     }
 
@@ -304,6 +347,7 @@ public class Diary extends Activity
             break;
         case R.id.settings:
             settings();
+            break;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -445,8 +489,6 @@ public class Diary extends Activity
                             // Get page title
                             if (view.getTitle() != null)
                                 setTitle(view.getTitle());
-
-                            // dirty = true;
                         }
 
                         else
@@ -494,10 +536,10 @@ public class Diary extends Activity
                         // Check flag
                         if (dirty)
                         {
-                            // Get text
-                            loadMarkdown();
                             // Save text
                             save();
+                            // Get text
+                            loadMarkdown();
                             // Clear flag
                             dirty = false;
                         }
@@ -506,6 +548,7 @@ public class Diary extends Activity
                         animateAccept();
 
                         shown = true;
+                        searchItem.setEnabled(shown);
                     }
                 });
 
@@ -530,13 +573,17 @@ public class Diary extends Activity
                     @Override
                     public void onClick(View v)
                     {
-
                         // Animation
                         animateEdit();
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         markdownView.clearHistory();
+
                         shown = false;
+                        searchItem.setEnabled(shown);
+
+                        if (searchItem.isActionViewExpanded())
+                            searchItem.collapseActionView();
                     }
                 });
 
@@ -633,6 +680,7 @@ public class Diary extends Activity
     {
         // Check for sent media
         if (intent.getAction().equals(Intent.ACTION_SEND) ||
+            intent.getAction().equals(Intent.ACTION_VIEW) ||
             intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
         {
             haveMedia = true;
@@ -708,11 +756,11 @@ public class Diary extends Activity
     // markdownCheck
     private String markdownCheck(String text)
     {
-        // Check for media
-        text = mediaCheck(text);
-
         // Check for map
-        return mapCheck(text);
+        text =  mapCheck(text);
+
+        // Check for media
+        return mediaCheck(text);
     }
 
     // mediaCheck
@@ -729,7 +777,47 @@ public class Diary extends Activity
             File file = new File(matcher.group(2));
             String type = FileUtils.getMimeType(file);
 
-            if (type.startsWith(IMAGE))
+            if (type == null)
+            {
+                Pattern geoPattern = Pattern.compile(GEO_PATTERN);
+                Matcher geoMatcher = geoPattern.matcher(matcher.group(2));
+
+                if (geoMatcher.matches())
+                {
+                    NumberFormat parser =
+                        NumberFormat.getInstance(Locale.ENGLISH);
+
+                    double lat = 1.0;
+                    double lng = 1.0;
+
+                    try
+                    {
+                        lat = parser.parse(geoMatcher.group(1)).doubleValue();
+                        lng = parser.parse(geoMatcher.group(2)).doubleValue();
+                    }
+
+                    // Ignore parse error
+                    catch (Exception e)
+                    {
+                        continue;
+                    }
+
+                    // Create replacement iframe
+                    String replace =
+                        String.format(Locale.ENGLISH, MAP_TEMPLATE,
+                                      lng - 0.005, lat - 0.005,
+                                      lng + 0.005, lat + 0.005,
+                                      lat, lng);
+
+                    // Append replacement
+                    matcher.appendReplacement(buffer, replace);
+                }
+
+                else
+                    continue;
+            }
+
+            else if (type.startsWith(IMAGE))
             {
                 // Do nothing, handled by markdown view
                 continue;
@@ -790,9 +878,7 @@ public class Diary extends Activity
 
             // Create replacement iframe
             String replace =
-                String.format(new Locale("en"), MAP_TEMPLATE,
-                              lng - 0.005, lat - 0.005,
-                              lng + 0.005, lat + 0.005,
+                String.format(Locale.ENGLISH, GEO_TEMPLATE,
                               lat, lng);
 
             // Substitute replacement
@@ -810,7 +896,15 @@ public class Diary extends Activity
     {
         String type = intent.getType();
 
-        if (type.equalsIgnoreCase(TEXT_PLAIN))
+        if (type == null)
+        {
+            // Get uri
+            Uri uri = intent.getData();
+            if (uri.getScheme().equalsIgnoreCase(GEO))
+                addMap(uri, true);
+        }
+
+        else if (type.equalsIgnoreCase(TEXT_PLAIN))
         {
             // Get the text
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -1283,6 +1377,14 @@ public class Diary extends Activity
         if (currEntry != null)
         {
             String text = textView.getText().toString();
+
+            // Check for events
+            text = eventCheck(text);
+
+            // Check for maps
+            text = mapCheck(text);
+
+            // Save text
             save(text);
         }
     }
@@ -1308,9 +1410,6 @@ public class Diary extends Activity
 
         else
         {
-            // Check for events
-            text = eventCheck(text);
-
             file.getParentFile().mkdirs();
             try
             {
@@ -1519,6 +1618,25 @@ public class Diary extends Activity
         loadMarkdown();
     }
 
+    // addMap
+    private void addMap(Uri uri, boolean append)
+    {
+        String mapText = String.format(MEDIA_TEMPLATE,
+                                       OSM,
+                                       uri.toString());
+        if (append)
+            textView.append(mapText);
+
+        else
+        {
+            Editable editable = textView.getEditableText();
+            int position = textView.getSelectionStart();
+            editable.insert(position, mapText);
+        }
+
+        loadMarkdown();
+    }
+
     // resolveContent
     private Uri resolveContent(Uri uri)
     {
@@ -1699,15 +1817,15 @@ public class Diary extends Activity
                     if (Math.abs(diffY) > SWIPE_THRESHOLD &&
                         Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)
                     {
-                        if (diffY > 0)
-                        {
-                            onSwipeDown();
-                        }
+                        // if (diffY > 0)
+                        // {
+                        //     onSwipeDown();
+                        // }
 
-                        else
-                        {
-                            onSwipeUp();
-                        }
+                        // else
+                        // {
+                        //     onSwipeUp();
+                        // }
                     }
 
                     result = true;
