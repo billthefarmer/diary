@@ -43,6 +43,7 @@
   <string name="folder">Cartella</string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione Diary %s</string>
+  <string name="debug_info">Data di compilazione %s</string>
   <string name="copyright">Copyright \u00A9 2012 <a
   href="mailto:hola@josep-portella.com" >Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a
@@ -59,6 +60,5 @@
   href="https://github.com/marcoM32">Marco Magliano</a>\nFile
   utilities by <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
-  <string name="license">Licenza</string>
-  <string name="pref_license_summ">Consulta la licenza di Diary GNU GPL v3</string>
+  <string name="license">Licenza progetto <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
 </resources>

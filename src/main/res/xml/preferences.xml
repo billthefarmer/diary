@@ -78,14 +78,6 @@
 	android:summary="@string/pref_about_summ"
 	android:dialogLayout="@layout/about" />
 
-	<Preference
-	  android:title="@string/license"
-	  android:summary="@string/pref_license_summ"
-	  android:icon="@android:drawable/ic_menu_view">
-	  <intent android:action="android.intent.action.VIEW"
-		  android:data="https://www.gnu.org/licenses/gpl.txt" />
-	</Preference>
-
   </PreferenceCategory>
 
 </PreferenceScreen>

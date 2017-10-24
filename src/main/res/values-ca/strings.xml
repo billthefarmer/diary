@@ -41,7 +41,8 @@
   <string name="folder">Carpeta</string>
   <string name="about">Sobre</string>
   <string name="pref_about_summ">Diary version %s</string>
-    <string name="copyright">Copyright \u00A9 2012 <a
+  <string name="debug_info">Temps de construcció %s</string>
+  <string name="copyright">Copyright \u00A9 2012 <a
   href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a
   href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
@@ -56,7 +57,6 @@
   Ta</a>\nTraducció italià per <a
   href="https://github.com/marcoM32">Marco Magliano</a>\nUtilitats de
   fitxers de <a href="https://github.com/iPaulPro">Paul Burke</a>
-</string>
-  <string name="license">Llicència</string>
-  <string name="pref_license_summ">Vegeu la llicència de Diary GNU GPL v3</string>
+  </string>
+  <string name="license">Llicència de projecte <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
 </resources>
