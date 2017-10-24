@@ -267,7 +267,7 @@ public class Diary extends Activity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
 
-        searchItem = menu.findItem(R.id.find);
+        searchItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchItem.getActionView();
 
         if (searchView != null)
@@ -313,7 +313,7 @@ public class Diary extends Activity
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
 
-        menu.findItem(R.id.find).setEnabled(shown);
+        menu.findItem(R.id.search).setEnabled(shown);
 
         return true;
     }
