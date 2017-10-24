@@ -62,5 +62,11 @@ public class AboutPreference extends DialogPreference
         // Set movement method
         copyright.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // Get licence text view
+        TextView licence = (TextView) view.findViewById(R.id.licence);
+
+        // Set movement method
+        licence.setMovementMethod(LinkMovementMethod.getInstance());
+
     }
 }
