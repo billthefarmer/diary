@@ -534,7 +534,6 @@ public class Diary extends Activity
                         animateAccept();
 
                         shown = true;
-                        searchItem.setEnabled(shown);
                     }
                 });
 
@@ -566,10 +565,6 @@ public class Diary extends Activity
                         markdownView.clearHistory();
 
                         shown = false;
-                        // searchItem.setEnabled(shown);
-
-                        // if (searchItem.isActionViewExpanded())
-                        //     searchItem.collapseActionView();
                     }
                 });
 
