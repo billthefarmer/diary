@@ -84,6 +84,5 @@ public class AboutPreference extends DialogPreference
         // Set movement method
         licence.setMovementMethod(LinkMovementMethod.getInstance());
 
->>>>>>> upstream/master
     }
 }
