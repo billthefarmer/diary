@@ -42,9 +42,7 @@
   <string name="folder">フォルダ</string>
   <string name="about">アプリについて</string>
   <string name="pref_about_summ">Diary バージョン %s</string>
-  <string name="licence">ライセンス <a
-  href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
-  </string>
+  <string name="debug_info">ビルド時間 %s</string>
   <string name="copyright">Copyright \u00A9 2012 <a
   href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a
@@ -61,4 +59,5 @@
   href="https://github.com/marcoM32">Marco Magliano</a>\nファイルユー
   ティリティ <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+  <string name="license">プロジェクトライセンス <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
 </resources>
