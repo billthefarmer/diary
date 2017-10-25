@@ -20,24 +20,27 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.GestureDetector;
-import android.view.inputmethod.InputMethodManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -143,6 +146,8 @@ public class Diary extends Activity
 
     private boolean dirty = true;
     private boolean shown = true;
+
+    private boolean multiTouch = false;
 
     private float minScale = 1000;
     private boolean canSwipe = true;
@@ -271,29 +276,7 @@ public class Diary extends Activity
         searchView = (SearchView) searchItem.getActionView();
 
         if (searchView != null)
-        {
-            searchView.setOnQueryTextListener(new SearchView
-                                              .OnQueryTextListener()
-                {
-                    // onQueryTextChange
-                    @Override
-                    @SuppressWarnings("deprecation")
-                    public boolean onQueryTextChange (String newText)
-                    {
-                        markdownView.findAll(newText);
-                        return true;
-                    }
-
-                    // onQueryTextSubmit
-                    @Override
-                    public boolean onQueryTextSubmit (String query)
-                    {
-                        markdownView.findNext(true);
-                        return true;
-                    }
-
-                });
-        }
+            searchView.setOnQueryTextListener(new QueryTextListener());
 
         return true;
     }
@@ -313,7 +296,7 @@ public class Diary extends Activity
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
 
-        menu.findItem(R.id.search).setEnabled(shown);
+        // menu.findItem(R.id.search).setEnabled(shown);
 
         return true;
     }
@@ -438,6 +421,9 @@ public class Diary extends Activity
     @Override
     public boolean dispatchTouchEvent(MotionEvent event)
     {
+        if (event.getPointerCount() > 1)
+            multiTouch = true;
+
         gestureDetector.onTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
@@ -580,10 +566,10 @@ public class Diary extends Activity
                         markdownView.clearHistory();
 
                         shown = false;
-                        searchItem.setEnabled(shown);
+                        // searchItem.setEnabled(shown);
 
-                        if (searchItem.isActionViewExpanded())
-                            searchItem.collapseActionView();
+                        // if (searchItem.isActionViewExpanded())
+                        //     searchItem.collapseActionView();
                     }
                 });
 
@@ -1768,6 +1754,88 @@ public class Diary extends Activity
             animateSwipeLeft();
     }
 
+    // QueryTextListener
+    private class QueryTextListener
+        implements SearchView.OnQueryTextListener
+    {
+        private BackgroundColorSpan span = new
+            BackgroundColorSpan(Color.YELLOW);
+        private Editable editable;
+        private String text;
+        private int index;
+        private int height;
+
+        // onQueryTextChange
+        @Override
+        @SuppressWarnings("deprecation")
+        public boolean onQueryTextChange (String newText)
+        {
+            if (shown)
+                markdownView.findAll(newText);
+
+            else
+            {
+                height = scrollView.getHeight();
+                editable = textView.getEditableText();
+                text = textView.getText()
+                    .toString().toLowerCase(Locale.getDefault());
+ 
+                if (newText.length() == 0)
+                    editable.removeSpan(span);
+
+                index = text
+                    .indexOf(newText
+                             .toLowerCase(Locale.getDefault()));
+                if (index >= 0)
+                {
+                    int line = textView.getLayout()
+                        .getLineForOffset(index);
+                    int pos = textView.getLayout()
+                        .getLineBaseline(line);
+                    scrollView.scrollTo(0, pos - height / 2);
+
+                    editable
+                        .setSpan(span, index, index +
+                                 newText.length(),
+                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+
+            return true;
+        }
+
+        // onQueryTextSubmit
+        @Override
+        public boolean onQueryTextSubmit (String query)
+        {
+            if (shown)
+                markdownView.findNext(true);
+
+            else
+            {
+                index = text
+                    .indexOf(query
+                             .toLowerCase(Locale.getDefault()),
+                             index + query.length());
+                if (index >= 0)
+                {
+                    int line = textView.getLayout()
+                        .getLineForOffset(index);
+                    int pos = textView.getLayout()
+                        .getLineBaseline(line);
+                    scrollView.scrollTo(0, pos - height / 2);
+
+                    editable
+                        .setSpan(span, index, index +
+                                 query.length(),
+                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+
+            return true;
+        }
+    }
+
     // GestureListener
     private class GestureListener
         extends GestureDetector.SimpleOnGestureListener
@@ -1815,21 +1883,24 @@ public class Diary extends Activity
                 else
                 {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD &&
-                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)
+                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD &&
+                        multiTouch)
                     {
-                        // if (diffY > 0)
-                        // {
-                        //     onSwipeDown();
-                        // }
+                        if (diffY > 0)
+                        {
+                            onSwipeDown();
+                        }
 
-                        // else
-                        // {
-                        //     onSwipeUp();
-                        // }
+                        else
+                        {
+                            onSwipeUp();
+                        }
                     }
 
                     result = true;
                 }
+
+                multiTouch = false;
             }
 
             catch (Exception e) {}
