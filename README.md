@@ -28,6 +28,8 @@ file, which may be copied in to an entry for reference if required.
 * Display [OpenStreetMap](http://www.openstreetmap.org) maps
 * Add media from media providers
 * Receive media from other apps
+* Receive geo uris from other apps
+* Incremental search of diary entries
 * Add events to calendar
 
 ## Toolbar
@@ -37,6 +39,7 @@ The toolbar icons are, from left to right:
 * **Next** - show the next entry or today if next
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
+* **Search** - Incremental search of diary entry
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Settings** - show the settings
@@ -50,7 +53,8 @@ day, or in the custom calendar will show the next or previous month.
 
 ## Swipe up and down
 Swipe up and down in the diary page will show the previous or next
-month, or in the custom calendar will show the previous or next year.
+month (disabled), or in the custom calendar will show the previous or
+next year.
 
 ## Editing
 In markdown mode the **Edit** button floating above the page allows
@@ -60,6 +64,11 @@ long touch on the page.
 
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
+
+## Search
+You may search diary entries, the search will update as text is
+entered into the search field. Use the keyboard search button for find
+next.
 
 ## Text
 You may receive text clips from another app. A date picker will pop
