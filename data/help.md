@@ -35,9 +35,9 @@ Swipe left and right in the diary page will show the next or previous
 day, or in the custom calendar will show the next or previous month.
 
 ## Swipe up and down
-Swipe up and down in the diary page will show the previous or next
-month (disabled), or in the custom calendar will show the previous or
-next year.
+Swipe up and down with two fingers in the diary page will show the
+previous or next month, or in the custom calendar will show the
+previous or next year.
 
 ## Editing
 In markdown mode the **Edit** button floating above the page allows
