@@ -1765,30 +1765,41 @@ public class Diary extends Activity
         @SuppressWarnings("deprecation")
         public boolean onQueryTextChange (String newText)
         {
+            // Use web view functionality
             if (shown)
                 markdownView.findAll(newText);
 
+            // Use string search and spannable for highlighting
             else
             {
                 height = scrollView.getHeight();
                 editable = textView.getEditableText();
                 text = textView.getText()
                     .toString().toLowerCase(Locale.getDefault());
- 
-                if (newText.length() == 0)
-                    editable.removeSpan(span);
 
+                // Reset the index and clear highlighting
+                if (newText.length() == 0)
+                {
+                    index = 0;
+                    editable.removeSpan(span);
+                }
+
+                // Find text
                 index = text
                     .indexOf(newText
-                             .toLowerCase(Locale.getDefault()));
+                             .toLowerCase(Locale.getDefault()), index);
                 if (index >= 0)
                 {
+                    // Get text position
                     int line = textView.getLayout()
                         .getLineForOffset(index);
                     int pos = textView.getLayout()
                         .getLineBaseline(line);
+
+                    // Scroll to it
                     scrollView.scrollTo(0, pos - height / 2);
 
+                    // Highlight it
                     editable
                         .setSpan(span, index, index +
                                  newText.length(),
@@ -1803,23 +1814,30 @@ public class Diary extends Activity
         @Override
         public boolean onQueryTextSubmit (String query)
         {
+            // Use web view functionality
             if (shown)
                 markdownView.findNext(true);
 
+            // Use string search and spannable for highlighting
             else
             {
+                // Find next text
                 index = text
                     .indexOf(query
                              .toLowerCase(Locale.getDefault()),
                              index + query.length());
                 if (index >= 0)
                 {
+                    // Get text position
                     int line = textView.getLayout()
                         .getLineForOffset(index);
                     int pos = textView.getLayout()
                         .getLineBaseline(line);
+
+                    // Scroll to it
                     scrollView.scrollTo(0, pos - height / 2);
 
+                    // Highlight it
                     editable
                         .setSpan(span, index, index +
                                  query.length(),
