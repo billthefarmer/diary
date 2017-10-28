@@ -44,6 +44,7 @@
   <string name="folder">Cartella</string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione Diary %s</string>
+  <string name="built">Costruito %s</string>
   <string name="licence">Licenza <a
   href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>

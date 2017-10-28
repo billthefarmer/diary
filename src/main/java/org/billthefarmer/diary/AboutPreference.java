@@ -30,6 +30,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+
 // AboutPreference class
 public class AboutPreference extends DialogPreference
 {
@@ -54,6 +56,19 @@ public class AboutPreference extends DialogPreference
             String v = (String) version.getText();
             String s = String.format(v, BuildConfig.VERSION_NAME);
             version.setText(s);
+        }
+
+        // Get built text view
+        TextView built = (TextView) view.findViewById(R.id.built);
+
+        // Set built date in text view
+        if (built != null)
+        {
+            String d = (String) built.getText();
+            DateFormat dateFormat = DateFormat.getDateTimeInstance();
+            String s =
+                String.format(d, dateFormat.format(BuildConfig.BUILT));
+            built.setText(s);
         }
 
         // Get copyright text view

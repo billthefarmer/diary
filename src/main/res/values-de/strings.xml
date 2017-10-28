@@ -42,6 +42,7 @@
   <string name="folder">Mappe</string>
   <string name="about">Über</string>
   <string name="pref_about_summ">Tagebuchversion %s</string>
+  <string name="built">Gebaut %s</string>
   <string name="licence">Lizenz <a
   href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>

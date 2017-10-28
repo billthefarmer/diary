@@ -1807,7 +1807,7 @@ public class Diary extends Activity
                         .getLineBaseline(line);
 
                     // Scroll to it
-                    scrollView.scrollTo(0, pos - height / 2);
+                    scrollView.smoothScrollTo(0, pos - height / 2);
 
                     // Highlight it
                     editable
@@ -1845,7 +1845,7 @@ public class Diary extends Activity
                         .getLineBaseline(line);
 
                     // Scroll to it
-                    scrollView.scrollTo(0, pos - height / 2);
+                    scrollView.smoothScrollTo(0, pos - height / 2);
 
                     // Highlight it
                     editable
