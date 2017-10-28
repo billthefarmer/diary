@@ -296,8 +296,6 @@ public class Diary extends Activity
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
 
-        // menu.findItem(R.id.search).setEnabled(shown);
-
         return true;
     }
 
@@ -334,6 +332,10 @@ public class Diary extends Activity
         default:
             return super.onOptionsItemSelected(item);
         }
+
+        // Close text search
+        if (searchItem.isActionViewExpanded())
+            searchItem.collapseActionView();
 
         return true;
     }
@@ -533,6 +535,10 @@ public class Diary extends Activity
                         // Animation
                         animateAccept();
 
+                        // Close text search
+                        if (searchItem.isActionViewExpanded())
+                            searchItem.collapseActionView();
+
                         shown = true;
                     }
                 });
@@ -563,6 +569,10 @@ public class Diary extends Activity
 
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         markdownView.clearHistory();
+
+                        // Close text search
+                        if (searchItem.isActionViewExpanded())
+                            searchItem.collapseActionView();
 
                         shown = false;
                     }
