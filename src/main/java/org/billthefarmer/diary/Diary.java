@@ -1958,10 +1958,6 @@ public class Diary extends Activity
                     // Get index
                     index = matcher.start();
 
-                    // Reset matcher
-                    if (matcher.hitEnd())
-                        matcher.reset();
-
                     // Get text position
                     int line = textView.getLayout()
                         .getLineForOffset(index);
@@ -1977,6 +1973,10 @@ public class Diary extends Activity
                                  query.length(),
                                  Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
+
+                // Reset matcher
+                if (matcher.hitEnd())
+                    matcher.reset();
             }
 
             return true;
