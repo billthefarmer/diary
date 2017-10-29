@@ -277,8 +277,29 @@ public class Diary extends Activity
         inflater.inflate(R.menu.main, menu);
 
         searchItem = menu.findItem(R.id.search);
-        searchView = (SearchView) searchItem.getActionView();
 
+        // Set up search view and action expand listener
+        if (searchItem != null)
+        {
+            searchView = (SearchView) searchItem.getActionView();
+            searchItem.setOnActionExpandListener(new MenuItem
+                                                 .OnActionExpandListener()
+                {
+                    @Override
+                    public boolean onMenuItemActionCollapse (MenuItem item)
+                    {
+                        invalidateOptionsMenu();
+                        return true;
+                    }
+                    @Override
+                    public boolean onMenuItemActionExpand (MenuItem item)
+                    {
+                        return true;
+                    }
+                });
+        }
+
+        // Set up search view options and listener
         if (searchView != null)
         {
             searchView.setSubmitButtonEnabled(true);
@@ -304,6 +325,7 @@ public class Diary extends Activity
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
 
+        // Show find all item
         if (menu.findItem(R.id.search).isActionViewExpanded())
             menu.findItem(R.id.findAll).setVisible(true);
         else
@@ -525,7 +547,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         edit.setVisibility(View.VISIBLE);
-                        return false;
+                        return true;
                     }
                 });
         }
@@ -632,7 +654,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         accept.setVisibility(View.VISIBLE);
-                        return false;
+                        return true;
                     }
                 });
         }
