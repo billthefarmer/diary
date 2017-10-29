@@ -105,8 +105,8 @@ separator. Use the correct convention for your locale. Geo uris
 received from other apps will be converted to `[osm](<lat>,<lng>)`
 syntax in the diary entry. Diary entries using `[<lat>,<lng>]` syntax
 will be converted to geo uri syntax. **Caution** - geo uris use a
-period ('.') for a decimal point and a comma (',') for the co-ordinate
-separator regardless of locale.
+period (`[.]`) for a decimal point and a comma (`[,]`) for the
+co-ordinate separator regardless of locale.
 
 ## Events
 You may add an event to the calendar by adding a line to a diary entry
