@@ -27,6 +27,7 @@
   <string name="goToDate">日付に…</string>
   <string name="addMedia">メディアを追加…</string>
   <string name="search">サーチ…</string>
+  <string name="findAll">すべてを検索…</string>
   <string name="editStyles">スタイルを編集する…</string>
   <string name="settings">設定</string>
   <string name="calendar">カレンダー</string>

@@ -26,6 +26,7 @@
   <string name="nextEntry">Nächster</string>
   <string name="goToDate">Gehe zu Datum…</string>
   <string name="search">Suche…</string>
+  <string name="findAll">Finde alle…</string>
   <string name="addMedia">Medien hinzufügen…</string>
   <string name="editStyles">Stile bearbeiten…</string>
   <string name="settings">Einstellungen</string>
