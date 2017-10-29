@@ -23,6 +23,7 @@ The toolbar icons are, from left to right:
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
 * **Search** - Incremental search of diary entry
+* **Find all** - Find all diary entries containing search text
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Settings** - show the settings
