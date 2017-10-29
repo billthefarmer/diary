@@ -50,8 +50,15 @@ markdown syntax.
 
 ## Search
 You may search diary entries, the search will update as text is
-entered into the search field. Use the keyboard search button for find
-next.
+entered into the search field. Use the search widget or keyboard
+action button for find next.
+
+## Find all
+You may find all diary entries that contain the current search
+text. This menu item will only appear while the search widget is
+active. A dialog will pop up with a list of matching entries. Touch an
+entry to open that entry. You may repeat this or refine the search
+text to find the desired entry.
 
 ## Text
 You may receive text clips from another app. A date picker will pop

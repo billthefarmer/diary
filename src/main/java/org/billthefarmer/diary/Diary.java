@@ -1190,7 +1190,7 @@ public class Diary extends Activity
                                     @Override
                                     public void run()
                                     {
-                                        searchView.setQuery(search, true);
+                                        searchView.setQuery(search, false);
                                     }
                                 }, FIND_DELAY);
                         }
