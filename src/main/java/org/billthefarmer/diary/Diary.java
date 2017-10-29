@@ -1138,7 +1138,11 @@ public class Diary extends Activity
     {
         // Get search string
         final String search = searchView.getQuery().toString();
-        String find = search.toLowerCase(Locale.getDefault());
+
+        Pattern pattern = Pattern.compile(search,
+                                          Pattern.CASE_INSENSITIVE |
+                                          Pattern.LITERAL |
+                                          Pattern.UNICODE_CASE);
 
         // Get entry list
         List<Calendar> entries = getEntries();
@@ -1152,8 +1156,9 @@ public class Diary extends Activity
             File file = getDay(entry.get(Calendar.YEAR),
                                entry.get(Calendar.MONTH),
                                entry.get(Calendar.DATE));
-            String text = read(file).toLowerCase(Locale.getDefault());
-            if (text.contains(find))
+
+            Matcher matcher = pattern.matcher(read(file));
+            if (matcher.find())
                 matches.add(DateFormat.getDateInstance(DateFormat.MEDIUM)
                          .format(entry.getTime()));
         }
@@ -1875,6 +1880,8 @@ public class Diary extends Activity
         private BackgroundColorSpan span = new
             BackgroundColorSpan(Color.YELLOW);
         private Editable editable;
+        private Pattern pattern;
+        private Matcher matcher;
         private String text;
         private int index;
         private int height;
@@ -1888,13 +1895,12 @@ public class Diary extends Activity
             if (shown)
                 markdownView.findAll(newText);
 
-            // Use string search and spannable for highlighting
+            // Use regex search and spannable for highlighting
             else
             {
                 height = scrollView.getHeight();
                 editable = textView.getEditableText();
-                text = textView.getText()
-                    .toString().toLowerCase(Locale.getDefault());
+                text = textView.getText().toString();
 
                 // Reset the index and clear highlighting
                 if (newText.length() == 0)
@@ -1903,12 +1909,18 @@ public class Diary extends Activity
                     editable.removeSpan(span);
                 }
 
+                // Get pattern
+                pattern = Pattern.compile(newText,
+                                          Pattern.CASE_INSENSITIVE |
+                                          Pattern.LITERAL |
+                                          Pattern.UNICODE_CASE);
                 // Find text
-                index = text
-                    .indexOf(newText
-                             .toLowerCase(Locale.getDefault()), index);
-                if (index >= 0)
+                matcher = pattern.matcher(text);
+                if (matcher.find(index))
                 {
+                    // Get index
+                    index = matcher.start();
+
                     // Get text position
                     int line = textView.getLayout()
                         .getLineForOffset(index);
@@ -1937,16 +1949,19 @@ public class Diary extends Activity
             if (shown)
                 markdownView.findNext(true);
 
-            // Use string search and spannable for highlighting
+            // Use regex search and spannable for highlighting
             else
             {
                 // Find next text
-                index = text
-                    .indexOf(query
-                             .toLowerCase(Locale.getDefault()),
-                             index + query.length());
-                if (index >= 0)
+                if (matcher.find())
                 {
+                    // Get index
+                    index = matcher.start();
+
+                    // Reset matcher
+                    if (matcher.hitEnd())
+                        matcher.reset();
+
                     // Get text position
                     int line = textView.getLayout()
                         .getLineForOffset(index);
