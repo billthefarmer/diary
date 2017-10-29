@@ -24,6 +24,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
   <item
+      android:id="@+id/findAll"
+      android:showAsAction="ifRoom"
+      android:title="@string/findAll"
+      android:visible="false"
+      android:icon="@drawable/ic_action_search" />
+  <item
       android:id="@+id/prevEntry"
       android:showAsAction="ifRoom"
       android:title="@string/prevEntry"

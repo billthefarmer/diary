@@ -17,6 +17,7 @@
 package org.billthefarmer.diary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,12 +41,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 
@@ -89,6 +92,7 @@ public class Diary extends Activity
 
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
+    private final static int FIND_DELAY = 256;
 
     private final static String TAG = "Diary";
 
@@ -276,7 +280,11 @@ public class Diary extends Activity
         searchView = (SearchView) searchItem.getActionView();
 
         if (searchView != null)
+        {
+            searchView.setSubmitButtonEnabled(true);
+            searchView.setImeOptions(EditorInfo.IME_ACTION_GO);
             searchView.setOnQueryTextListener(new QueryTextListener());
+        }
 
         return true;
     }
@@ -295,6 +303,11 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
+
+        if (menu.findItem(R.id.search).isActionViewExpanded())
+            menu.findItem(R.id.findAll).setVisible(true);
+        else
+            menu.findItem(R.id.findAll).setVisible(false);
 
         return true;
     }
@@ -320,6 +333,9 @@ public class Diary extends Activity
         case R.id.goToDate:
             goToDate(currEntry);
             break;
+        case R.id.findAll:
+            findAll();
+            break;
         case R.id.addMedia:
             addMedia();
             break;
@@ -334,7 +350,8 @@ public class Diary extends Activity
         }
 
         // Close text search
-        if (searchItem.isActionViewExpanded())
+        if (searchItem.isActionViewExpanded() &&
+            item.getItemId() != R.id.findAll)
             searchItem.collapseActionView();
 
         return true;
@@ -1092,6 +1109,76 @@ public class Diary extends Activity
                              date.get(Calendar.DATE));
         // Show the dialog
         dialog.show();
+    }
+
+    // findAll
+    public void findAll()
+    {
+        // Get search string
+        final String search = searchView.getQuery().toString();
+        String find = search.toLowerCase(Locale.getDefault());
+
+        // Get entry list
+        List<Calendar> entries = getEntries();
+
+        // Create a list of matches
+        List<String> matches = new ArrayList<String>();
+
+        // Check the entries
+        for (Calendar entry: entries)
+        {
+            File file = getDay(entry.get(Calendar.YEAR),
+                               entry.get(Calendar.MONTH),
+                               entry.get(Calendar.DATE));
+            String text = read(file).toLowerCase(Locale.getDefault());
+            if (text.contains(find))
+                matches.add(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                         .format(entry.getTime()));
+        }
+
+        // If found pop up a dialog
+        if (!matches.isEmpty())
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.findAll);
+            final String[] choices = matches.toArray(new String[0]);
+            builder.setItems(choices, new DialogInterface.OnClickListener()
+                {
+                    public void onClick (DialogInterface dialog, 
+                                         int which)
+                    {
+                        String choice = choices[which];
+                        DateFormat format =
+                            DateFormat.getDateInstance(DateFormat.MEDIUM);
+
+                        // Get the entry chosen
+                        try
+                        {
+                            Date date = format.parse(choice);
+                            Calendar entry = Calendar.getInstance();
+                            entry.setTime(date);
+                            changeDate(entry);
+
+                            // Put the search text back - why it
+                            // disappears I have no idea or why I have
+                            // to do it after a delay
+                            searchView.postDelayed(new Runnable()
+                                {
+                                    // run
+                                    @Override
+                                    public void run()
+                                    {
+                                        searchView.setQuery(search, true);
+                                    }
+                                }, FIND_DELAY);
+                        }
+
+                        catch (Exception e) {}
+                    }
+                });
+            builder.setNegativeButton(android.R.string.cancel, null);
+            builder.show();
+        }
     }
 
     // addMedia
