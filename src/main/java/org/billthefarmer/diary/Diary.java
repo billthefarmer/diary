@@ -1163,11 +1163,12 @@ public class Diary extends Activity
                          .format(entry.getTime()));
         }
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.findAll);
+
         // If found pop up a dialog
         if (!matches.isEmpty())
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.findAll);
             final String[] choices = matches.toArray(new String[0]);
             builder.setItems(choices, new DialogInterface.OnClickListener()
                 {
@@ -1203,9 +1204,10 @@ public class Diary extends Activity
                         catch (Exception e) {}
                     }
                 });
-            builder.setNegativeButton(android.R.string.cancel, null);
-            builder.show();
         }
+
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
     }
 
     // addMedia
