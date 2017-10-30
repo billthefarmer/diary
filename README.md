@@ -20,17 +20,20 @@ and an example
 file, which may be copied in to an entry for reference if required.
 
 ### Caution - check diary folder
-I had a request [#15](https://github.com/billthefarmer/diary/issues/15)
-to add an option to change the Diary storage folder,
-which was duly added. Not forseeing potential future side effects I used
-the app name for the default value of the option, which was already set
-in the code. Since then I have gratefully received several language
-translations, some of which have changed the app name. This has had the
-result of some users [#24](https://github.com/billthefarmer/diary/issues/24),
-[#29](https://github.com/billthefarmer/diary/issues/29) apparently losing
-their entries when they upgraded, or possibly uninstalled and reinstalled
-the app, which resets the settings. If this happens, check the folder option
-and either change it back or move your entries with a file manager.
+I had a request
+[#15](https://github.com/billthefarmer/diary/issues/15) to add an
+option to change the Diary storage folder, which was duly added. Not
+forseeing potential future side effects I used the app name for the
+default value of the option, which was already set in the code. Since
+then I have gratefully received several language translations, some of
+which have changed the app name for that language. This has had the
+result of some users
+[#24](https://github.com/billthefarmer/diary/issues/24),
+[#29](https://github.com/billthefarmer/diary/issues/29) apparently
+losing their entries when they upgraded, or possibly uninstalled and
+reinstalled the app, which resets the settings. If this happens, check
+the folder option and either change it back or move your entries with
+a file manager.
 
 * Entries saved in plain text files
 * Browse entries
