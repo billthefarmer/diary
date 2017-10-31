@@ -19,12 +19,14 @@ package org.billthefarmer.diary;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -1137,77 +1139,11 @@ public class Diary extends Activity
     public void findAll()
     {
         // Get search string
-        final String search = searchView.getQuery().toString();
+        String search = searchView.getQuery().toString();
 
-        Pattern pattern = Pattern.compile(search,
-                                          Pattern.CASE_INSENSITIVE |
-                                          Pattern.LITERAL |
-                                          Pattern.UNICODE_CASE);
-
-        // Get entry list
-        List<Calendar> entries = getEntries();
-
-        // Create a list of matches
-        List<String> matches = new ArrayList<String>();
-
-        // Check the entries
-        for (Calendar entry: entries)
-        {
-            File file = getDay(entry.get(Calendar.YEAR),
-                               entry.get(Calendar.MONTH),
-                               entry.get(Calendar.DATE));
-
-            Matcher matcher = pattern.matcher(read(file));
-            if (matcher.find())
-                matches.add(DateFormat.getDateInstance(DateFormat.MEDIUM)
-                         .format(entry.getTime()));
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.findAll);
-
-        // If found pop up a dialog
-        if (!matches.isEmpty())
-        {
-            final String[] choices = matches.toArray(new String[0]);
-            builder.setItems(choices, new DialogInterface.OnClickListener()
-                {
-                    public void onClick (DialogInterface dialog, 
-                                         int which)
-                    {
-                        String choice = choices[which];
-                        DateFormat format =
-                            DateFormat.getDateInstance(DateFormat.MEDIUM);
-
-                        // Get the entry chosen
-                        try
-                        {
-                            Date date = format.parse(choice);
-                            Calendar entry = Calendar.getInstance();
-                            entry.setTime(date);
-                            changeDate(entry);
-
-                            // Put the search text back - why it
-                            // disappears I have no idea or why I have
-                            // to do it after a delay
-                            searchView.postDelayed(new Runnable()
-                                {
-                                    // run
-                                    @Override
-                                    public void run()
-                                    {
-                                        searchView.setQuery(search, false);
-                                    }
-                                }, FIND_DELAY);
-                        }
-
-                        catch (Exception e) {}
-                    }
-                });
-        }
-
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.show();
+        // Execute find task
+        FindTask findTask = new FindTask(this);
+        findTask.execute(search);
     }
 
     // addMedia
@@ -1873,6 +1809,101 @@ public class Diary extends Activity
 
         if (markdown && shown)
             animateSwipeLeft();
+    }
+
+    // FindTask
+    private class FindTask
+        extends AsyncTask<String, Void, List<String>>
+    {
+        private Context context;
+        private String search;
+
+        public FindTask(Context context)
+        {
+            this.context = context;
+        }
+
+        // doInBackground
+        @Override
+        protected List<String> doInBackground(String... params)
+        {
+            search = params[0];
+            Pattern pattern = Pattern.compile(search,
+                                              Pattern.CASE_INSENSITIVE |
+                                              Pattern.LITERAL |
+                                              Pattern.UNICODE_CASE);
+            // Get entry list
+            List<Calendar> entries = getEntries();
+
+            // Create a list of matches
+            List<String> matches = new ArrayList<String>();
+
+            // Check the entries
+            for (Calendar entry: entries)
+            {
+                File file = getDay(entry.get(Calendar.YEAR),
+                                   entry.get(Calendar.MONTH),
+                                   entry.get(Calendar.DATE));
+
+                Matcher matcher = pattern.matcher(read(file));
+                if (matcher.find())
+                    matches.add(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                                .format(entry.getTime()));
+            }
+
+            return matches;
+        }
+
+        // onPostExecute
+        @Override
+        protected void onPostExecute(List<String> matches)
+        {
+            // Build dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.findAll);
+
+            // If found populate dialog
+            if (!matches.isEmpty())
+            {
+                final String[] choices = matches.toArray(new String[0]);
+                builder.setItems(choices, new DialogInterface.OnClickListener()
+                    {
+                        public void onClick (DialogInterface dialog, int which)
+                        {
+                            String choice = choices[which];
+                            DateFormat format =
+                                DateFormat.getDateInstance(DateFormat.MEDIUM);
+
+                            // Get the entry chosen
+                            try
+                            {
+                                Date date = format.parse(choice);
+                                Calendar entry = Calendar.getInstance();
+                                entry.setTime(date);
+                                changeDate(entry);
+
+                                // Put the search text back - why it
+                                // disappears I have no idea or why I have
+                                // to do it after a delay
+                                searchView.postDelayed(new Runnable()
+                                    {
+                                        // run
+                                        @Override
+                                        public void run()
+                                        {
+                                            searchView.setQuery(search, false);
+                                        }
+                                    }, FIND_DELAY);
+                            }
+
+                            catch (Exception e) {}
+                        }
+                    });
+            }
+
+            builder.setNegativeButton(android.R.string.cancel, null);
+            builder.show();
+        }
     }
 
     // QueryTextListener
