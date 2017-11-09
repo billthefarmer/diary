@@ -102,6 +102,7 @@ public class Diary extends Activity
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_MARKDOWN = "pref_markdown";
+    public final static String PREF_COPY_MEDIA = "pref_copy_media";
 
     public final static String DIARY = "Diary";
 
@@ -149,6 +150,7 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true;
+    private boolean copy_media = false;
 
     private boolean dirty = true;
     private boolean shown = true;
@@ -703,6 +705,7 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        copy_media = preferences.getBoolean(PREF_COPY_MEDIA, false);
 
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
@@ -985,6 +988,13 @@ public class Diary extends Activity
                 // Resolve content uri
                 if (media.getScheme().equalsIgnoreCase(CONTENT))
                     media = resolveContent(media);
+                    
+                // Copy media file to diary folder
+                if (copy_media) {
+					File new_media = new File(getMonth(), media.getLastPathSegment());
+					FileUtils.copyFile(FileUtils.getFile(this, media), new_media);
+					media = Uri.fromFile(new_media);
+				}
 
                 // Attempt to get web uri
                 String path = intent.getStringExtra(Intent.EXTRA_TEXT);

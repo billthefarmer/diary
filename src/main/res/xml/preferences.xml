@@ -61,6 +61,14 @@
 	android:title="@string/folder"
 	android:persistent="true"
 	android:defaultValue="Diary" />
+	
+	<CheckBoxPreference
+	android:key="pref_copy_media"
+	android:icon="@drawable/ic_pref_calendar" /*TODO: change*/
+	android:title="@string/pref_calendar" /*TODO: change*/
+	android:summary="@string/pref_calendar_summ" /*TODO: change*/
+	android:persistent="true"
+	android:defaultValue="false" />
 
   </PreferenceCategory>
 
