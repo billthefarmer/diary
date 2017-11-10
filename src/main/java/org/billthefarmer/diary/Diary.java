@@ -59,6 +59,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -75,6 +76,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -988,13 +990,6 @@ public class Diary extends Activity
                 // Resolve content uri
                 if (media.getScheme().equalsIgnoreCase(CONTENT))
                     media = resolveContent(media);
-                    
-                // Copy media file to diary folder
-                if (copy_media) {
-					File new_media = new File(getMonth(), media.getLastPathSegment());
-					FileUtils.copyFile(FileUtils.getFile(this, media), new_media);
-					media = Uri.fromFile(new_media);
-				}
 
                 // Attempt to get web uri
                 String path = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -1633,8 +1628,28 @@ public class Diary extends Activity
     // addMedia
     private  void addMedia(Uri media, boolean append)
     {
+        String name = media.getLastPathSegment();
+        // Copy media file to diary folder
+        // TODO: as for now, only for images because video and audio are too time-consuming to be copied on the main thread
+        if (copy_media) {
+            // Get type
+            String type = FileUtils.getMimeType(this, media);
+            if (type.startsWith(IMAGE)) {
+                File new_media = new File(getCurrent(), UUID.randomUUID().toString() + FileUtils.getExtension(media.toString()));
+                File old_media = FileUtils.getFile(this, media);
+                try {
+                    FileUtils.copyFile(old_media, new_media);
+                    name = media.toString();
+                    media = Uri.fromFile(new_media);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         String mediaText = String.format(MEDIA_TEMPLATE,
-                                         media.getLastPathSegment(),
+                                         name,
                                          media.toString());
         if (append)
             textView.append(mediaText);

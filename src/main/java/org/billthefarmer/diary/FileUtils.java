@@ -34,7 +34,10 @@ import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.nio.channels;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.Locale;
@@ -418,12 +421,28 @@ public class FileUtils
         }
         return null;
     }
-    
+
+    /**
+     * Copy a file.
+     *
+     * @param context The context.
+     * @param sourceUri The source file.
+     * @param destUri The destination file.
+     * @see #getFile(Context, Uri)
+     * @see #copyFile(File, File)
+     * @author ialokim
+     */
     public static void copyFile(Context context, Uri sourceUri, Uri destUri) throws IOException {
-		copyFile(getFile(context, sourceUri), getFile(context, destUri);
+		copyFile(getFile(context, sourceUri), getFile(context, destUri));
 	}
 
-    
+    /**
+     * Copy a file.
+     *
+     * @param sourceFile The source file.
+     * @param destFile The destination file.
+     * @author ialokim
+     */
     public static void copyFile(File sourceFile, File destFile) throws IOException {
 
         if (!destFile.exists()) {

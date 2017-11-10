@@ -40,6 +40,10 @@
   <string name="pref_markdown_summ">
     Use markdown to format entries
   </string>
+  <string name="pref_copy_media">Copy images</string>
+  <string name="pref_copy_media_summ">
+    Copy inserted images to the above specified folder
+  </string>
   <string name="folder">Folder</string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary version %s</string>
