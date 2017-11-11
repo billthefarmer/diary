@@ -27,13 +27,10 @@ import android.content.Context;
 import android.preference.DialogPreference;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.text.DateFormat;
 
 // AboutPreference class
 public class AboutPreference extends DialogPreference
@@ -61,20 +58,22 @@ public class AboutPreference extends DialogPreference
             version.setText(s);
         }
 
-        // Get debug info text view
-        TextView debug_info = (TextView) view.findViewById(R.id.debug_info);
+        // Get built text view
+        TextView built = (TextView) view.findViewById(R.id.built);
 
-        // Set debug info in text view
-        if (debug_info != null)
+        // Set built date in text view
+        if (built != null)
         {
-            String d = (String) debug_info.getText();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm:ss");
-            String s = String.format(d, simpleDateFormat.format(BuildConfig.TIMESTAMP));
-            debug_info.setText(s);
+            String d = (String) built.getText();
+            DateFormat dateFormat = DateFormat.getDateTimeInstance();
+            String s =
+                String.format(d, dateFormat.format(BuildConfig.BUILT));
+            built.setText(s);
         }
 
         // Get copyright text view
         TextView copyright = (TextView) view.findViewById(R.id.copyright);
+
         // Set movement method
         copyright.setMovementMethod(LinkMovementMethod.getInstance());
 

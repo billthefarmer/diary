@@ -21,6 +21,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+<<<<<<< HEAD
     android:layout_height="match_parent">
 
   <LinearLayout
@@ -71,5 +72,39 @@
         android:text="@string/license" />
 
   </LinearLayout>
+=======
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/about"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginLeft="32dp"
+      android:layout_marginRight="32dp"
+      android:text="@string/pref_about_summ" />
+  <TextView
+      android:id="@+id/built"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="32dp"
+      android:layout_marginRight="32dp"
+      android:text="@string/built" />
+  <TextView
+      android:id="@+id/copyright"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="32dp"
+      android:layout_marginRight="32dp"
+      android:text="@string/copyright" />
+  <TextView 
+      android:id="@+id/licence"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="32dp"
+      android:layout_marginRight="32dp"
+      android:text="@string/licence" />
+>>>>>>> upstream/master
   
 </ScrollView>

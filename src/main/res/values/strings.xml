@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-
     Diary - Personal diary for Android
     Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
-
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
   -->
 
 <resources>
@@ -26,6 +21,7 @@
   <string name="nextEntry">Next</string>
   <string name="goToDate">Go to date…</string>
   <string name="search">Search…</string>
+  <string name="findAll">Find all…</string>
   <string name="addMedia">Add media…</string>
   <string name="editStyles">Edit styles…</string>
   <string name="settings">Settings</string>
@@ -42,7 +38,10 @@
   <string name="folder">Folder</string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary version %s</string>
-  <string name="debug_info">Build time %s</string>
+  <string name="built">Built %s</string>
+  <string name="licence">Licence <a
+  href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  </string>
   <string name="copyright">Copyright \u00A9 2012 <a
   href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a
@@ -59,5 +58,4 @@
   href="https://github.com/marcoM32">Marco Magliano</a>\nFile
   utilities by <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
-  <string name="license">Project licensing <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
 </resources>

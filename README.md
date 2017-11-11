@@ -19,6 +19,22 @@ and an example
 [styles](https://github.com/billthefarmer/diary/blob/master/data/styles.md)
 file, which may be copied in to an entry for reference if required.
 
+### Caution - check diary folder
+I had a request
+[#15](https://github.com/billthefarmer/diary/issues/15) to add an
+option to change the Diary storage folder, which was duly added. Not
+forseeing potential future side effects I used the app name for the
+default value of the option, which was already set in the code. Since
+then I have gratefully received several language translations, some of
+which have changed the app name for that language. This has had the
+result of some users
+[#24](https://github.com/billthefarmer/diary/issues/24),
+[#29](https://github.com/billthefarmer/diary/issues/29) apparently
+losing their entries when they upgraded, or possibly uninstalled and
+reinstalled the app, which resets the settings. If this happens, check
+the folder option and either change it back or move your entries with
+a file manager.
+
 * Entries saved in plain text files
 * Browse entries
 * English, Catalan, Spanish, Italian, Japanese, German and French
@@ -28,6 +44,8 @@ file, which may be copied in to an entry for reference if required.
 * Display [OpenStreetMap](http://www.openstreetmap.org) maps
 * Add media from media providers
 * Receive media from other apps
+* Receive geo uris from other apps
+* Incremental search of diary entries
 * Add events to calendar
 
 ## Toolbar
@@ -37,6 +55,8 @@ The toolbar icons are, from left to right:
 * **Next** - show the next entry or today if next
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
+* **Search** - Incremental search of diary entry
+* **Find all** - Find all diary entries containing search text
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Settings** - show the settings
@@ -49,8 +69,9 @@ Swipe left and right in the diary page will show the next or previous
 day, or in the custom calendar will show the next or previous month.
 
 ## Swipe up and down
-Swipe up and down in the diary page will show the previous or next
-month, or in the custom calendar will show the previous or next year.
+Swipe up and down with two fingers in the diary page will show the
+previous or next month, or in the custom calendar will show the
+previous or next year.
 
 ## Editing
 In markdown mode the **Edit** button floating above the page allows
@@ -60,6 +81,18 @@ long touch on the page.
 
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
+
+## Search
+You may search diary entries, the search will update as text is
+entered into the search field. Use the search widget or keyboard
+action button for find next.
+
+## Find all
+You may find all diary entries that contain the current search
+text. This menu item will only appear while the search widget is
+active. A dialog will pop up with a list of matching entries. Touch an
+entry to open that entry. You may repeat this or refine the search
+text to find the desired entry.
 
 ## Text
 You may receive text clips from another app. A date picker will pop
@@ -92,7 +125,12 @@ diary pages with the syntax `[<lat>,<lng>]`, or
 `[osm:<lat>,<lng>]`. Because of differing conventions in different
 locales, the app parser will accept a comma or a dot (`[,.]`) for the
 decimal point, and a comma or a semicolon (`[,;]`) for the co-ordinate
-separator. Use the correct convention for your locale.
+separator. Use the correct convention for your locale. Geo uris
+received from other apps will be converted to `[osm](<lat>,<lng>)`
+syntax in the diary entry. Diary entries using `[<lat>,<lng>]` syntax
+will be converted to geo uri syntax. **Caution** - geo uris use a
+period (`[.]`) for a decimal point and a comma (`[,]`) for the
+co-ordinate separator regardless of locale.
 
 ## Events
 You may add an event to the calendar by adding a line to a diary entry

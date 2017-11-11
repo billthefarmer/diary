@@ -59,9 +59,8 @@
         android:key="pref_folder"
 	android:icon="@drawable/ic_pref_folder"
 	android:title="@string/folder"
-	android:summary="@string/appName"
 	android:persistent="true"
-	android:defaultValue="@string/appName" />
+	android:defaultValue="Diary" />
 
   </PreferenceCategory>
 

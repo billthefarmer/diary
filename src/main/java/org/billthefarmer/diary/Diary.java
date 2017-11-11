@@ -17,32 +17,40 @@
 package org.billthefarmer.diary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.GestureDetector;
-import android.view.inputmethod.InputMethodManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 
@@ -86,6 +94,7 @@ public class Diary extends Activity
 
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
+    private final static int FIND_DELAY = 256;
 
     private final static String TAG = "Diary";
 
@@ -143,6 +152,8 @@ public class Diary extends Activity
 
     private boolean dirty = true;
     private boolean shown = true;
+
+    private boolean multiTouch = false;
 
     private float minScale = 1000;
     private boolean canSwipe = true;
@@ -268,31 +279,34 @@ public class Diary extends Activity
         inflater.inflate(R.menu.main, menu);
 
         searchItem = menu.findItem(R.id.search);
-        searchView = (SearchView) searchItem.getActionView();
 
+        // Set up search view and action expand listener
+        if (searchItem != null)
+        {
+            searchView = (SearchView) searchItem.getActionView();
+            searchItem.setOnActionExpandListener(new MenuItem
+                                                 .OnActionExpandListener()
+                {
+                    @Override
+                    public boolean onMenuItemActionCollapse (MenuItem item)
+                    {
+                        invalidateOptionsMenu();
+                        return true;
+                    }
+                    @Override
+                    public boolean onMenuItemActionExpand (MenuItem item)
+                    {
+                        return true;
+                    }
+                });
+        }
+
+        // Set up search view options and listener
         if (searchView != null)
         {
-            searchView.setOnQueryTextListener(new SearchView
-                                              .OnQueryTextListener()
-                {
-                    // onQueryTextChange
-                    @Override
-                    @SuppressWarnings("deprecation")
-                    public boolean onQueryTextChange (String newText)
-                    {
-                        markdownView.findAll(newText);
-                        return true;
-                    }
-
-                    // onQueryTextSubmit
-                    @Override
-                    public boolean onQueryTextSubmit (String query)
-                    {
-                        markdownView.findNext(true);
-                        return true;
-                    }
-
-                });
+            searchView.setSubmitButtonEnabled(true);
+            searchView.setImeOptions(EditorInfo.IME_ACTION_GO);
+            searchView.setOnQueryTextListener(new QueryTextListener());
         }
 
         return true;
@@ -313,7 +327,11 @@ public class Diary extends Activity
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
 
-        menu.findItem(R.id.search).setEnabled(shown);
+        // Show find all item
+        if (menu.findItem(R.id.search).isActionViewExpanded())
+            menu.findItem(R.id.findAll).setVisible(true);
+        else
+            menu.findItem(R.id.findAll).setVisible(false);
 
         return true;
     }
@@ -339,6 +357,9 @@ public class Diary extends Activity
         case R.id.goToDate:
             goToDate(currEntry);
             break;
+        case R.id.findAll:
+            findAll();
+            break;
         case R.id.addMedia:
             addMedia();
             break;
@@ -351,6 +372,11 @@ public class Diary extends Activity
         default:
             return super.onOptionsItemSelected(item);
         }
+
+        // Close text search
+        if (searchItem.isActionViewExpanded() &&
+            item.getItemId() != R.id.findAll)
+            searchItem.collapseActionView();
 
         return true;
     }
@@ -438,6 +464,9 @@ public class Diary extends Activity
     @Override
     public boolean dispatchTouchEvent(MotionEvent event)
     {
+        if (event.getPointerCount() > 1)
+            multiTouch = true;
+
         gestureDetector.onTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
@@ -520,7 +549,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         edit.setVisibility(View.VISIBLE);
-                        return false;
+                        return true;
                     }
                 });
         }
@@ -547,8 +576,11 @@ public class Diary extends Activity
                         // Animation
                         animateAccept();
 
+                        // Close text search
+                        if (searchItem.isActionViewExpanded())
+                            searchItem.collapseActionView();
+
                         shown = true;
-                        searchItem.setEnabled(shown);
                     }
                 });
 
@@ -579,11 +611,11 @@ public class Diary extends Activity
                         getActionBar().setDisplayHomeAsUpEnabled(false);
                         markdownView.clearHistory();
 
-                        shown = false;
-                        searchItem.setEnabled(shown);
-
+                        // Close text search
                         if (searchItem.isActionViewExpanded())
                             searchItem.collapseActionView();
+
+                        shown = false;
                     }
                 });
 
@@ -624,7 +656,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         accept.setVisibility(View.VISIBLE);
-                        return false;
+                        return true;
                     }
                 });
         }
@@ -1101,6 +1133,17 @@ public class Diary extends Activity
                              date.get(Calendar.DATE));
         // Show the dialog
         dialog.show();
+    }
+
+    // findAll
+    public void findAll()
+    {
+        // Get search string
+        String search = searchView.getQuery().toString();
+
+        // Execute find task
+        FindTask findTask = new FindTask(this);
+        findTask.execute(search);
     }
 
     // addMedia
@@ -1768,6 +1811,211 @@ public class Diary extends Activity
             animateSwipeLeft();
     }
 
+    // FindTask
+    private class FindTask
+        extends AsyncTask<String, Void, List<String>>
+    {
+        private Context context;
+        private String search;
+
+        public FindTask(Context context)
+        {
+            this.context = context;
+        }
+
+        // doInBackground
+        @Override
+        protected List<String> doInBackground(String... params)
+        {
+            search = params[0];
+            Pattern pattern = Pattern.compile(search,
+                                              Pattern.CASE_INSENSITIVE |
+                                              Pattern.LITERAL |
+                                              Pattern.UNICODE_CASE);
+            // Get entry list
+            List<Calendar> entries = getEntries();
+
+            // Create a list of matches
+            List<String> matches = new ArrayList<String>();
+
+            // Check the entries
+            for (Calendar entry: entries)
+            {
+                File file = getDay(entry.get(Calendar.YEAR),
+                                   entry.get(Calendar.MONTH),
+                                   entry.get(Calendar.DATE));
+
+                Matcher matcher = pattern.matcher(read(file));
+                if (matcher.find())
+                    matches.add(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                                .format(entry.getTime()));
+            }
+
+            return matches;
+        }
+
+        // onPostExecute
+        @Override
+        protected void onPostExecute(List<String> matches)
+        {
+            // Build dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.findAll);
+
+            // If found populate dialog
+            if (!matches.isEmpty())
+            {
+                final String[] choices = matches.toArray(new String[0]);
+                builder.setItems(choices, new DialogInterface.OnClickListener()
+                    {
+                        public void onClick (DialogInterface dialog, int which)
+                        {
+                            String choice = choices[which];
+                            DateFormat format =
+                                DateFormat.getDateInstance(DateFormat.MEDIUM);
+
+                            // Get the entry chosen
+                            try
+                            {
+                                Date date = format.parse(choice);
+                                Calendar entry = Calendar.getInstance();
+                                entry.setTime(date);
+                                changeDate(entry);
+
+                                // Put the search text back - why it
+                                // disappears I have no idea or why I have
+                                // to do it after a delay
+                                searchView.postDelayed(new Runnable()
+                                    {
+                                        // run
+                                        @Override
+                                        public void run()
+                                        {
+                                            searchView.setQuery(search, false);
+                                        }
+                                    }, FIND_DELAY);
+                            }
+
+                            catch (Exception e) {}
+                        }
+                    });
+            }
+
+            builder.setNegativeButton(android.R.string.cancel, null);
+            builder.show();
+        }
+    }
+
+    // QueryTextListener
+    private class QueryTextListener
+        implements SearchView.OnQueryTextListener
+    {
+        private BackgroundColorSpan span = new
+            BackgroundColorSpan(Color.YELLOW);
+        private Editable editable;
+        private Pattern pattern;
+        private Matcher matcher;
+        private String text;
+        private int index;
+        private int height;
+
+        // onQueryTextChange
+        @Override
+        @SuppressWarnings("deprecation")
+        public boolean onQueryTextChange (String newText)
+        {
+            // Use web view functionality
+            if (shown)
+                markdownView.findAll(newText);
+
+            // Use regex search and spannable for highlighting
+            else
+            {
+                height = scrollView.getHeight();
+                editable = textView.getEditableText();
+                text = textView.getText().toString();
+
+                // Reset the index and clear highlighting
+                if (newText.length() == 0)
+                {
+                    index = 0;
+                    editable.removeSpan(span);
+                }
+
+                // Get pattern
+                pattern = Pattern.compile(newText,
+                                          Pattern.CASE_INSENSITIVE |
+                                          Pattern.LITERAL |
+                                          Pattern.UNICODE_CASE);
+                // Find text
+                matcher = pattern.matcher(text);
+                if (matcher.find(index))
+                {
+                    // Get index
+                    index = matcher.start();
+
+                    // Get text position
+                    int line = textView.getLayout()
+                        .getLineForOffset(index);
+                    int pos = textView.getLayout()
+                        .getLineBaseline(line);
+
+                    // Scroll to it
+                    scrollView.smoothScrollTo(0, pos - height / 2);
+
+                    // Highlight it
+                    editable
+                        .setSpan(span, index, index +
+                                 newText.length(),
+                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+
+            return true;
+        }
+
+        // onQueryTextSubmit
+        @Override
+        public boolean onQueryTextSubmit (String query)
+        {
+            // Use web view functionality
+            if (shown)
+                markdownView.findNext(true);
+
+            // Use regex search and spannable for highlighting
+            else
+            {
+                // Find next text
+                if (matcher.find())
+                {
+                    // Get index
+                    index = matcher.start();
+
+                    // Get text position
+                    int line = textView.getLayout()
+                        .getLineForOffset(index);
+                    int pos = textView.getLayout()
+                        .getLineBaseline(line);
+
+                    // Scroll to it
+                    scrollView.smoothScrollTo(0, pos - height / 2);
+
+                    // Highlight it
+                    editable
+                        .setSpan(span, index, index +
+                                 query.length(),
+                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+
+                // Reset matcher
+                if (matcher.hitEnd())
+                    matcher.reset();
+            }
+
+            return true;
+        }
+    }
+
     // GestureListener
     private class GestureListener
         extends GestureDetector.SimpleOnGestureListener
@@ -1815,21 +2063,24 @@ public class Diary extends Activity
                 else
                 {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD &&
-                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)
+                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD &&
+                        multiTouch)
                     {
-                        // if (diffY > 0)
-                        // {
-                        //     onSwipeDown();
-                        // }
+                        if (diffY > 0)
+                        {
+                            onSwipeDown();
+                        }
 
-                        // else
-                        // {
-                        //     onSwipeUp();
-                        // }
+                        else
+                        {
+                            onSwipeUp();
+                        }
                     }
 
                     result = true;
                 }
+
+                multiTouch = false;
             }
 
             catch (Exception e) {}
