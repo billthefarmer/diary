@@ -59,6 +59,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -75,6 +76,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -102,6 +104,7 @@ public class Diary extends Activity
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_MARKDOWN = "pref_markdown";
+    public final static String PREF_COPY_MEDIA = "pref_copy_media";
 
     public final static String DIARY = "Diary";
 
@@ -149,6 +152,7 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true;
+    private boolean copy_media = false;
 
     private boolean dirty = true;
     private boolean shown = true;
@@ -703,6 +707,7 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        copy_media = preferences.getBoolean(PREF_COPY_MEDIA, false);
 
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
@@ -1623,8 +1628,28 @@ public class Diary extends Activity
     // addMedia
     private  void addMedia(Uri media, boolean append)
     {
+        String name = media.getLastPathSegment();
+        // Copy media file to diary folder
+        // TODO: as for now, only for images because video and audio are too time-consuming to be copied on the main thread
+        if (copy_media) {
+            // Get type
+            String type = FileUtils.getMimeType(this, media);
+            if (type.startsWith(IMAGE)) {
+                File new_media = new File(getCurrent(), UUID.randomUUID().toString() + FileUtils.getExtension(media.toString()));
+                File old_media = FileUtils.getFile(this, media);
+                try {
+                    FileUtils.copyFile(old_media, new_media);
+                    name = media.toString();
+                    media = Uri.fromFile(new_media);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         String mediaText = String.format(MEDIA_TEMPLATE,
-                                         media.getLastPathSegment(),
+                                         name,
                                          media.toString());
         if (append)
             textView.append(mediaText);

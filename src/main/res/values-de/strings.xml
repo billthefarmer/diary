@@ -64,4 +64,6 @@
   Magliano</a>\nDatei Dienstprogramme von <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="pref_copy_media">Bilder kopieren</string>
+  <string name="pref_copy_media_summ">Kopiere eingefügte Bilder in den oben ausgewählten Ordner</string>
 </resources>

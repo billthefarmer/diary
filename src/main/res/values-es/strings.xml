@@ -64,4 +64,6 @@
   Magliano</a>\nUtilidades de archivos <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="pref_copy_media">Copiar imágenes</string>
+  <string name="pref_copy_media_summ">Copiar imágenes añadidas a la carpeta seleccionada arriba</string>
 </resources>
