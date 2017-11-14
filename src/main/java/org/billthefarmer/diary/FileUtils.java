@@ -432,9 +432,11 @@ public class FileUtils
      * @see #copyFile(File, File)
      * @author ialokim
      */
-    public static void copyFile(Context context, Uri sourceUri, Uri destUri) throws IOException {
-		copyFile(getFile(context, sourceUri), getFile(context, destUri));
-	}
+    public static void copyFile(Context context, Uri sourceUri, Uri destUri)
+        throws IOException
+    {
+        copyFile(getFile(context, sourceUri), getFile(context, destUri));
+    }
 
     /**
      * Copy a file.
@@ -443,17 +445,20 @@ public class FileUtils
      * @param destFile The destination file.
      * @author ialokim
      */
-    public static void copyFile(File sourceFile, File destFile) throws IOException {
+    public static void copyFile(File sourceFile, File destFile)
+        throws IOException
+    {
 
-        if (!destFile.exists()) {
+        if (!destFile.exists())
             destFile.createNewFile();
-        }
 
         FileChannel source = null;
         FileChannel destination = null;
         FileInputStream is = null;
         FileOutputStream os = null;
-        try {
+
+        try
+        {
             is = new FileInputStream(sourceFile);
             os = new FileOutputStream(destFile);
             source = is.getChannel();
@@ -461,23 +466,26 @@ public class FileUtils
 
             long count = 0;
             long size = source.size();
-            while ((count += destination.transferFrom(source, count, size
-                    - count)) < size)
+            while ((count += destination.transferFrom(source, count,
+                                                      size - count)) < size)
                 ;
-        } catch (Exception ex) {
-        } finally {
-            if (source != null) {
+        }
+
+        catch (Exception e) {}
+
+        finally
+        {
+            if (source != null)
                 source.close();
-            }
-            if (is != null) {
+
+            if (is != null)
                 is.close();
-            }
-            if (destination != null) {
+
+            if (destination != null)
                 destination.close();
-            }
-            if (os != null) {
+
+            if (os != null)
                 os.close();
-            }
         }
     }
 

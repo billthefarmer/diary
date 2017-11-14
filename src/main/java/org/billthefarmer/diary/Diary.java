@@ -152,7 +152,7 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true;
-    private boolean copy_media = false;
+    private boolean copyMedia = false;
 
     private boolean dirty = true;
     private boolean shown = true;
@@ -707,7 +707,7 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
-        copy_media = preferences.getBoolean(PREF_COPY_MEDIA, false);
+        copyMedia = preferences.getBoolean(PREF_COPY_MEDIA, false);
 
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
@@ -1630,19 +1630,27 @@ public class Diary extends Activity
     {
         String name = media.getLastPathSegment();
         // Copy media file to diary folder
-        // TODO: as for now, only for images because video and audio are too time-consuming to be copied on the main thread
-        if (copy_media) {
+        // TODO: as for now, only for images because video and audio
+        // are too time-consuming to be copied on the main thread
+        if (copyMedia)
+        {
             // Get type
             String type = FileUtils.getMimeType(this, media);
-            if (type.startsWith(IMAGE)) {
-                File new_media = new File(getCurrent(), UUID.randomUUID().toString() + FileUtils.getExtension(media.toString()));
-                File old_media = FileUtils.getFile(this, media);
-                try {
-                    FileUtils.copyFile(old_media, new_media);
+            if (type.startsWith(IMAGE))
+            {
+                File newMedia = new
+                    File(getCurrent(), UUID.randomUUID().toString() +
+                         FileUtils.getExtension(media.toString()));
+                File oldMedia = FileUtils.getFile(this, media);
+                try
+                {
+                    FileUtils.copyFile(oldMedia, newMedia);
                     name = media.toString();
-                    media = Uri.fromFile(new_media);
+                    media = Uri.fromFile(newMedia);
+                }
 
-                } catch (IOException e) {
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
             }

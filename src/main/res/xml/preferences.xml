@@ -61,8 +61,14 @@
 	android:title="@string/folder"
 	android:persistent="true"
 	android:defaultValue="Diary" />
-	
-	<CheckBoxPreference
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
+      android:key="pref_media_category"
+      android:title="@string/media">
+
+    <CheckBoxPreference
 	android:key="pref_copy_media"
 	android:icon="@drawable/ic_pref_copy_media"
 	android:title="@string/pref_copy_media"
