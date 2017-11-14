@@ -133,7 +133,7 @@ public class Diary extends Activity
         "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
     private final static String GEO_PATTERN =
-        "geo:(-?\\d+.\\d+), ?(-?\\d+.\\d+).*";
+        "geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*";
     private final static String GEO_TEMPLATE =
         "![osm](geo:%f,%f)";
     private final static String GEO = "geo";
