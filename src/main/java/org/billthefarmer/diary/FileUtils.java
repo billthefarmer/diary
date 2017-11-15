@@ -466,9 +466,8 @@ public class FileUtils
 
             long count = 0;
             long size = source.size();
-            while ((count += destination.transferFrom(source, count,
-                                                      size - count)) < size)
-                ;
+            while (count < size)
+                count += destination.transferFrom(source, count, size - count);
         }
 
         catch (Exception e) {}

@@ -1645,8 +1645,9 @@ public class Diary extends Activity
                 try
                 {
                     FileUtils.copyFile(oldMedia, newMedia);
-                    name = media.toString();
-                    media = Uri.fromFile(newMedia);
+                    String newName =
+                        Uri.fromFile(newMedia).getLastPathSegment();
+                    media = Uri.parse(newName);
                 }
 
                 catch (IOException e)
