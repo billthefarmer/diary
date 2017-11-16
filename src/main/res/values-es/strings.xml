@@ -28,7 +28,7 @@
   <string name="search">Buscar…</string>
   <string name="findAll">Encuentra todos…</string>
   <string name="addMedia">Agregar medios…</string>
-  <string name="editStyles">Editar estilo…s</string>
+  <string name="editStyles">Editar estilos…</string>
   <string name="settings">Ajustes</string>
   <string name="calendar">Calendario</string>
   <string name="pref_calendar">Usar calendario personalizado</string>
@@ -39,6 +39,11 @@
   <string name="pref_markdown">Usar markdown</string>
   <string name="pref_markdown_summ">
     Utilizar markdown para formatear entradas
+  </string>
+  <string name="media">Medios</string>
+  <string name="pref_copy_media">Copiar imágenes</string>
+  <string name="pref_copy_media_summ">
+    Copie las imágenes insertadas en la carpeta actual
   </string>
   <string name="folder">Carpeta</string>
   <string name="about">Acerca de</string>
@@ -55,15 +60,7 @@
   href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
   Calendar View</a>\nMarkdown view por <a
   href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\nTraducción al japonés de <a
-  href="https://github.com/naofum">naofum</a>\nTraducción al alemán
-  por <a href="https://github.com/jaller94">Christian
-  Paul</a>\nTraducción francés por <a
-  href="https://github.com/comptuzus">David Ta</a>\nTraducción
-  italiano por <a href="https://github.com/marcoM32">Marco
-  Magliano</a>\nUtilidades de archivos <a
+  View</a>\nUtilidades de archivos <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
-    <string name="pref_copy_media">Copiar imágenes</string>
-  <string name="pref_copy_media_summ">Copiar imágenes añadidas a la carpeta seleccionada arriba</string>
 </resources>

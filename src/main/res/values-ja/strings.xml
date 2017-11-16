@@ -40,6 +40,11 @@
   <string name="pref_markdown_summ">
     書式項目に使用記法
   </string>
+  <string name="media">メディア</string>
+  <string name="pref_copy_media">画像をコピーする</string>
+  <string name="pref_copy_media_summ">
+    挿入されたイメージを現在のフォルダにコピーする
+  </string>
   <string name="folder">フォルダ</string>
   <string name="about">アプリについて</string>
   <string name="pref_about_summ">Diary バージョン %s</string>
@@ -56,11 +61,7 @@
   Calendar View</a>\nMarkdown view by <a
   href="https://github.com/falnatsheh/MarkdownView">Markdown
   View</a>\nによる日本語翻訳 <a
-  href="https://github.com/naofum">naofum</a>\nドイツ語翻訳 <a
-  href="https://github.com/jaller94">Christian Paul</a>\nによるフラン
-  ス語翻訳 <a href="https://github.com/comptuzus">David
-  Ta</a>\nイタリア語翻訳 <a
-  href="https://github.com/marcoM32">Marco Magliano</a>\nファイルユー
-  ティリティ <a href="https://github.com/iPaulPro">Paul Burke</a>
+  href="https://github.com/naofum">naofum</a>\nファイルユーティリティ
+  <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>

@@ -40,6 +40,11 @@
   <string name="pref_markdown_summ">
     Utilitzeu markdown a les entrades de format
   </string>
+  <string name="media">Mitjans</string>
+  <string name="pref_copy_media">Copiar imatges</string>
+  <string name="pref_copy_media_summ">
+    Copieu les imatges inserides a la carpeta actual
+  </string>
   <string name="folder">Carpeta</string>
   <string name="about">Sobre</string>
   <string name="pref_about_summ">Diary version %s</string>
@@ -55,12 +60,7 @@
   href="https://github.com/npanigrahy/Custom-Calendar-View"> Custom
   Calendar View</a>\nMarkdown view per <a
   href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\nTraducció japonesa per <a
-  href="https://github.com/naofum">naofum</a>\nTraducció alemanya per
-  <a href="https://github.com/jaller94">Christian Paul</a>\n Traducció
-  francès per <a href="https://github.com/comptuzus">David
-  Ta</a>\nTraducció italià per <a
-  href="https://github.com/marcoM32">Marco Magliano</a>\nUtilitats de
-  fitxers de <a href="https://github.com/iPaulPro">Paul Burke</a>
+  View</a>\nUtilitats de fitxers de <a
+  href="https://github.com/iPaulPro">Paul Burke</a>
 </string>
 </resources>

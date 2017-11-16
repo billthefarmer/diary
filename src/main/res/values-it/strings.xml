@@ -42,6 +42,11 @@
   <string name="pref_markdown_summ">
     Utilizza markdown per la formattazione
   </string>
+  <string name="media">Media</string>
+  <string name="pref_copy_media">Copia le immagini</string>
+  <string name="pref_copy_media_summ">
+    Copia le immagini inserite nella cartella corrente
+  </string>
   <string name="folder">Cartella</string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione Diary %s</string>
@@ -57,11 +62,7 @@
   href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
   Calendar View</a>\nMarkdown view by <a
   href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\nJapanese translation by <a
-  href="https://github.com/naofum">naofum</a>\nGerman translation by
-  <a href="https://github.com/jaller94">Christian Paul</a>\nFrench
-  translation by <a href="https://github.com/comptuzus">David
-  Ta</a>\nItalian translation by <a
+  View</a>\nItalian translation by <a
   href="https://github.com/marcoM32">Marco Magliano</a>\nFile
   utilities by <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>

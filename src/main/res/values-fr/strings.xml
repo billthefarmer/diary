@@ -40,6 +40,11 @@
   <string name="pref_markdown_summ">
     Utiliser markdown pour le formatage du text
   </string>
+  <string name="media">Médias</string>
+  <string name="pref_copy_media">Copier des images</string>
+  <string name="pref_copy_media_summ">
+    Copier les images insérées dans le dossier actuel
+  </string>
   <string name="folder">Dossier</string>
   <string name="about">À propos</string>
   <string name="pref_about_summ">Diary version %s</string>
@@ -55,10 +60,7 @@
   href="https://github.com/npanigrahy/Custom-Calendar-View">Rendu de
   calendrier alternatif</a>\nMarkdown rendu par <a
   href="https://github.com/falnatsheh/MarkdownView">Markdown
-  rendu</a>\nTraduction Japonaise par <a
-  href="https://github.com/naofum">naofum</a>\nTraduction Allemande
-  par <a href="https://github.com/jaller94">Christian
-  Paul</a>\nTraduction Française par <a
+  rendu</a>\nTraduction Française par <a
   href="https://github.com/comptuzus">David Ta</a>\nGestion de fichier
   par <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
