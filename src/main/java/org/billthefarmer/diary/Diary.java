@@ -75,8 +75,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-
 import java.util.UUID;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -553,7 +553,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         edit.setVisibility(View.VISIBLE);
-                        return true;
+                        return false;
                     }
                 });
         }
@@ -660,7 +660,7 @@ public class Diary extends Activity
                     {
                         // Reveal button
                         accept.setVisibility(View.VISIBLE);
-                        return true;
+                        return false;
                     }
                 });
         }
