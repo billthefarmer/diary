@@ -45,7 +45,7 @@
   <string name="pref_copy_media_summ">
     Kopieren von eingefügten Bildern in den aktuellen Ordner
   </string>
-  <string name="folder">Mappe</string>
+  <string name="folder">Ordner</string>
   <string name="about">Über</string>
   <string name="pref_about_summ">Tagebuchversion %s</string>
   <string name="built">Gebaut %s</string>
