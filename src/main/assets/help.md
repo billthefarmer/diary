@@ -137,4 +137,5 @@ the first line.
 * **Use markdown** - Use markdown formatting for diary entries
 * **Folder** - Change diary entry storage folder. Caution - diary
   entries and styles will not be moved
+* **Copy images** - Copy images to current folder
 * **About** - Show app version, licence and credits
