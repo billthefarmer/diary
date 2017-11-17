@@ -76,10 +76,6 @@
     </activity>
 
     <activity
-        android:name="DiaryCalendar"
-        android:theme="@style/DialogTheme" />
-
-    <activity
         android:name="Editor"
         android:windowSoftInputMode="stateHidden|adjustResize">
       <intent-filter>
