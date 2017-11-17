@@ -22,11 +22,11 @@
 <resources>
   <string name="appName">Diary</string>
   <string name="today">Oggi</string>
-  <string name="prevEntry">Precedente</string>
-  <string name="nextEntry">Prossimo</string>
+  <string name="prevEntry">Giorno precedente</string>
+  <string name="nextEntry">Giorno successivo</string>
   <string name="goToDate">Vai alla data</string>
-  <string name="search">Ricerca…</string>
-  <string name="findAll">Trova tutto…</string>
+  <string name="search">Cerca…</string>
+  <string name="findAll">Cerca ovunque…</string>
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili</string>
   <string name="settings">Impostazioni</string>
@@ -50,7 +50,7 @@
   <string name="folder">Cartella</string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione Diary %s</string>
-  <string name="built">Costruito %s</string>
+  <string name="built">Assemblato il %s</string>
   <string name="licence">Licenza <a
   href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
