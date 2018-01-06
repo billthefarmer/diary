@@ -13,8 +13,7 @@
   </style>
 
   <style
-      name="DialogBaseTheme"
-      parent="android:Theme.Material.Light.Dialog">
+      name="AppDarkBaseTheme" parent="android:Theme.Material">
     <!-- API 21 theme customizations can go here. -->
   </style>
 

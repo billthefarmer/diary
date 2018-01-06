@@ -27,6 +27,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -97,6 +98,7 @@ public class Diary extends Activity
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
+    private final static int VERSION_M = 23;
 
     private final static String TAG = "Diary";
 
@@ -105,6 +107,7 @@ public class Diary extends Activity
     public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_MARKDOWN = "pref_markdown";
     public final static String PREF_COPY_MEDIA = "pref_copy_media";
+    public final static String PREF_DARK_THEME = "pref_dark_theme";
 
     public final static String DIARY = "Diary";
 
@@ -153,6 +156,7 @@ public class Diary extends Activity
     private boolean custom = true;
     private boolean markdown = true;
     private boolean copyMedia = false;
+    private boolean darkTheme = false;
 
     private boolean dirty = true;
     private boolean shown = true;
@@ -187,6 +191,13 @@ public class Diary extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        // Get preferences
+        getPreferences();
+
+        if (darkTheme)
+            setTheme(R.style.AppDarkTheme);
+
         setContentView(R.layout.main);
 
         textView = (EditText) findViewById(R.id.text);
@@ -205,9 +216,6 @@ public class Diary extends Activity
 
         gestureDetector =
             new GestureDetector(this, new GestureListener());
-
-        // Get preferences
-        getPreferences();
 
         if (savedInstanceState == null)
         {
@@ -238,8 +246,14 @@ public class Diary extends Activity
     {
         super.onResume();
 
+        boolean dark = darkTheme;
+
         // Get preferences
         getPreferences();
+
+        if (dark != darkTheme && Build.VERSION.SDK_INT != VERSION_M)
+            recreate();
+
         setDate(currEntry);
 
         // Copy help text to today's page if no entries
@@ -708,6 +722,7 @@ public class Diary extends Activity
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
         copyMedia = preferences.getBoolean(PREF_COPY_MEDIA, false);
+        darkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
 
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
@@ -1106,6 +1121,9 @@ public class Diary extends Activity
     // showCustomCalendarDialog
     private void showCustomCalendarDialog(Calendar date)
     {
+        if (darkTheme)
+            setTheme(R.style.AppTheme);
+
         CustomCalendarDialog dialog = new
             CustomCalendarDialog(this, this,
                                  date.get(Calendar.YEAR),
@@ -1126,6 +1144,9 @@ public class Diary extends Activity
 
         // Refresh the calendar
         calendarView.refreshCalendar(date);
+
+        if (darkTheme)
+            setTheme(R.style.AppDarkTheme);
     }
 
     // showDatePickerDialog

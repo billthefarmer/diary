@@ -23,8 +23,10 @@ package org.billthefarmer.diary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -56,6 +58,17 @@ public class Editor extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        // Get preferences
+        SharedPreferences preferences =
+            PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean darkTheme =
+            preferences.getBoolean(Diary.PREF_DARK_THEME, false);
+
+        if (darkTheme)
+            setTheme(R.style.AppDarkTheme);
+
         setContentView(R.layout.editor);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);

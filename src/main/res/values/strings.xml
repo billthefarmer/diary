@@ -46,6 +46,11 @@
     Copy inserted images to the current folder
   </string>
   <string name="folder">Folder</string>
+  <string name="theme">Theme</string>
+  <string name="pref_dark_theme">Dark</string>
+  <string name="pref_dark_theme_summ">
+    Use dark theme for editing
+  </string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="built">Built %s</string>

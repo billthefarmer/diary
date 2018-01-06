@@ -79,6 +79,20 @@
   </PreferenceCategory>
 
   <PreferenceCategory
+      android:key="pref_theme_category"
+      android:title="@string/theme">
+
+    <CheckBoxPreference
+	android:key="pref_dark_theme"
+	android:icon="@drawable/ic_pref_dark_theme"
+	android:title="@string/pref_dark_theme"
+	android:summary="@string/pref_dark_theme_summ"
+	android:persistent="true"
+	android:defaultValue="false" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
       android:key="pref_about_category"
       android:title="@string/about">
 
