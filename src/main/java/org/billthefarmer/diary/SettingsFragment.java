@@ -28,6 +28,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Build;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -39,6 +40,8 @@ import android.preference.PreferenceScreen;
 public class SettingsFragment extends PreferenceFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener
 {
+    private final static int VERSION_M = 23;
+
     // On create
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -118,6 +121,12 @@ public class SettingsFragment extends PreferenceFragment
 
             // Set folder in text view
             folder.setSummary(preferences.getString(key, Diary.DIARY));
+        }
+
+        if (key.equals(Diary.PREF_DARK_THEME))
+        {
+            if (Build.VERSION.SDK_INT != VERSION_M)
+                getActivity().recreate();
         }
     }
 }

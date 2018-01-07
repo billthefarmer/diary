@@ -1121,9 +1121,6 @@ public class Diary extends Activity
     // showCustomCalendarDialog
     private void showCustomCalendarDialog(Calendar date)
     {
-        if (darkTheme)
-            setTheme(R.style.AppTheme);
-
         CustomCalendarDialog dialog = new
             CustomCalendarDialog(this, this,
                                  date.get(Calendar.YEAR),
@@ -1144,9 +1141,6 @@ public class Diary extends Activity
 
         // Refresh the calendar
         calendarView.refreshCalendar(date);
-
-        if (darkTheme)
-            setTheme(R.style.AppDarkTheme);
     }
 
     // showDatePickerDialog
