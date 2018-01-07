@@ -46,6 +46,11 @@
     Kopieren von eingefügten Bildern in den aktuellen Ordner
   </string>
   <string name="folder">Ordner</string>
+  <string name="theme">Thema</string>
+  <string name="pref_dark_theme">Dunkel</string>
+  <string name="pref_dark_theme_summ">
+    Verwenden Sie ein dunkles Design zum Bearbeiten
+  </string>
   <string name="about">Über</string>
   <string name="pref_about_summ">Tagebuchversion %s</string>
   <string name="built">Gebaut %s</string>

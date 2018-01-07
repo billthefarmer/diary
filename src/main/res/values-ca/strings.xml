@@ -46,6 +46,11 @@
     Copieu les imatges inserides a la carpeta actual
   </string>
   <string name="folder">Carpeta</string>
+  <string name="theme">Tema</string>
+  <string name="pref_dark_theme">Fosc</string>
+  <string name="pref_dark_theme_summ">
+    Utilitza el tema fosc per editar
+  </string>
   <string name="about">Sobre</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="built">Construït %s</string>

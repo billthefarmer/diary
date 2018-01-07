@@ -48,6 +48,11 @@
     Copia le immagini inserite nella cartella corrente
   </string>
   <string name="folder">Cartella</string>
+  <string name="theme">Tema</string>
+  <string name="pref_dark_theme">Scuro</string>
+  <string name="pref_dark_theme_summ">
+    Usa il tema scuro per la modifica
+  </string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione Diary %s</string>
   <string name="built">Assemblato il %s</string>

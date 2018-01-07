@@ -46,6 +46,11 @@
     Copier les images insérées dans le dossier actuel
   </string>
   <string name="folder">Dossier</string>
+  <string name="theme">Thème</string>
+  <string name="pref_dark_theme">Sombre</string>
+  <string name="pref_dark_theme_summ">
+    Utilisez le thème sombre pour l\'édition
+  </string>
   <string name="about">À propos</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="built">Construit %s</string>

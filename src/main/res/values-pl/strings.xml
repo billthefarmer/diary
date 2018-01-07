@@ -46,6 +46,11 @@
     Skopiuj wstawione obrazy do obecnego folderu
   </string>
   <string name="folder">Folder</string>
+  <string name="theme">Motyw</string>
+  <string name="pref_dark_theme">Ciemny</string>
+  <string name="pref_dark_theme_summ">
+    Użyj ciemnego motywu do edycji
+  </string>
   <string name="about">O aplikacji</string>
   <string name="pref_about_summ">Wersja Diary: %s</string>
   <string name="built">Zbudowano: %s</string>

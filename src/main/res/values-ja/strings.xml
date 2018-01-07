@@ -46,6 +46,11 @@
     挿入されたイメージを現在のフォルダにコピーする
   </string>
   <string name="folder">フォルダ</string>
+  <string name="theme">テーマ</string>
+  <string name="pref_dark_theme">ダーク</string>
+  <string name="pref_dark_theme_summ">
+    編集に暗いテーマを使用する
+  </string>
   <string name="about">アプリについて</string>
   <string name="pref_about_summ">Diary バージョン %s</string>
   <string name="licence">ライセンス <a
