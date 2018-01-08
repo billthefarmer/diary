@@ -19,7 +19,8 @@ android {
     }
 
     lintOptions {
-	disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled'
+	disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
+                'IconDuplicates'
         // abortOnError false
     }
 }

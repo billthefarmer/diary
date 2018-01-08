@@ -29,7 +29,7 @@
 
     <CheckBoxPreference
 	android:key="pref_custom"
-	android:icon="@drawable/ic_pref_calendar"
+	android:icon="?attr/pref_calendar"
 	android:title="@string/pref_calendar"
 	android:summary="@string/pref_calendar_summ"
 	android:persistent="true"
@@ -43,7 +43,7 @@
 
     <CheckBoxPreference
 	android:key="pref_markdown"
-	android:icon="@drawable/ic_pref_markdown"
+	android:icon="?attr/pref_markdown"
 	android:title="@string/pref_markdown"
 	android:summary="@string/pref_markdown_summ"
 	android:persistent="true"
@@ -57,7 +57,7 @@
 
     <EditTextPreference
         android:key="pref_folder"
-	android:icon="@drawable/ic_pref_folder"
+	android:icon="?attr/pref_folder"
 	android:title="@string/folder"
 	android:persistent="true"
 	android:defaultValue="Diary" />
@@ -70,7 +70,7 @@
 
     <CheckBoxPreference
 	android:key="pref_copy_media"
-	android:icon="@drawable/ic_pref_copy_media"
+	android:icon="?attr/pref_copy_media"
 	android:title="@string/pref_copy_media"
 	android:summary="@string/pref_copy_media_summ"
 	android:persistent="true"
@@ -84,7 +84,7 @@
 
     <CheckBoxPreference
 	android:key="pref_dark_theme"
-	android:icon="@drawable/ic_pref_dark_theme"
+	android:icon="?attr/pref_dark_theme"
 	android:title="@string/pref_dark_theme"
 	android:summary="@string/pref_dark_theme_summ"
 	android:persistent="true"
@@ -98,8 +98,8 @@
 
     <org.billthefarmer.diary.AboutPreference
 	android:key="pref_about"
-	android:icon="@drawable/ic_pref_about"
-	android:dialogIcon="@drawable/ic_pref_about"
+	android:icon="?attr/pref_about"
+	android:dialogIcon="?attr/pref_about"
 	android:negativeButtonText=""
 	android:title="@string/about"
 	android:summary="@string/pref_about_summ"
