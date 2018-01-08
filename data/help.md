@@ -14,6 +14,7 @@
 * Receive geo uris from other apps
 * Incremental search of diary entries
 * Add events to calendar
+* Dark or light theme for editing
 
 ## Toolbar
 The toolbar icons are, from left to right:
@@ -138,4 +139,5 @@ the first line.
 * **Folder** - Change diary entry storage folder. Caution - diary
   entries and styles will not be moved
 * **Copy images** - Copy images to current folder
+* **Dark theme** - Use dark theme for editing
 * **About** - Show app version, licence and credits
