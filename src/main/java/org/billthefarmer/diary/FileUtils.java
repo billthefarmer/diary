@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -52,13 +53,11 @@ import java.util.Locale;
  */
 public class FileUtils
 {
-    private FileUtils() {} //private constructor to enforce Singleton
-                           //pattern
+    private FileUtils() {} // private constructor to enforce Singleton
+                           // pattern
 
     /** TAG for log messages. */
-    static final String TAG = "FileUtils";
-    private static final boolean DEBUG = false; // Set to true to
-                                                // enable logging
+    private static final String TAG = "FileUtils";
 
     public static final String MIME_TYPE_AUDIO = "audio/*";
     public static final String MIME_TYPE_TEXT = "text/*";
@@ -100,7 +99,7 @@ public class FileUtils
     public static boolean isLocal(String url)
     {
         if (url != null && !url.startsWith("http://") &&
-            !url.startsWith("https://"))
+                !url.startsWith("https://"))
         {
             return true;
         }
@@ -229,7 +228,46 @@ public class FileUtils
     public static boolean isGooglePhotosUri(Uri uri)
     {
         return "com.google.android.apps.photos.content"
-            .equals(uri.getAuthority());
+               .equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri is a FileProvider file.
+     * @author billthefarmer
+     */
+    public static boolean isFileProvider(Uri uri)
+    {
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Path " + uri.getPath());
+
+        List<String> segments = uri.getPathSegments();
+        return segments.contains("storage") &&
+            segments.contains("emulated") &&
+            segments.contains("0");
+    }
+
+    /**
+     * @param uri The Uri to match.
+     * @return The file path from the Uri.
+     * @author billthefarmer
+     */
+    public static String fileProviderPath(Uri uri)
+    {
+        List<String> list = uri.getPathSegments();
+        List<String> segments = list.subList(1, list.size());
+
+        StringBuilder path = new StringBuilder();
+        for (String segment: segments)
+        {
+            path.append(File.separator);
+            path.append(segment);
+        }
+
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Path " + path.toString());
+
+        return path.toString();
     }
 
     /**
@@ -263,18 +301,26 @@ public class FileUtils
                 .query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst())
             {
-                if (DEBUG)
+                if (BuildConfig.DEBUG)
                     DatabaseUtils.dumpCursor(cursor);
 
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
         }
+
+        catch (Exception e)
+        {
+            if (BuildConfig.DEBUG)
+                Log.e(TAG, "getDataColumn", e);
+        }
+
         finally
         {
             if (cursor != null)
                 cursor.close();
         }
+
         return null;
     }
 
@@ -296,7 +342,7 @@ public class FileUtils
     public static String getPath(final Context context, final Uri uri)
     {
 
-        if (DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG + " File -",
                   "Authority: " + uri.getAuthority() +
                   ", Fragment: " + uri.getFragment() +
@@ -388,6 +434,10 @@ public class FileUtils
             // Return the remote address
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
+
+            // Return FileProvider path
+            else if (isFileProvider(uri))
+                return fileProviderPath(uri);
 
             return getDataColumn(context, uri, null, null);
         }
@@ -566,7 +616,7 @@ public class FileUtils
     public static Bitmap getThumbnail(Context context, Uri uri,
                                       String mimeType)
     {
-        if (DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Attempting to get thumbnail");
 
         if (!isMediaUri(uri))
@@ -587,7 +637,7 @@ public class FileUtils
                 if (cursor.moveToFirst())
                 {
                     final int id = cursor.getInt(0);
-                    if (DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Got thumb ID: " + id);
 
                     if (mimeType.contains("video"))
@@ -610,7 +660,7 @@ public class FileUtils
             }
             catch (Exception e)
             {
-                if (DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.e(TAG, "getThumbnail", e);
             }
             finally
