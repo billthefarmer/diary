@@ -305,16 +305,13 @@ public class FileUtils
                 if (BuildConfig.DEBUG)
                     DatabaseUtils.dumpCursor(cursor);
 
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
+                final int column_index = cursor.getColumnIndex(column);
+                if (column_index >= 0)
+                    return cursor.getString(column_index);
             }
         }
 
-        catch (Exception e)
-        {
-            if (BuildConfig.DEBUG)
-                Log.e(TAG, "getDataColumn", e);
-        }
+        catch (Exception e) {}
 
         finally
         {
@@ -344,7 +341,7 @@ public class FileUtils
     {
 
         if (BuildConfig.DEBUG)
-            Log.d(TAG + " File -",
+            Log.d(TAG + " File",
                   "Authority: " + uri.getAuthority() +
                   ", Fragment: " + uri.getFragment() +
                   ", Port: " + uri.getPort() +
