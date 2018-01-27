@@ -63,7 +63,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
