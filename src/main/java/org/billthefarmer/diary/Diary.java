@@ -1490,16 +1490,30 @@ public class Diary extends Activity
         try
         {
             FileReader fileReader = new FileReader(file);
-            char buffer[] = new char[BUFFER_SIZE];
-            int n;
-            while ((n = fileReader.read(buffer)) != -1)
-                text.append(String.valueOf(buffer, 0, n));
-            fileReader.close();
+            try
+            {
+                BufferedReader reader =
+                    new BufferedReader(fileReader);
+
+                String line;
+                while ((line = reader.readLine()) != null)
+                {
+                    text.append(line);
+                    text.append(System.getProperty("line.separator"));
+                }
+
+                return text.toString();
+            }
+
+            finally
+            {
+                fileReader.close();
+            }
         }
 
         catch (Exception e) {}
 
-        return text.toString();
+        return null;
     }
 
     // readAssetFile
@@ -1507,7 +1521,7 @@ public class Diary extends Activity
     {
         try
         {
-            // Open help file
+            // Open file
             InputStream input = getResources().getAssets().open(file);
             try
             {

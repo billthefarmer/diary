@@ -232,43 +232,59 @@ public class FileUtils
     }
 
     /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri is a FileProvider file.
-     * @author billthefarmer
-     */
-    public static boolean isFileProvider(Uri uri)
-    {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Path " + uri.getPath());
-
-        List<String> segments = uri.getPathSegments();
-        return segments.contains("storage") &&
-            segments.contains("emulated") &&
-            segments.contains("0");
-    }
-
-    /**
      * @param uri The Uri to match.
-     * @return The file path from the Uri.
+     * @return The file path from the FileProvider Uri.
      * @author billthefarmer
      */
     public static String fileProviderPath(Uri uri)
     {
-        List<String> list = uri.getPathSegments();
-        List<String> segments =
-            list.subList(list.indexOf("storage"), list.size());
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Path " + uri.getPath());
 
         StringBuilder path = new StringBuilder();
-        for (String segment: segments)
+        List<String> list = uri.getPathSegments();
+        if (list.contains("storage") &&
+            list.contains("emulated") &&
+            list.contains("0"))
         {
-            path.append(File.separator);
-            path.append(segment);
+            List<String> segments =
+                list.subList(list.indexOf("storage"), list.size());
+
+            for (String segment: segments)
+            {
+                path.append(File.separator);
+                path.append(segment);
+            }
+
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "Path " + path.toString());
+
+            File file = new File(path.toString());
+            if (file.isFile())
+                return path.toString();
         }
 
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Path " + path.toString());
+        if (list.size() > 1)
+        {
+            List<String> segments =
+                list.subList(1, list.size());
 
-        return path.toString();
+            path.append(Environment.getExternalStorageDirectory());
+            for (String segment: segments)
+            {
+                path.append(File.separator);
+                path.append(segment);
+            }
+
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "Path " + path.toString());
+
+            File file = new File(path.toString());
+            if (file.isFile())
+                return path.toString();
+        }
+
+        return null;
     }
 
     /**
@@ -428,14 +444,14 @@ public class FileUtils
         // MediaStore (and general)
         else if ("content".equalsIgnoreCase(uri.getScheme()))
         {
-
             // Return the remote address
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
 
             // Return FileProvider path
-            else if (isFileProvider(uri))
-                return fileProviderPath(uri);
+            String path = fileProviderPath(uri);
+            if (path != null)
+                return path;
 
             return getDataColumn(context, uri, null, null);
         }
