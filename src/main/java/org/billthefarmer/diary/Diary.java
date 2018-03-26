@@ -1473,8 +1473,7 @@ public class Diary extends Activity
         {
             int year = Integer.parseInt(segments.get(4));
             int month = Integer.parseInt(segments.get(5)) - 1;
-            int day =
-                Integer.parseInt(segments.get(6).replace(".txt", ""));
+            int day = Integer.parseInt(segments.get(6).split("\\.")[0]);
             Calendar entry = new GregorianCalendar(year, month, day);
 
             return entry;
