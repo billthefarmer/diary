@@ -161,6 +161,7 @@ public class Diary extends Activity
     private boolean shown = true;
 
     private boolean multiTouch = false;
+    private boolean isEntry = false;
 
     private float minScale = 1000;
     private boolean canSwipe = true;
@@ -411,7 +412,7 @@ public class Diary extends Activity
                 getActionBar().setDisplayHomeAsUpEnabled(false);
                 loadMarkdown();
             }
-       }
+        }
 
         else
             super.onBackPressed();
@@ -524,11 +525,8 @@ public class Diary extends Activity
                     @Override
                     public void onPageFinished (WebView view, String url)
                     {
-                        // Get home folder
-                        String home = Uri.fromFile(getHome()).toString();
-
-                        // Check if in home folder
-                        if (view.canGoBack() && !url.startsWith(home))
+                        // Check if entry
+                        if (!isEntry && view.canGoBack())
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -555,6 +553,22 @@ public class Diary extends Activity
                             minScale = oldScale;
                         canSwipe = (Math.abs(newScale - minScale) <
                                     minScale / SCALE_RATIO);
+                    }
+
+                    // shouldOverrideUrlLoading
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view,
+                                                            String url)
+                    {
+                        Calendar entry = diaryEntry(url);
+                        if (entry != null)
+                        {
+                            changeDate(entry);
+                            return true;
+                        }
+
+                        isEntry = false;
+                        return false;
                     }
                 });
 
@@ -1433,6 +1447,44 @@ public class Diary extends Activity
         return list;
     }
 
+    // diaryEntry
+    private Calendar diaryEntry(String url)
+    {
+        // Get home folder
+        String home = Uri.fromFile(getHome()).toString();
+
+        // Check url
+        if (!url.startsWith(home))
+            return null;
+
+        // Get uri
+        Uri uri = Uri.parse(url);
+        File file = new File(uri.getPath());
+
+        // Check file
+        if (!file.exists())
+            return null;
+
+        // Get segments
+        List<String> segments = uri.getPathSegments();
+
+        // Parse segments
+        try
+        {
+            int year = Integer.parseInt(segments.get(4));
+            int month = Integer.parseInt(segments.get(5)) - 1;
+            int day =
+                Integer.parseInt(segments.get(6).replace(".txt", ""));
+            Calendar entry = new GregorianCalendar(year, month, day);
+
+            return entry;
+        }
+
+        catch (Exception e) {}
+
+        return null;
+    }
+
     // save
     private void save()
     {
@@ -1629,6 +1681,8 @@ public class Diary extends Activity
         save();
         setDate(date);
         load();
+
+        isEntry = true;
     }
 
     // prevEntry
