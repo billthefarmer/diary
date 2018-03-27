@@ -1497,13 +1497,14 @@ public class Diary extends Activity
 
         // Get segments
         List<String> segments = uri.getPathSegments();
+        int size = segments.size();
 
         // Parse segments
         try
         {
-            int year = Integer.parseInt(segments.get(4));
-            int month = Integer.parseInt(segments.get(5)) - 1;
-            int day = Integer.parseInt(segments.get(6).split("\\.")[0]);
+            int year = Integer.parseInt(segments.get(size - 3));
+            int month = Integer.parseInt(segments.get(size - 2)) - 1;
+            int day = Integer.parseInt(segments.get(size - 1).split("\\.")[0]);
             Calendar entry = new GregorianCalendar(year, month, day);
 
             return entry;
