@@ -1502,9 +1502,9 @@ public class Diary extends Activity
         // Parse segments
         try
         {
-            int year = Integer.parseInt(segments.get(size - 3));
-            int month = Integer.parseInt(segments.get(size - 2)) - 1;
-            int day = Integer.parseInt(segments.get(size - 1).split("\\.")[0]);
+            int day = Integer.parseInt(segments.get(--size).split("\\.")[0]);
+            int month = Integer.parseInt(segments.get(--size)) - 1;
+            int year = Integer.parseInt(segments.get(--size));
             Calendar entry = new GregorianCalendar(year, month, day);
 
             return entry;
