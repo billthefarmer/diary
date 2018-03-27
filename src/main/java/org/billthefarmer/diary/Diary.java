@@ -68,10 +68,12 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Deque;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -183,6 +185,8 @@ public class Diary extends Activity
 
     private GestureDetector gestureDetector;
 
+    private Deque<Calendar> entryStack;
+
     private View accept;
     private View edit;
 
@@ -217,6 +221,8 @@ public class Diary extends Activity
         gestureDetector =
             new GestureDetector(this, new GestureListener());
 
+        entryStack = new ArrayDeque<Calendar>();
+
         if (savedInstanceState == null)
         {
             // Set the date
@@ -233,11 +239,11 @@ public class Diary extends Activity
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        setDate(new GregorianCalendar((Integer) savedInstanceState.get(YEAR),
-                                      (Integer) savedInstanceState.get(MONTH),
-                                      (Integer) savedInstanceState.get(DAY)));
+        setDate(new GregorianCalendar(savedInstanceState.getInt(YEAR),
+                                      savedInstanceState.getInt(MONTH),
+                                      savedInstanceState.getInt(DAY)));
 
-        shown = (Boolean) savedInstanceState.get(SHOWN);
+        shown = savedInstanceState.getBoolean(SHOWN);
     }
 
     // onResume
@@ -278,6 +284,7 @@ public class Diary extends Activity
 
             outState.putBoolean(SHOWN, shown);
         }
+
         super.onSaveInstanceState(outState);
     }
 
@@ -403,19 +410,30 @@ public class Diary extends Activity
     @Override
     public void onBackPressed()
     {
-        if (markdownView.canGoBack())
+        // Calender entry
+        if (isEntry)
         {
-            markdownView.goBack();
+            if (!entryStack.isEmpty())
+                changeDate(entryStack.pop());
 
-            if (!markdownView.canGoBack())
-            {
-                getActionBar().setDisplayHomeAsUpEnabled(false);
-                loadMarkdown();
-            }
+            else
+                super.onBackPressed();
         }
 
+        // External
         else
-            super.onBackPressed();
+        {
+            if (markdownView.canGoBack())
+            {
+                markdownView.goBack();
+
+                if (!markdownView.canGoBack())
+                    loadMarkdown();
+            }
+
+            else
+                super.onBackPressed();
+        }
     }
 
     // onActivityResult
@@ -526,20 +544,29 @@ public class Diary extends Activity
                     public void onPageFinished (WebView view, String url)
                     {
                         // Check if entry
-                        if (!isEntry && view.canGoBack())
+                        if (isEntry)
                         {
-                            getActionBar().setDisplayHomeAsUpEnabled(true);
+                            if (entryStack.isEmpty())
+                                getActionBar().setDisplayHomeAsUpEnabled(false);
 
-                            // Get page title
-                            if (view.getTitle() != null)
-                                setTitle(view.getTitle());
+                            else
+                                getActionBar().setDisplayHomeAsUpEnabled(true);
+
+                            setTitleDate(currEntry.getTime());
+                            view.clearHistory();
                         }
 
                         else
                         {
-                            getActionBar().setDisplayHomeAsUpEnabled(false);
-                            setTitleDate(currEntry.getTime());
-                            view.clearHistory();
+                            if (view.canGoBack())
+                                getActionBar().setDisplayHomeAsUpEnabled(true);
+
+                            else
+                                getActionBar().setDisplayHomeAsUpEnabled(false);
+
+                            // Get page title
+                            if (view.getTitle() != null)
+                                setTitle(view.getTitle());
                         }
                     }
 
@@ -564,6 +591,7 @@ public class Diary extends Activity
                         if (entry != null)
                         {
                             changeDate(entry);
+                            entryStack.push(entry);
                             return true;
                         }
 
