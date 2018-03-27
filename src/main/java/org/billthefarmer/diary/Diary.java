@@ -60,7 +60,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -428,7 +427,7 @@ public class Diary extends Activity
                 markdownView.goBack();
 
                 if (!markdownView.canGoBack())
-                    loadMarkdown();
+                    changeDate(currEntry);
             }
 
             else
@@ -479,6 +478,7 @@ public class Diary extends Activity
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
+        entryStack.push(currEntry);
         changeDate(new GregorianCalendar(year, month, day));
 
         if (haveMedia)
@@ -487,9 +487,9 @@ public class Diary extends Activity
 
     // onDateSet
     @Override
-    public void onDateSet(CustomCalendarView view, int year,
-                          int month, int day)
+    public void onDateSet(CustomCalendarView view, int year, int month, int day)
     {
+        entryStack.push(currEntry);
         changeDate(new GregorianCalendar(year, month, day));
 
         if (haveMedia)
@@ -559,14 +559,19 @@ public class Diary extends Activity
                         else
                         {
                             if (view.canGoBack())
+                            {
                                 getActionBar().setDisplayHomeAsUpEnabled(true);
 
-                            else
-                                getActionBar().setDisplayHomeAsUpEnabled(false);
+                                // Get page title
+                                if (view.getTitle() != null)
+                                    setTitle(view.getTitle());
+                            }
 
-                            // Get page title
-                            if (view.getTitle() != null)
-                                setTitle(view.getTitle());
+                            else
+                            {
+                                getActionBar().setDisplayHomeAsUpEnabled(false);
+                                setTitleDate(currEntry.getTime());
+                            }
                         }
                     }
 
@@ -590,8 +595,8 @@ public class Diary extends Activity
                         Calendar entry = diaryEntry(url);
                         if (entry != null)
                         {
+                            entryStack.push(currEntry);
                             changeDate(entry);
-                            entryStack.push(entry);
                             return true;
                         }
 
@@ -1558,6 +1563,7 @@ public class Diary extends Activity
                 fileWriter.write(text);
                 fileWriter.close();
             }
+
             catch (Exception e) {}
         }
     }
@@ -1715,12 +1721,14 @@ public class Diary extends Activity
     // prevEntry
     private void prevEntry()
     {
+        entryStack.push(currEntry);
         changeDate(prevEntry);
     }
 
     // nextEntry
     private void nextEntry()
     {
+        entryStack.push(currEntry);
         changeDate(nextEntry);
     }
 
@@ -1731,6 +1739,7 @@ public class Diary extends Activity
         Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
                                                calendar.get(Calendar.MONTH),
                                                calendar.get(Calendar.DATE));
+        entryStack.clear();
         changeDate(today);
     }
 
@@ -1759,10 +1768,7 @@ public class Diary extends Activity
                     media = Uri.parse(newName);
                 }
 
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                catch (Exception e) {}
             }
         }
 
