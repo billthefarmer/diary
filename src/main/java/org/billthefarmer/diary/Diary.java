@@ -672,9 +672,6 @@ public class Diary extends Activity
                         // Animation
                         animateEdit();
 
-                        getActionBar().setDisplayHomeAsUpEnabled(false);
-                        markdownView.clearHistory();
-
                         // Close text search
                         if (searchItem.isActionViewExpanded())
                             searchItem.collapseActionView();
