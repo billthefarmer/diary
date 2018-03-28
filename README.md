@@ -123,7 +123,10 @@ the toolbar or the navigation bar to return to the diary page. Links
 to other diary pages may either be a relative reference to the entry
 file `[Sunday](25.txt)`, or use a date URI
 `[Whenever](date:17/10/2017)`. Use your local convention for short
-form numeric dates (UK: dd/mm/yyyy, US: mm/dd/yyyy).
+form numeric dates (UK: `dd/mm/yyyy`, US: `mm/dd/yyyy`). Use the back
+button to return. The back button may be used to retrace your path
+through diary entries and external web pages. Use the **Today** button
+to clear the navigation entries.
 
 ## Maps
 You may put [OpenStreetMap](http://www.openstreetmap.org) maps in

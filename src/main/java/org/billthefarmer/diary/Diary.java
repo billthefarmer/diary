@@ -637,6 +637,8 @@ public class Diary extends Activity
                             loadMarkdown();
                             // Clear flag
                             dirty = false;
+                            // Set flag
+                            isEntry = true;
                         }
 
                         // Animation
