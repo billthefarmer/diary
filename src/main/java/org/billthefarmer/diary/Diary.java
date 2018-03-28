@@ -142,6 +142,8 @@ public class Diary extends Activity
         "geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*";
     private final static String GEO_TEMPLATE =
         "![osm](geo:%f,%f)";
+    private final static String DATE_PATTERN =
+        "\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -851,6 +853,9 @@ public class Diary extends Activity
     // markdownCheck
     private String markdownCheck(String text)
     {
+        // Date check
+        text = dateCheck(text);
+
         // Check for map
         text =  mapCheck(text);
 
@@ -976,6 +981,54 @@ public class Diary extends Activity
                 String.format(Locale.ENGLISH, GEO_TEMPLATE,
                               lat, lng);
 
+            // Substitute replacement
+            matcher.appendReplacement(buffer, replace);
+        }
+
+        // Append rest of entry
+        matcher.appendTail(buffer);
+
+        return buffer.toString();
+    }
+
+    // dateCheck
+    private String dateCheck(String text)
+    {
+        StringBuffer buffer = new StringBuffer();
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+
+        Pattern pattern = Pattern.compile(DATE_PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+
+        // Find matches
+        while (matcher.find())
+        {
+            try
+            {
+                // Parse date
+                Date date = dateFormat.parse(matcher.group(2));
+                calendar.setTime(date);
+            }
+
+            // Ignore parse error
+            catch (Exception e)
+            {
+                continue;
+            }
+
+            // Get file
+            File file = getDay(calendar.get(Calendar.YEAR),
+                               calendar.get(Calendar.MONTH),
+                               calendar.get(Calendar.DATE));
+
+            // Get uri
+            Uri uri = Uri.fromFile(file);
+
+            // Create replacement
+            String replace =
+                String.format(Locale.getDefault(), LINK_TEMPLATE,
+                              matcher.group(1), uri.toString());
             // Substitute replacement
             matcher.appendReplacement(buffer, replace);
         }

@@ -86,7 +86,11 @@ added as a link.
 You may put links in diary pages, so
 `[DuckDuckGo](https://duckduckgo.com)` will show a link to
 DuckDuckGo. Links will be followed if touched. Use the back button in
-the toolbar or the navigation bar to return to the diary page.
+the toolbar or the navigation bar to return to the diary page. Links
+to other diary pages may either be a relative reference to the entry
+file `[Sunday](25.txt)`, or use a date URI
+`[Whenever](date:17/10/2017)`. Use your local convention for short
+form numeric dates (UK: dd/mm/yyyy, US: mm/dd/yyyy).
 
 ## Maps
 You may put [OpenStreetMap](http://www.openstreetmap.org) maps in
