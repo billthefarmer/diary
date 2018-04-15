@@ -116,6 +116,7 @@ public class Diary extends Activity
     private final static String DAY = "day";
 
     private final static String SHOWN = "shown";
+    private final static String ENTRY = "entry";
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
@@ -160,11 +161,11 @@ public class Diary extends Activity
     private boolean copyMedia = false;
     private boolean darkTheme = false;
 
-    private boolean dirty = true;
+    private boolean dirty = false;
     private boolean shown = true;
 
-    private boolean multiTouch = false;
-    private boolean isEntry = false;
+    private boolean multi = false;
+    private boolean entry = false;
 
     private float minScale = 1000;
     private boolean canSwipe = true;
@@ -238,13 +239,15 @@ public class Diary extends Activity
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState)
     {
-        super.onRestoreInstanceState(savedInstanceState);
-
         setDate(new GregorianCalendar(savedInstanceState.getInt(YEAR),
                                       savedInstanceState.getInt(MONTH),
                                       savedInstanceState.getInt(DAY)));
 
         shown = savedInstanceState.getBoolean(SHOWN);
+        entry = savedInstanceState.getBoolean(ENTRY);
+
+        super.onRestoreInstanceState(savedInstanceState);
+        markdownView.restoreState(savedInstanceState);
     }
 
     // onResume
@@ -277,6 +280,9 @@ public class Diary extends Activity
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
+        super.onSaveInstanceState(outState);
+        markdownView.saveState(outState);
+
         if (currEntry != null)
         {
             outState.putInt(YEAR, currEntry.get(Calendar.YEAR));
@@ -284,9 +290,8 @@ public class Diary extends Activity
             outState.putInt(DAY, currEntry.get(Calendar.DATE));
 
             outState.putBoolean(SHOWN, shown);
+            outState.putBoolean(ENTRY, entry);
         }
-
-        super.onSaveInstanceState(outState);
     }
 
     // onPause
@@ -412,7 +417,7 @@ public class Diary extends Activity
     public void onBackPressed()
     {
         // Calender entry
-        if (isEntry)
+        if (entry)
         {
             if (!entryStack.isEmpty())
                 changeDate(entryStack.pop());
@@ -503,7 +508,7 @@ public class Diary extends Activity
     public boolean dispatchTouchEvent(MotionEvent event)
     {
         if (event.getPointerCount() > 1)
-            multiTouch = true;
+            multi = true;
 
         gestureDetector.onTouchEvent(event);
         return super.dispatchTouchEvent(event);
@@ -519,7 +524,7 @@ public class Diary extends Activity
                     public void afterTextChanged (Editable s)
                     {
                         // Check markdown
-                        if (markdown)
+                        if (markdown && !shown)
                             dirty = true;
                     }
 
@@ -546,7 +551,7 @@ public class Diary extends Activity
                     public void onPageFinished (WebView view, String url)
                     {
                         // Check if entry
-                        if (isEntry)
+                        if (entry)
                         {
                             if (entryStack.isEmpty())
                                 getActionBar().setDisplayHomeAsUpEnabled(false);
@@ -594,15 +599,15 @@ public class Diary extends Activity
                     public boolean shouldOverrideUrlLoading(WebView view,
                                                             String url)
                     {
-                        Calendar entry = diaryEntry(url);
-                        if (entry != null)
+                        Calendar calendar = diaryEntry(url);
+                        if (calendar != null)
                         {
                             entryStack.push(currEntry);
-                            changeDate(entry);
+                            changeDate(calendar);
                             return true;
                         }
 
-                        isEntry = false;
+                        entry = false;
                         return false;
                     }
                 });
@@ -638,7 +643,7 @@ public class Diary extends Activity
                             // Clear flag
                             dirty = false;
                             // Set flag
-                            isEntry = true;
+                            entry = true;
                         }
 
                         // Animation
@@ -1695,8 +1700,8 @@ public class Diary extends Activity
         textView.setText(text);
         if (markdown)
         {
-            dirty = false;
             loadMarkdown();
+            dirty = false;
         }
         textView.setSelection(0);
     }
@@ -1768,7 +1773,7 @@ public class Diary extends Activity
         setDate(date);
         load();
 
-        isEntry = true;
+        entry = true;
     }
 
     // prevEntry
@@ -2266,7 +2271,7 @@ public class Diary extends Activity
                 {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD &&
                         Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD &&
-                        multiTouch)
+                        multi)
                     {
                         if (diffY > 0)
                         {
@@ -2282,7 +2287,7 @@ public class Diary extends Activity
                     result = true;
                 }
 
-                multiTouch = false;
+                multi = false;
             }
 
             catch (Exception e) {}
