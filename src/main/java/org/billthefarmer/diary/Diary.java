@@ -239,15 +239,15 @@ public class Diary extends Activity
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState)
     {
+        super.onRestoreInstanceState(savedInstanceState);
+        markdownView.restoreState(savedInstanceState);
+
         setDate(new GregorianCalendar(savedInstanceState.getInt(YEAR),
                                       savedInstanceState.getInt(MONTH),
                                       savedInstanceState.getInt(DAY)));
 
         shown = savedInstanceState.getBoolean(SHOWN);
         entry = savedInstanceState.getBoolean(ENTRY);
-
-        super.onRestoreInstanceState(savedInstanceState);
-        markdownView.restoreState(savedInstanceState);
     }
 
     // onResume
