@@ -51,6 +51,15 @@
   <string name="pref_dark_theme_summ">
     Use dark theme for editing
   </string>
+  <string name="index">Index</string>
+  <string name="pref_use_index">Use index</string>
+  <string name="pref_use_index_summ">
+    Use index page for journal
+  </string>
+  <string name="pref_index_page">Index page</string>
+  <string name="pref_index_page_summ">
+    Index page for journal
+  </string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary version %s</string>
   <string name="built">Built %s</string>

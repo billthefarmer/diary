@@ -65,6 +65,27 @@
   </PreferenceCategory>
 
   <PreferenceCategory
+      android:key="pref_index_category"
+      android:title="@string/index">
+
+    <CheckBoxPreference
+	android:key="pref_use_index"
+	android:icon="?attr/pref_use_index"
+	android:title="@string/pref_use_index"
+	android:summary="@string/pref_use_index_summ"
+	android:persistent="true"
+	android:defaultValue="false" />
+
+    <org.billthefarmer.diary.DatePickerPreference
+        android:key="pref_index_page"
+	android:icon="?attr/pref_index_page"
+	android:dialogIcon="?attr/pref_index_page"
+	android:title="@string/pref_index_page"
+	android:summary="@string/pref_index_page_summ" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
       android:key="pref_media_category"
       android:title="@string/media">
 
