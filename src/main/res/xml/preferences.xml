@@ -78,10 +78,10 @@
 
     <org.billthefarmer.diary.DatePickerPreference
         android:key="pref_index_page"
+        android:dependency="pref_use_index"
 	android:icon="?attr/pref_index_page"
 	android:dialogIcon="?attr/pref_index_page"
-	android:title="@string/pref_index_page"
-	android:summary="@string/pref_index_page_summ" />
+	android:title="@string/pref_index_page" />
 
   </PreferenceCategory>
 

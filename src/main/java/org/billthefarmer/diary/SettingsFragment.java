@@ -36,6 +36,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 // SettingsFragment class
 public class SettingsFragment extends PreferenceFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -61,13 +64,25 @@ public class SettingsFragment extends PreferenceFragment
         // Set folder in text view
         folder.setSummary(preferences.getString(Diary.PREF_FOLDER,
                                                 Diary.DIARY));
+        // Get index preference
+        DatePickerPreference entry =
+            (DatePickerPreference) findPreference(Diary.PREF_INDEX_PAGE);
+
+        // Get value
+        long value = preferences.getLong(Diary.PREF_INDEX_PAGE, 1);
+        Date date = new Date(value);
+
+        // Set summary
+        DateFormat format = DateFormat.getDateInstance();
+        String s = format.format(date);
+        entry.setSummary(s);
 
         // Get about summary
         Preference about = findPreference(Diary.PREF_ABOUT);
         String sum = (String) about.getSummary();
 
         // Set version in text view
-        String s = String.format(sum, BuildConfig.VERSION_NAME);
+        s = String.format(sum, BuildConfig.VERSION_NAME);
         about.setSummary(s);
     }
 
@@ -123,6 +138,21 @@ public class SettingsFragment extends PreferenceFragment
             folder.setSummary(preferences.getString(key, Diary.DIARY));
         }
 
+        if (key.equals(Diary.PREF_INDEX_PAGE))
+        {
+            // Get index preference
+            DatePickerPreference entry =
+                (DatePickerPreference) findPreference(key);
+
+            // Get value
+            long value = preferences.getLong(key, 1);
+            Date date = new Date(value);
+
+            // Set summary
+            DateFormat format = DateFormat.getDateInstance();
+            String s = format.format(date);
+            entry.setSummary(s);
+        }
         if (key.equals(Diary.PREF_DARK_THEME))
         {
             if (Build.VERSION.SDK_INT != VERSION_M)

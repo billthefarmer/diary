@@ -106,6 +106,8 @@ public class Diary extends Activity
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_MARKDOWN = "pref_markdown";
+    public final static String PREF_USE_INDEX = "pref_use_index";
+    public final static String PREF_INDEX_PAGE = "pref_index_page";
     public final static String PREF_COPY_MEDIA = "pref_copy_media";
     public final static String PREF_DARK_THEME = "pref_dark_theme";
 
@@ -158,6 +160,7 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true;
+    private boolean useIndex = false;
     private boolean copyMedia = false;
     private boolean darkTheme = false;
 
@@ -176,6 +179,7 @@ public class Diary extends Activity
     private Calendar prevEntry;
     private Calendar currEntry;
     private Calendar nextEntry;
+    private Calendar indexPage;
 
     private EditText textView;
     private ScrollView scrollView;
@@ -773,9 +777,16 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        useIndex = preferences.getBoolean(PREF_USE_INDEX, false);
         copyMedia = preferences.getBoolean(PREF_COPY_MEDIA, false);
         darkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
 
+        // Index page
+        long value = preferences.getLong(PREF_INDEX_PAGE, 1);
+        indexPage = Calendar.getInstance();
+        indexPage.setTimeInMillis(value);
+
+        // Folder
         folder = preferences.getString(PREF_FOLDER, DIARY);
     }
 
@@ -1715,7 +1726,7 @@ public class Diary extends Activity
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
 
-        Calendar calendar = GregorianCalendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
                                                calendar.get(Calendar.MONTH),
                                                calendar.get(Calendar.DATE));
@@ -1793,12 +1804,19 @@ public class Diary extends Activity
     // today
     private void today()
     {
-        Calendar calendar = GregorianCalendar.getInstance();
-        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
-                                               calendar.get(Calendar.MONTH),
-                                               calendar.get(Calendar.DATE));
         entryStack.clear();
-        changeDate(today);
+
+        if (useIndex)
+            changeDate(indexPage);
+
+        else
+        {
+            Calendar calendar = Calendar.getInstance();
+            Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                                   calendar.get(Calendar.MONTH),
+                                                   calendar.get(Calendar.DATE));
+            changeDate(today);
+        }
     }
 
     // addMedia
