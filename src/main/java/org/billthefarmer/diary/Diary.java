@@ -361,6 +361,7 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
+        menu.findItem(R.id.index).setVisible(useIndex);
 
         // Show find all item
         if (menu.findItem(R.id.search).isActionViewExpanded())
@@ -391,6 +392,9 @@ public class Diary extends Activity
             break;
         case R.id.goToDate:
             goToDate(currEntry);
+            break;
+        case R.id.index:
+            index();
             break;
         case R.id.findAll:
             findAll();
@@ -1804,19 +1808,19 @@ public class Diary extends Activity
     // today
     private void today()
     {
+        Calendar calendar = Calendar.getInstance();
+        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                               calendar.get(Calendar.MONTH),
+                                               calendar.get(Calendar.DATE));
         entryStack.clear();
+        changeDate(today);
+    }
 
-        if (useIndex)
-            changeDate(indexPage);
-
-        else
-        {
-            Calendar calendar = Calendar.getInstance();
-            Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
-                                                   calendar.get(Calendar.MONTH),
-                                                   calendar.get(Calendar.DATE));
-            changeDate(today);
-        }
+    // index
+    private void index()
+    {
+        entryStack.clear();
+        changeDate(indexPage);
     }
 
     // addMedia

@@ -50,6 +50,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/goToDate"
       android:icon="@drawable/ic_action_go_to_date" />
   <item
+      android:id="@+id/index"
+      android:visible="false"
+      android:showAsAction="ifRoom"
+      android:title="@string/index"
+      android:icon="@drawable/ic_action_today" />
+  <item
       android:id="@+id/search"
       android:showAsAction="ifRoom|collapseActionView"
       android:title="@string/search"
