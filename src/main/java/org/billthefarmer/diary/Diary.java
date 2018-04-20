@@ -229,13 +229,21 @@ public class Diary extends Activity
 
         entryStack = new ArrayDeque<Calendar>();
 
+        // Check startup
         if (savedInstanceState == null)
         {
+            Intent intent = getIntent();
+
+            // Check index and start from launcher
+            if (useIndex && intent.getAction() == Intent.ACTION_MAIN)
+                index();
+
             // Set the date
-            today();
+            else
+                today();
 
             // Check for sent media
-            mediaCheck(getIntent());
+            mediaCheck(intent);
         }
     }
 
@@ -786,7 +794,8 @@ public class Diary extends Activity
         darkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
 
         // Index page
-        long value = preferences.getLong(PREF_INDEX_PAGE, 1);
+        long value = preferences.getLong(PREF_INDEX_PAGE,
+                                         DatePickerPreference.DEFAULT_VALUE);
         indexPage = Calendar.getInstance();
         indexPage.setTimeInMillis(value);
 

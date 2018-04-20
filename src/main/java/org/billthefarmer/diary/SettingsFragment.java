@@ -69,7 +69,8 @@ public class SettingsFragment extends PreferenceFragment
             (DatePickerPreference) findPreference(Diary.PREF_INDEX_PAGE);
 
         // Get value
-        long value = preferences.getLong(Diary.PREF_INDEX_PAGE, 1);
+        long value = preferences.getLong(Diary.PREF_INDEX_PAGE,
+                                         DatePickerPreference.DEFAULT_VALUE);
         Date date = new Date(value);
 
         // Set summary
@@ -145,7 +146,8 @@ public class SettingsFragment extends PreferenceFragment
                 (DatePickerPreference) findPreference(key);
 
             // Get value
-            long value = preferences.getLong(key, 1);
+            long value =
+                preferences.getLong(key, DatePickerPreference.DEFAULT_VALUE);
             Date date = new Date(value);
 
             // Set summary

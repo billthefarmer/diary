@@ -36,9 +36,10 @@ import java.util.Locale;
 // DatePickerPreference
 public class DatePickerPreference extends DialogPreference
 {
-    private final static int DEFAULT_VALUE = 1;
+    protected final static long DEFAULT_VALUE = 946684800000L;
+
     private DatePicker picker;
-    private long value;
+    private long value = DEFAULT_VALUE;
 
     // Constructor
     public DatePickerPreference(Context context, AttributeSet attrs)
@@ -78,7 +79,7 @@ public class DatePickerPreference extends DialogPreference
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index)
     {
-        return a.getInteger(index, DEFAULT_VALUE);
+        return DEFAULT_VALUE;
     }
 
     // On set initial value
@@ -89,7 +90,7 @@ public class DatePickerPreference extends DialogPreference
         if (restorePersistedValue)
         {
             // Restore existing state
-            value = getPersistedLong(0);
+            value = getPersistedLong(DEFAULT_VALUE);
         }
 
         else
