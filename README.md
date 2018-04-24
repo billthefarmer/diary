@@ -37,10 +37,11 @@ a file manager.
 
 * Entries saved in plain text files
 * Browse entries
-* English, Catalan, Spanish, Italian, Japanese, German, French, Polish
-  and simplified Chinese
+* English, Catalan, Spanish, Italian, Japanese, German, French,
+  Polish, Brazilian Portuguese and simplified Chinese
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
+* Optional index page
 * Display media stored in diary folders
 * Display [OpenStreetMap](http://www.openstreetmap.org) maps
 * Add media from media providers
@@ -57,8 +58,9 @@ The toolbar icons are, from left to right:
 * **Next** - show the next entry or today if next
 * **Today** - show today's entry
 * **Go to date** - show a date picker calendar to select a new date
-* **Search** - Incremental search of diary entry
-* **Find all** - Find all diary entries containing search text
+* **Index** - go to index page if set
+* **Search** - incremental search of diary entry
+* **Find all** - find all diary entries containing search text
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Settings** - show the settings
@@ -95,6 +97,10 @@ text. This menu item will only appear while the search widget is
 active. A dialog will pop up with a list of matching entries. Touch an
 entry to open that entry. You may repeat this or refine the search
 text to find the desired entry.
+
+## Index
+You may use an index page. If an index page is set the app will start
+on that page unless receiving media from another app.
 
 ## Text
 You may receive text clips from another app. A date picker will pop
@@ -179,6 +185,7 @@ the first line.
 * **Use markdown** - Use markdown formatting for diary entries
 * **Folder** - Change diary entry storage folder. Caution - diary
   entries and styles will not be moved
+* **Index** - Set an index page. Use the date picker to choose a date.
 * **Copy images** - Copy images to current folder
 * **Dark theme** - Use dark theme for editing
 * **About** - Show app version, licence and credits

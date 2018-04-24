@@ -46,6 +46,12 @@
     Skopiuj wstawione obrazy do obecnego folderu
   </string>
   <string name="folder">Folder</string>
+  <string name="index">Indeks</string>
+  <string name="pref_use_index">Użyj indeksu</string>
+  <string name="pref_use_index_summ">
+    Użyj strony indeksowej dla dziennika
+  </string>
+  <string name="pref_index_page">Strona indeksu</string>
   <string name="theme">Motyw</string>
   <string name="pref_dark_theme">Ciemny</string>
   <string name="pref_dark_theme_summ">

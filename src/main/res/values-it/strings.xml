@@ -48,6 +48,12 @@
     Copia le immagini inserite nella cartella corrente
   </string>
   <string name="folder">Cartella</string>
+  <string name="index">Indice</string>
+  <string name="pref_use_index">Usa indice</string>
+  <string name="pref_use_index_summ">
+    Usa la pagina indice per il giornale
+  </string>
+  <string name="pref_index_page">Pagina indice</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Scuro</string>
   <string name="pref_dark_theme_summ">

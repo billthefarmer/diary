@@ -46,6 +46,12 @@
     Copieu les imatges inserides a la carpeta actual
   </string>
   <string name="folder">Carpeta</string>
+  <string name="index">Índex</string>
+  <string name="pref_use_index">Feu servir l\'índex</string>
+  <string name="pref_use_index_summ">
+    Utilitzeu la pàgina d\'índex per al diari
+  </string>
+  <string name="pref_index_page">Pàgina d\'índex</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Fosc</string>
   <string name="pref_dark_theme_summ">

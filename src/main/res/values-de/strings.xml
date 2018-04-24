@@ -46,6 +46,12 @@
     Kopieren von eingefügten Bildern in den aktuellen Ordner
   </string>
   <string name="folder">Ordner</string>
+  <string name="index">Index</string>
+  <string name="pref_use_index">Benutze Index</string>
+  <string name="pref_use_index_summ">
+    Verwenden Sie die Indexseite für das Journal
+  </string>
+  <string name="pref_index_page">Indexseite</string>
   <string name="theme">Thema</string>
   <string name="pref_dark_theme">Dunkel</string>
   <string name="pref_dark_theme_summ">

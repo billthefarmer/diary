@@ -46,6 +46,12 @@
     将插入的图像复制到当前文件夹
   </string>
   <string name="folder">文件夹</string>
+  <string name="index">指数</string>
+  <string name="pref_use_index">使用索引</string>
+  <string name="pref_use_index_summ">
+    使用期刊的索引页面
+  </string>
+  <string name="pref_index_page">索引页</string>
   <string name="theme">主题</string>
   <string name="pref_dark_theme">暗色</string>
   <string name="pref_dark_theme_summ">

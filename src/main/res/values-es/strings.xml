@@ -46,6 +46,12 @@
     Copie las imágenes insertadas en la carpeta actual
   </string>
   <string name="folder">Carpeta</string>
+  <string name="index">Índice</string>
+  <string name="pref_use_index">Índice de uso</string>
+  <string name="pref_use_index_summ">
+    Utilice la página de índice para el diario
+  </string>
+  <string name="pref_index_page">Página de índice</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Oscuro</string>
   <string name="pref_dark_theme_summ">

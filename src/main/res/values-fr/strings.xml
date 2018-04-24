@@ -46,6 +46,12 @@
     Copier les images insérées dans le dossier actuel
   </string>
   <string name="folder">Dossier</string>
+  <string name="index">Indice</string>
+  <string name="pref_use_index">Utiliser l\'index</string>
+  <string name="pref_use_index_summ">
+    Utiliser la page d\'index pour le journal
+  </string>
+  <string name="pref_index_page">Page d\'index</string>
   <string name="theme">Thème</string>
   <string name="pref_dark_theme">Sombre</string>
   <string name="pref_dark_theme_summ">
