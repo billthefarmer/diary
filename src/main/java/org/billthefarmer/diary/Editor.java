@@ -35,9 +35,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Editor extends Activity
 {
@@ -78,18 +80,22 @@ public class Editor extends Activity
         Intent intent = getIntent();
         Uri uri = intent.getData();
 
-        if (uri.getScheme().equalsIgnoreCase(CONTENT))
-            uri = resolveContent(uri);
-
-        String title = uri.getLastPathSegment();
-        setTitle(title);
-
-        file = new File(uri.getPath());
-
-        if (savedInstanceState == null)
+        if (uri != null)
         {
-            String text = read(file);
-            textView.setText(text);
+            if (uri.getScheme().equalsIgnoreCase(CONTENT))
+                uri = resolveContent(uri);
+
+            String title = uri.getLastPathSegment();
+            setTitle(title);
+
+            if (!uri.getScheme().equalsIgnoreCase(CONTENT))
+                file = new File(uri.getPath());
+
+            if (savedInstanceState == null)
+            {
+                String text = read(uri);
+                textView.setText(text);
+            }
         }
 
         setListeners();
@@ -195,35 +201,45 @@ public class Editor extends Activity
     }
 
     // read
-    private static String read(File file)
+    private String read(Uri uri)
     {
-        StringBuilder text = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         try
         {
-            FileReader fileReader = new FileReader(file);
-            char buffer[] = new char[BUFFER_SIZE];
-            int n;
-            while ((n = fileReader.read(buffer)) != -1)
-                text.append(String.valueOf(buffer, 0, n));
-            fileReader.close();
+            InputStream inputStream =
+                getContentResolver().openInputStream(uri);
+            BufferedReader reader =
+                new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                stringBuilder.append(line);
+                stringBuilder.append(System.getProperty("line.separator"));
+            }
+
+            inputStream.close();
         }
 
         catch (Exception e) {}
 
-        return text.toString();
+        return stringBuilder.toString();
     }
 
     // write
     private void write(String text, File file)
     {
-        file.getParentFile().mkdirs();
-        try
+        if (file != null)
         {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(text);
-            fileWriter.close();
-        }
+            file.getParentFile().mkdirs();
+            try
+            {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(text);
+                fileWriter.close();
+            }
 
-        catch (Exception e) {}
+            catch (Exception e) {}
+        }
     }
 }
