@@ -1329,14 +1329,14 @@ public class Diary extends Activity
     // getYear
     private File getYear(int year)
     {
-        return new File(getHome(), String.format(Locale.getDefault(),
+        return new File(getHome(), String.format(Locale.ENGLISH,
                         "%04d", year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
-        return new File(getYear(year), String.format(Locale.getDefault(),
+        return new File(getYear(year), String.format(Locale.ENGLISH,
                         "%02d", month + 1));
     }
 
@@ -1344,7 +1344,7 @@ public class Diary extends Activity
     private File getDay(int year, int month, int day)
     {
         return new
-               File(getMonth(year, month), String.format(Locale.getDefault(),
+               File(getMonth(year, month), String.format(Locale.ENGLISH,
                        "%02d.txt", day));
     }
 
