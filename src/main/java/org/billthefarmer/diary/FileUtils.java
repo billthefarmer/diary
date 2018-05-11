@@ -510,46 +510,22 @@ public class FileUtils
      * @param destFile The destination file.
      * @author ialokim
      */
+    @TargetApi(19)
     public static void copyFile(File sourceFile, File destFile)
         throws IOException
     {
+        try (FileInputStream is = new FileInputStream(sourceFile);
+             FileOutputStream os = new FileOutputStream(destFile);
+             FileChannel source = is.getChannel();
+             FileChannel destination = os.getChannel()) {
 
-        if (!destFile.exists())
-            destFile.createNewFile();
-
-        FileChannel source = null;
-        FileChannel destination = null;
-        FileInputStream is = null;
-        FileOutputStream os = null;
-
-        try
-        {
-            is = new FileInputStream(sourceFile);
-            os = new FileOutputStream(destFile);
-            source = is.getChannel();
-            destination = os.getChannel();
+            destFile.createNewFile(); // if file already exists will do nothing
 
             long count = 0;
             long size = source.size();
-            while (count < size)
+            while (count < size) {
                 count += destination.transferFrom(source, count, size - count);
-        }
-
-        catch (Exception e) {}
-
-        finally
-        {
-            if (source != null)
-                source.close();
-
-            if (is != null)
-                is.close();
-
-            if (destination != null)
-                destination.close();
-
-            if (os != null)
-                os.close();
+            }
         }
     }
 
