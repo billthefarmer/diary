@@ -1,6 +1,6 @@
 # Diary
 ---
-### Android personal diary.
+## Android personal diary.
 
 * Entries saved in plain text files
 * Browse entries
