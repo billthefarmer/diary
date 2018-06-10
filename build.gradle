@@ -21,7 +21,7 @@ android {
     lintOptions {
 	disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
                 'IconDuplicates'
-        // abortOnError false
+        abortOnError false
     }
 }
 
@@ -38,5 +38,5 @@ repositories {
 
 dependencies {
     compile 'com.github.billthefarmer:CustomCalendarView:v1.04'
-    compile 'com.github.billthefarmer:MarkdownView:v1.0'
+    compile 'com.github.billthefarmer:MarkdownView:9d11202'
 }

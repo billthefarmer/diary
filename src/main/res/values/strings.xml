@@ -29,6 +29,7 @@
   <string name="findAll">Find all…</string>
   <string name="addMedia">Add media…</string>
   <string name="editStyles">Edit styles…</string>
+  <string name="editScript">Edit script…</string>
   <string name="settings">Settings</string>
   <string name="calendar">Calendar</string>
   <string name="pref_calendar">Use custom calendar</string>

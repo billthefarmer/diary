@@ -122,7 +122,9 @@ public class Diary extends Activity
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
+    private final static String SCRIPT = "file:///android_asset/script.js";
     private final static String CSS_STYLES = "css/styles.css";
+    private final static String JS_SCRIPT = "js/script.js";
     private final static String MEDIA_PATTERN = "!\\[(.*)\\]\\((.+)\\)";
     private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";    
@@ -273,10 +275,15 @@ public class Diary extends Activity
         // Get preferences
         getPreferences();
 
+        // Recreate
         if (dark != darkTheme && Build.VERSION.SDK_INT != VERSION_M)
             recreate();
 
+        // Set date
         setDate(currEntry);
+
+        // Clear cache
+        markdownView.clearCache(true);
 
         // Copy help text to today's page if no entries
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
@@ -412,6 +419,9 @@ public class Diary extends Activity
             break;
         case R.id.editStyles:
             editStyles();
+            break;
+        case R.id.editScript:
+            editScript();
             break;
         case R.id.settings:
             settings();
@@ -878,7 +888,7 @@ public class Diary extends Activity
     private void loadMarkdown(String text)
     {
         markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                  getStyles());
+                                  getStyles(), getScript());
     }
 
     // markdownCheck
@@ -1191,16 +1201,20 @@ public class Diary extends Activity
         File cssFile = new File(getHome(), CSS_STYLES);
 
         if (cssFile.exists())
-        {
-            try
-            {
-                return cssFile.toURI().toURL().toString();
-            }
-
-            catch (Exception e) {}
-        }
+            return Uri.fromFile(cssFile).toString();
 
         return STYLES;
+    }
+
+    // getScript
+    private String getScript()
+    {
+        File jsFile = new File(getHome(), JS_SCRIPT);
+
+        if (jsFile.exists())
+            return Uri.fromFile(jsFile).toString();
+
+        return null;
     }
 
     // setVisibility
@@ -1310,6 +1324,17 @@ public class Diary extends Activity
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setDataAndType(uri, "text/css");
+        startActivity(intent);
+    }
+
+    // editScript
+    public void editScript()
+    {
+        File file = new File(getHome(), JS_SCRIPT);
+        Uri uri = Uri.fromFile(file);
+
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setDataAndType(uri, "text/javascript");
         startActivity(intent);
     }
 

@@ -72,6 +72,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/editStyles"
       android:icon="@drawable/ic_action_save" />
   <item
+      android:id="@+id/editScript"
+      android:showAsAction="ifRoom"
+      android:title="@string/editScript"
+      android:icon="@drawable/ic_action_save" />
+  <item
       android:id="@+id/settings"
       android:showAsAction="ifRoom"
       android:title="@string/settings"
