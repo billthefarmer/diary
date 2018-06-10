@@ -29,6 +29,7 @@
   <string name="search">サーチ…</string>
   <string name="findAll">すべてを検索…</string>
   <string name="editStyles">スタイルを編集する…</string>
+  <string name="editScript">編集スクリプト…</string>
   <string name="settings">設定</string>
   <string name="calendar">カレンダー</string>
   <string name="pref_calendar">カスタムカレンダーを使用する</string>

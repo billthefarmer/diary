@@ -29,6 +29,7 @@
   <string name="findAll">Trouver tout…</string>
   <string name="addMedia">Ajouter des médias…</string>
   <string name="editStyles">Modifier les styles…</string>
+  <string name="editScript">Modifier le script…</string>
   <string name="settings">Paramètres</string>
   <string name="calendar">Calendrier</string>
   <string name="pref_calendar">Utiliser un calendrier alternatif</string>

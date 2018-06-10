@@ -29,6 +29,7 @@
   <string name="findAll">Trobeu-ho tot…</string>
   <string name="addMedia">Afegeix mitjans…</string>
   <string name="editStyles">Edita estils…</string>
+  <string name="editScript">Edita script…</string>
   <string name="settings">Ajustos</string>
   <string name="calendar">Calendari</string>
   <string name="pref_calendar">Utilitza calendari personalitzat</string>
