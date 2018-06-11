@@ -30,6 +30,7 @@ The toolbar icons are, from left to right:
 * **Find all** - find all diary entries containing search text
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
+* **Edit script** - show an editor to edit custom javascript
 * **Settings** - show the settings
 
 Depending on the device and orientation, some items may be on the
@@ -145,6 +146,20 @@ You may include the built in styles file with an `@import` statement
 `@import "file:///android_asset/styles.css";` or
 `@import url("file:///android_asset/styles.css");`, which should be on
 the first line.
+
+## Javascript
+You may add custom javascript to be loaded into all diary pages by
+placing a `script.js` file in the `Diary/js` folder. Use the built in
+editor to create a script file. Errors in the script will be logged by
+the
+[WebView](https://developer.android.com/reference/android/webkit/WebView)
+which displays the page. See
+[Javascript tutorial](https://www.w3schools.com/js).
+
+If you want to use javascript libraries or write a large script it
+might be a good idea to use the Google
+[Closure Compiler](https://developers.google.com/closure/compiler) to
+check and minimise your code. It will handle multiple input files.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary

@@ -19,9 +19,11 @@ and [here](https://github.com/billthefarmer/diary/releases).
 There is a
 [help](https://github.com/billthefarmer/diary/blob/master/data/help.md),
 a
-[test](https://github.com/billthefarmer/diary/blob/master/data/test.md)
-and an example
+[test](https://github.com/billthefarmer/diary/blob/master/data/test.md),
+an example
 [styles](https://github.com/billthefarmer/diary/blob/master/data/styles.md)
+file and an example
+[script](https://github.com/billthefarmer/diary/blob/master/data/script.md)
 file, which may be copied in to an entry for reference if required.
 
 ### Caution - check diary folder
