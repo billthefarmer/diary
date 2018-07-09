@@ -5,7 +5,7 @@
 * Entries saved in plain text files
 * Browse entries
 * English, Catalan, Spanish, Italian, Japanese, German, French,
-  Polish, Brazilian Portuguese and simplified Chinese
+  Polish, Brazilian Portuguese, Dutch and simplified Chinese
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Optional index page
