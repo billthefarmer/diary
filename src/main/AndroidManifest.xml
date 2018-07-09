@@ -22,8 +22,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.billthefarmer.diary"
     tools:ignore="GoogleAppIndexingWarning"
-    android:versionCode="130"
-    android:versionName="1.30"
+    android:versionCode="131"
+    android:versionName="1.31"
     android:installLocation="auto">
 
   <uses-sdk
