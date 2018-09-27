@@ -1,25 +1,45 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:3.2.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+        maven { url "https://jitpack.io" }
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-22'
-    buildToolsVersion '27.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
+        applicationId "org.billthefarmer.diary"
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionName "1.32"
+        versionCode 132
+
         buildConfigField "long", "BUILT", System.currentTimeMillis() + "L"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     lintOptions {
-	disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
+        disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
                 'IconDuplicates'
         // abortOnError false
     }
@@ -29,14 +49,7 @@ android {
 //     options.compilerArgs << "-Xlint:all"
 // }
 
-repositories {
-    jcenter()
-    maven {
-        url "https://jitpack.io"
-    }
-}
-
 dependencies {
-    compile 'com.github.billthefarmer:CustomCalendarView:v1.04'
-    compile 'com.github.billthefarmer:MarkdownView:v1.01'
+    implementation 'com.github.billthefarmer:CustomCalendarView:v1.04'
+    implementation 'com.github.billthefarmer:MarkdownView:v1.01'
 }

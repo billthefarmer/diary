@@ -1,11 +1,13 @@
-# ![Logo](src/main/res/drawable-mdpi/ic_launcher.png) Diary [![Build Status](https://travis-ci.org/billthefarmer/diary.svg?branch=master)](https://travis-ci.org/billthefarmer/diary) [![Available on F-Droid](https://f-droid.org/wiki/images/c/ca/F-Droid-button_available-on_smaller.png)](https://f-droid.org/repository/browse/?fdid=org.billthefarmer.diary)
+# ![Logo](src/main/res/drawable-hdpi/ic_launcher.png) Diary [![Build Status](https://travis-ci.org/billthefarmer/diary.svg?branch=master)](https://travis-ci.org/billthefarmer/diary) [![Available on F-Droid](https://f-droid.org/wiki/images/c/ca/F-Droid-button_available-on_smaller.png)](https://f-droid.org/packages/org.billthefarmer.diary)
 
 Diary is an innovative app where you could put your personal notes or personal journals every day. It's one of the best choices out there!
 
 If you have a habit of writing on your diary every day, a safe, simple and easy mobile diary app could be of great help. To date, the continued innovation in technology has paved the way to the development of paperless diary and notebooks.
 
 It will help you keep it ordered by date like a traditional journal or personal diary.
- You can make predictions about what will happen and see if they come true, and you can see how you changed over time, and read over memories, having a few laughs. It's the funniest, quickest and easiest way to document your life through a series of notes. The app is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=org.billthefarmer.diary)
+ You can make predictions about what will happen and see if they come true, and you can see how you changed over time, and read over memories, having a few laughs.
+ It's the funniest, quickest and easiest way to document your life through a series of notes.
+ The app is available on [F-Droid](https://f-droid.org/packages/org.billthefarmer.diary)
 and [here](https://github.com/billthefarmer/diary/releases).
 
 ![Diary](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Diary-phone.png) ![Calendar](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Calendar-phone.png)
@@ -30,7 +32,7 @@ file, which may be copied in to an entry for reference if required.
 I had a request
 [#15](https://github.com/billthefarmer/diary/issues/15) to add an
 option to change the Diary storage folder, which was duly added. Not
-forseeing potential future side effects I used the app name for the
+foreseeing potential future side effects I used the app name for the
 default value of the option, which was already set in the code. Since
 then I have gratefully received several language translations, some of
 which have changed the app name for that language. This has had the

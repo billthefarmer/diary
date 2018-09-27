@@ -26,19 +26,19 @@ Diary doesn't require any registration or sign up process before users can make 
 Privacy with us is very simple. Nobody can read your notes, except yourself. All entries are private by default which means they are not visible or can not be read by the developer or anyone else. No information about you nor your device is been stored by Diary.
 
 
-**Are there other OS version of Diary?**
+**Are there other OS versions of Diary?**
 
 For now, we only have an Android app available. We are currently working on making the Android experiences as solid as possible. Only then will we consider other platforms, but currently we have nothing to announce.
 
 
 **Can I add images to my diary?**
 
-Yes, images can be added to your diary by importing image with the **Add Media** feature or button
+Yes, images can be added to your diary by importing images with the **Add Media** feature or button
 
 
 **Can other media like audio and video be added to my diary?**
 
-Yes, audio and video can also be added to your note my importing them through the **Add Media** feature. 
+Yes, audio and video can also be added to your notes by importing them through the **Add Media** feature. 
 
 
 **How do I change my diary theme?**
