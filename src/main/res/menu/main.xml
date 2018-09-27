@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 
 Diary - Personal diary for Android
 Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
@@ -19,66 +18,65 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
 
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
-  <item
-      android:id="@+id/findAll"
-      android:showAsAction="ifRoom"
-      android:title="@string/findAll"
-      android:visible="false"
-      android:icon="@drawable/ic_action_search" />
-  <item
-      android:id="@+id/prevEntry"
-      android:showAsAction="ifRoom"
-      android:title="@string/prevEntry"
-      android:icon="@drawable/ic_action_previous" />
-  <item
-      android:id="@+id/nextEntry"
-      android:showAsAction="ifRoom"
-      android:title="@string/nextEntry"
-      android:icon="@drawable/ic_action_next" />
-  <item
-      android:id="@+id/today"
-      android:showAsAction="ifRoom"
-      android:title="@string/today"
-      android:icon="@drawable/ic_action_today" />
-  <item
-      android:id="@+id/goToDate"
-      android:showAsAction="ifRoom"
-      android:title="@string/goToDate"
-      android:icon="@drawable/ic_action_go_to_date" />
-  <item
-      android:id="@+id/index"
-      android:visible="false"
-      android:showAsAction="ifRoom"
-      android:title="@string/index"
-      android:icon="@drawable/ic_action_today" />
-  <item
-      android:id="@+id/search"
-      android:showAsAction="ifRoom|collapseActionView"
-      android:title="@string/search"
-      android:actionViewClass="android.widget.SearchView"
-      android:icon="@drawable/ic_action_search" />
-  <item
-      android:id="@+id/addMedia"
-      android:showAsAction="ifRoom"
-      android:title="@string/addMedia"
-      android:icon="@drawable/ic_action_picture" />
-  <item
-      android:id="@+id/editStyles"
-      android:showAsAction="ifRoom"
-      android:title="@string/editStyles"
-      android:icon="@drawable/ic_action_save" />
-  <item
-      android:id="@+id/editScript"
-      android:showAsAction="ifRoom"
-      android:title="@string/editScript"
-      android:icon="@drawable/ic_action_save" />
-  <item
-      android:id="@+id/settings"
-      android:showAsAction="ifRoom"
-      android:title="@string/settings"
-      android:icon="@drawable/ic_action_settings" />
+    <item
+        android:id="@+id/findAll"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom"
+        android:title="@string/findAll"
+        android:visible="false" />
+    <item
+        android:id="@+id/prevEntry"
+        android:icon="@drawable/ic_action_previous"
+        android:showAsAction="ifRoom"
+        android:title="@string/prevEntry" />
+    <item
+        android:id="@+id/nextEntry"
+        android:icon="@drawable/ic_action_next"
+        android:showAsAction="ifRoom"
+        android:title="@string/nextEntry" />
+    <item
+        android:id="@+id/today"
+        android:icon="@drawable/ic_action_today"
+        android:showAsAction="ifRoom"
+        android:title="@string/today" />
+    <item
+        android:id="@+id/goToDate"
+        android:icon="@drawable/ic_action_go_to_date"
+        android:showAsAction="ifRoom"
+        android:title="@string/goToDate" />
+    <item
+        android:id="@+id/index"
+        android:icon="@drawable/ic_action_today"
+        android:showAsAction="ifRoom"
+        android:title="@string/index"
+        android:visible="false" />
+    <item
+        android:id="@+id/search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/search" />
+    <item
+        android:id="@+id/addMedia"
+        android:icon="@drawable/ic_action_picture"
+        android:showAsAction="ifRoom"
+        android:title="@string/addMedia" />
+    <item
+        android:id="@+id/editStyles"
+        android:icon="@drawable/ic_action_save"
+        android:showAsAction="ifRoom"
+        android:title="@string/editStyles" />
+    <item
+        android:id="@+id/editScript"
+        android:icon="@drawable/ic_action_save"
+        android:showAsAction="ifRoom"
+        android:title="@string/editScript" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="ifRoom"
+        android:title="@string/settings" />
 </menu>

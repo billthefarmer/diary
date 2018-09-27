@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 
     Diary - Personal diary for Android
     Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
@@ -20,60 +19,54 @@
   -->
 
 <resources>
-  <string name="appName">Tagebuch</string>
-  <string name="today">Heute</string>
-  <string name="prevEntry">Vorheriger</string>
-  <string name="nextEntry">Nächster</string>
-  <string name="goToDate">Gehe zu Datum…</string>
-  <string name="search">Suche…</string>
-  <string name="findAll">Finde alle…</string>
-  <string name="addMedia">Medien hinzufügen…</string>
-  <string name="editStyles">Stile bearbeiten…</string>
-  <string name="editScript">Skript bearbeiten…</string>
-  <string name="settings">Einstellungen</string>
-  <string name="calendar">Kalender</string>
-  <string name="pref_calendar">Verwende app-eigenen Kalender</string>
-  <string name="pref_calendar_summ">
+    <string name="appName">Tagebuch</string>
+    <string name="today">Heute</string>
+    <string name="prevEntry">Vorheriger</string>
+    <string name="nextEntry">Nächster</string>
+    <string name="goToDate">Gehe zu Datum…</string>
+    <string name="search">Suche…</string>
+    <string name="findAll">Finde alle…</string>
+    <string name="addMedia">Medien hinzufügen…</string>
+    <string name="editStyles">Stile bearbeiten…</string>
+    <string name="editScript">Skript bearbeiten…</string>
+    <string name="settings">Einstellungen</string>
+    <string name="calendar">Kalender</string>
+    <string name="pref_calendar">Verwende app-eigenen Kalender</string>
+    <string name="pref_calendar_summ">
     Nutze den app-eigenen Kalender statt der nativen Datumsauswahl
   </string>
-  <string name="markdown">Markdown</string>
-  <string name="pref_markdown">Nutze Markdown</string>
-  <string name="pref_markdown_summ">
+    <string name="markdown">Markdown</string>
+    <string name="pref_markdown">Nutze Markdown</string>
+    <string name="pref_markdown_summ">
     Nutze Markdown zur Textformatierung
   </string>
-  <string name="media">Medien</string>
-  <string name="pref_copy_media">Bilder kopieren</string>
-  <string name="pref_copy_media_summ">
+    <string name="media">Medien</string>
+    <string name="pref_copy_media">Bilder kopieren</string>
+    <string name="pref_copy_media_summ">
     Kopieren von eingefügten Bildern in den aktuellen Ordner
   </string>
-  <string name="folder">Ordner</string>
-  <string name="index">Index</string>
-  <string name="pref_use_index">Benutze Index</string>
-  <string name="pref_use_index_summ">
+    <string name="folder">Ordner</string>
+    <string name="index">Index</string>
+    <string name="pref_use_index">Benutze Index</string>
+    <string name="pref_use_index_summ">
     Verwenden Sie die Indexseite für das Journal
   </string>
-  <string name="pref_index_page">Indexseite</string>
-  <string name="theme">Thema</string>
-  <string name="pref_dark_theme">Dunkel</string>
-  <string name="pref_dark_theme_summ">
+    <string name="pref_index_page">Indexseite</string>
+    <string name="theme">Thema</string>
+    <string name="pref_dark_theme">Dunkel</string>
+    <string name="pref_dark_theme_summ">
     Verwenden Sie ein dunkles Design zum Bearbeiten
   </string>
-  <string name="about">Über</string>
-  <string name="pref_about_summ">Tagebuchversion %s</string>
-  <string name="built">Gebaut %s</string>
-  <string name="licence">Lizenz <a
-  href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+    <string name="about">Über</string>
+    <string name="pref_about_summ">Tagebuchversion %s</string>
+    <string name="built">Gebaut %s</string>
+    <string name="licence">Lizenz <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
-  <string name="copyright">Copyright \u00A9 2012 <a
-  href="mailto:hola@josep-portella.com">Josep Portella
-  Florit</a>\nCopyright \u00A9 2017 <a
-  href="http://billthefarmer.github.io">Bill Farmer</a>\n App-eigener
-  Kalender von <a
-  href="https://github.com/npanigrahy/Custom-Calendar-View">App-eigene
-  Kalenderansicht</a>\nMarkdown-Ansicht von <a
-  href="https://github.com/falnatsheh/MarkdownView">Markdown-Ansicht</a>\nDeutsche
+    <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
+  Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\n App-eigener
+  Kalender von <a href="https://github.com/npanigrahy/Custom-Calendar-View">App-eigene
+  Kalenderansicht</a>\nMarkdown-Ansicht von <a href="https://github.com/falnatsheh/MarkdownView">Markdown-Ansicht</a>\nDeutsche
   Übersetzung von <a href="https://github.com/jaller94">Christian
-  Paul</a>\nDatei Dienstprogramme von <a
-  href="https://github.com/iPaulPro">Paul Burke</a>
+  Paul</a>\nDatei Dienstprogramme von <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>

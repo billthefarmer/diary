@@ -1,62 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <!--
-      Base application theme, dependent on API level. This theme is
-      replaced by AppBaseTheme from res/values-vXX/styles.xml on newer
-      devices.
-  -->
-  <style name="AppBaseTheme"
-         parent="android:Theme.Holo.Light.DarkActionBar">
     <!--
-        Theme customizations available in newer API levels can go in
-        res/values-vXX/styles.xml, while customizations related to
-        backward-compatibility can go here.
+        Base application theme, dependent on API level. This theme is
+        replaced by AppBaseTheme from res/values-vXX/styles.xml on newer
+        devices.
     -->
-  </style>
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
 
-  <style name="AppDarkBaseTheme" parent="android:Theme.Holo">
-    <!--
-        Theme customizations available in newer API levels can go in
-        res/values-vXX/styles.xml, while customizations related to
-        backward-compatibility can go here.
-    -->
-  </style>
+    <style name="AppDarkBaseTheme" parent="android:Theme.Holo">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
 
-  <!-- Application theme. -->
-  <style name="AppTheme" parent="AppBaseTheme">
-    <!--
-        All customizations that are NOT specific to a particular
-        API-level can go here.
-    -->
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!--
+            All customizations that are NOT specific to a particular
+            API-level can go here.
+        -->
 
-    <item name="pref_calendar">@drawable/ic_pref_calendar</item>
-    <item name="pref_markdown">@drawable/ic_pref_markdown</item>
-    <item name="pref_folder">@drawable/ic_pref_folder</item>
-    <item name="pref_use_index">@drawable/ic_pref_markdown</item>
-    <item name="pref_index_page">@drawable/ic_pref_calendar</item>
-    <item name="pref_copy_media">@drawable/ic_pref_copy_media</item>
-    <item name="pref_dark_theme">@drawable/ic_pref_dark_theme</item>
-    <item name="pref_about">@drawable/ic_pref_about</item>
+        <item name="pref_calendar">@drawable/ic_pref_calendar</item>
+        <item name="pref_markdown">@drawable/ic_pref_markdown</item>
+        <item name="pref_folder">@drawable/ic_pref_folder</item>
+        <item name="pref_use_index">@drawable/ic_pref_markdown</item>
+        <item name="pref_index_page">@drawable/ic_pref_calendar</item>
+        <item name="pref_copy_media">@drawable/ic_pref_copy_media</item>
+        <item name="pref_dark_theme">@drawable/ic_pref_dark_theme</item>
+        <item name="pref_about">@drawable/ic_pref_about</item>
 
-  </style>
+    </style>
 
-  <!-- Application theme. -->
-  <style name="AppDarkTheme" parent="AppDarkBaseTheme">
-    <!--
-        All customizations that are NOT specific to a particular
-        API-level can go here.
-    -->
+    <!-- Application theme. -->
+    <style name="AppDarkTheme" parent="AppDarkBaseTheme">
+        <!--
+            All customizations that are NOT specific to a particular
+            API-level can go here.
+        -->
 
-    <item name="pref_calendar">@drawable/ic_pref_calendar_dark</item>
-    <item name="pref_markdown">@drawable/ic_pref_markdown_dark</item>
-    <item name="pref_folder">@drawable/ic_pref_folder_dark</item>
-    <item name="pref_use_index">@drawable/ic_pref_markdown_dark</item>
-    <item name="pref_index_page">@drawable/ic_pref_calendar_dark</item>
-    <item name="pref_copy_media">@drawable/ic_pref_copy_media_dark</item>
-    <item name="pref_dark_theme">@drawable/ic_pref_dark_theme_dark</item>
-    <item name="pref_about">@drawable/ic_pref_about_dark</item>
+        <item name="pref_calendar">@drawable/ic_pref_calendar_dark</item>
+        <item name="pref_markdown">@drawable/ic_pref_markdown_dark</item>
+        <item name="pref_folder">@drawable/ic_pref_folder_dark</item>
+        <item name="pref_use_index">@drawable/ic_pref_markdown_dark</item>
+        <item name="pref_index_page">@drawable/ic_pref_calendar_dark</item>
+        <item name="pref_copy_media">@drawable/ic_pref_copy_media_dark</item>
+        <item name="pref_dark_theme">@drawable/ic_pref_dark_theme_dark</item>
+        <item name="pref_about">@drawable/ic_pref_about_dark</item>
 
-  </style>
+    </style>
 
 </resources>

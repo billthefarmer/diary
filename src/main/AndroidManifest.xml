@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Diary - Personal diary for Android
     Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
 
@@ -17,79 +16,72 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.billthefarmer.diary"
-    tools:ignore="GoogleAppIndexingWarning"
-    android:versionCode="131"
-    android:versionName="1.31"
-    android:installLocation="auto">
+    android:installLocation="auto"
+    tools:ignore="GoogleAppIndexingWarning">
 
-  <uses-sdk
-      tools:ignore="OldTargetApi"
-      android:minSdkVersion="14"
-      android:targetSdkVersion="22" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-  <uses-permission
-      android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission
-      android:name="android.permission.READ_CALENDAR" />
-  <uses-permission
-      android:name="android.permission.WRITE_CALENDAR" />
-  <uses-permission
-      android:name="android.permission.INTERNET"/>
-
-  <application
-      android:allowBackup="true"
-      android:icon="@drawable/ic_launcher"
-      android:label="@string/appName"
-      android:theme="@style/AppTheme">
-
-    <activity
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/appName"
-        android:name="Diary"
-        android:windowSoftInputMode="stateHidden|adjustResize">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="android.intent.action.SEND" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="text/plain" />
-        <data android:mimeType="audio/*" />
-        <data android:mimeType="video/*" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="android.intent.action.SEND" />
-        <action android:name="android.intent.action.SEND_MULTIPLE"/>
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="image/*" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <data android:scheme="geo"/>
-      </intent-filter>
-    </activity>
+        android:theme="@style/AppTheme">
 
-    <activity
-        android:name="Editor"
-        android:windowSoftInputMode="stateHidden|adjustResize">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <action android:name="android.intent.action.EDIT" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="text/*" />
-      </intent-filter>
-    </activity>
+        <activity
+            android:name="Diary"
+            android:label="@string/appName"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
 
-    <activity
-        android:label="@string/settings"
-        android:name="Settings" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
 
-  </application>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="geo" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="Editor"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter android:scheme="http">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="Settings"
+            android:label="@string/settings" />
+
+    </application>
 
 </manifest>

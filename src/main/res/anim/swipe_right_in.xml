@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 
     Diary - Personal diary for Android
     Copyright (C) 2017	Bill Farmer
@@ -19,14 +18,13 @@
 
   -->
 
-<set
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<set xmlns:android="http://schemas.android.com/apk/res/android"
     android:shareInterpolator="false">
-  <translate
-      android:interpolator="@android:anim/linear_interpolator"
-      android:fillEnabled="true"
-      android:fillBefore="false"
-      android:fromXDelta="-100%p"
-      android:toXDelta="0%p"
-      android:duration="@android:integer/config_shortAnimTime" />
+    <translate
+        android:duration="@android:integer/config_shortAnimTime"
+        android:fillBefore="false"
+        android:fillEnabled="true"
+        android:fromXDelta="-100%p"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:toXDelta="0%p" />
 </set>

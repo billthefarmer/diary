@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Diary - Personal diary for Android
     Copyright (C) 2017	Bill Farmer
     This program is free software: you can redistribute it and/or modify
@@ -14,14 +13,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<selector
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item
-      android:state_pressed="true"
-      android:drawable="@drawable/ic_pressed" />
+    <item android:drawable="@drawable/ic_pressed" android:state_pressed="true" />
 
-  <item
-      android:drawable="@drawable/ic_released" />
+    <item android:drawable="@drawable/ic_released" />
 
 </selector>

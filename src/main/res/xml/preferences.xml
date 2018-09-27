@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 
     Diary - Personal diary for Android
     Copyright (C) 2017	Bill Farmer
@@ -19,113 +18,112 @@
 
   -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
 
-  <PreferenceCategory
-      android:key="pref_custom_category"
-      android:title="@string/calendar">
+    <PreferenceCategory
+        android:key="pref_custom_category"
+        android:title="@string/calendar">
 
-    <CheckBoxPreference
-	android:key="pref_custom"
-	android:icon="?attr/pref_calendar"
-	android:title="@string/pref_calendar"
-	android:summary="@string/pref_calendar_summ"
-	android:persistent="true"
-	android:defaultValue="true" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="?attr/pref_calendar"
+            android:key="pref_custom"
+            android:persistent="true"
+            android:summary="@string/pref_calendar_summ"
+            android:title="@string/pref_calendar" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-      android:key="pref_markdown_category"
-      android:title="@string/markdown">
+    <PreferenceCategory
+        android:key="pref_markdown_category"
+        android:title="@string/markdown">
 
-    <CheckBoxPreference
-	android:key="pref_markdown"
-	android:icon="?attr/pref_markdown"
-	android:title="@string/pref_markdown"
-	android:summary="@string/pref_markdown_summ"
-	android:persistent="true"
-	android:defaultValue="true" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="?attr/pref_markdown"
+            android:key="pref_markdown"
+            android:persistent="true"
+            android:summary="@string/pref_markdown_summ"
+            android:title="@string/pref_markdown" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-      android:key="pref_folder_category"
-      android:title="@string/folder">
+    <PreferenceCategory
+        android:key="pref_folder_category"
+        android:title="@string/folder">
 
-    <EditTextPreference
-        android:key="pref_folder"
-	android:icon="?attr/pref_folder"
-	android:title="@string/folder"
-	android:persistent="true"
-	android:defaultValue="Diary" />
+        <EditTextPreference
+            android:defaultValue="Diary"
+            android:icon="?attr/pref_folder"
+            android:key="pref_folder"
+            android:persistent="true"
+            android:title="@string/folder" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-      android:key="pref_index_category"
-      android:title="@string/index">
+    <PreferenceCategory
+        android:key="pref_index_category"
+        android:title="@string/index">
 
-    <CheckBoxPreference
-	android:key="pref_use_index"
-	android:icon="?attr/pref_use_index"
-	android:title="@string/pref_use_index"
-	android:summary="@string/pref_use_index_summ"
-	android:persistent="true"
-	android:defaultValue="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="?attr/pref_use_index"
+            android:key="pref_use_index"
+            android:persistent="true"
+            android:summary="@string/pref_use_index_summ"
+            android:title="@string/pref_use_index" />
 
-    <org.billthefarmer.diary.DatePickerPreference
-        android:key="pref_index_page"
-        android:dependency="pref_use_index"
-	android:icon="?attr/pref_index_page"
-	android:dialogIcon="?attr/pref_index_page"
-	android:title="@string/pref_index_page" />
+        <org.billthefarmer.diary.DatePickerPreference
+            android:dependency="pref_use_index"
+            android:dialogIcon="?attr/pref_index_page"
+            android:icon="?attr/pref_index_page"
+            android:key="pref_index_page"
+            android:title="@string/pref_index_page" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-      android:key="pref_media_category"
-      android:title="@string/media">
+    <PreferenceCategory
+        android:key="pref_media_category"
+        android:title="@string/media">
 
-    <CheckBoxPreference
-	android:key="pref_copy_media"
-	android:icon="?attr/pref_copy_media"
-	android:title="@string/pref_copy_media"
-	android:summary="@string/pref_copy_media_summ"
-	android:persistent="true"
-	android:defaultValue="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="?attr/pref_copy_media"
+            android:key="pref_copy_media"
+            android:persistent="true"
+            android:summary="@string/pref_copy_media_summ"
+            android:title="@string/pref_copy_media" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-      android:key="pref_theme_category"
-      android:title="@string/theme">
+    <PreferenceCategory
+        android:key="pref_theme_category"
+        android:title="@string/theme">
 
-    <CheckBoxPreference
-	android:key="pref_dark_theme"
-	android:icon="?attr/pref_dark_theme"
-	android:title="@string/pref_dark_theme"
-	android:summary="@string/pref_dark_theme_summ"
-	android:persistent="true"
-	android:defaultValue="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="?attr/pref_dark_theme"
+            android:key="pref_dark_theme"
+            android:persistent="true"
+            android:summary="@string/pref_dark_theme_summ"
+            android:title="@string/pref_dark_theme" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-      android:key="pref_about_category"
-      android:title="@string/about">
+    <PreferenceCategory
+        android:key="pref_about_category"
+        android:title="@string/about">
 
-    <org.billthefarmer.diary.AboutPreference
-	android:key="pref_about"
-	android:icon="?attr/pref_about"
-	android:dialogIcon="?attr/pref_about"
-	android:negativeButtonText=""
-	android:title="@string/about"
-	android:summary="@string/pref_about_summ"
-	android:dialogLayout="@layout/about" />
+        <org.billthefarmer.diary.AboutPreference
+            android:dialogIcon="?attr/pref_about"
+            android:dialogLayout="@layout/about"
+            android:icon="?attr/pref_about"
+            android:key="pref_about"
+            android:negativeButtonText=""
+            android:summary="@string/pref_about_summ"
+            android:title="@string/about" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
 </PreferenceScreen>
