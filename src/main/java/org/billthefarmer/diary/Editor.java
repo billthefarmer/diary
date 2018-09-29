@@ -39,7 +39,8 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Editor extends Activity {
+public class Editor extends Activity
+{
     public final static String TAG = "Editor";
     public final static String DIRTY = "dirty";
     public final static String CONTENT = "content";
@@ -54,15 +55,16 @@ public class Editor extends Activity {
 
     // onCreate
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         // Get preferences
         SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
+            PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean darkTheme =
-                preferences.getBoolean(Diary.PREF_DARK_THEME, false);
+            preferences.getBoolean(Diary.PREF_DARK_THEME, false);
 
         if (darkTheme)
             setTheme(R.style.AppDarkTheme);
@@ -76,7 +78,8 @@ public class Editor extends Activity {
         Intent intent = getIntent();
         Uri uri = intent.getData();
 
-        if (uri != null) {
+        if (uri != null)
+        {
             if (uri.getScheme().equalsIgnoreCase(CONTENT))
                 uri = resolveContent(uri);
 
@@ -86,7 +89,8 @@ public class Editor extends Activity {
             if (!uri.getScheme().equalsIgnoreCase(CONTENT))
                 file = new File(uri.getPath());
 
-            if (savedInstanceState == null) {
+            if (savedInstanceState == null)
+            {
                 String text = read(uri);
                 textView.setText(text);
             }
@@ -96,37 +100,43 @@ public class Editor extends Activity {
     }
 
     // setListeners
-    private void setListeners() {
+    private void setListeners()
+    {
 
         if (textView != null)
-            textView.addTextChangedListener(new TextWatcher() {
-                // afterTextChanged
-                @Override
-                public void afterTextChanged(Editable s) {
-                    dirty = true;
-                    invalidateOptionsMenu();
-                }
+            textView.addTextChangedListener(new TextWatcher()
+        {
+            // afterTextChanged
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                dirty = true;
+                invalidateOptionsMenu();
+            }
 
-                // beforeTextChanged
-                @Override
-                public void beforeTextChanged(CharSequence s,
-                                              int start,
-                                              int count,
-                                              int after) {
-                }
-
-                // onTextChanged
-                @Override
-                public void onTextChanged(CharSequence s,
+            // beforeTextChanged
+            @Override
+            public void beforeTextChanged(CharSequence s,
                                           int start,
-                                          int before,
-                                          int count) {
-                }
-            });
+                                          int count,
+                                          int after)
+            {
+            }
+
+            // onTextChanged
+            @Override
+            public void onTextChanged(CharSequence s,
+                                      int start,
+                                      int before,
+                                      int count)
+            {
+            }
+        });
 
         ImageButton accept = findViewById(R.id.accept);
         // On click
-        accept.setOnClickListener(v -> {
+        accept.setOnClickListener(v ->
+        {
             String text = textView.getText().toString();
             if (dirty)
                 write(text, file);
@@ -136,7 +146,8 @@ public class Editor extends Activity {
 
     // onRestoreInstanceState
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(Bundle savedInstanceState)
+    {
         super.onRestoreInstanceState(savedInstanceState);
 
         dirty = savedInstanceState.getBoolean(DIRTY);
@@ -144,20 +155,23 @@ public class Editor extends Activity {
 
     // onSaveInstanceState
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putBoolean(DIRTY, dirty);
     }
 
     // onOptionsItemSelected
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case android.R.id.home:
+            onBackPressed();
+            break;
+        default:
+            return super.onOptionsItemSelected(item);
         }
 
         return true;
@@ -165,15 +179,18 @@ public class Editor extends Activity {
 
     // onBackPressed
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         finish();
     }
 
     // resolveContent
-    private Uri resolveContent(Uri uri) {
+    private Uri resolveContent(Uri uri)
+    {
         String path = FileUtils.getPath(this, uri);
 
-        if (path != null) {
+        if (path != null)
+        {
             File file = new File(path);
             if (file.canRead())
                 uri = Uri.fromFile(file);
@@ -183,36 +200,46 @@ public class Editor extends Activity {
     }
 
     // read
-    private String read(Uri uri) {
+    private String read(Uri uri)
+    {
         StringBuilder stringBuilder = new StringBuilder();
-        try {
+        try
+        {
             InputStream inputStream =
-                    getContentResolver().openInputStream(uri);
+                getContentResolver().openInputStream(uri);
             BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(inputStream));
+                new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 stringBuilder.append(line);
                 stringBuilder.append(System.getProperty("line.separator"));
             }
 
             inputStream.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
         }
 
         return stringBuilder.toString();
     }
 
     // write
-    private void write(String text, File file) {
-        if (file != null) {
+    private void write(String text, File file)
+    {
+        if (file != null)
+        {
             file.getParentFile().mkdirs();
-            try {
+            try
+            {
                 FileWriter fileWriter = new FileWriter(file);
                 fileWriter.write(text);
                 fileWriter.close();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
             }
         }
     }

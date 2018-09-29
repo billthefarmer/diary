@@ -18,49 +18,52 @@
 
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/editor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded">
 
-    <ScrollView
-        android:id="@+id/vscroll"
+  <ScrollView
+      android:id="@+id/vscroll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fillViewport="true">
+
+    <HorizontalScrollView
+        android:id="@+id/hscroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <HorizontalScrollView
-            android:id="@+id/hscroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true">
-
-            <EditText
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="top"
-                android:inputType="text|textMultiLine"
-                android:typeface="monospace" />
-
-        </HorizontalScrollView>
-
-    </ScrollView>
-
-    <ImageButton
-        android:id="@+id/accept"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/ic_button_background"
-        android:elevation="6dp"
-        android:src="@drawable/ic_action_accept"
-        android:visibility="visible"
-        tools:ignore="UnusedAttribute" />
+        android:fillViewport="true"
+        tools:ignore="LabelFor">
+
+      <EditText
+          android:id="@+id/text"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:gravity="top"
+          android:inputType="text|textMultiLine"
+          android:typeface="monospace"
+          tools:ignore="Autofill" />
+
+    </HorizontalScrollView>
+
+  </ScrollView>
+
+  <ImageButton
+      android:id="@+id/accept"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:layout_marginRight="28dp"
+      android:layout_marginBottom="28dp"
+      android:background="@drawable/ic_button_background"
+      android:elevation="6dp"
+      android:src="@drawable/ic_action_accept"
+      android:visibility="visible"
+      tools:ignore="UnusedAttribute" />
 
 </RelativeLayout>

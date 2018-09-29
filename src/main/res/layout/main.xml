@@ -18,60 +18,63 @@
 
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded">
 
-    <ScrollView
-        android:id="@+id/scroll"
+  <ScrollView
+      android:id="@+id/scroll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fillViewport="true"
+      tools:ignore="LabelFor">
+
+    <EditText
+        android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <EditText
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top"
-            android:inputType="textCapSentences|textMultiLine" />
-
-    </ScrollView>
-
-    <org.billthefarmer.markdown.MarkdownView
-        android:id="@+id/markdown"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <ImageButton
-        android:id="@+id/edit"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/ic_button_background"
-        android:elevation="6dp"
-        android:src="@drawable/ic_action_edit"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:gravity="top"
+        android:inputType="textCapSentences|textMultiLine"
+        tools:ignore="Autofill" />
 
-    <ImageButton
-        android:id="@+id/accept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/ic_button_background"
-        android:elevation="6dp"
-        android:src="@drawable/ic_action_accept"
-        android:visibility="visible"
-        tools:ignore="UnusedAttribute" />
+  </ScrollView>
+
+  <org.billthefarmer.markdown.MarkdownView
+      android:id="@+id/markdown"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone" />
+
+  <ImageButton
+      android:id="@+id/edit"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:layout_marginRight="28dp"
+      android:layout_marginBottom="28dp"
+      android:background="@drawable/ic_button_background"
+      android:elevation="6dp"
+      android:src="@drawable/ic_action_edit"
+      android:visibility="gone"
+      tools:ignore="UnusedAttribute" />
+
+  <ImageButton
+      android:id="@+id/accept"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:layout_marginRight="28dp"
+      android:layout_marginBottom="28dp"
+      android:background="@drawable/ic_button_background"
+      android:elevation="6dp"
+      android:src="@drawable/ic_action_accept"
+      android:visibility="visible"
+      tools:ignore="UnusedAttribute" />
 
 </RelativeLayout>

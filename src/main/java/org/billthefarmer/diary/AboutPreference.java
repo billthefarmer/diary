@@ -33,22 +33,26 @@ import android.widget.TextView;
 import java.text.DateFormat;
 
 // AboutPreference class
-public class AboutPreference extends DialogPreference {
+public class AboutPreference extends DialogPreference
+{
     // Constructor
-    public AboutPreference(Context context, AttributeSet attrs) {
+    public AboutPreference(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
     }
 
     // On bind dialog view
     @Override
-    protected void onBindDialogView(View view) {
+    protected void onBindDialogView(View view)
+    {
         super.onBindDialogView(view);
 
         // Get version text view
         TextView version = view.findViewById(R.id.about);
 
         // Set version in text view
-        if (version != null) {
+        if (version != null)
+        {
             String v = (String) version.getText();
             String s = String.format(v, BuildConfig.VERSION_NAME);
             version.setText(s);
@@ -58,11 +62,12 @@ public class AboutPreference extends DialogPreference {
         TextView built = view.findViewById(R.id.built);
 
         // Set built date in text view
-        if (built != null) {
+        if (built != null)
+        {
             String d = (String) built.getText();
             DateFormat dateFormat = DateFormat.getDateTimeInstance();
             String s =
-                    String.format(d, dateFormat.format(BuildConfig.BUILT));
+                String.format(d, dateFormat.format(BuildConfig.BUILT));
             built.setText(s);
         }
 

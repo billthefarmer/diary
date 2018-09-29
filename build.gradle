@@ -15,6 +15,10 @@ allprojects {
         google()
         maven { url "https://jitpack.io" }
     }
+
+    tasks.withType(JavaCompile) {
+        options.deprecation = true
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -40,14 +44,10 @@ android {
 
     lintOptions {
         disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
-                'IconDuplicates'
+            'IconDuplicates'
         // abortOnError false
     }
 }
-
-// tasks.withType(JavaCompile) {
-//     options.compilerArgs << "-Xlint:all"
-// }
 
 dependencies {
     implementation 'com.github.billthefarmer:CustomCalendarView:v1.04'
