@@ -19,53 +19,53 @@
   -->
 
 <resources>
-    <string name="appName">Diari</string>
-    <string name="today">Avui</string>
-    <string name="prevEntry">Anterior</string>
-    <string name="nextEntry">Següent</string>
-    <string name="goToDate">Ves a data…</string>
-    <string name="search">Cerca…</string>
-    <string name="findAll">Trobeu-ho tot…</string>
-    <string name="addMedia">Afegeix mitjans…</string>
-    <string name="editStyles">Edita estils…</string>
-    <string name="editScript">Edita script…</string>
-    <string name="settings">Ajustos</string>
-    <string name="calendar">Calendari</string>
-    <string name="pref_calendar">Utilitza calendari personalitzat</string>
-    <string name="pref_calendar_summ">
+  <string name="appName">Diari</string>
+  <string name="today">Avui</string>
+  <string name="prevEntry">Anterior</string>
+  <string name="nextEntry">Següent</string>
+  <string name="goToDate">Ves a data…</string>
+  <string name="search">Cerca…</string>
+  <string name="findAll">Trobeu-ho tot…</string>
+  <string name="addMedia">Afegeix mitjans…</string>
+  <string name="editStyles">Edita estils…</string>
+  <string name="editScript">Edita script…</string>
+  <string name="settings">Ajustos</string>
+  <string name="calendar">Calendari</string>
+  <string name="pref_calendar">Utilitza calendari personalitzat</string>
+  <string name="pref_calendar_summ">
     Utilitza calendari personalitzat en lloc d\'un selector de data
   </string>
-    <string name="markdown">Markdown</string>
-    <string name="pref_markdown">Ús de markdown</string>
-    <string name="pref_markdown_summ">
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Ús de markdown</string>
+  <string name="pref_markdown_summ">
     Utilitzeu markdown a les entrades de format
   </string>
-    <string name="media">Mitjans</string>
-    <string name="pref_copy_media">Copiar imatges</string>
-    <string name="pref_copy_media_summ">
+  <string name="media">Mitjans</string>
+  <string name="pref_copy_media">Copiar imatges</string>
+  <string name="pref_copy_media_summ">
     Copieu les imatges inserides a la carpeta actual
   </string>
-    <string name="folder">Carpeta</string>
-    <string name="index">Índex</string>
-    <string name="pref_use_index">Feu servir l\'índex</string>
-    <string name="pref_use_index_summ">
+  <string name="folder">Carpeta</string>
+  <string name="index">Índex</string>
+  <string name="pref_use_index">Feu servir l\'índex</string>
+  <string name="pref_use_index_summ">
     Utilitzeu la pàgina d\'índex per al diari
   </string>
-    <string name="pref_index_page">Pàgina d\'índex</string>
-    <string name="theme">Tema</string>
-    <string name="pref_dark_theme">Fosc</string>
-    <string name="pref_dark_theme_summ">
+  <string name="pref_index_page">Pàgina d\'índex</string>
+  <string name="theme">Tema</string>
+  <string name="pref_dark_theme">Fosc</string>
+  <string name="pref_dark_theme_summ">
     Utilitza el tema fosc per editar
   </string>
-    <string name="about">Sobre</string>
-    <string name="pref_about_summ">Diary version %s</string>
-    <string name="built">Construït %s</string>
-    <string name="licence">Llicència <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  <string name="about">Sobre</string>
+  <string name="pref_about_summ">Diary version %s</string>
+  <string name="built">Construït %s</string>
+  <string name="licence">Llicència <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
-    <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
+  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
   calendar per <a href="https://github.com/npanigrahy/Custom-Calendar-View"> Custom
   Calendar View</a>\nMarkdown view per <a href="https://github.com/falnatsheh/MarkdownView">Markdown
   View</a>\nUtilitats de fitxers de <a href="https://github.com/iPaulPro">Paul Burke</a>
-</string>
+  </string>
 </resources>

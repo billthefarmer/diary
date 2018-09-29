@@ -19,12 +19,12 @@
   -->
 
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shareInterpolator="false">
-    <translate
-        android:duration="@android:integer/config_shortAnimTime"
-        android:fillBefore="false"
-        android:fillEnabled="true"
-        android:fromXDelta="-100%p"
-        android:interpolator="@android:anim/linear_interpolator"
-        android:toXDelta="0%p" />
+     android:shareInterpolator="false">
+  <translate
+      android:duration="@android:integer/config_shortAnimTime"
+      android:fillBefore="false"
+      android:fillEnabled="true"
+      android:fromXDelta="-100%p"
+      android:interpolator="@android:anim/linear_interpolator"
+      android:toXDelta="0%p" />
 </set>

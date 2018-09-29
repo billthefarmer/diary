@@ -13,13 +13,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <size
-        android:width="56dp"
-        android:height="56dp" />
+  <size
+      android:width="56dp"
+      android:height="56dp" />
 
-    <solid android:color="#df00ddff" />
+  <solid android:color="#df00ddff" />
 
 </shape>

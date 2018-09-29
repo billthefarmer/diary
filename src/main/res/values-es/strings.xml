@@ -19,50 +19,50 @@
   -->
 
 <resources>
-    <string name="appName">Diario</string>
-    <string name="today">Hoy</string>
-    <string name="prevEntry">Anterior</string>
-    <string name="nextEntry">Siguiente</string>
-    <string name="goToDate">Ir a fecha…</string>
-    <string name="search">Buscar…</string>
-    <string name="findAll">Encuentra todos…</string>
-    <string name="addMedia">Agregar medios…</string>
-    <string name="editStyles">Editar estilos…</string>
-    <string name="editScript">Editar script…</string>
-    <string name="settings">Ajustes</string>
-    <string name="calendar">Calendario</string>
-    <string name="pref_calendar">Usar calendario personalizado</string>
-    <string name="pref_calendar_summ">
+  <string name="appName">Diario</string>
+  <string name="today">Hoy</string>
+  <string name="prevEntry">Anterior</string>
+  <string name="nextEntry">Siguiente</string>
+  <string name="goToDate">Ir a fecha…</string>
+  <string name="search">Buscar…</string>
+  <string name="findAll">Encuentra todos…</string>
+  <string name="addMedia">Agregar medios…</string>
+  <string name="editStyles">Editar estilos…</string>
+  <string name="editScript">Editar script…</string>
+  <string name="settings">Ajustes</string>
+  <string name="calendar">Calendario</string>
+  <string name="pref_calendar">Usar calendario personalizado</string>
+  <string name="pref_calendar_summ">
     Usar un calendario personalizado en lugar de un selector de fechas
   </string>
-    <string name="markdown">Markdown</string>
-    <string name="pref_markdown">Usar markdown</string>
-    <string name="pref_markdown_summ">
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Usar markdown</string>
+  <string name="pref_markdown_summ">
     Utilizar markdown para formatear entradas
   </string>
-    <string name="media">Medios</string>
-    <string name="pref_copy_media">Copiar imágenes</string>
-    <string name="pref_copy_media_summ">
+  <string name="media">Medios</string>
+  <string name="pref_copy_media">Copiar imágenes</string>
+  <string name="pref_copy_media_summ">
     Copie las imágenes insertadas en la carpeta actual
   </string>
-    <string name="folder">Carpeta</string>
-    <string name="index">Índice</string>
-    <string name="pref_use_index">Índice de uso</string>
-    <string name="pref_use_index_summ">
+  <string name="folder">Carpeta</string>
+  <string name="index">Índice</string>
+  <string name="pref_use_index">Índice de uso</string>
+  <string name="pref_use_index_summ">
     Utilice la página de índice para el diario
   </string>
-    <string name="pref_index_page">Página de índice</string>
-    <string name="theme">Tema</string>
-    <string name="pref_dark_theme">Oscuro</string>
-    <string name="pref_dark_theme_summ">
+  <string name="pref_index_page">Página de índice</string>
+  <string name="theme">Tema</string>
+  <string name="pref_dark_theme">Oscuro</string>
+  <string name="pref_dark_theme_summ">
     Usa el tema oscuro para editar
   </string>
-    <string name="about">Acerca de</string>
-    <string name="pref_about_summ">Diary version %s</string>
-    <string name="built">Construido %s</string>
-    <string name="licence">Licencia <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  <string name="about">Acerca de</string>
+  <string name="pref_about_summ">Diary version %s</string>
+  <string name="built">Construido %s</string>
+  <string name="licence">Licencia <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
-    <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
+  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
   calendar por <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
   Calendar View</a>\nMarkdown view por <a href="https://github.com/falnatsheh/MarkdownView">Markdown

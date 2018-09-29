@@ -19,50 +19,50 @@
   -->
 
 <resources>
-    <string name="appName">Diary</string>
-    <string name="today">今日</string>
-    <string name="prevEntry">前へ</string>
-    <string name="nextEntry">次へ</string>
-    <string name="goToDate">日付に…</string>
-    <string name="addMedia">メディアを追加…</string>
-    <string name="search">サーチ…</string>
-    <string name="findAll">すべてを検索…</string>
-    <string name="editStyles">スタイルを編集する…</string>
-    <string name="editScript">編集スクリプト…</string>
-    <string name="settings">設定</string>
-    <string name="calendar">カレンダー</string>
-    <string name="pref_calendar">カスタムカレンダーを使用する</string>
-    <string name="pref_calendar_summ">
+  <string name="appName">Diary</string>
+  <string name="today">今日</string>
+  <string name="prevEntry">前へ</string>
+  <string name="nextEntry">次へ</string>
+  <string name="goToDate">日付に…</string>
+  <string name="addMedia">メディアを追加…</string>
+  <string name="search">サーチ…</string>
+  <string name="findAll">すべてを検索…</string>
+  <string name="editStyles">スタイルを編集する…</string>
+  <string name="editScript">編集スクリプト…</string>
+  <string name="settings">設定</string>
+  <string name="calendar">カレンダー</string>
+  <string name="pref_calendar">カスタムカレンダーを使用する</string>
+  <string name="pref_calendar_summ">
     日付ピッカーではなくカスタムのカレンダーを使用します
   </string>
-    <string name="markdown">値下げ</string>
-    <string name="pref_markdown">使用記法</string>
-    <string name="pref_markdown_summ">
+  <string name="markdown">値下げ</string>
+  <string name="pref_markdown">使用記法</string>
+  <string name="pref_markdown_summ">
     書式項目に使用記法
   </string>
-    <string name="media">メディア</string>
-    <string name="pref_copy_media">画像をコピーする</string>
-    <string name="pref_copy_media_summ">
+  <string name="media">メディア</string>
+  <string name="pref_copy_media">画像をコピーする</string>
+  <string name="pref_copy_media_summ">
     挿入されたイメージを現在のフォルダにコピーする
   </string>
-    <string name="folder">フォルダ</string>
-    <string name="index">インデックス</string>
-    <string name="pref_use_index">インデックスを使用する</string>
-    <string name="pref_use_index_summ">
+  <string name="folder">フォルダ</string>
+  <string name="index">インデックス</string>
+  <string name="pref_use_index">インデックスを使用する</string>
+  <string name="pref_use_index_summ">
     ジャーナルにインデックスページを使用する
   </string>
-    <string name="pref_index_page">インデックスページ</string>
-    <string name="theme">テーマ</string>
-    <string name="pref_dark_theme">ダーク</string>
-    <string name="pref_dark_theme_summ">
+  <string name="pref_index_page">インデックスページ</string>
+  <string name="theme">テーマ</string>
+  <string name="pref_dark_theme">ダーク</string>
+  <string name="pref_dark_theme_summ">
     編集に暗いテーマを使用する
   </string>
-    <string name="about">アプリについて</string>
-    <string name="pref_about_summ">Diary バージョン %s</string>
-    <string name="licence">ライセンス <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  <string name="about">アプリについて</string>
+  <string name="pref_about_summ">Diary バージョン %s</string>
+  <string name="licence">ライセンス <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
-    <string name="built">内蔵 %s</string>
-    <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
+  <string name="built">内蔵 %s</string>
+  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
   calendar by <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
   Calendar View</a>\nMarkdown view by <a href="https://github.com/falnatsheh/MarkdownView">Markdown

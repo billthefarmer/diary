@@ -19,50 +19,50 @@
   -->
 
 <resources>
-    <string name="appName">Diary</string>
-    <string name="today">Today</string>
-    <string name="prevEntry">Previous</string>
-    <string name="nextEntry">Next</string>
-    <string name="goToDate">Go to date…</string>
-    <string name="search">Search…</string>
-    <string name="findAll">Find all…</string>
-    <string name="addMedia">Add media…</string>
-    <string name="editStyles">Edit styles…</string>
-    <string name="editScript">Edit script…</string>
-    <string name="settings">Settings</string>
-    <string name="calendar">Calendar</string>
-    <string name="pref_calendar">Use custom calendar</string>
-    <string name="pref_calendar_summ">
+  <string name="appName">Diary</string>
+  <string name="today">Today</string>
+  <string name="prevEntry">Previous</string>
+  <string name="nextEntry">Next</string>
+  <string name="goToDate">Go to date…</string>
+  <string name="search">Search…</string>
+  <string name="findAll">Find all…</string>
+  <string name="addMedia">Add media…</string>
+  <string name="editStyles">Edit styles…</string>
+  <string name="editScript">Edit script…</string>
+  <string name="settings">Settings</string>
+  <string name="calendar">Calendar</string>
+  <string name="pref_calendar">Use custom calendar</string>
+  <string name="pref_calendar_summ">
     Use custom calendar rather than date picker
   </string>
-    <string name="markdown">Markdown</string>
-    <string name="pref_markdown">Use markdown</string>
-    <string name="pref_markdown_summ">
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Use markdown</string>
+  <string name="pref_markdown_summ">
     Use markdown to format entries
   </string>
-    <string name="media">Media</string>
-    <string name="pref_copy_media">Copy images</string>
-    <string name="pref_copy_media_summ">
+  <string name="media">Media</string>
+  <string name="pref_copy_media">Copy images</string>
+  <string name="pref_copy_media_summ">
     Copy inserted images to the current folder
   </string>
-    <string name="folder">Folder</string>
-    <string name="theme">Theme</string>
-    <string name="pref_dark_theme">Dark</string>
-    <string name="pref_dark_theme_summ">
+  <string name="folder">Folder</string>
+  <string name="theme">Theme</string>
+  <string name="pref_dark_theme">Dark</string>
+  <string name="pref_dark_theme_summ">
     Use dark theme for editing
   </string>
-    <string name="index">Index</string>
-    <string name="pref_use_index">Use index</string>
-    <string name="pref_use_index_summ">
+  <string name="index">Index</string>
+  <string name="pref_use_index">Use index</string>
+  <string name="pref_use_index_summ">
     Use index page for journal
   </string>
-    <string name="pref_index_page">Index page</string>
-    <string name="about">About</string>
-    <string name="pref_about_summ">Diary version %s</string>
-    <string name="built">Built %s</string>
-    <string name="licence">Licence <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  <string name="pref_index_page">Index page</string>
+  <string name="about">About</string>
+  <string name="pref_about_summ">Diary version %s</string>
+  <string name="built">Built %s</string>
+  <string name="licence">Licence <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
-    <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
+  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a href="https://billthefarmer.github.io">Bill Farmer</a>\nCustom
   calendar by <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
   Calendar View</a>\nMarkdown view by <a href="https://github.com/falnatsheh/MarkdownView">Markdown

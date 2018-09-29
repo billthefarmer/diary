@@ -19,41 +19,41 @@
   -->
 
 <resources>
-    <string name="appName">Diário</string>
-    <string name="today">Hoje</string>
-    <string name="prevEntry">Anterior</string>
-    <string name="nextEntry">Próximo</string>
-    <string name="goToDate">Ir para a data…</string>
-    <string name="search">Localizar…</string>
-    <string name="findAll">Localizar tudo…</string>
-    <string name="addMedia">Adicionar mídia</string>
-    <string name="editStyles">Editar estilos…</string>
-    <string name="editScript">Editar script…</string>
-    <string name="settings">Configurações</string>
-    <string name="calendar">Calendário</string>
-    <string name="pref_calendar">Usar calendário personalizado</string>
-    <string name="pref_calendar_summ">Utilize o calendário do app ao invés do seletor de data padrão</string>
-    <string name="markdown">Markdown</string>
-    <string name="pref_markdown">Utilizar markdown</string>
-    <string name="pref_markdown_summ">Utilize markdown para formatar o texto</string>
-    <string name="media">Mídia</string>
-    <string name="pref_copy_media">Copiar imagens</string>
-    <string name="pref_copy_media_summ">Copia as imagens inseridas para a pasta atual</string>
-    <string name="folder">Pasta</string>
-    <string name="theme">Tema</string>
-    <string name="pref_dark_theme">Escuro</string>
-    <string name="pref_dark_theme_summ">Utilize o tema escuro para edição</string>
-    <string name="index">Índice</string>
-    <string name="pref_use_index">Use o índice</string>
-    <string name="pref_use_index_summ">
+  <string name="appName">Diário</string>
+  <string name="today">Hoje</string>
+  <string name="prevEntry">Anterior</string>
+  <string name="nextEntry">Próximo</string>
+  <string name="goToDate">Ir para a data…</string>
+  <string name="search">Localizar…</string>
+  <string name="findAll">Localizar tudo…</string>
+  <string name="addMedia">Adicionar mídia</string>
+  <string name="editStyles">Editar estilos…</string>
+  <string name="editScript">Editar script…</string>
+  <string name="settings">Configurações</string>
+  <string name="calendar">Calendário</string>
+  <string name="pref_calendar">Usar calendário personalizado</string>
+  <string name="pref_calendar_summ">Utilize o calendário do app ao invés do seletor de data padrão</string>
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Utilizar markdown</string>
+  <string name="pref_markdown_summ">Utilize markdown para formatar o texto</string>
+  <string name="media">Mídia</string>
+  <string name="pref_copy_media">Copiar imagens</string>
+  <string name="pref_copy_media_summ">Copia as imagens inseridas para a pasta atual</string>
+  <string name="folder">Pasta</string>
+  <string name="theme">Tema</string>
+  <string name="pref_dark_theme">Escuro</string>
+  <string name="pref_dark_theme_summ">Utilize o tema escuro para edição</string>
+  <string name="index">Índice</string>
+  <string name="pref_use_index">Use o índice</string>
+  <string name="pref_use_index_summ">
     Use a página de índice para o diário
   </string>
-    <string name="pref_index_page">Página de índice</string>
-    <string name="about">Sobre</string>
-    <string name="pref_about_summ">Diário versão %s</string>
-    <string name="built">Construído %s</string>
-    <string name="licence">Licença <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
-    <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
+  <string name="pref_index_page">Página de índice</string>
+  <string name="about">Sobre</string>
+  <string name="pref_about_summ">Diário versão %s</string>
+  <string name="built">Construído %s</string>
+  <string name="licence">Licença <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
+  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\nCalendário
   personalizado por <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
   Calendar View</a>\nVisão Markdown por <a href="https://github.com/falnatsheh/MarkdownView">Markdown

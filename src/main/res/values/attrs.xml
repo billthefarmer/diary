@@ -20,15 +20,15 @@
 
 <resources>
 
-    <declare-styleable name="Diary">
-        <attr name="pref_calendar" format="reference" />
-        <attr name="pref_markdown" format="reference" />
-        <attr name="pref_folder" format="reference" />
-        <attr name="pref_use_index" format="reference" />
-        <attr name="pref_index_page" format="reference" />
-        <attr name="pref_copy_media" format="reference" />
-        <attr name="pref_dark_theme" format="reference" />
-        <attr name="pref_about" format="reference" />
-    </declare-styleable>
+  <declare-styleable name="Diary">
+    <attr name="pref_calendar" format="reference" />
+    <attr name="pref_markdown" format="reference" />
+    <attr name="pref_folder" format="reference" />
+    <attr name="pref_use_index" format="reference" />
+    <attr name="pref_index_page" format="reference" />
+    <attr name="pref_copy_media" format="reference" />
+    <attr name="pref_dark_theme" format="reference" />
+    <attr name="pref_about" format="reference" />
+  </declare-styleable>
 
 </resources>
