@@ -356,7 +356,7 @@ public class Diary extends Activity
 
         // Copy help text to today's page if no entries
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
-            textView.setText(readAssetFile());
+            textView.setText(readAssetFile(HELP));
 
         if (markdown && dirty)
             loadMarkdown();
@@ -512,7 +512,7 @@ public class Diary extends Activity
     @Override
     public void onBackPressed()
     {
-        // Calender entry
+        // Calendar entry
         if (entry)
         {
             if (!entryStack.isEmpty())
@@ -532,6 +532,7 @@ public class Diary extends Activity
                 if (!markdownView.canGoBack())
                     changeDate(currEntry);
             }
+
             else
                 super.onBackPressed();
         }
@@ -1633,12 +1634,12 @@ public class Diary extends Activity
     }
 
     // readAssetFile
-    private String readAssetFile()
+    private String readAssetFile(String file)
     {
         try
         {
             // Open file
-            try (InputStream input = getResources().getAssets().open(Diary.HELP))
+            try (InputStream input = getAssets().open(file))
             {
                 BufferedReader bufferedReader =
                     new BufferedReader(new InputStreamReader(input));
@@ -1651,6 +1652,7 @@ public class Diary extends Activity
                     content.append(System.getProperty("line.separator"));
                 }
 
+                dirty = true;
                 return content.toString();
             }
         }
@@ -2065,8 +2067,8 @@ public class Diary extends Activity
                         changeDate(entry);
 
                         // Put the search text back - why it
-                        // disappears I have no idea or why I have
-                        // to do it after a delay
+                        // disappears I have no idea or why I have to
+                        // do it after a delay
                         // run
                         searchView.postDelayed(() -> searchView.setQuery(search, false), FIND_DELAY);
                     }

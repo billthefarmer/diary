@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
@@ -30,7 +30,7 @@ android {
     defaultConfig {
         applicationId "org.billthefarmer.diary"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 22
         versionName "1.32"
         versionCode 132
 
@@ -44,7 +44,7 @@ android {
 
     lintOptions {
         disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
-            'IconDuplicates'
+            'IconDuplicates', 'ExpiringTargetSdkVersion'
         // abortOnError false
     }
 }
