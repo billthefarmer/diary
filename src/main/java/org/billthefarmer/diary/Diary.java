@@ -1307,7 +1307,7 @@ public class Diary extends Activity
 
         // Get the decorators
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
-        decorators.add(new EntryDecorator(getEntries()));
+        decorators.add(new EntryDecorator());
 
         // Get the calendar
         CustomCalendarView calendarView = dialog.getCalendarView();
@@ -2268,12 +2268,9 @@ public class Diary extends Activity
     private class EntryDecorator
         implements DayDecorator
     {
-        private List<Calendar> entries;
-
         // EntryDecorator
-        private EntryDecorator(List<Calendar> entries)
+        private EntryDecorator()
         {
-            this.entries = entries;
         }
 
         // decorate
@@ -2281,10 +2278,11 @@ public class Diary extends Activity
         public void decorate(DayView dayView)
         {
             Calendar cellDate = dayView.getDate();
-            for (Calendar entry : entries)
-                if (cellDate.get(Calendar.DATE) == entry.get(Calendar.DATE) &&
-                        cellDate.get(Calendar.MONTH) == entry.get(Calendar.MONTH) &&
-                        cellDate.get(Calendar.YEAR) == entry.get(Calendar.YEAR))
+            File dayFile = getDay(cellDate.get(Calendar.YEAR),
+                                  cellDate.get(Calendar.MONTH),
+                                  cellDate.get(Calendar.DATE));
+
+            if (dayFile.exists())
                     dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }
