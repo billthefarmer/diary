@@ -421,14 +421,24 @@ public class FileUtils
             // DownloadsProvider
             else if (isDownloadsDocument(uri))
             {
+                // Check for non-numeric id
+                try
+                {
+                    final String id = DocumentsContract.getDocumentId(uri);
+                    final Uri contentUri =
+                        ContentUris
+                        .withAppendedId(Uri.parse("content://downloads/public_downloads"),
+                                        Long.valueOf(id));
 
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri =
-                    ContentUris
-                    .withAppendedId(Uri.parse("content://downloads/public_downloads"),
-                                    Long.valueOf(id));
+                    return getDataColumn(context, contentUri, null, null);
+                }
 
-                return getDataColumn(context, contentUri, null, null);
+
+                // Id not a number
+                catch (Exception e)
+                {
+                    return getDataColumn(context, uri, null, null);
+                }
             }
             // MediaProvider
             else if (isMediaDocument(uri))
@@ -666,8 +676,7 @@ public class FileUtils
 
         Bitmap bm = null;
         final ContentResolver resolver = context.getContentResolver();
-        try (Cursor cursor = resolver.query(uri, null, null,
-                                                null, null))
+        try (Cursor cursor = resolver.query(uri, null, null, null, null))
         {
             if (cursor.moveToFirst())
             {

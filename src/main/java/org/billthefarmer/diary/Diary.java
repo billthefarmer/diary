@@ -196,7 +196,8 @@ public class Diary extends Activity
         if (files == null)
             return new File[0];
         // compare
-        Arrays.sort(files, (file1, file2) -> file2.getName().compareTo(file1.getName()));
+        Arrays.sort(files, (file1, file2) ->
+                    file2.getName().compareTo(file1.getName()));
         return files;
     }
 
@@ -204,21 +205,24 @@ public class Diary extends Activity
     private static File[] listYears(File home)
     {
         // accept
-        return sortFiles(home.listFiles((dir, filename) -> filename.matches("^[0-9]{4}$")));
+        return sortFiles(home.listFiles((dir, filename) ->
+                                        filename.matches("^[0-9]{4}$")));
     }
 
     // listMonths
     private static File[] listMonths(File yearDir)
     {
         // accept
-        return sortFiles(yearDir.listFiles((dir, filename) -> filename.matches("^[0-9]{2}$")));
+        return sortFiles(yearDir.listFiles((dir, filename) ->
+                                           filename.matches("^[0-9]{2}$")));
     }
 
     // listDays
     private static File[] listDays(File monthDir)
     {
         // accept
-        return sortFiles(monthDir.listFiles((dir, filename) -> filename.matches("^[0-9]{2}.txt$")));
+        return sortFiles(monthDir.listFiles((dir, filename) ->
+                                            filename.matches("^[0-9]{2}.txt$")));
     }
 
     // yearValue
