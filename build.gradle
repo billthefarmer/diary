@@ -31,8 +31,8 @@ android {
         applicationId "org.billthefarmer.diary"
         minSdkVersion 14
         targetSdkVersion 22
-        versionName "1.32"
-        versionCode 132
+        versionName "1.33"
+        versionCode 133
 
         buildConfigField "long", "BUILT", System.currentTimeMillis() + "L"
     }
