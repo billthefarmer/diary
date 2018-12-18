@@ -109,6 +109,7 @@ public class Diary extends Activity
     private final static String MONTH = "month";
     private final static String DAY = "day";
 
+    private final static String SAVED = "saved";
     private final static String SHOWN = "shown";
     private final static String ENTRY = "entry";
 
@@ -163,6 +164,8 @@ public class Diary extends Activity
 
     private boolean multi = false;
     private boolean entry = false;
+
+    private long saved = 0;
 
     private float minScale = 1000;
     private boolean canSwipe = true;
@@ -335,6 +338,7 @@ public class Diary extends Activity
 
         shown = savedInstanceState.getBoolean(SHOWN);
         entry = savedInstanceState.getBoolean(ENTRY);
+        saved = savedInstanceState.getLong(SAVED);
     }
 
     // onResume
@@ -354,6 +358,10 @@ public class Diary extends Activity
 
         // Set date
         setDate(currEntry);
+
+        // Reload if modified
+        if (getFile().lastModified() > saved)
+            load();
 
         // Clear cache
         markdownView.clearCache(true);
@@ -383,6 +391,7 @@ public class Diary extends Activity
 
             outState.putBoolean(SHOWN, shown);
             outState.putBoolean(ENTRY, entry);
+            outState.putLong(SAVED, saved);
         }
     }
 
@@ -391,7 +400,10 @@ public class Diary extends Activity
     public void onPause()
     {
         super.onPause();
+
         save();
+        Date date = new Date();
+        saved = date.getTime();
     }
 
     // onCreateOptionsMenu
