@@ -402,8 +402,7 @@ public class Diary extends Activity
         super.onPause();
 
         save();
-        Date date = new Date();
-        saved = date.getTime();
+        saved = getFile().lastModified();
     }
 
     // onCreateOptionsMenu
