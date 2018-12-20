@@ -1,5 +1,7 @@
-# Diary
+# ![Logo](https://github.com/billthefarmer/diary/raw/master/src/main/res/drawable-hdpi/ic_launcher.png) Diary
 ---
+![Diary](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Diary-phone.png) ![Calendar](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Calendar-phone.png)
+
 ### Android personal diary.
 
 * Entries saved in plain text files
