@@ -159,7 +159,7 @@ public class Diary extends Activity
     private boolean copyMedia = false;
     private boolean darkTheme = false;
 
-    private boolean dirty = false;
+    private boolean changed = false;
     private boolean shown = true;
 
     private boolean multi = false;
@@ -370,7 +370,7 @@ public class Diary extends Activity
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
             textView.setText(readAssetFile(HELP));
 
-        if (markdown && dirty)
+        if (markdown && changed)
             loadMarkdown();
 
         setVisibility();
@@ -401,7 +401,9 @@ public class Diary extends Activity
     {
         super.onPause();
 
-        save();
+        if (changed)
+            save();
+
         saved = getFile().lastModified();
     }
 
@@ -634,9 +636,8 @@ public class Diary extends Activity
             @Override
             public void afterTextChanged(Editable s)
             {
-                // Check markdown
-                if (markdown && !shown)
-                    dirty = true;
+                // Text changed
+                changed = true;
             }
 
             // beforeTextChanged
@@ -742,14 +743,14 @@ public class Diary extends Activity
             accept.setOnClickListener(v ->
             {
                 // Check flag
-                if (dirty)
+                if (changed)
                 {
                     // Save text
                     save();
                     // Get text
                     loadMarkdown();
                     // Clear flag
-                    dirty = false;
+                    changed = false;
                     // Set flag
                     entry = true;
                 }
@@ -1667,7 +1668,7 @@ public class Diary extends Activity
                     content.append(System.getProperty("line.separator"));
                 }
 
-                dirty = true;
+                changed = true;
                 return content.toString();
             }
         }
@@ -1686,7 +1687,7 @@ public class Diary extends Activity
         if (markdown)
         {
             loadMarkdown();
-            dirty = false;
+            changed = false;
         }
         textView.setSelection(0);
     }
@@ -1754,7 +1755,9 @@ public class Diary extends Activity
     // changeDate
     private void changeDate(Calendar date)
     {
-        save();
+        if (changed)
+            save();
+
         setDate(date);
         load();
 
