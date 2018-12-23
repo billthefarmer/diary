@@ -35,6 +35,8 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -142,6 +144,9 @@ public class Diary extends Activity
         "![osm](geo:%f,%f)";
     private final static String DATE_PATTERN =
         "\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)";
+    public final static String PATTERN_CHARS =
+        "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
+    public final static String BRACKET_CHARS = "([{<";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -2012,6 +2017,73 @@ public class Diary extends Activity
 
         if (markdown && shown)
             animateSwipeLeft();
+    }
+
+    // onActionModeStarted
+    @Override
+    public void onActionModeStarted(ActionMode mode)
+    {
+        super.onActionModeStarted(mode);
+
+        // Not on markdown view
+        if (!shown)
+        {
+            // Get the start and end of the selection
+            int start = textView.getSelectionStart();
+            int end = textView.getSelectionEnd();
+            // And the text
+            String text = textView.getText().toString();
+
+            // Get a pattern and a matcher for delimiter
+            // characters
+            Pattern pattern =
+                Pattern.compile(PATTERN_CHARS);
+            Matcher matcher =
+                pattern.matcher(text);
+
+            // Find the first match after the end of the selection
+            if (matcher.find(end))
+            {
+                // Update the selection end
+                end = matcher.start();
+
+                // Get the matched char
+                char c = text.charAt(end);
+
+                // Check for opening brackets
+                if (BRACKET_CHARS.indexOf(c) == -1)
+                {
+                    switch (c)
+                    {
+                        // Check for close brackets and look for
+                        // the open brackets
+                    case ')':
+                        c = '(';
+                        break;
+
+                    case ']':
+                        c = '[';
+                        break;
+
+                    case '}':
+                        c = '{';
+                        break;
+
+                    case '>':
+                        c = '<';
+                        break;
+                    }
+
+                    // Do reverse search
+                    start = text.lastIndexOf(c, start) + 1;
+
+                    // Check for included newline
+                    if (start > text.lastIndexOf('\n', end))
+                        // Update selection
+                        textView.setSelection(start, end);
+                }
+            }
+        }
     }
 
     // FindTask
