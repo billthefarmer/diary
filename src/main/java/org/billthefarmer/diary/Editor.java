@@ -42,7 +42,7 @@ import java.io.InputStreamReader;
 public class Editor extends Activity
 {
     public final static String TAG = "Editor";
-    public final static String DIRTY = "dirty";
+    public final static String CHANGED = "changed";
     public final static String CONTENT = "content";
 
     private final static int BUFFER_SIZE = 1024;
@@ -51,7 +51,7 @@ public class Editor extends Activity
 
     private EditText textView;
 
-    private boolean dirty = false;
+    private boolean changed = false;
 
     // onCreate
     @Override
@@ -110,7 +110,7 @@ public class Editor extends Activity
             @Override
             public void afterTextChanged(Editable s)
             {
-                dirty = true;
+                changed = true;
                 invalidateOptionsMenu();
             }
 
@@ -138,7 +138,7 @@ public class Editor extends Activity
         accept.setOnClickListener(v ->
         {
             String text = textView.getText().toString();
-            if (dirty)
+            if (changed)
                 write(text, file);
             finish();
         });
@@ -150,7 +150,7 @@ public class Editor extends Activity
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        dirty = savedInstanceState.getBoolean(DIRTY);
+        changed = savedInstanceState.getBoolean(CHANGED);
     }
 
     // onSaveInstanceState
@@ -158,7 +158,7 @@ public class Editor extends Activity
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(DIRTY, dirty);
+        outState.putBoolean(CHANGED, changed);
     }
 
     // onOptionsItemSelected
