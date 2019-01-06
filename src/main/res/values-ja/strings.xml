@@ -58,7 +58,7 @@
     編集に暗いテーマを使用する
   </string>
   <string name="about">アプリについて</string>
-  <string name="pref_about_summ">Diary バージョン %s</string>
+  <string name="pref_about_summ">Diary <a href="https://github.com/billthefarmer/diary/releases/latest">バージョン %s</a></string>
   <string name="licence">ライセンス <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
   <string name="built">内蔵 %s</string>

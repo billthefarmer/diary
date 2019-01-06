@@ -58,7 +58,7 @@
     Usa el tema oscuro para editar
   </string>
   <string name="about">Acerca de</string>
-  <string name="pref_about_summ">Diary version %s</string>
+  <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Diary version %s</a></string>
   <string name="built">Construido %s</string>
   <string name="licence">Licencia <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>

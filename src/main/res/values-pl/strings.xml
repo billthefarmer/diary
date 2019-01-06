@@ -58,7 +58,7 @@
     Użyj ciemnego motywu do edycji
   </string>
   <string name="about">O aplikacji</string>
-  <string name="pref_about_summ">Wersja Diary: %s</string>
+  <string name="pref_about_summ">Wersja <a href="https://github.com/billthefarmer/diary/releases/latest">Diary: %s</a></string>
   <string name="built">Zbudowano: %s</string>
   <string name="licence">Licencja <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>

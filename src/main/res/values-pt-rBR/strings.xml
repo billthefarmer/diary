@@ -50,7 +50,7 @@
   </string>
   <string name="pref_index_page">Página de índice</string>
   <string name="about">Sobre</string>
-  <string name="pref_about_summ">Diário versão %s</string>
+  <string name="pref_about_summ">Diário <a href="https://github.com/billthefarmer/diary/releases/latest">versão %s</a></string>
   <string name="built">Construído %s</string>
   <string name="licence">Licença <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
   <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
