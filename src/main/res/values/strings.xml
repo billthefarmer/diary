@@ -58,7 +58,7 @@
   </string>
   <string name="pref_index_page">Index page</string>
   <string name="about">About</string>
-  <string name="pref_about_summ">Diary version %s</string>
+  <string name="pref_about_summ">Diary <a href="https://github.com/billthefarmer/diary/releases/latest">version %s</a></string>
   <string name="built">Built %s</string>
   <string name="licence">Licence <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
