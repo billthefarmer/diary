@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     Ingevoegde afbeeldingen kopiëren naar de huidige map
   </string>
+  <string name="pref_external">Browser</string>
+  <string name="pref_external_summ">
+    Gebruik de browser voor externe links
+  </string>
   <string name="folder">Map</string>
   <string name="theme">Thema</string>
   <string name="pref_dark_theme">Donker</string>

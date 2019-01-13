@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     Copier les images insérées dans le dossier actuel
   </string>
+  <string name="pref_external">Navigateur</string>
+  <string name="pref_external_summ">
+    Utiliser le navigateur pour les liens externes
+  </string>
   <string name="folder">Dossier</string>
   <string name="index">Indice</string>
   <string name="pref_use_index">Utiliser l\'index</string>

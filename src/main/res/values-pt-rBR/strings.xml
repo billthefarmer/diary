@@ -32,17 +32,29 @@
   <string name="settings">Configurações</string>
   <string name="calendar">Calendário</string>
   <string name="pref_calendar">Usar calendário personalizado</string>
-  <string name="pref_calendar_summ">Utilize o calendário do app ao invés do seletor de data padrão</string>
+  <string name="pref_calendar_summ">
+    Utilize o calendário do app ao invés do seletor de data padrão
+  </string>
   <string name="markdown">Markdown</string>
   <string name="pref_markdown">Utilizar markdown</string>
-  <string name="pref_markdown_summ">Utilize markdown para formatar o texto</string>
+  <string name="pref_markdown_summ">
+    Utilize markdown para formatar o texto
+  </string>
   <string name="media">Mídia</string>
   <string name="pref_copy_media">Copiar imagens</string>
-  <string name="pref_copy_media_summ">Copia as imagens inseridas para a pasta atual</string>
+  <string name="pref_copy_media_summ">
+    Copia as imagens inseridas para a pasta atual
+  </string>
+  <string name="pref_external">Navegador</string>
+  <string name="pref_external_summ">
+    Use o navegador para links externos
+  </string>
   <string name="folder">Pasta</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Escuro</string>
-  <string name="pref_dark_theme_summ">Utilize o tema escuro para edição</string>
+  <string name="pref_dark_theme_summ">
+    Utilize o tema escuro para edição
+  </string>
   <string name="index">Índice</string>
   <string name="pref_use_index">Use o índice</string>
   <string name="pref_use_index_summ">

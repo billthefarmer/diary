@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     Copie las imágenes insertadas en la carpeta actual
   </string>
+  <string name="pref_external">Navegador</string>
+  <string name="pref_external_summ">
+    Usa el navegador para enlaces externos
+  </string>
   <string name="folder">Carpeta</string>
   <string name="index">Índice</string>
   <string name="pref_use_index">Índice de uso</string>

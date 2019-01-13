@@ -90,6 +90,14 @@
 
     <CheckBoxPreference
         android:defaultValue="false"
+        android:icon="?attr/pref_external"
+        android:key="pref_external"
+        android:persistent="true"
+        android:summary="@string/pref_external_summ"
+        android:title="@string/pref_external" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
         android:icon="?attr/pref_copy_media"
         android:key="pref_copy_media"
         android:persistent="true"

@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     挿入されたイメージを現在のフォルダにコピーする
   </string>
+  <string name="pref_external">ブラウザ</string>
+  <string name="pref_external_summ">
+    外部リンクにブラウザを使用
+  </string>
   <string name="folder">フォルダ</string>
   <string name="index">インデックス</string>
   <string name="pref_use_index">インデックスを使用する</string>

@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     将插入的图像复制到当前文件夹
   </string>
+  <string name="pref_external">浏览器</string>
+  <string name="pref_external_summ">
+    使用浏览器进行外部链接
+  </string>
   <string name="folder">文件夹</string>
   <string name="index">指数</string>
   <string name="pref_use_index">使用索引</string>

@@ -99,6 +99,7 @@ public class Diary extends Activity
     public final static String PREF_ABOUT = "pref_about";
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
+    public final static String PREF_EXTERNAL = "pref_external";
     public final static String PREF_MARKDOWN = "pref_markdown";
     public final static String PREF_USE_INDEX = "pref_use_index";
     public final static String PREF_INDEX_PAGE = "pref_index_page";
@@ -160,6 +161,7 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true;
+    private boolean external = false;
     private boolean useIndex = false;
     private boolean copyMedia = false;
     private boolean darkTheme = false;
@@ -721,10 +723,21 @@ public class Diary extends Activity
                                                         String url)
                 {
                     Calendar calendar = diaryEntry(url);
+                    // Diary entry
                     if (calendar != null)
                     {
                         entryStack.push(currEntry);
                         changeDate(calendar);
+                        return true;
+                    }
+
+                    // Use external browser
+                    if (external)
+                    {
+                        Uri uri = Uri.parse(url);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        if (intent.resolveActivity(getPackageManager()) != null)
+                            startActivity(intent);
                         return true;
                     }
 
@@ -829,7 +842,6 @@ public class Diary extends Activity
     public void animateAccept()
     {
         // Animation
-
         startAnimation(scrollView, R.anim.activity_close_exit, View.INVISIBLE);
         startAnimation(markdownView, R.anim.activity_open_enter, View.VISIBLE);
 
@@ -841,7 +853,6 @@ public class Diary extends Activity
     private void animateEdit()
     {
         // Animation
-
         startAnimation(markdownView, R.anim.activity_close_exit, View.INVISIBLE);
         startAnimation(scrollView, R.anim.activity_open_enter, View.VISIBLE);
 
@@ -866,6 +877,7 @@ public class Diary extends Activity
 
         custom = preferences.getBoolean(PREF_CUSTOM, true);
         markdown = preferences.getBoolean(PREF_MARKDOWN, true);
+        external = preferences.getBoolean(PREF_EXTERNAL, false);
         useIndex = preferences.getBoolean(PREF_USE_INDEX, false);
         copyMedia = preferences.getBoolean(PREF_COPY_MEDIA, false);
         darkTheme = preferences.getBoolean(PREF_DARK_THEME, false);

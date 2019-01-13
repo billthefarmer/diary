@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     Copieu les imatges inserides a la carpeta actual
   </string>
+  <string name="pref_external">Navegador</string>
+  <string name="pref_external_summ">
+    Utilitzeu el navegador per a enllaços externs
+  </string>
   <string name="folder">Carpeta</string>
   <string name="index">Índex</string>
   <string name="pref_use_index">Feu servir l\'índex</string>

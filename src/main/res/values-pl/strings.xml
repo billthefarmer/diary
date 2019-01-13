@@ -45,6 +45,10 @@
   <string name="pref_copy_media_summ">
     Skopiuj wstawione obrazy do obecnego folderu
   </string>
+  <string name="pref_external">Przeglądarka</string>
+  <string name="pref_external_summ">
+    Użyj przeglądarki dla linków zewnętrznych
+  </string>
   <string name="folder">Folder</string>
   <string name="index">Indeks</string>
   <string name="pref_use_index">Użyj indeksu</string>
