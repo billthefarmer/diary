@@ -210,6 +210,7 @@ check and minimise your code. It will handle multiple input files.
 * **Folder** - Change diary entry storage folder. Caution - diary
   entries and styles will not be moved
 * **Index** - Set an index page. Use the date picker to choose a date.
+* **Browser** - Use browser for external links
 * **Copy images** - Copy images to current folder
 * **Dark theme** - Use dark theme for editing
 * **About** - Show app version, licence and credits
