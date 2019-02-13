@@ -61,6 +61,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:showAsAction="ifRoom|collapseActionView"
       android:title="@string/search" />
   <item
+      android:id="@+id/addTime"
+      android:icon="@drawable/ic_action_time"
+      android:showAsAction="ifRoom"
+      android:title="@string/addTime" />
+  <item
       android:id="@+id/addMedia"
       android:icon="@drawable/ic_action_picture"
       android:showAsAction="ifRoom"

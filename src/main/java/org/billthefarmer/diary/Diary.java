@@ -508,6 +508,9 @@ public class Diary extends Activity
         case R.id.findAll:
             findAll();
             break;
+        case R.id.addTime:
+            addTime();
+            break;
         case R.id.addMedia:
             addMedia();
             break;
@@ -1373,6 +1376,17 @@ public class Diary extends Activity
         // Execute find task
         FindTask findTask = new FindTask(this);
         findTask.execute(search);
+    }
+
+    // addTime
+    public void addTime()
+    {
+        DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
+        String time = format.format(new Date());
+        Editable editable = textView.getEditableText();
+        int position = textView.getSelectionStart();
+        editable.insert(position, time);
+        loadMarkdown();
     }
 
     // addMedia
