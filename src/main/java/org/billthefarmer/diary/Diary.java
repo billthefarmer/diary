@@ -1737,7 +1737,7 @@ public class Diary extends Activity
             loadMarkdown();
             changed = false;
         }
-        textView.setSelection(0);
+        textView.setSelection(textView.length());
     }
 
     // setDate

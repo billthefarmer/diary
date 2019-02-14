@@ -26,6 +26,7 @@
   <string name="goToDate">Vai alla data</string>
   <string name="search">Cerca…</string>
   <string name="findAll">Cerca ovunque…</string>
+  <string name="addTime">Aggiungi tempo</string>
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>

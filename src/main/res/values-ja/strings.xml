@@ -24,6 +24,7 @@
   <string name="prevEntry">前へ</string>
   <string name="nextEntry">次へ</string>
   <string name="goToDate">日付に…</string>
+  <string name="addTime">時間を追加</string>
   <string name="addMedia">メディアを追加…</string>
   <string name="search">サーチ…</string>
   <string name="findAll">すべてを検索…</string>
