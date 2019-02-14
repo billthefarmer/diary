@@ -28,6 +28,7 @@ The toolbar icons are, from left to right:
 * **Index** - go to index page if set
 * **Search** - incremental search of diary entry
 * **Find all** - find all diary entries containing search text
+* **Add time** - Add the current time to diary entry
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Edit script** - show an editor to edit custom javascript
