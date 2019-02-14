@@ -31,8 +31,8 @@ android {
         applicationId "org.billthefarmer.diary"
         minSdkVersion 14
         targetSdkVersion 22
-        versionName "1.39"
-        versionCode 139
+        versionName "1.40"
+        versionCode 140
 
         buildConfigField "long", "BUILT", System.currentTimeMillis() + "L"
     }
@@ -45,7 +45,7 @@ android {
     lintOptions {
         disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
             'IconDuplicates', 'ExpiredTargetSdkVersion'
-        abortOnError false
+        // abortOnError false
     }
 }
 
