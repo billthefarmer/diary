@@ -1676,8 +1676,25 @@ public class Diary extends Activity
             }
             catch (Exception e)
             {
+                alertDialog(R.string.appName, e.getMessage(),
+                            android.R.string.ok);
             }
         }
+    }
+
+    // alertDialog
+    private void alertDialog(int title, String message,
+                             int neutralButton)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        // Add the button
+        builder.setNeutralButton(neutralButton, null);
+
+        // Create the AlertDialog
+        builder.show();
     }
 
     // readAssetFile
@@ -2172,7 +2189,7 @@ public class Diary extends Activity
                 {
                     String choice = choices[which];
                     DateFormat format =
-                    DateFormat.getDateInstance(DateFormat.MEDIUM);
+                        DateFormat.getDateInstance(DateFormat.MEDIUM);
 
                     // Get the entry chosen
                     try
