@@ -1430,6 +1430,10 @@ public class Diary extends Activity
     // getHome
     private File getHome()
     {
+        File file = new File(folder);
+        if (file.isAbsolute() && file.isDirectory() && file.canWrite())
+            return file;
+
         return new File(Environment.getExternalStorageDirectory(), folder);
     }
 
