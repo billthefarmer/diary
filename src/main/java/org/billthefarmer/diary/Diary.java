@@ -16,6 +16,7 @@
 
 package org.billthefarmer.diary;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -88,11 +90,12 @@ public class Diary extends Activity
     CustomCalendarDialog.OnDateSetListener
 {
     private final static int ADD_MEDIA = 1;
+    private final static int REQUEST_READ = 1;
+    private final static int REQUEST_WRITE = 2;
 
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
-    private final static int VERSION_M = 23;
 
     private final static String TAG = "Diary";
 
@@ -274,9 +277,8 @@ public class Diary extends Activity
                 return text.toString();
             }
         }
-        catch (Exception e)
-        {
-        }
+
+        catch (Exception e) {}
 
         return null;
     }
@@ -360,7 +362,7 @@ public class Diary extends Activity
         getPreferences();
 
         // Recreate
-        if (dark != darkTheme && Build.VERSION.SDK_INT != VERSION_M)
+        if (dark != darkTheme && Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
             recreate();
 
         // Set date
@@ -374,7 +376,10 @@ public class Diary extends Activity
         markdownView.clearCache(true);
 
         // Copy help text to today's page if no entries
-        if (prevEntry == null && nextEntry == null && textView.length() == 0)
+        if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+             == PackageManager.PERMISSION_GRANTED) &&
+            prevEntry == null && nextEntry == null && textView.length() == 0)
             textView.setText(readAssetFile(HELP));
 
         if (markdown && changed)
@@ -1626,16 +1631,58 @@ public class Diary extends Activity
 
             return new GregorianCalendar(year, month, day);
         }
-        catch (Exception e)
-        {
-        }
+
+        catch (Exception e) {}
 
         return null;
+    }
+
+    // onRequestPermissionsResult
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults)
+    {
+        switch (requestCode)
+        {
+        case REQUEST_WRITE:
+            for (int i = 0; i < grantResults.length; i++)
+                if (permissions[i].equals(Manifest.permission
+                                          .WRITE_EXTERNAL_STORAGE) &&
+                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    // Granted, save
+                    save();
+            break;
+
+        case REQUEST_READ:
+            for (int i = 0; i < grantResults.length; i++)
+                if (permissions[i].equals(Manifest.permission
+                                          .READ_EXTERNAL_STORAGE) &&
+                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    // Granted, load
+                    load();
+            break;
+        }
     }
 
     // save
     private void save()
     {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]
+                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE,
+                     Manifest.permission.WRITE_CALENDAR,
+                     Manifest.permission.READ_CALENDAR}, REQUEST_WRITE);
+
+                return;
+            }
+        }
+
         if (currEntry != null)
         {
             String text = textView.getText().toString();
@@ -1724,9 +1771,8 @@ public class Diary extends Activity
                 return content.toString();
             }
         }
-        catch (Exception e)
-        {
-        }
+
+        catch (Exception e) {}
 
         return null;
     }
@@ -1734,6 +1780,21 @@ public class Diary extends Activity
     // load
     private void load()
     {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]
+                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE,
+                     Manifest.permission.WRITE_CALENDAR,
+                     Manifest.permission.READ_CALENDAR}, REQUEST_READ);
+
+                return;
+            }
+        }
+
         String text = read(getFile());
         textView.setText(text);
         if (markdown)
@@ -1872,9 +1933,8 @@ public class Diary extends Activity
                         Uri.fromFile(newMedia).getLastPathSegment();
                     media = Uri.parse(newName);
                 }
-                catch (Exception e)
-                {
-                }
+
+                catch (Exception e) {}
             }
         }
 
@@ -2207,11 +2267,11 @@ public class Diary extends Activity
                         // disappears I have no idea or why I have to
                         // do it after a delay
                         // run
-                        searchView.postDelayed(() -> searchView.setQuery(search, false), FIND_DELAY);
+                        searchView.postDelayed(() ->
+                            searchView.setQuery(search, false), FIND_DELAY);
                     }
-                    catch (Exception e)
-                    {
-                    }
+
+                    catch (Exception e) {}
                 });
             }
 
@@ -2393,9 +2453,8 @@ public class Diary extends Activity
 
                 multi = false;
             }
-            catch (Exception e)
-            {
-            }
+
+            catch (Exception e) {}
 
             return result;
         }

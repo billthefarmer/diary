@@ -41,8 +41,6 @@ import java.util.Date;
 public class SettingsFragment extends android.preference.PreferenceFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private final static int VERSION_M = 23;
-
     // On create
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -155,7 +153,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         }
         if (key.equals(Diary.PREF_DARK_THEME))
         {
-            if (Build.VERSION.SDK_INT != VERSION_M)
+            if (Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
                 getActivity().recreate();
         }
     }

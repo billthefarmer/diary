@@ -85,6 +85,10 @@ public class QueryHandler extends AsyncQueryHandler
     @Override
     public void onQueryComplete(int token, Object object, Cursor cursor)
     {
+        // Check rows
+        if (cursor.getCount() == 0)
+            return;
+
         // Use the cursor to move through the returned records
         cursor.moveToFirst();
 
