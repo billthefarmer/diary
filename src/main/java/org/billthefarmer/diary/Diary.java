@@ -57,6 +57,8 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 
+import android.support.v4.content.FileProvider;
+
 import org.billthefarmer.markdown.MarkdownView;
 import org.billthefarmer.view.CustomCalendarDialog;
 import org.billthefarmer.view.CustomCalendarView;
@@ -90,6 +92,7 @@ public class Diary extends Activity
     CustomCalendarDialog.OnDateSetListener
 {
     private final static int ADD_MEDIA = 1;
+
     private final static int REQUEST_READ = 1;
     private final static int REQUEST_WRITE = 2;
 
@@ -123,7 +126,9 @@ public class Diary extends Activity
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String SCRIPT = "file:///android_asset/script.js";
     private final static String CSS_STYLES = "css/styles.css";
+    private final static String TEXT_CSS = "text/css";
     private final static String JS_SCRIPT = "js/script.js";
+    private final static String TEXT_JAVASCRIPT = "text/javascript";
     private final static String MEDIA_PATTERN = "!\\[(.*)\\]\\((.+)\\)";
     private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";
@@ -1407,10 +1412,16 @@ public class Diary extends Activity
     public void editStyles()
     {
         File file = new File(getHome(), CSS_STYLES);
-        Uri uri = Uri.fromFile(file);
+
+        // Get file provider uri
+        Uri uri = FileProvider
+            .getUriForFile(this, "org.billthefarmer.diary.fileprovider",
+                           file);
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setDataAndType(uri, "text/css");
+        intent.setDataAndType(uri, TEXT_CSS);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivity(intent);
     }
 
@@ -1418,10 +1429,17 @@ public class Diary extends Activity
     public void editScript()
     {
         File file = new File(getHome(), JS_SCRIPT);
-        Uri uri = Uri.fromFile(file);
+        // Uri uri = Uri.fromFile(file);
+
+        // Get file provider uri
+        Uri uri = FileProvider
+            .getUriForFile(this, "org.billthefarmer.diary.fileprovider",
+                           file);
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setDataAndType(uri, "text/javascript");
+        intent.setDataAndType(uri, TEXT_JAVASCRIPT);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivity(intent);
     }
 
