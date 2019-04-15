@@ -149,13 +149,13 @@ public class Diary extends Activity
         "View Larger Map</a></small>\n";
     private final static String GEO_PATTERN =
         "geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*";
-    private final static String GEO_TEMPLATE =
-        "![osm](geo:%f,%f)";
+    private final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
     private final static String DATE_PATTERN =
         "\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)";
     public final static String PATTERN_CHARS =
         "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
     public final static String BRACKET_CHARS = "([{<";
+    public final static String POSN_TEMPLATE = "^\\[(.+)\\]: *#$";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -1820,7 +1820,39 @@ public class Diary extends Activity
             loadMarkdown();
             changed = false;
         }
-        textView.setSelection(textView.length());
+
+        checkPosition(text);
+        // textView.setSelection(textView.length());
+    }
+
+    // checkPosition
+    private void checkPosition(CharSequence text)
+    {
+        // Get a pattern and a matcher for position template
+        Pattern pattern = Pattern.compile(POSN_TEMPLATE);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find())
+        {
+            switch (matcher.group(1))
+            {
+            case "<":
+                textView.setSelection(0);
+                break;
+
+            case ">":
+                textView.setSelection(textView.length());
+                break;
+
+            default:
+                try
+                {
+                    textView.setSelection(Integer.parseInt(matcher.group(1)));
+                }
+
+                catch (Exception e) {}
+                break;
+            }
+        }
     }
 
     // setDate
@@ -2157,14 +2189,11 @@ public class Diary extends Activity
             int start = textView.getSelectionStart();
             int end = textView.getSelectionEnd();
             // And the text
-            String text = textView.getText().toString();
+            CharSequence text = textView.getText();
 
-            // Get a pattern and a matcher for delimiter
-            // characters
-            Pattern pattern =
-                Pattern.compile(PATTERN_CHARS);
-            Matcher matcher =
-                pattern.matcher(text);
+            // Get a pattern and a matcher for delimiter characters
+            Pattern pattern = Pattern.compile(PATTERN_CHARS);
+            Matcher matcher = pattern.matcher(text);
 
             // Find the first match after the end of the selection
             if (matcher.find(end))
@@ -2180,8 +2209,8 @@ public class Diary extends Activity
                 {
                     switch (c)
                     {
-                        // Check for close brackets and look for
-                        // the open brackets
+                        // Check for close brackets and look for the
+                        // open brackets
                     case ')':
                         c = '(';
                         break;
@@ -2199,11 +2228,12 @@ public class Diary extends Activity
                         break;
                     }
 
+                    String string = text.toString();
                     // Do reverse search
-                    start = text.lastIndexOf(c, start) + 1;
+                    start = string.lastIndexOf(c, start) + 1;
 
                     // Check for included newline
-                    if (start > text.lastIndexOf('\n', end))
+                    if (start > string.lastIndexOf('\n', end))
                         // Update selection
                         textView.setSelection(start, end);
                 }
