@@ -262,7 +262,7 @@ public class Diary extends Activity
     }
 
     // read
-    private static String read(File file)
+    private static CharSequence read(File file)
     {
         StringBuilder text = new StringBuilder();
         try
@@ -279,7 +279,7 @@ public class Diary extends Activity
                     text.append(System.getProperty("line.separator"));
                 }
 
-                return text.toString();
+                return text;
             }
         }
 
@@ -1813,7 +1813,7 @@ public class Diary extends Activity
             }
         }
 
-        String text = read(getFile());
+        CharSequence text = read(getFile());
         textView.setText(text);
         if (markdown)
         {
