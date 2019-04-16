@@ -154,8 +154,9 @@ public class Diary extends Activity
         "\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)";
     public final static String PATTERN_CHARS =
         "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
-    public final static String BRACKET_CHARS = "([{<";
-    public final static String POSN_TEMPLATE = "^\\[(.+)\\]: *#$";
+    private final static String BRACKET_CHARS = "([{<";
+    private final static String POSN_PATTERN = "^ ?\\[([<>]|\\d+)\\]: ?# *$";
+    private final static String POSN_TEMPLATE = "[%d]: #";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -919,7 +920,7 @@ public class Diary extends Activity
     }
 
     // eventCheck
-    private String eventCheck(String text)
+    private String eventCheck(CharSequence text)
     {
         Pattern pattern = Pattern.compile(EVENT_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
@@ -972,19 +973,19 @@ public class Diary extends Activity
     // loadMarkdown
     private void loadMarkdown()
     {
-        String text = textView.getText().toString();
+        CharSequence text = textView.getText();
         loadMarkdown(text);
     }
 
     // loadMarkdown
-    private void loadMarkdown(String text)
+    private void loadMarkdown(CharSequence text)
     {
         markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
                                   getStyles(), getScript());
     }
 
     // markdownCheck
-    private String markdownCheck(String text)
+    private String markdownCheck(CharSequence text)
     {
         // Date check
         text = dateCheck(text);
@@ -993,11 +994,11 @@ public class Diary extends Activity
         text = mapCheck(text);
 
         // Check for media
-        return mediaCheck(text);
+        return mediaCheck(text).toString();
     }
 
     // mediaCheck
-    private String mediaCheck(String text)
+    private CharSequence mediaCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -1076,11 +1077,11 @@ public class Diary extends Activity
         // Append rest of entry
         matcher.appendTail(buffer);
 
-        return buffer.toString();
+        return buffer;
     }
 
     // mapCheck
-    private String mapCheck(String text)
+    private CharSequence mapCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -1117,11 +1118,11 @@ public class Diary extends Activity
         // Append rest of entry
         matcher.appendTail(buffer);
 
-        return buffer.toString();
+        return buffer;
     }
 
     // dateCheck
-    private String dateCheck(String text)
+    private CharSequence dateCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -1156,7 +1157,7 @@ public class Diary extends Activity
 
             // Create replacement
             String replace =
-                String.format(Locale.getDefault(), LINK_TEMPLATE,
+                String.format(Locale.ROOT, LINK_TEMPLATE,
                               matcher.group(1), uri.toString());
             // Substitute replacement
             matcher.appendReplacement(buffer, replace);
@@ -1165,7 +1166,7 @@ public class Diary extends Activity
         // Append rest of entry
         matcher.appendTail(buffer);
 
-        return buffer.toString();
+        return buffer;
     }
 
     // addMedia
@@ -1703,7 +1704,7 @@ public class Diary extends Activity
 
         if (currEntry != null)
         {
-            String text = textView.getText().toString();
+            CharSequence text = textView.getText();
 
             // Check for events
             text = eventCheck(text);
@@ -1711,13 +1712,16 @@ public class Diary extends Activity
             // Check for maps
             text = mapCheck(text);
 
+            // Check for cursor position
+            text = positionCheck(text);
+
             // Save text
             save(text);
         }
     }
 
     // save
-    private void save(String text)
+    private void save(CharSequence text)
     {
         File file = getFile();
         if (text.length() == 0)
@@ -1740,7 +1744,7 @@ public class Diary extends Activity
             try
             {
                 FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write(text);
+                fileWriter.append(text);
                 fileWriter.close();
             }
             catch (Exception e)
@@ -1767,7 +1771,7 @@ public class Diary extends Activity
     }
 
     // readAssetFile
-    private String readAssetFile(String file)
+    private CharSequence readAssetFile(String file)
     {
         try
         {
@@ -1786,7 +1790,7 @@ public class Diary extends Activity
                 }
 
                 changed = true;
-                return content.toString();
+                return content;
             }
         }
 
@@ -1821,15 +1825,15 @@ public class Diary extends Activity
             changed = false;
         }
 
-        checkPosition(text);
-        // textView.setSelection(textView.length());
+        if (text != null)
+            checkPosition(text);
     }
 
     // checkPosition
     private void checkPosition(CharSequence text)
     {
-        // Get a pattern and a matcher for position template
-        Pattern pattern = Pattern.compile(POSN_TEMPLATE);
+        // Get a pattern and a matcher for position pattern
+        Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
         if (matcher.find())
         {
@@ -1849,10 +1853,42 @@ public class Diary extends Activity
                     textView.setSelection(Integer.parseInt(matcher.group(1)));
                 }
 
-                catch (Exception e) {}
+                catch (Exception e)
+                {
+                    textView.setSelection(textView.length());
+                }
                 break;
             }
         }
+
+        else
+            textView.setSelection(textView.length());
+    }
+
+    // positionCheck
+    private CharSequence positionCheck(CharSequence text)
+    {
+        // Get a pattern and a matcher for position pattern
+        Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find())
+        {
+            switch (matcher.group(1))
+            {
+            case "<":
+            case ">":
+                break;
+
+            default:
+                // Create replacement
+                String replace =
+                    String.format(Locale.ROOT, POSN_TEMPLATE,
+                                  textView.getSelectionStart());
+                return matcher.replaceFirst(replace);
+            }
+        }
+
+        return text;
     }
 
     // setDate
@@ -2337,7 +2373,6 @@ public class Diary extends Activity
         private Editable editable;
         private Pattern pattern;
         private Matcher matcher;
-        private String text;
         private int index;
         private int height;
 
@@ -2355,7 +2390,6 @@ public class Diary extends Activity
             {
                 height = scrollView.getHeight();
                 editable = textView.getEditableText();
-                text = textView.getText().toString();
 
                 // Reset the index and clear highlighting
                 if (newText.length() == 0)
@@ -2370,7 +2404,7 @@ public class Diary extends Activity
                                           Pattern.LITERAL |
                                           Pattern.UNICODE_CASE);
                 // Find text
-                matcher = pattern.matcher(text);
+                matcher = pattern.matcher(editable);
                 if (matcher.find(index))
                 {
                     // Get index
