@@ -155,8 +155,9 @@ public class Diary extends Activity
     public final static String PATTERN_CHARS =
         "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
     private final static String BRACKET_CHARS = "([{<";
-    private final static String POSN_PATTERN = "^ ?\\[([<>]|\\d+)\\]: ?# *$";
-    private final static String POSN_TEMPLATE = "[%d]: #";
+    private final static String POSN_PATTERN =
+        "^ ?\\[([<#>])\\]: ?#( ?\\((\\d+)\\))? *$";
+    private final static String POSN_TEMPLATE = "[#]: # (%d)";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -1835,22 +1836,26 @@ public class Diary extends Activity
         // Get a pattern and a matcher for position pattern
         Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
+        // Check pattern
         if (matcher.find())
         {
             switch (matcher.group(1))
             {
+                // Start
             case "<":
                 textView.setSelection(0);
                 break;
 
+                // End
             case ">":
                 textView.setSelection(textView.length());
                 break;
 
-            default:
+                // Saved position
+            case "#":
                 try
                 {
-                    textView.setSelection(Integer.parseInt(matcher.group(1)));
+                    textView.setSelection(Integer.parseInt(matcher.group(3)));
                 }
 
                 catch (Exception e)
@@ -1871,15 +1876,18 @@ public class Diary extends Activity
         // Get a pattern and a matcher for position pattern
         Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
+        // Check pattern
         if (matcher.find())
         {
             switch (matcher.group(1))
             {
+                // Ignore start, end
             case "<":
             case ">":
                 break;
 
-            default:
+                // Save position
+            case "#":
                 // Create replacement
                 String replace =
                     String.format(Locale.ROOT, POSN_TEMPLATE,
