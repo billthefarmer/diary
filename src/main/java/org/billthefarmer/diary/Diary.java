@@ -1881,11 +1881,6 @@ public class Diary extends Activity
         {
             switch (matcher.group(1))
             {
-                // Ignore start, end
-            case "<":
-            case ">":
-                break;
-
                 // Save position
             case "#":
                 // Create replacement
