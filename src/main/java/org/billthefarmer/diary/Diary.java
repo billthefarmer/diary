@@ -156,7 +156,7 @@ public class Diary extends Activity
         "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
     private final static String BRACKET_CHARS = "([{<";
     private final static String POSN_PATTERN =
-        "^ ?\\[([<#>])\\]: ?#( ?\\((\\d+)\\))? *$";
+        "^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$";
     private final static String POSN_TEMPLATE = "[#]: # (%d)";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
@@ -1855,7 +1855,7 @@ public class Diary extends Activity
             case "#":
                 try
                 {
-                    textView.setSelection(Integer.parseInt(matcher.group(3)));
+                    textView.setSelection(Integer.parseInt(matcher.group(2)));
                 }
 
                 catch (Exception e)
