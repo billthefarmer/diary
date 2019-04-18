@@ -1820,11 +1820,9 @@ public class Diary extends Activity
 
         CharSequence text = read(getFile());
         textView.setText(text);
+        changed = false;
         if (markdown)
-        {
             loadMarkdown();
-            changed = false;
-        }
 
         if (text != null)
             checkPosition(text);

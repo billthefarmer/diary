@@ -168,19 +168,12 @@ co-ordinate separator regardless of locale.
 
 ## Events
 You may add an event to the calendar by adding a line to a diary entry
-which begins with an 'at' symbol followed by a time and an event
-title.
-
-    @ 10:30 Dentist
-
-An event will be added to the calendar when the entry is saved. A
-colon will be added after the 'at' symbol when the event has been
-added.
-
-    @:10:30 Dentist
-
-Use the Calendar app to remove or edit events. Do not remove the colon
-from the diary entry or the event will be added again.
+which begins with an 'at' symbol followed by a time and an event title
+`@ 10:30 Dentist`. An event will be added to the calendar when the
+entry is saved. A colon will be added after the 'at' symbol when the
+event has been added `@:10:30 Dentist`. Use the Calendar app to remove
+or edit events. Do not remove the colon from the diary entry or the
+event will be added again.
 
 ## Cursor position
 You may put a line in an entry to control or remember the edit cursor
@@ -191,6 +184,10 @@ is saved `[#]: # (nnn)`. Because entries are only saved if they are
 changed, moving the cursor with no other change will not move the
 saved position. There should be no other text on the line. This will
 not appear in the markdown view.
+
+**Note** - Using this functionality will not stop reference type links
+to the top of the current entry, `[Top][#]` working. However you can
+more simply use an inline link `[Top](#)`.
 
 ## Styles
 You may add custom styles to the markdown formatting by placing a
