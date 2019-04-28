@@ -819,6 +819,17 @@ public class Diary extends Activity
                 if (searchItem.isActionViewExpanded())
                     searchItem.collapseActionView();
 
+                // Get selection
+                int selection = textView.getSelectionStart();
+
+                // Get text position
+                int line = textView.getLayout().getLineForOffset(selection);
+                int position = textView.getLayout().getLineBaseline(line);
+
+                // Scroll to it
+                int height = scrollView.getHeight();
+                scrollView.smoothScrollTo(0, position - height / 2);
+
                 shown = false;
             });
 
@@ -838,7 +849,7 @@ public class Diary extends Activity
             {
                 // Hide keyboard
                 InputMethodManager imm = (InputMethodManager)
-                getSystemService(INPUT_METHOD_SERVICE);
+                    getSystemService(INPUT_METHOD_SERVICE);
                 if (!hasFocus)
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             });
@@ -1866,6 +1877,17 @@ public class Diary extends Activity
 
         else
             textView.setSelection(textView.length());
+
+        // Get selection
+        int selection = textView.getSelectionStart();
+
+        // Get text position
+        int line = textView.getLayout().getLineForOffset(selection);
+        int position = textView.getLayout().getLineBaseline(line);
+
+        // Scroll to it
+        int height = scrollView.getHeight();
+        scrollView.smoothScrollTo(0, position - height / 2);
     }
 
     // positionCheck
@@ -2412,19 +2434,15 @@ public class Diary extends Activity
                     index = matcher.start();
 
                     // Get text position
-                    int line = textView.getLayout()
-                               .getLineForOffset(index);
-                    int pos = textView.getLayout()
-                              .getLineBaseline(line);
+                    int line = textView.getLayout().getLineForOffset(index);
+                    int position = textView.getLayout().getLineBaseline(line);
 
                     // Scroll to it
-                    scrollView.smoothScrollTo(0, pos - height / 2);
+                    scrollView.smoothScrollTo(0, position - height / 2);
 
                     // Highlight it
-                    editable
-                    .setSpan(span, index, index +
-                             newText.length(),
-                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    editable.setSpan(span, matcher.start(), matcher.end(),
+                                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
 
@@ -2449,19 +2467,15 @@ public class Diary extends Activity
                     index = matcher.start();
 
                     // Get text position
-                    int line = textView.getLayout()
-                               .getLineForOffset(index);
-                    int pos = textView.getLayout()
-                              .getLineBaseline(line);
+                    int line = textView.getLayout().getLineForOffset(index);
+                    int position = textView.getLayout().getLineBaseline(line);
 
                     // Scroll to it
-                    scrollView.smoothScrollTo(0, pos - height / 2);
+                    scrollView.smoothScrollTo(0, position - height / 2);
 
                     // Highlight it
-                    editable
-                    .setSpan(span, index, index +
-                             query.length(),
-                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    editable.setSpan(span, matcher.start(), matcher.end(),
+                                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
                 // Reset matcher
