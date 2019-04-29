@@ -99,6 +99,7 @@ public class Diary extends Activity
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
+    private final static int POSITION_DELAY = 128;
 
     private final static String TAG = "Diary";
 
@@ -1878,16 +1879,20 @@ public class Diary extends Activity
         else
             textView.setSelection(textView.length());
 
-        // Get selection
-        int selection = textView.getSelectionStart();
+        // Scroll after delay
+        textView.postDelayed(() ->
+        {
+            // Get selection
+            int selection = textView.getSelectionStart();
 
-        // Get text position
-        int line = textView.getLayout().getLineForOffset(selection);
-        int position = textView.getLayout().getLineBaseline(line);
+            // Get text position
+            int line = textView.getLayout().getLineForOffset(selection);
+            int position = textView.getLayout().getLineBaseline(line);
 
-        // Scroll to it
-        int height = scrollView.getHeight();
-        scrollView.smoothScrollTo(0, position - height / 2);
+            // Scroll to it
+            int height = scrollView.getHeight();
+            scrollView.smoothScrollTo(0, position - height / 2);
+        }, POSITION_DELAY);
     }
 
     // positionCheck
