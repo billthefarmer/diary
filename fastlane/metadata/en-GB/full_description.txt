@@ -1,0 +1,26 @@
+Write down what you did, your ideas, your dreams... This application
+will help you keep it ordered by date like a traditional journal or
+personal diary.
+
+What you write is saved on your device in plain text files, so it's
+easy to backup and you can open the files with other applications.
+
+Includes basic functionality for browsing the old entries.
+
+* Available in English, Catalan, Spanish, Italian, Japanese, German,
+  French, Polish, Brazilian Portuguese, Dutch and simplified Chinese.
+* Choice of date picker calendars
+* Diary entries may use markdown formatting
+* Optional index page
+* Display media stored in diary folders
+* Display OpenStreetMap maps
+* Add media from media providers
+* Receive media from other apps
+* Receive geo uris from other apps
+* Incremental search of diary entries
+* Add events to calendar
+* Dark or light theme for editing
+* Optional edit cursor position control
+
+Forked from [https://git.savannah.gnu.org/cgit/diary.git] Updated for android 4
+and later.
