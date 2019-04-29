@@ -128,13 +128,13 @@ event will be added again.
 
 ## Cursor position
 You may put a line in an entry to control or remember the edit cursor
-position. Put `[<]: #` on a line for the start of an entry, `[>]: #`
-for the end of an entry. Put `[#]: #` for the cursor position to be
-remembered. The current cursor position will be added when the entry
-is saved `[#]: # (nnn)`. Because entries are only saved if they are
-changed, moving the cursor with no other change will not move the
-saved position. There should be no other text on the line. This will
-not appear in the markdown view.
+position. This will not appear in the markdown view. Put `[<]: #` on a
+line for the start of an entry, `[>]: #` for the end of an entry. Put
+`[#]: #` for the cursor position to be remembered. There should be no
+other text on the line. The current cursor position will be added when
+the entry is saved `[#]: # (nnn)`. Because entries are only saved if
+they are changed, moving the cursor with no other change will not move
+the saved position.
 
 **Note** - Using this functionality will not stop reference type links
 to the top of the current entry, `[Top][#]` working. However you can
