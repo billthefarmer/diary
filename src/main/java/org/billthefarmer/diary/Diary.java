@@ -58,6 +58,7 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 
 import android.support.v4.content.FileProvider;
+import android.widget.ViewSwitcher;
 
 import org.billthefarmer.markdown.MarkdownView;
 import org.billthefarmer.view.CustomCalendarDialog;
@@ -103,16 +104,6 @@ public class Diary extends Activity
 
     private final static String TAG = "Diary";
 
-    public final static String PREF_ABOUT = "pref_about";
-    public final static String PREF_CUSTOM = "pref_custom";
-    public final static String PREF_FOLDER = "pref_folder";
-    public final static String PREF_EXTERNAL = "pref_external";
-    public final static String PREF_MARKDOWN = "pref_markdown";
-    public final static String PREF_USE_INDEX = "pref_use_index";
-    public final static String PREF_INDEX_PAGE = "pref_index_page";
-    public final static String PREF_COPY_MEDIA = "pref_copy_media";
-    public final static String PREF_DARK_THEME = "pref_dark_theme";
-
     public final static String DIARY = "Diary";
 
     private final static String YEAR = "year";
@@ -123,6 +114,20 @@ public class Diary extends Activity
     private final static String SHOWN = "shown";
     private final static String ENTRY = "entry";
 
+    public final static Pattern PATTERN_CHARS =
+            Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
+    //Patterns
+    private final static Pattern MEDIA_PATTERN = Pattern.compile("!\\[(.*)\\]\\((.+)\\)", Pattern.MULTILINE);
+    private final static Pattern EVENT_PATTERN = Pattern.compile("^@ *(\\d{1,2}:\\d{2}) +(.+)$", Pattern.MULTILINE);
+    private final static Pattern MAP_PATTERN =
+            Pattern.compile("\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]", Pattern.MULTILINE);
+    private final static Pattern GEO_PATTERN =
+            Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
+    private final static Pattern DATE_PATTERN =
+            Pattern.compile("\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)", Pattern.MULTILINE);
+    private final static Pattern POSN_PATTERN =
+            Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$", Pattern.MULTILINE);
+
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String SCRIPT = "file:///android_asset/script.js";
@@ -130,17 +135,14 @@ public class Diary extends Activity
     private final static String TEXT_CSS = "text/css";
     private final static String JS_SCRIPT = "js/script.js";
     private final static String TEXT_JAVASCRIPT = "text/javascript";
-    private final static String MEDIA_PATTERN = "!\\[(.*)\\]\\((.+)\\)";
+
     private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     private final static String LINK_TEMPLATE = "[%s](%s)\n";
     private final static String AUDIO_TEMPLATE =
         "<audio controls src=\"%s\"></audio>\n";
     private final static String VIDEO_TEMPLATE =
         "<video controls src=\"%s\"></video>\n";
-    private final static String EVENT_PATTERN = "^@ *(\\d{1,2}:\\d{2}) +(.+)$";
     private final static String EVENT_TEMPLATE = "@:$1 $2";
-    private final static String MAP_PATTERN =
-        "\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]";
     private final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" " +
         "src=\"http://www.openstreetmap.org/export/embed.html?" +
@@ -148,17 +150,11 @@ public class Diary extends Activity
         "</iframe><br/><small>" +
         "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
-    private final static String GEO_PATTERN =
-        "geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*";
     private final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
-    private final static String DATE_PATTERN =
-        "\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)";
-    public final static String PATTERN_CHARS =
-        "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
-    private final static String BRACKET_CHARS = "([{<";
-    private final static String POSN_PATTERN =
-        "^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$";
     private final static String POSN_TEMPLATE = "[#]: # (%d)";
+
+    private final static String BRACKET_CHARS = "([{<";
+
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -210,6 +206,13 @@ public class Diary extends Activity
 
     private View accept;
     private View edit;
+    //indices for the ViewSwitchers
+    private static final int EDIT_TEXT = 0;
+    private static final int MARKDOWN = 1;
+    private static final int ACCEPT = 0;
+    private static final int EDIT = 1;
+    private ViewSwitcher layoutSwitcher;
+    private ViewSwitcher buttonSwitcher;
 
     // sortFiles
     private static File[] sortFiles(File[] files)
@@ -268,25 +271,17 @@ public class Diary extends Activity
     private static CharSequence read(File file)
     {
         StringBuilder text = new StringBuilder();
-        try
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)))
         {
-            try (FileReader fileReader = new FileReader(file))
-            {
-                BufferedReader reader =
-                    new BufferedReader(fileReader);
-
-                String line;
-                while ((line = reader.readLine()) != null)
-                {
-                    text.append(line);
-                    text.append(System.getProperty("line.separator"));
-                }
-
-                return text;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text.append(line);
+                text.append(System.getProperty("line.separator"));
             }
-        }
 
-        catch (Exception e) {}
+            return text;
+        } catch (Exception e) {
+        }
 
         return null;
     }
@@ -312,6 +307,9 @@ public class Diary extends Activity
         accept = findViewById(R.id.accept);
         edit = findViewById(R.id.edit);
 
+        layoutSwitcher = findViewById(R.id.layout_switcher);
+        buttonSwitcher = findViewById(R.id.button_switcher);
+
         WebSettings settings = markdownView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setBuiltInZoomControls(true);
@@ -330,7 +328,7 @@ public class Diary extends Activity
             Intent intent = getIntent();
 
             // Check index and start from launcher
-            if (useIndex && intent.getAction().equals(Intent.ACTION_MAIN))
+            if (useIndex && Intent.ACTION_MAIN.equals(intent.getAction()))
                 index();
 
             // Set the date
@@ -587,33 +585,28 @@ public class Diary extends Activity
         if (resultCode != RESULT_OK)
             return;
 
-        switch (requestCode)
-        {
-        case ADD_MEDIA:
-            // Get uri
+        if (requestCode == ADD_MEDIA) {// Get uri
             Uri uri = data.getData();
 
             // Resolve content uri
-            if (uri.getScheme().equalsIgnoreCase(CONTENT))
+            if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                 uri = resolveContent(uri);
 
-            if (uri != null)
-            {
+            if (uri != null) {
                 // Get type
                 String type = FileUtils.getMimeType(this, uri);
 
-                if (type == null)
+                if (type == null) {
                     addLink(uri, uri.getLastPathSegment(), false);
 
-                else if (type.startsWith(IMAGE) ||
-                         type.startsWith(AUDIO) ||
-                         type.startsWith(VIDEO))
+                } else if (type.startsWith(IMAGE) ||
+                        type.startsWith(AUDIO) ||
+                        type.startsWith(VIDEO)) {
                     addMedia(uri, false);
-
-                else
+                } else {
                     addLink(uri, uri.getLastPathSegment(), false);
+                }
             }
-            break;
         }
     }
 
@@ -734,7 +727,6 @@ public class Diary extends Activity
 
                 // shouldOverrideUrlLoading
                 @Override
-                @SuppressWarnings("deprecation")
                 public boolean shouldOverrideUrlLoading(WebView view,
                                                         String url)
                 {
@@ -869,25 +861,22 @@ public class Diary extends Activity
     public void animateAccept()
     {
         // Animation
-        startAnimation(scrollView, R.anim.activity_close_exit, View.INVISIBLE);
-        startAnimation(markdownView, R.anim.activity_open_enter, View.VISIBLE);
+        layoutSwitcher.setDisplayedChild(MARKDOWN);
 
-        startAnimation(accept, R.anim.flip_out, View.INVISIBLE);
-        startAnimation(edit, R.anim.flip_in, View.VISIBLE);
+        buttonSwitcher.setDisplayedChild(EDIT);
     }
 
     // animateEdit
     private void animateEdit()
     {
         // Animation
-        startAnimation(markdownView, R.anim.activity_close_exit, View.INVISIBLE);
-        startAnimation(scrollView, R.anim.activity_open_enter, View.VISIBLE);
+        layoutSwitcher.setDisplayedChild(EDIT_TEXT);
 
-        startAnimation(edit, R.anim.flip_out, View.INVISIBLE);
-        startAnimation(accept, R.anim.flip_in, View.VISIBLE);
+        buttonSwitcher.setDisplayedChild(ACCEPT);
     }
 
     // startAnimation
+    @Deprecated
     private void startAnimation(View view, int anim, int visibility)
     {
         Animation animation = AnimationUtils.loadAnimation(this, anim);
@@ -902,30 +891,30 @@ public class Diary extends Activity
         SharedPreferences preferences =
             PreferenceManager.getDefaultSharedPreferences(this);
 
-        custom = preferences.getBoolean(PREF_CUSTOM, true);
-        markdown = preferences.getBoolean(PREF_MARKDOWN, true);
-        external = preferences.getBoolean(PREF_EXTERNAL, false);
-        useIndex = preferences.getBoolean(PREF_USE_INDEX, false);
-        copyMedia = preferences.getBoolean(PREF_COPY_MEDIA, false);
-        darkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+        custom = preferences.getBoolean(Settings.PREF_CUSTOM, true);
+        markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
+        external = preferences.getBoolean(Settings.PREF_EXTERNAL, false);
+        useIndex = preferences.getBoolean(Settings.PREF_USE_INDEX, false);
+        copyMedia = preferences.getBoolean(Settings.PREF_COPY_MEDIA, false);
+        darkTheme = preferences.getBoolean(Settings.PREF_DARK_THEME, false);
 
         // Index page
-        long value = preferences.getLong(PREF_INDEX_PAGE,
+        long value = preferences.getLong(Settings.PREF_INDEX_PAGE,
                                          DatePickerPreference.DEFAULT_VALUE);
         indexPage = Calendar.getInstance();
         indexPage.setTimeInMillis(value);
 
         // Folder
-        folder = preferences.getString(PREF_FOLDER, DIARY);
+        folder = preferences.getString(Settings.PREF_FOLDER, DIARY);
     }
 
     // mediaCheck
     private void mediaCheck(Intent intent)
     {
         // Check for sent media
-        if (intent.getAction().equals(Intent.ACTION_SEND) ||
-                intent.getAction().equals(Intent.ACTION_VIEW) ||
-                intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+        if (Intent.ACTION_SEND.equals(intent.getAction()) ||
+                Intent.ACTION_VIEW.equals(intent.getAction()) ||
+                Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
         {
             haveMedia = true;
             goToDate(currEntry);
@@ -935,8 +924,7 @@ public class Diary extends Activity
     // eventCheck
     private String eventCheck(CharSequence text)
     {
-        Pattern pattern = Pattern.compile(EVENT_PATTERN, Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = EVENT_PATTERN.matcher(text);
 
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 
@@ -1015,8 +1003,7 @@ public class Diary extends Activity
     {
         StringBuffer buffer = new StringBuffer();
 
-        Pattern pattern = Pattern.compile(MEDIA_PATTERN, Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = MEDIA_PATTERN.matcher(text);
 
         // Find matches
         while (matcher.find())
@@ -1026,8 +1013,7 @@ public class Diary extends Activity
 
             if (type == null)
             {
-                Pattern geoPattern = Pattern.compile(GEO_PATTERN);
-                Matcher geoMatcher = geoPattern.matcher(matcher.group(2));
+                Matcher geoMatcher = GEO_PATTERN.matcher(matcher.group(2));
 
                 if (geoMatcher.matches())
                 {
@@ -1098,8 +1084,7 @@ public class Diary extends Activity
     {
         StringBuffer buffer = new StringBuffer();
 
-        Pattern pattern = Pattern.compile(MAP_PATTERN, Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = MAP_PATTERN.matcher(text);
 
         // Find matches
         while (matcher.find())
@@ -1141,8 +1126,7 @@ public class Diary extends Activity
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
-        Pattern pattern = Pattern.compile(DATE_PATTERN, Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = DATE_PATTERN.matcher(text);
 
         // Find matches
         while (matcher.find())
@@ -1191,7 +1175,7 @@ public class Diary extends Activity
         {
             // Get uri
             Uri uri = intent.getData();
-            if (uri.getScheme().equalsIgnoreCase(GEO))
+            if (GEO.equalsIgnoreCase(uri.getScheme()))
                 addMap(uri);
         }
         else if (type.equalsIgnoreCase(TEXT_PLAIN))
@@ -1223,7 +1207,7 @@ public class Diary extends Activity
             if (uri != null)
             {
                 // Resolve content uri
-                if (uri.getScheme().equalsIgnoreCase(CONTENT))
+                if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                     uri = resolveContent(uri);
 
                 addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE), true);
@@ -1233,14 +1217,14 @@ public class Diary extends Activity
                  type.startsWith(AUDIO) ||
                  type.startsWith(VIDEO))
         {
-            if (intent.getAction().equals(Intent.ACTION_SEND))
+            if (Intent.ACTION_SEND.equals(intent.getAction()))
             {
                 // Get the media uri
                 Uri media =
                     intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
                 // Resolve content uri
-                if (media.getScheme().equalsIgnoreCase(CONTENT))
+                if (CONTENT.equalsIgnoreCase(media.getScheme()))
                     media = resolveContent(media);
 
                 // Attempt to get web uri
@@ -1258,8 +1242,7 @@ public class Diary extends Activity
                 }
 
                 addMedia(media, true);
-            }
-            else if (intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE))
+            } else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
             {
                 // Get the media
                 ArrayList<Uri> media =
@@ -1267,7 +1250,7 @@ public class Diary extends Activity
                 for (Uri uri : media)
                 {
                     // Resolve content uri
-                    if (uri.getScheme().equalsIgnoreCase(CONTENT))
+                    if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                         uri = resolveContent(uri);
 
                     addMedia(uri, true);
@@ -1319,28 +1302,23 @@ public class Diary extends Activity
     {
         if (markdown)
         {
+            buttonSwitcher.setVisibility(View.VISIBLE);
             // Check if shown
             if (shown)
             {
-                markdownView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.INVISIBLE);
-                accept.setVisibility(View.INVISIBLE);
-                edit.setVisibility(View.VISIBLE);
+                layoutSwitcher.setDisplayedChild(MARKDOWN);
+                buttonSwitcher.setDisplayedChild(EDIT);
             }
             else
             {
-                markdownView.setVisibility(View.INVISIBLE);
-                scrollView.setVisibility(View.VISIBLE);
-                accept.setVisibility(View.VISIBLE);
-                edit.setVisibility(View.INVISIBLE);
+                layoutSwitcher.setDisplayedChild(EDIT_TEXT);
+                buttonSwitcher.setDisplayedChild(ACCEPT);
             }
         }
         else
         {
-            markdownView.setVisibility(View.INVISIBLE);
-            scrollView.setVisibility(View.VISIBLE);
-            accept.setVisibility(View.INVISIBLE);
-            edit.setVisibility(View.INVISIBLE);
+            layoutSwitcher.setDisplayedChild(EDIT_TEXT);
+            buttonSwitcher.setVisibility(View.GONE);
         }
     }
 
@@ -1844,8 +1822,7 @@ public class Diary extends Activity
     private void checkPosition(CharSequence text)
     {
         // Get a pattern and a matcher for position pattern
-        Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = POSN_PATTERN.matcher(text);
         // Check pattern
         if (matcher.find())
         {
@@ -1899,19 +1876,15 @@ public class Diary extends Activity
     private CharSequence positionCheck(CharSequence text)
     {
         // Get a pattern and a matcher for position pattern
-        Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = POSN_PATTERN.matcher(text);
         // Check pattern
         if (matcher.find())
         {
-            switch (matcher.group(1))
-            {
-                // Save position
-            case "#":
-                // Create replacement
+            // Save position
+            if ("#".equals(matcher.group(1))) {// Create replacement
                 String replace =
-                    String.format(Locale.ROOT, POSN_TEMPLATE,
-                                  textView.getSelectionStart());
+                        String.format(Locale.ROOT, POSN_TEMPLATE,
+                                textView.getSelectionStart());
                 return matcher.replaceFirst(replace);
             }
         }
@@ -2256,8 +2229,7 @@ public class Diary extends Activity
             CharSequence text = textView.getText();
 
             // Get a pattern and a matcher for delimiter characters
-            Pattern pattern = Pattern.compile(PATTERN_CHARS);
-            Matcher matcher = pattern.matcher(text);
+            Matcher matcher = PATTERN_CHARS.matcher(text);
 
             // Find the first match after the end of the selection
             if (matcher.find(end))
@@ -2406,7 +2378,6 @@ public class Diary extends Activity
 
         // onQueryTextChange
         @Override
-        @SuppressWarnings("deprecation")
         public boolean onQueryTextChange(String newText)
         {
             // Use web view functionality
