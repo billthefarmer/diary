@@ -99,6 +99,7 @@ public class Diary extends Activity
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
+    private final static int POSITION_DELAY = 128;
 
     private final static String TAG = "Diary";
 
@@ -149,13 +150,15 @@ public class Diary extends Activity
         "View Larger Map</a></small>\n";
     private final static String GEO_PATTERN =
         "geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*";
-    private final static String GEO_TEMPLATE =
-        "![osm](geo:%f,%f)";
+    private final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
     private final static String DATE_PATTERN =
         "\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)";
     public final static String PATTERN_CHARS =
         "[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]";
-    public final static String BRACKET_CHARS = "([{<";
+    private final static String BRACKET_CHARS = "([{<";
+    private final static String POSN_PATTERN =
+        "^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$";
+    private final static String POSN_TEMPLATE = "[#]: # (%d)";
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
@@ -262,7 +265,7 @@ public class Diary extends Activity
     }
 
     // read
-    private static String read(File file)
+    private static CharSequence read(File file)
     {
         StringBuilder text = new StringBuilder();
         try
@@ -279,7 +282,7 @@ public class Diary extends Activity
                     text.append(System.getProperty("line.separator"));
                 }
 
-                return text.toString();
+                return text;
             }
         }
 
@@ -817,6 +820,17 @@ public class Diary extends Activity
                 if (searchItem.isActionViewExpanded())
                     searchItem.collapseActionView();
 
+                // Get selection
+                int selection = textView.getSelectionStart();
+
+                // Get text position
+                int line = textView.getLayout().getLineForOffset(selection);
+                int position = textView.getLayout().getLineBaseline(line);
+
+                // Scroll to it
+                int height = scrollView.getHeight();
+                scrollView.smoothScrollTo(0, position - height / 2);
+
                 shown = false;
             });
 
@@ -836,7 +850,7 @@ public class Diary extends Activity
             {
                 // Hide keyboard
                 InputMethodManager imm = (InputMethodManager)
-                getSystemService(INPUT_METHOD_SERVICE);
+                    getSystemService(INPUT_METHOD_SERVICE);
                 if (!hasFocus)
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             });
@@ -919,7 +933,7 @@ public class Diary extends Activity
     }
 
     // eventCheck
-    private String eventCheck(String text)
+    private String eventCheck(CharSequence text)
     {
         Pattern pattern = Pattern.compile(EVENT_PATTERN, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
@@ -972,19 +986,19 @@ public class Diary extends Activity
     // loadMarkdown
     private void loadMarkdown()
     {
-        String text = textView.getText().toString();
+        CharSequence text = textView.getText();
         loadMarkdown(text);
     }
 
     // loadMarkdown
-    private void loadMarkdown(String text)
+    private void loadMarkdown(CharSequence text)
     {
         markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
                                   getStyles(), getScript());
     }
 
     // markdownCheck
-    private String markdownCheck(String text)
+    private String markdownCheck(CharSequence text)
     {
         // Date check
         text = dateCheck(text);
@@ -993,11 +1007,11 @@ public class Diary extends Activity
         text = mapCheck(text);
 
         // Check for media
-        return mediaCheck(text);
+        return mediaCheck(text).toString();
     }
 
     // mediaCheck
-    private String mediaCheck(String text)
+    private CharSequence mediaCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -1076,11 +1090,11 @@ public class Diary extends Activity
         // Append rest of entry
         matcher.appendTail(buffer);
 
-        return buffer.toString();
+        return buffer;
     }
 
     // mapCheck
-    private String mapCheck(String text)
+    private CharSequence mapCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -1117,11 +1131,11 @@ public class Diary extends Activity
         // Append rest of entry
         matcher.appendTail(buffer);
 
-        return buffer.toString();
+        return buffer;
     }
 
     // dateCheck
-    private String dateCheck(String text)
+    private CharSequence dateCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -1156,7 +1170,7 @@ public class Diary extends Activity
 
             // Create replacement
             String replace =
-                String.format(Locale.getDefault(), LINK_TEMPLATE,
+                String.format(Locale.ROOT, LINK_TEMPLATE,
                               matcher.group(1), uri.toString());
             // Substitute replacement
             matcher.appendReplacement(buffer, replace);
@@ -1165,7 +1179,7 @@ public class Diary extends Activity
         // Append rest of entry
         matcher.appendTail(buffer);
 
-        return buffer.toString();
+        return buffer;
     }
 
     // addMedia
@@ -1703,7 +1717,7 @@ public class Diary extends Activity
 
         if (currEntry != null)
         {
-            String text = textView.getText().toString();
+            CharSequence text = textView.getText();
 
             // Check for events
             text = eventCheck(text);
@@ -1711,13 +1725,16 @@ public class Diary extends Activity
             // Check for maps
             text = mapCheck(text);
 
+            // Check for cursor position
+            text = positionCheck(text);
+
             // Save text
             save(text);
         }
     }
 
     // save
-    private void save(String text)
+    private void save(CharSequence text)
     {
         File file = getFile();
         if (text.length() == 0)
@@ -1740,7 +1757,7 @@ public class Diary extends Activity
             try
             {
                 FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write(text);
+                fileWriter.append(text);
                 fileWriter.close();
             }
             catch (Exception e)
@@ -1767,7 +1784,7 @@ public class Diary extends Activity
     }
 
     // readAssetFile
-    private String readAssetFile(String file)
+    private CharSequence readAssetFile(String file)
     {
         try
         {
@@ -1786,7 +1803,7 @@ public class Diary extends Activity
                 }
 
                 changed = true;
-                return content.toString();
+                return content;
             }
         }
 
@@ -1813,14 +1830,93 @@ public class Diary extends Activity
             }
         }
 
-        String text = read(getFile());
+        CharSequence text = read(getFile());
         textView.setText(text);
+        changed = false;
         if (markdown)
-        {
             loadMarkdown();
-            changed = false;
+
+        if (text != null)
+            checkPosition(text);
+    }
+
+    // checkPosition
+    private void checkPosition(CharSequence text)
+    {
+        // Get a pattern and a matcher for position pattern
+        Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+        // Check pattern
+        if (matcher.find())
+        {
+            switch (matcher.group(1))
+            {
+                // Start
+            case "<":
+                textView.setSelection(0);
+                break;
+
+                // End
+            case ">":
+                textView.setSelection(textView.length());
+                break;
+
+                // Saved position
+            case "#":
+                try
+                {
+                    textView.setSelection(Integer.parseInt(matcher.group(2)));
+                }
+
+                catch (Exception e)
+                {
+                    textView.setSelection(textView.length());
+                }
+                break;
+            }
         }
-        textView.setSelection(textView.length());
+
+        else
+            textView.setSelection(textView.length());
+
+        // Scroll after delay
+        textView.postDelayed(() ->
+        {
+            // Get selection
+            int selection = textView.getSelectionStart();
+
+            // Get text position
+            int line = textView.getLayout().getLineForOffset(selection);
+            int position = textView.getLayout().getLineBaseline(line);
+
+            // Scroll to it
+            int height = scrollView.getHeight();
+            scrollView.smoothScrollTo(0, position - height / 2);
+        }, POSITION_DELAY);
+    }
+
+    // positionCheck
+    private CharSequence positionCheck(CharSequence text)
+    {
+        // Get a pattern and a matcher for position pattern
+        Pattern pattern = Pattern.compile(POSN_PATTERN, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(text);
+        // Check pattern
+        if (matcher.find())
+        {
+            switch (matcher.group(1))
+            {
+                // Save position
+            case "#":
+                // Create replacement
+                String replace =
+                    String.format(Locale.ROOT, POSN_TEMPLATE,
+                                  textView.getSelectionStart());
+                return matcher.replaceFirst(replace);
+            }
+        }
+
+        return text;
     }
 
     // setDate
@@ -2157,14 +2253,11 @@ public class Diary extends Activity
             int start = textView.getSelectionStart();
             int end = textView.getSelectionEnd();
             // And the text
-            String text = textView.getText().toString();
+            CharSequence text = textView.getText();
 
-            // Get a pattern and a matcher for delimiter
-            // characters
-            Pattern pattern =
-                Pattern.compile(PATTERN_CHARS);
-            Matcher matcher =
-                pattern.matcher(text);
+            // Get a pattern and a matcher for delimiter characters
+            Pattern pattern = Pattern.compile(PATTERN_CHARS);
+            Matcher matcher = pattern.matcher(text);
 
             // Find the first match after the end of the selection
             if (matcher.find(end))
@@ -2180,8 +2273,8 @@ public class Diary extends Activity
                 {
                     switch (c)
                     {
-                        // Check for close brackets and look for
-                        // the open brackets
+                        // Check for close brackets and look for the
+                        // open brackets
                     case ')':
                         c = '(';
                         break;
@@ -2199,11 +2292,12 @@ public class Diary extends Activity
                         break;
                     }
 
+                    String string = text.toString();
                     // Do reverse search
-                    start = text.lastIndexOf(c, start) + 1;
+                    start = string.lastIndexOf(c, start) + 1;
 
                     // Check for included newline
-                    if (start > text.lastIndexOf('\n', end))
+                    if (start > string.lastIndexOf('\n', end))
                         // Update selection
                         textView.setSelection(start, end);
                 }
@@ -2307,7 +2401,6 @@ public class Diary extends Activity
         private Editable editable;
         private Pattern pattern;
         private Matcher matcher;
-        private String text;
         private int index;
         private int height;
 
@@ -2325,7 +2418,6 @@ public class Diary extends Activity
             {
                 height = scrollView.getHeight();
                 editable = textView.getEditableText();
-                text = textView.getText().toString();
 
                 // Reset the index and clear highlighting
                 if (newText.length() == 0)
@@ -2340,26 +2432,22 @@ public class Diary extends Activity
                                           Pattern.LITERAL |
                                           Pattern.UNICODE_CASE);
                 // Find text
-                matcher = pattern.matcher(text);
+                matcher = pattern.matcher(editable);
                 if (matcher.find(index))
                 {
                     // Get index
                     index = matcher.start();
 
                     // Get text position
-                    int line = textView.getLayout()
-                               .getLineForOffset(index);
-                    int pos = textView.getLayout()
-                              .getLineBaseline(line);
+                    int line = textView.getLayout().getLineForOffset(index);
+                    int position = textView.getLayout().getLineBaseline(line);
 
                     // Scroll to it
-                    scrollView.smoothScrollTo(0, pos - height / 2);
+                    scrollView.smoothScrollTo(0, position - height / 2);
 
                     // Highlight it
-                    editable
-                    .setSpan(span, index, index +
-                             newText.length(),
-                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    editable.setSpan(span, matcher.start(), matcher.end(),
+                                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
 
@@ -2384,19 +2472,15 @@ public class Diary extends Activity
                     index = matcher.start();
 
                     // Get text position
-                    int line = textView.getLayout()
-                               .getLineForOffset(index);
-                    int pos = textView.getLayout()
-                              .getLineBaseline(line);
+                    int line = textView.getLayout().getLineForOffset(index);
+                    int position = textView.getLayout().getLineBaseline(line);
 
                     // Scroll to it
-                    scrollView.smoothScrollTo(0, pos - height / 2);
+                    scrollView.smoothScrollTo(0, position - height / 2);
 
                     // Highlight it
-                    editable
-                    .setSpan(span, index, index +
-                             query.length(),
-                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    editable.setSpan(span, matcher.start(), matcher.end(),
+                                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
                 // Reset matcher
