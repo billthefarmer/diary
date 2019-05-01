@@ -33,9 +33,18 @@ import android.view.MenuItem;
 // Settings
 public class Settings extends Activity
 {
+    public final static String PREF_ABOUT = "pref_about";
+    public final static String PREF_CUSTOM = "pref_custom";
+    public final static String PREF_FOLDER = "pref_folder";
+    public final static String PREF_EXTERNAL = "pref_external";
+    public final static String PREF_MARKDOWN = "pref_markdown";
+    public final static String PREF_USE_INDEX = "pref_use_index";
+    public final static String PREF_INDEX_PAGE = "pref_index_page";
+    public final static String PREF_COPY_MEDIA = "pref_copy_media";
+    public final static String PREF_DARK_THEME = "pref_dark_theme";
+
     // onCreate
     @Override
-    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -45,7 +54,7 @@ public class Settings extends Activity
             PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean darkTheme =
-            preferences.getBoolean(Diary.PREF_DARK_THEME, false);
+                preferences.getBoolean(PREF_DARK_THEME, false);
 
         if (darkTheme)
             setTheme(R.style.AppDarkTheme);
@@ -69,17 +78,12 @@ public class Settings extends Activity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         // Switch on item id
-        switch (item.getItemId())
-        {
         // Home, finish
-        case android.R.id.home:
+        if (item.getItemId() == android.R.id.home) {
             finish();
-            break;
-
-        default:
+            return true;
+        } else {
             return false;
         }
-
-        return true;
     }
 }

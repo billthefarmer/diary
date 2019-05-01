@@ -36,7 +36,7 @@ import android.widget.ImageButton;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Editor extends Activity
@@ -64,7 +64,7 @@ public class Editor extends Activity
             PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean darkTheme =
-            preferences.getBoolean(Diary.PREF_DARK_THEME, false);
+                preferences.getBoolean(Settings.PREF_DARK_THEME, false);
 
         if (darkTheme)
             setTheme(R.style.AppDarkTheme);
@@ -80,13 +80,13 @@ public class Editor extends Activity
 
         if (uri != null)
         {
-            if (uri.getScheme().equalsIgnoreCase(CONTENT))
+            if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                 uri = resolveContent(uri);
 
             String title = uri.getLastPathSegment();
             setTitle(title);
 
-            if (!uri.getScheme().equalsIgnoreCase(CONTENT))
+            if (!CONTENT.equalsIgnoreCase(uri.getScheme()))
                 file = new File(uri.getPath());
 
             if (savedInstanceState == null)
@@ -165,16 +165,12 @@ public class Editor extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch (item.getItemId())
-        {
-        case android.R.id.home:
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
-            break;
-        default:
+            return true;
+        } else {
             return super.onOptionsItemSelected(item);
         }
-
-        return true;
     }
 
     // onBackPressed
@@ -203,23 +199,16 @@ public class Editor extends Activity
     private String read(Uri uri)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        try
+        try (BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(uri))))
         {
-            InputStream inputStream =
-                getContentResolver().openInputStream(uri);
-            BufferedReader reader =
-                new BufferedReader(new InputStreamReader(inputStream));
-
             String line;
             while ((line = reader.readLine()) != null)
             {
                 stringBuilder.append(line);
                 stringBuilder.append(System.getProperty("line.separator"));
             }
-
-            inputStream.close();
-        }
-        catch (Exception e)
+        } catch (IOException e)
         {
         }
 
@@ -232,13 +221,10 @@ public class Editor extends Activity
         if (file != null)
         {
             file.getParentFile().mkdirs();
-            try
+            try (FileWriter fileWriter = new FileWriter(file))
             {
-                FileWriter fileWriter = new FileWriter(file);
                 fileWriter.write(text);
-                fileWriter.close();
-            }
-            catch (Exception e)
+            } catch (IOException e)
             {
             }
         }

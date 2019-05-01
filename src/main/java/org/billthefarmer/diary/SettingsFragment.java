@@ -37,7 +37,6 @@ import java.text.DateFormat;
 import java.util.Date;
 
 // SettingsFragment class
-@SuppressWarnings("deprecation")
 public class SettingsFragment extends android.preference.PreferenceFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -55,17 +54,17 @@ public class SettingsFragment extends android.preference.PreferenceFragment
 
         // Get folder summary
         EditTextPreference folder =
-            (EditTextPreference) findPreference(Diary.PREF_FOLDER);
+                (EditTextPreference) findPreference(Settings.PREF_FOLDER);
 
         // Set folder in text view
-        folder.setSummary(preferences.getString(Diary.PREF_FOLDER,
+        folder.setSummary(preferences.getString(Settings.PREF_FOLDER,
                                                 Diary.DIARY));
         // Get index preference
         DatePickerPreference entry =
-            (DatePickerPreference) findPreference(Diary.PREF_INDEX_PAGE);
+                (DatePickerPreference) findPreference(Settings.PREF_INDEX_PAGE);
 
         // Get value
-        long value = preferences.getLong(Diary.PREF_INDEX_PAGE,
+        long value = preferences.getLong(Settings.PREF_INDEX_PAGE,
                                          DatePickerPreference.DEFAULT_VALUE);
         Date date = new Date(value);
 
@@ -75,7 +74,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         entry.setSummary(s);
 
         // Get about summary
-        Preference about = findPreference(Diary.PREF_ABOUT);
+        Preference about = findPreference(Settings.PREF_ABOUT);
         String sum = about.getSummary().toString();
 
         // Set version in text view
@@ -125,7 +124,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key)
     {
-        if (key.equals(Diary.PREF_FOLDER))
+        if (key.equals(Settings.PREF_FOLDER))
         {
             // Get folder summary
             EditTextPreference folder =
@@ -135,7 +134,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             folder.setSummary(preferences.getString(key, Diary.DIARY));
         }
 
-        if (key.equals(Diary.PREF_INDEX_PAGE))
+        if (key.equals(Settings.PREF_INDEX_PAGE))
         {
             // Get index preference
             DatePickerPreference entry =
@@ -151,7 +150,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             String s = format.format(date);
             entry.setSummary(s);
         }
-        if (key.equals(Diary.PREF_DARK_THEME))
+        if (key.equals(Settings.PREF_DARK_THEME))
         {
             if (Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
                 getActivity().recreate();
