@@ -113,9 +113,9 @@ public class Diary extends Activity
     private final static String SHOWN = "shown";
     private final static String ENTRY = "entry";
 
-    //Patterns
+    // Patterns
     public final static Pattern PATTERN_CHARS =
-            Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
+        Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
     private final static Pattern MEDIA_PATTERN =
         Pattern.compile("!\\[(.*)\\]\\((.+)\\)", Pattern.MULTILINE);
     private final static Pattern EVENT_PATTERN =
@@ -1243,14 +1243,15 @@ public class Diary extends Activity
                     // Try to get the path as an uri
                     Uri uri = Uri.parse(path);
                     // Check if it's an URL
-                    if ((uri != null) && (uri.getScheme() != null) &&
-                            (uri.getScheme().equalsIgnoreCase(HTTP) ||
-                             uri.getScheme().equalsIgnoreCase(HTTPS)))
+                    if ((uri != null) &&
+                        (HTTP.equalsIgnoreCase(uri.getScheme()) ||
+                         HTTPS.equalsIgnoreCase(uri.getScheme())))
                         media = uri;
                 }
 
                 addMedia(media, true);
-            } else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
+            }
+            else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
             {
                 // Get the media
                 ArrayList<Uri> media =
