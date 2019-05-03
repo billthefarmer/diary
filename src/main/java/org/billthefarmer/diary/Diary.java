@@ -831,16 +831,20 @@ public class Diary extends Activity
                 if (searchItem.isActionViewExpanded())
                     searchItem.collapseActionView();
 
-                // Get selection
-                int selection = textView.getSelectionStart();
+                // Scroll after delay
+                edit.postDelayed(() ->
+                {
+                    // Get selection
+                    int selection = textView.getSelectionStart();
 
-                // Get text position
-                int line = textView.getLayout().getLineForOffset(selection);
-                int position = textView.getLayout().getLineBaseline(line);
+                    // Get text position
+                    int line = textView.getLayout().getLineForOffset(selection);
+                    int position = textView.getLayout().getLineBaseline(line);
 
-                // Scroll to it
-                int height = scrollView.getHeight();
-                scrollView.smoothScrollTo(0, position - height / 2);
+                    // Scroll to it
+                    int height = scrollView.getHeight();
+                    scrollView.smoothScrollTo(0, position - height / 2);
+                }, POSITION_DELAY);
 
                 shown = false;
             });
