@@ -1742,12 +1742,11 @@ public class Diary extends Activity
         else
         {
             file.getParentFile().mkdirs();
-            try
+            try (FileWriter fileWriter = new FileWriter(file))
             {
-                FileWriter fileWriter = new FileWriter(file);
                 fileWriter.append(text);
-                fileWriter.close();
             }
+
             catch (Exception e)
             {
                 alertDialog(R.string.appName, e.getMessage(),
