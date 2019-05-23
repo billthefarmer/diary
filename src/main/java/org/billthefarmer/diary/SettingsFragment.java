@@ -37,6 +37,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 // SettingsFragment class
+@SuppressWarnings("deprecation")
 public class SettingsFragment extends android.preference.PreferenceFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -54,14 +55,14 @@ public class SettingsFragment extends android.preference.PreferenceFragment
 
         // Get folder summary
         EditTextPreference folder =
-                (EditTextPreference) findPreference(Settings.PREF_FOLDER);
+            (EditTextPreference) findPreference(Settings.PREF_FOLDER);
 
         // Set folder in text view
         folder.setSummary(preferences.getString(Settings.PREF_FOLDER,
                                                 Diary.DIARY));
         // Get index preference
         DatePickerPreference entry =
-                (DatePickerPreference) findPreference(Settings.PREF_INDEX_PAGE);
+            (DatePickerPreference) findPreference(Settings.PREF_INDEX_PAGE);
 
         // Get value
         long value = preferences.getLong(Settings.PREF_INDEX_PAGE,
@@ -88,7 +89,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
     {
         super.onResume();
         getPreferenceScreen().getSharedPreferences()
-        .registerOnSharedPreferenceChangeListener(this);
+            .registerOnSharedPreferenceChangeListener(this);
     }
 
     // on Pause
@@ -97,7 +98,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
     {
         super.onPause();
         getPreferenceScreen().getSharedPreferences()
-        .unregisterOnSharedPreferenceChangeListener(this);
+            .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     // On preference tree click

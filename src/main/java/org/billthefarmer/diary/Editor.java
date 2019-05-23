@@ -91,7 +91,7 @@ public class Editor extends Activity
 
             if (savedInstanceState == null)
             {
-                String text = read(uri);
+                CharSequence text = read(uri);
                 textView.setText(text);
             }
         }
@@ -137,7 +137,7 @@ public class Editor extends Activity
         // On click
         accept.setOnClickListener(v ->
         {
-            String text = textView.getText().toString();
+            CharSequence text = textView.getText();
             if (changed)
                 write(text, file);
             finish();
@@ -165,10 +165,13 @@ public class Editor extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home)
+        {
             onBackPressed();
             return true;
-        } else {
+        }
+        else
+        {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -196,11 +199,12 @@ public class Editor extends Activity
     }
 
     // read
-    private String read(Uri uri)
+    private CharSequence read(Uri uri)
     {
         StringBuilder stringBuilder = new StringBuilder();
         try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(uri))))
+             new BufferedReader(new InputStreamReader(getContentResolver()
+                                                      .openInputStream(uri))))
         {
             String line;
             while ((line = reader.readLine()) != null)
@@ -208,23 +212,26 @@ public class Editor extends Activity
                 stringBuilder.append(line);
                 stringBuilder.append(System.getProperty("line.separator"));
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
         }
 
-        return stringBuilder.toString();
+        return stringBuilder;
     }
 
     // write
-    private void write(String text, File file)
+    private void write(CharSequence text, File file)
     {
         if (file != null)
         {
             file.getParentFile().mkdirs();
             try (FileWriter fileWriter = new FileWriter(file))
             {
-                fileWriter.write(text);
-            } catch (IOException e)
+                fileWriter.append(text);
+                fileWriter.close();
+            }
+            catch (IOException e)
             {
             }
         }

@@ -45,6 +45,7 @@ public class Settings extends Activity
 
     // onCreate
     @Override
+    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -54,15 +55,15 @@ public class Settings extends Activity
             PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean darkTheme =
-                preferences.getBoolean(PREF_DARK_THEME, false);
+            preferences.getBoolean(PREF_DARK_THEME, false);
 
         if (darkTheme)
             setTheme(R.style.AppDarkTheme);
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()
-        .replace(android.R.id.content, new SettingsFragment())
-        .commit();
+            .replace(android.R.id.content, new SettingsFragment())
+            .commit();
 
         // Enable back navigation on action bar
         ActionBar actionBar = getActionBar();
@@ -77,13 +78,13 @@ public class Settings extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Switch on item id
         // Home, finish
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home)
+        {
             finish();
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

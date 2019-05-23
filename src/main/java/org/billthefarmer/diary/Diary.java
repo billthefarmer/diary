@@ -56,9 +56,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.ViewSwitcher;
 
 import android.support.v4.content.FileProvider;
-import android.widget.ViewSwitcher;
 
 import org.billthefarmer.markdown.MarkdownView;
 import org.billthefarmer.view.CustomCalendarDialog;
@@ -97,14 +97,13 @@ public class Diary extends Activity
     private final static int REQUEST_READ = 1;
     private final static int REQUEST_WRITE = 2;
 
+    private final static int POSITION_DELAY = 128;
     private final static int BUFFER_SIZE = 1024;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
-    private final static int POSITION_DELAY = 128;
-
-    private final static String TAG = "Diary";
 
     public final static String DIARY = "Diary";
+    private final static String TAG = DIARY;
 
     private final static String YEAR = "year";
     private final static String MONTH = "month";
@@ -114,19 +113,28 @@ public class Diary extends Activity
     private final static String SHOWN = "shown";
     private final static String ENTRY = "entry";
 
+    // Patterns
     public final static Pattern PATTERN_CHARS =
-            Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
-    //Patterns
-    private final static Pattern MEDIA_PATTERN = Pattern.compile("!\\[(.*)\\]\\((.+)\\)", Pattern.MULTILINE);
-    private final static Pattern EVENT_PATTERN = Pattern.compile("^@ *(\\d{1,2}:\\d{2}) +(.+)$", Pattern.MULTILINE);
+        Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
+    private final static Pattern MEDIA_PATTERN =
+        Pattern.compile("!\\[(.*)\\]\\((.+)\\)", Pattern.MULTILINE);
+    private final static Pattern EVENT_PATTERN =
+        Pattern.compile("^@ *(\\d{1,2}:\\d{2}) +(.+)$", Pattern.MULTILINE);
     private final static Pattern MAP_PATTERN =
-            Pattern.compile("\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]", Pattern.MULTILINE);
+        Pattern.compile("\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]",
+                        Pattern.MULTILINE);
     private final static Pattern GEO_PATTERN =
-            Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
+        Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
     private final static Pattern DATE_PATTERN =
-            Pattern.compile("\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)", Pattern.MULTILINE);
+        Pattern.compile("\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)",
+                        Pattern.MULTILINE);
     private final static Pattern POSN_PATTERN =
-            Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$", Pattern.MULTILINE);
+        Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
+                        Pattern.MULTILINE);
+
+    private final static String YEAR_DIR = "^[0-9]{4}$";
+    private final static String MONTH_DIR = "^[0-9]{2}$";
+    private final static String DAY_FILE = "^[0-9]{2}.txt$";
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
@@ -181,6 +189,12 @@ public class Diary extends Activity
 
     private long saved = 0;
 
+    // Indices for the ViewSwitchers
+    private static final int EDIT_TEXT = 0;
+    private static final int MARKDOWN = 1;
+    private static final int ACCEPT = 0;
+    private static final int EDIT = 1;
+
     private float minScale = 1000;
     private boolean canSwipe = true;
     private boolean haveMedia = false;
@@ -196,6 +210,8 @@ public class Diary extends Activity
     private ScrollView scrollView;
 
     private MarkdownView markdownView;
+    private ViewSwitcher layoutSwitcher;
+    private ViewSwitcher buttonSwitcher;
 
     private SearchView searchView;
     private MenuItem searchItem;
@@ -206,13 +222,6 @@ public class Diary extends Activity
 
     private View accept;
     private View edit;
-    //indices for the ViewSwitchers
-    private static final int EDIT_TEXT = 0;
-    private static final int MARKDOWN = 1;
-    private static final int ACCEPT = 0;
-    private static final int EDIT = 1;
-    private ViewSwitcher layoutSwitcher;
-    private ViewSwitcher buttonSwitcher;
 
     // sortFiles
     private static File[] sortFiles(File[] files)
@@ -230,7 +239,7 @@ public class Diary extends Activity
     {
         // accept
         return sortFiles(home.listFiles((dir, filename) ->
-                                        filename.matches("^[0-9]{4}$")));
+                                        filename.matches(YEAR_DIR)));
     }
 
     // listMonths
@@ -238,7 +247,7 @@ public class Diary extends Activity
     {
         // accept
         return sortFiles(yearDir.listFiles((dir, filename) ->
-                                           filename.matches("^[0-9]{2}$")));
+                                           filename.matches(MONTH_DIR)));
     }
 
     // listDays
@@ -246,7 +255,7 @@ public class Diary extends Activity
     {
         // accept
         return sortFiles(monthDir.listFiles((dir, filename) ->
-                                            filename.matches("^[0-9]{2}.txt$")));
+                                            filename.matches(DAY_FILE)));
     }
 
     // yearValue
@@ -274,14 +283,15 @@ public class Diary extends Activity
         try (BufferedReader reader = new BufferedReader(new FileReader(file)))
         {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 text.append(line);
                 text.append(System.getProperty("line.separator"));
             }
 
             return text;
-        } catch (Exception e) {
         }
+        catch (Exception e) {}
 
         return null;
     }
@@ -585,25 +595,33 @@ public class Diary extends Activity
         if (resultCode != RESULT_OK)
             return;
 
-        if (requestCode == ADD_MEDIA) {// Get uri
+        if (requestCode == ADD_MEDIA)
+        {
+            // Get uri
             Uri uri = data.getData();
 
             // Resolve content uri
             if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                 uri = resolveContent(uri);
 
-            if (uri != null) {
+            if (uri != null)
+            {
                 // Get type
                 String type = FileUtils.getMimeType(this, uri);
 
-                if (type == null) {
+                if (type == null)
+                {
                     addLink(uri, uri.getLastPathSegment(), false);
 
-                } else if (type.startsWith(IMAGE) ||
-                        type.startsWith(AUDIO) ||
-                        type.startsWith(VIDEO)) {
+                }
+                else if (type.startsWith(IMAGE) ||
+                         type.startsWith(AUDIO) ||
+                         type.startsWith(VIDEO))
+                {
                     addMedia(uri, false);
-                } else {
+                }
+                else
+                {
                     addLink(uri, uri.getLastPathSegment(), false);
                 }
             }
@@ -727,6 +745,7 @@ public class Diary extends Activity
 
                 // shouldOverrideUrlLoading
                 @Override
+                @SuppressWarnings("deprecation")
                 public boolean shouldOverrideUrlLoading(WebView view,
                                                         String url)
                 {
@@ -812,16 +831,20 @@ public class Diary extends Activity
                 if (searchItem.isActionViewExpanded())
                     searchItem.collapseActionView();
 
-                // Get selection
-                int selection = textView.getSelectionStart();
+                // Scroll after delay
+                edit.postDelayed(() ->
+                {
+                    // Get selection
+                    int selection = textView.getSelectionStart();
 
-                // Get text position
-                int line = textView.getLayout().getLineForOffset(selection);
-                int position = textView.getLayout().getLineBaseline(line);
+                    // Get text position
+                    int line = textView.getLayout().getLineForOffset(selection);
+                    int position = textView.getLayout().getLineBaseline(line);
 
-                // Scroll to it
-                int height = scrollView.getHeight();
-                scrollView.smoothScrollTo(0, position - height / 2);
+                    // Scroll to it
+                    int height = scrollView.getHeight();
+                    scrollView.smoothScrollTo(0, position - height / 2);
+                }, POSITION_DELAY);
 
                 shown = false;
             });
@@ -862,7 +885,6 @@ public class Diary extends Activity
     {
         // Animation
         layoutSwitcher.setDisplayedChild(MARKDOWN);
-
         buttonSwitcher.setDisplayedChild(EDIT);
     }
 
@@ -871,17 +893,7 @@ public class Diary extends Activity
     {
         // Animation
         layoutSwitcher.setDisplayedChild(EDIT_TEXT);
-
         buttonSwitcher.setDisplayedChild(ACCEPT);
-    }
-
-    // startAnimation
-    @Deprecated
-    private void startAnimation(View view, int anim, int visibility)
-    {
-        Animation animation = AnimationUtils.loadAnimation(this, anim);
-        view.startAnimation(animation);
-        view.setVisibility(visibility);
     }
 
     // getPreferences
@@ -913,8 +925,8 @@ public class Diary extends Activity
     {
         // Check for sent media
         if (Intent.ACTION_SEND.equals(intent.getAction()) ||
-                Intent.ACTION_VIEW.equals(intent.getAction()) ||
-                Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
+            Intent.ACTION_VIEW.equals(intent.getAction()) ||
+            Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
         {
             haveMedia = true;
             goToDate(currEntry);
@@ -1235,14 +1247,15 @@ public class Diary extends Activity
                     // Try to get the path as an uri
                     Uri uri = Uri.parse(path);
                     // Check if it's an URL
-                    if ((uri != null) && (uri.getScheme() != null) &&
-                            (uri.getScheme().equalsIgnoreCase(HTTP) ||
-                             uri.getScheme().equalsIgnoreCase(HTTPS)))
+                    if ((uri != null) &&
+                        (HTTP.equalsIgnoreCase(uri.getScheme()) ||
+                         HTTPS.equalsIgnoreCase(uri.getScheme())))
                         media = uri;
                 }
 
                 addMedia(media, true);
-            } else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
+            }
+            else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
             {
                 // Get the media
                 ArrayList<Uri> media =
@@ -1407,8 +1420,7 @@ public class Diary extends Activity
 
         // Get file provider uri
         Uri uri = FileProvider
-            .getUriForFile(this, "org.billthefarmer.diary.fileprovider",
-                           file);
+            .getUriForFile(this, "org.billthefarmer.diary.fileprovider", file);
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setDataAndType(uri, TEXT_CSS);
@@ -1421,12 +1433,10 @@ public class Diary extends Activity
     public void editScript()
     {
         File file = new File(getHome(), JS_SCRIPT);
-        // Uri uri = Uri.fromFile(file);
 
         // Get file provider uri
         Uri uri = FileProvider
-            .getUriForFile(this, "org.billthefarmer.diary.fileprovider",
-                           file);
+            .getUriForFile(this, "org.billthefarmer.diary.fileprovider", file);
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setDataAndType(uri, TEXT_JAVASCRIPT);
@@ -1732,12 +1742,11 @@ public class Diary extends Activity
         else
         {
             file.getParentFile().mkdirs();
-            try
+            try (FileWriter fileWriter = new FileWriter(file))
             {
-                FileWriter fileWriter = new FileWriter(file);
                 fileWriter.append(text);
-                fileWriter.close();
             }
+
             catch (Exception e)
             {
                 alertDialog(R.string.appName, e.getMessage(),
@@ -1881,7 +1890,9 @@ public class Diary extends Activity
         if (matcher.find())
         {
             // Save position
-            if ("#".equals(matcher.group(1))) {// Create replacement
+            if ("#".equals(matcher.group(1)))
+            {
+                // Create replacement
                 String replace =
                         String.format(Locale.ROOT, POSN_TEMPLATE,
                                 textView.getSelectionStart());
@@ -1908,12 +1919,12 @@ public class Diary extends Activity
 
         prevEntry = getPrevEntry(year, month, day);
         if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
-                today.compareTo(date) < 0)
+            today.compareTo(date) < 0)
             prevEntry = today;
         currEntry = date;
         nextEntry = getNextEntry(year, month, day);
         if ((nextEntry == null || today.compareTo(nextEntry) < 0) &&
-                today.compareTo(date) > 0)
+            today.compareTo(date) > 0)
             nextEntry = today;
 
         invalidateOptionsMenu();
@@ -2350,7 +2361,6 @@ public class Diary extends Activity
                         // Put the search text back - why it
                         // disappears I have no idea or why I have to
                         // do it after a delay
-                        // run
                         searchView.postDelayed(() ->
                             searchView.setQuery(search, false), FIND_DELAY);
                     }
@@ -2378,6 +2388,7 @@ public class Diary extends Activity
 
         // onQueryTextChange
         @Override
+        @SuppressWarnings("deprecation")
         public boolean onQueryTextChange(String newText)
         {
             // Use web view functionality
@@ -2491,7 +2502,7 @@ public class Diary extends Activity
                 if (Math.abs(diffX) > Math.abs(diffY))
                 {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD &&
-                            Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
+                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
                     {
                         if (diffX > 0)
                         {
@@ -2508,8 +2519,8 @@ public class Diary extends Activity
                 else
                 {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD &&
-                            Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD &&
-                            multi)
+                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD &&
+                        multi)
                     {
                         if (diffY > 0)
                         {
