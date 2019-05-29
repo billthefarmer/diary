@@ -17,11 +17,9 @@
 package org.billthefarmer.diary;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -33,11 +31,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -58,8 +56,6 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.ViewSwitcher;
 
-import android.support.v4.content.FileProvider;
-
 import org.billthefarmer.markdown.MarkdownView;
 import org.billthefarmer.view.CustomCalendarDialog;
 import org.billthefarmer.view.CustomCalendarView;
@@ -72,6 +68,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
@@ -135,6 +132,7 @@ public class Diary extends Activity
     private final static String YEAR_DIR = "^[0-9]{4}$";
     private final static String MONTH_DIR = "^[0-9]{2}$";
     private final static String DAY_FILE = "^[0-9]{2}.txt$";
+    private final static String FILE_PATTERN = "([0-9]{4}).([0-9]{2}).([0-9]{2}).txt$";
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
@@ -204,7 +202,7 @@ public class Diary extends Activity
     private Calendar prevEntry;
     private Calendar currEntry;
     private Calendar nextEntry;
-    private Calendar indexPage;
+    private long indexPage;
 
     private EditText textView;
     private ScrollView scrollView;
@@ -294,6 +292,53 @@ public class Diary extends Activity
         catch (Exception e) {}
 
         return null;
+    }
+
+    // setToMidnight
+    private static void setToMidnight(Calendar calendar)
+    {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    // parseTime
+    private static long parseTime(File file)
+    {
+        Matcher matcher = Pattern.compile(FILE_PATTERN)
+                .matcher(file.getPath());
+        if (matcher.find())
+        {
+            try
+            {
+                int year = Integer.parseInt(matcher.group(1));
+                int month = Integer.parseInt(matcher.group(2)) - 1;
+                int dayOfMonth = Integer.parseInt(matcher.group(3));
+
+                return new GregorianCalendar(year, month, dayOfMonth).getTimeInMillis();
+            }
+            catch (NumberFormatException e)
+            {
+                return -1;
+            }
+        }
+        return -1;
+    }
+
+    // listEntries
+    private static void listEntries(File directory, List<File> fileList)
+    {
+        // Get all entry files from a directory.
+        File[] files = directory.listFiles();
+        if (files != null)
+            for (File file : files) {
+                if (file.isFile() && file.getName().matches(DAY_FILE)) {
+                    fileList.add(file);
+                } else if (file.isDirectory()) {
+                    listEntries(file, fileList);
+                }
+            }
     }
 
     // onCreate
@@ -911,10 +956,8 @@ public class Diary extends Activity
         darkTheme = preferences.getBoolean(Settings.PREF_DARK_THEME, false);
 
         // Index page
-        long value = preferences.getLong(Settings.PREF_INDEX_PAGE,
+        indexPage = preferences.getLong(Settings.PREF_INDEX_PAGE,
                                          DatePickerPreference.DEFAULT_VALUE);
-        indexPage = Calendar.getInstance();
-        indexPage.setTimeInMillis(value);
 
         // Folder
         folder = preferences.getString(Settings.PREF_FOLDER, DIARY);
@@ -1448,8 +1491,7 @@ public class Diary extends Activity
     // settings
     private void settings()
     {
-        Intent intent = new Intent(this, Settings.class);
-        startActivity(intent);
+        startActivity(new Intent(this, Settings.class));
     }
 
     // getHome
@@ -1794,7 +1836,7 @@ public class Diary extends Activity
             }
         }
 
-        catch (Exception e) {}
+        catch (Exception ignored) {}
 
         return null;
     }
@@ -1912,10 +1954,8 @@ public class Diary extends Activity
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
 
-        Calendar calendar = Calendar.getInstance();
-        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
-                                               calendar.get(Calendar.MONTH),
-                                               calendar.get(Calendar.DATE));
+        Calendar today = Calendar.getInstance();
+        setToMidnight(today);
 
         prevEntry = getPrevEntry(year, month, day);
         if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
@@ -2004,7 +2044,9 @@ public class Diary extends Activity
     private void index()
     {
         entryStack.clear();
-        changeDate(indexPage);
+        Calendar index = Calendar.getInstance();
+        index.setTimeInMillis(indexPage);
+        changeDate(index);
     }
 
     // addMedia
@@ -2032,7 +2074,7 @@ public class Diary extends Activity
                     media = Uri.parse(newName);
                 }
 
-                catch (Exception e) {}
+                catch (Exception ignored) {}
             }
         }
 
@@ -2289,46 +2331,46 @@ public class Diary extends Activity
     }
 
     // FindTask
-    @SuppressLint("StaticFieldLeak")
-    private class FindTask
-        extends AsyncTask<String, Void, List<String>>
+    private static class FindTask
+            extends AsyncTask<String, Void, List<String>>
     {
-        private Context context;
+        private WeakReference<Diary> diaryWeakReference;
         private String search;
 
-        public FindTask(Context context)
+        public FindTask(Diary diary)
         {
-            this.context = context;
+            diaryWeakReference = new WeakReference<>(diary);
         }
 
         // doInBackground
         @Override
         protected List<String> doInBackground(String... params)
         {
+            final Diary diary = diaryWeakReference.get();
+            if (diary == null)
+                return null;
             search = params[0];
             Pattern pattern = Pattern.compile(search,
-                                              Pattern.CASE_INSENSITIVE |
-                                              Pattern.LITERAL |
-                                              Pattern.UNICODE_CASE);
+                    Pattern.CASE_INSENSITIVE |
+                            Pattern.LITERAL |
+                            Pattern.UNICODE_CASE);
             // Get entry list
-            List<Calendar> entries = getEntries();
+            List<File> entries = new ArrayList<>();
+            listEntries(diary.getHome(), entries);
 
             // Create a list of matches
             List<String> matches = new ArrayList<>();
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
             // Check the entries
-            for (Calendar entry : entries)
+            for (File file : entries)
             {
-                File file = getDay(entry.get(Calendar.YEAR),
-                                   entry.get(Calendar.MONTH),
-                                   entry.get(Calendar.DATE));
-
-                Matcher matcher = pattern.matcher(read(file));
+                String content = read(file).toString();
+                String headline = content.split("\n")[0];
+                Matcher matcher = pattern.matcher(content);
                 if (matcher.find())
-                    matches.add(DateFormat.getDateInstance(DateFormat.MEDIUM)
-                                .format(entry.getTime()));
+                    matches.add(dateFormat.format(parseTime(file)) + '\t' + headline);
             }
-
             return matches;
         }
 
@@ -2336,19 +2378,22 @@ public class Diary extends Activity
         @Override
         protected void onPostExecute(List<String> matches)
         {
+            final Diary diary = diaryWeakReference.get();
+            if (diary == null)
+                return;
             // Build dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(diary);
             builder.setTitle(R.string.findAll);
 
             // If found populate dialog
-            if (!matches.isEmpty())
+            if (matches != null && !matches.isEmpty())
             {
                 final String[] choices = matches.toArray(new String[0]);
                 builder.setItems(choices, (dialog, which) ->
                 {
                     String choice = choices[which];
                     DateFormat format =
-                        DateFormat.getDateInstance(DateFormat.MEDIUM);
+                            DateFormat.getDateInstance(DateFormat.MEDIUM);
 
                     // Get the entry chosen
                     try
@@ -2356,16 +2401,15 @@ public class Diary extends Activity
                         Date date = format.parse(choice);
                         Calendar entry = Calendar.getInstance();
                         entry.setTime(date);
-                        changeDate(entry);
+                        diary.changeDate(entry);
 
                         // Put the search text back - why it
                         // disappears I have no idea or why I have to
                         // do it after a delay
-                        searchView.postDelayed(() ->
-                            searchView.setQuery(search, false), FIND_DELAY);
+                        diary.searchView.postDelayed(() ->
+                                diary.searchView.setQuery(search, false), FIND_DELAY);
                     }
-
-                    catch (Exception e) {}
+                    catch (Exception ignored) {}
                 });
             }
 
@@ -2538,7 +2582,7 @@ public class Diary extends Activity
                 multi = false;
             }
 
-            catch (Exception e) {}
+            catch (Exception ignored) {}
 
             return result;
         }
