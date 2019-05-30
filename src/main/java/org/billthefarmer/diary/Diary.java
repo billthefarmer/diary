@@ -128,11 +128,12 @@ public class Diary extends Activity
     private final static Pattern POSN_PATTERN =
         Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
                         Pattern.MULTILINE);
+    private final static Pattern FILE_PATTERN =
+        Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).txt$");
 
     private final static String YEAR_DIR = "^[0-9]{4}$";
     private final static String MONTH_DIR = "^[0-9]{2}$";
     private final static String DAY_FILE = "^[0-9]{2}.txt$";
-    private final static String FILE_PATTERN = "([0-9]{4}).([0-9]{2}).([0-9]{2}).txt$";
 
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
@@ -306,8 +307,7 @@ public class Diary extends Activity
     // parseTime
     private static long parseTime(File file)
     {
-        Matcher matcher = Pattern.compile(FILE_PATTERN)
-                .matcher(file.getPath());
+        Matcher matcher = FILE_PATTERN.matcher(file.getPath());
         if (matcher.find())
         {
             try
@@ -316,13 +316,16 @@ public class Diary extends Activity
                 int month = Integer.parseInt(matcher.group(2)) - 1;
                 int dayOfMonth = Integer.parseInt(matcher.group(3));
 
-                return new GregorianCalendar(year, month, dayOfMonth).getTimeInMillis();
+                return new GregorianCalendar
+                    (year, month, dayOfMonth).getTimeInMillis();
             }
+
             catch (NumberFormatException e)
             {
                 return -1;
             }
         }
+
         return -1;
     }
 
@@ -332,10 +335,15 @@ public class Diary extends Activity
         // Get all entry files from a directory.
         File[] files = directory.listFiles();
         if (files != null)
-            for (File file : files) {
-                if (file.isFile() && file.getName().matches(DAY_FILE)) {
+            for (File file : files)
+            {
+                if (file.isFile() && file.getName().matches(DAY_FILE))
+                {
                     fileList.add(file);
-                } else if (file.isDirectory()) {
+                }
+
+                else if (file.isDirectory())
+                {
                     listEntries(file, fileList);
                 }
             }
@@ -2347,30 +2355,35 @@ public class Diary extends Activity
         protected List<String> doInBackground(String... params)
         {
             final Diary diary = diaryWeakReference.get();
+            // Create a list of matches
+            List<String> matches = new ArrayList<>();
             if (diary == null)
-                return null;
+                return matches;
+
             search = params[0];
-            Pattern pattern = Pattern.compile(search,
-                    Pattern.CASE_INSENSITIVE |
-                            Pattern.LITERAL |
-                            Pattern.UNICODE_CASE);
+            Pattern pattern =
+                Pattern.compile(search, Pattern.CASE_INSENSITIVE |
+                                Pattern.LITERAL | Pattern.UNICODE_CASE);
             // Get entry list
             List<File> entries = new ArrayList<>();
             listEntries(diary.getHome(), entries);
 
-            // Create a list of matches
-            List<String> matches = new ArrayList<>();
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            DateFormat dateFormat =
+                DateFormat.getDateInstance(DateFormat.MEDIUM);
 
             // Check the entries
             for (File file : entries)
             {
-                String content = read(file).toString();
-                String headline = content.split("\n")[0];
+                CharSequence content = read(file);
                 Matcher matcher = pattern.matcher(content);
                 if (matcher.find())
-                    matches.add(dateFormat.format(parseTime(file)) + '\t' + headline);
+                {
+                    String headline = content.toString().split("\n")[0];
+                    matches.add
+                        (dateFormat.format(parseTime(file)) + "  " + headline);
+                }
             }
+
             return matches;
         }
 
@@ -2381,6 +2394,7 @@ public class Diary extends Activity
             final Diary diary = diaryWeakReference.get();
             if (diary == null)
                 return;
+
             // Build dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(diary);
             builder.setTitle(R.string.findAll);
@@ -2407,8 +2421,10 @@ public class Diary extends Activity
                         // disappears I have no idea or why I have to
                         // do it after a delay
                         diary.searchView.postDelayed(() ->
-                                diary.searchView.setQuery(search, false), FIND_DELAY);
+                                diary.searchView.setQuery(search, false),
+                                                     FIND_DELAY);
                     }
+
                     catch (Exception ignored) {}
                 });
             }
