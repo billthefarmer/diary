@@ -99,6 +99,12 @@ public class Diary extends Activity
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
 
+    // Indices for the ViewSwitchers
+    private static final int EDIT_TEXT = 0;
+    private static final int MARKDOWN = 1;
+    private static final int ACCEPT = 0;
+    private static final int EDIT = 1;
+
     public final static String DIARY = "Diary";
     private final static String TAG = DIARY;
 
@@ -188,22 +194,18 @@ public class Diary extends Activity
 
     private long saved = 0;
 
-    // Indices for the ViewSwitchers
-    private static final int EDIT_TEXT = 0;
-    private static final int MARKDOWN = 1;
-    private static final int ACCEPT = 0;
-    private static final int EDIT = 1;
-
     private float minScale = 1000;
+
     private boolean canSwipe = true;
     private boolean haveMedia = false;
+
+    private long indexPage;
 
     private String folder = DIARY;
 
     private Calendar prevEntry;
     private Calendar currEntry;
     private Calendar nextEntry;
-    private long indexPage;
 
     private EditText textView;
     private ScrollView scrollView;
