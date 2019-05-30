@@ -2356,9 +2356,9 @@ public class Diary extends Activity
         @Override
         protected List<String> doInBackground(String... params)
         {
-            final Diary diary = diaryWeakReference.get();
             // Create a list of matches
             List<String> matches = new ArrayList<>();
+            final Diary diary = diaryWeakReference.get();
             if (diary == null)
                 return matches;
 
@@ -2402,7 +2402,7 @@ public class Diary extends Activity
             builder.setTitle(R.string.findAll);
 
             // If found populate dialog
-            if (matches != null && !matches.isEmpty())
+            if (!matches.isEmpty())
             {
                 final String[] choices = matches.toArray(new String[0]);
                 builder.setItems(choices, (dialog, which) ->
