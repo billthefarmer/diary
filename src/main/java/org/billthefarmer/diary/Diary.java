@@ -31,7 +31,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -55,6 +54,8 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.ViewSwitcher;
+
+import android.support.v4.content.FileProvider;
 
 import org.billthefarmer.markdown.MarkdownView;
 import org.billthefarmer.view.CustomCalendarDialog;
