@@ -35,6 +35,7 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -1473,8 +1474,10 @@ public class Diary extends Activity
         File file = new File(getHome(), CSS_STYLES);
 
         // Get file provider uri
-        Uri uri = FileProvider
-            .getUriForFile(this, "org.billthefarmer.diary.fileprovider", file);
+        Uri uri = FileProvider.getUriForFile
+            (this, "org.billthefarmer.diary.fileprovider", file);
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Path " + uri.getPath());
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setDataAndType(uri, TEXT_CSS);
@@ -1489,8 +1492,10 @@ public class Diary extends Activity
         File file = new File(getHome(), JS_SCRIPT);
 
         // Get file provider uri
-        Uri uri = FileProvider
-            .getUriForFile(this, "org.billthefarmer.diary.fileprovider", file);
+        Uri uri = FileProvider.getUriForFile
+            (this, "org.billthefarmer.diary.fileprovider", file);
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Path " + uri.getPath());
 
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setDataAndType(uri, TEXT_JAVASCRIPT);
