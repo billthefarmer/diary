@@ -661,7 +661,7 @@ public class Diary extends Activity
             if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                 uri = resolveContent(uri);
 
-            if (uri != null)
+            if (uri != null && !CONTENT.equalsIgnoreCase(uri.getScheme()))
             {
                 // Get type
                 String type = FileUtils.getMimeType(this, uri);
