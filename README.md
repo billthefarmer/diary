@@ -51,6 +51,16 @@ reinstalled the app, which resets the settings. If this happens, check
 the folder option and either change it back or move your entries with
 a file manager.
 
+### Playing video
+Recent versions of Android may not play videos in diary entries added
+using the **Add media** function. This is due to an apparent defect in
+the android
+[WebView](https://developer.android.com/reference/android/webkit/WebView)
+component. There is a [Android System
+WebView](https://play.google.com/store/apps/details?id=com.google.android.webview)
+system component in [Google Play](https://play.google.com/store), but
+installing it does not seem to help.
+
 * Entries saved in plain text files
 * Browse entries
 * English, Catalan, Spanish, Italian, Japanese, German, French,
