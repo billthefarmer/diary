@@ -81,6 +81,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:showAsAction="ifRoom"
       android:title="@string/editScript" />
   <item
+      android:id="@+id/backup"
+      android:icon="@drawable/ic_action_save"
+      android:showAsAction="ifRoom"
+      android:title="@string/backup" />
+  <item
       android:id="@+id/settings"
       android:icon="@drawable/ic_action_settings"
       android:showAsAction="ifRoom"

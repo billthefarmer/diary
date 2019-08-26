@@ -66,6 +66,7 @@ import org.billthefarmer.view.DayView;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -85,6 +86,8 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 // Diary
 public class Diary extends Activity
@@ -143,6 +146,7 @@ public class Diary extends Activity
     private final static String MONTH_DIR = "^[0-9]{2}$";
     private final static String DAY_FILE = "^[0-9]{2}.txt$";
 
+    private final static String ZIP = ".zip";
     private final static String HELP = "help.md";
     private final static String STYLES = "file:///android_asset/styles.css";
     private final static String SCRIPT = "file:///android_asset/script.js";
@@ -173,6 +177,7 @@ public class Diary extends Activity
     private final static String GEO = "geo";
     private final static String OSM = "osm";
     private final static String HTTP = "http";
+    private final static String TEXT = "text";
     private final static String HTTPS = "https";
     private final static String CONTENT = "content";
     private final static String TEXT_PLAIN = "text/plain";
@@ -349,6 +354,26 @@ public class Diary extends Activity
                 else if (file.isDirectory())
                 {
                     listEntries(file, fileList);
+                }
+            }
+    }
+
+    // listFiles
+    private static void listFiles(File directory, List<File> fileList)
+    {
+        // Get all entry files from a directory.
+        File[] files = directory.listFiles();
+        if (files != null)
+            for (File file : files)
+            {
+                if (file.isFile())
+                {
+                    fileList.add(file);
+                }
+
+                else if (file.isDirectory())
+                {
+                    listFiles(file, fileList);
                 }
             }
     }
@@ -597,6 +622,9 @@ public class Diary extends Activity
             break;
         case R.id.editScript:
             editScript();
+            break;
+        case R.id.backup:
+            backup();
             break;
         case R.id.settings:
             settings();
@@ -1504,6 +1532,13 @@ public class Diary extends Activity
         startActivity(intent);
     }
 
+    // backup
+    public void backup()
+    {
+        ZipTask zipTask = new ZipTask(this);
+        zipTask.execute();
+    }
+
     // settings
     private void settings()
     {
@@ -2343,6 +2378,64 @@ public class Diary extends Activity
                         textView.setSelection(start, end);
                 }
             }
+        }
+    }
+
+    // ZipTask
+    private static class ZipTask
+            extends AsyncTask<Void, Void, Void>
+    {
+        private WeakReference<Diary> diaryWeakReference;
+        private String search;
+
+        public ZipTask(Diary diary)
+        {
+            diaryWeakReference = new WeakReference<>(diary);
+        }
+
+        // doInBackground
+        @Override
+        protected Void doInBackground(Void... noparams)
+        {
+            final Diary diary = diaryWeakReference.get();
+            if (diary == null)
+                return null;
+
+            File home = diary.getHome();
+
+            // Create output stream
+            try (ZipOutputStream output = new
+                 ZipOutputStream(new FileOutputStream(home.getPath() + ZIP)))
+            {
+                // Get entry list
+                List<File> files = new ArrayList<>();
+                listFiles(home, files);
+
+                for (File file: files)
+                {
+                    String type = FileUtils.getMimeType(file);
+                    if (type == null || !type.startsWith(TEXT))
+                        continue;
+
+                    String path = file.getPath();
+                    path = path.substring(home.getPath().length() + 1);
+                    ZipEntry entry = new ZipEntry(path);
+                    CharSequence content = read(file);
+                    byte[] bytes = content.toString().getBytes();
+                    output.putNextEntry(entry);
+                    output.write(bytes, 0, bytes.length);
+                }
+            }
+
+            catch (Exception e)
+            {
+                diary.textView.post(() ->
+                    diary.alertDialog(R.string.appName, e.getMessage(),
+                                      android.R.string.ok));
+                Log.e(TAG, e.getMessage());
+            }
+
+            return null;
         }
     }
 
