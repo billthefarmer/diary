@@ -30,6 +30,7 @@
   <string name="addMedia">Afegeix mitjans…</string>
   <string name="editStyles">Edita estils…</string>
   <string name="editScript">Edita script…</string>
+  <string name="backup">Còpia de seguretat</string>
   <string name="settings">Ajustos</string>
   <string name="calendar">Calendari</string>
   <string name="pref_calendar">Utilitza calendari personalitzat</string>

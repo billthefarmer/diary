@@ -30,6 +30,7 @@
   <string name="addMedia">Dodaj media…</string>
   <string name="editStyles">Edytuj style…</string>
   <string name="editScript">Edytuj skrypt…</string>
+  <string name="backup">Utworzyć kopię zapasową</string>
   <string name="settings">Ustawienia</string>
   <string name="calendar">Kalendarz</string>
   <string name="pref_calendar">Używaj niestandardowego kalendarza</string>

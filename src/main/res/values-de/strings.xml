@@ -30,6 +30,7 @@
   <string name="addMedia">Medien hinzufügen…</string>
   <string name="editStyles">Stile bearbeiten…</string>
   <string name="editScript">Skript bearbeiten…</string>
+  <string name="backup">Backup</string>
   <string name="settings">Einstellungen</string>
   <string name="calendar">Kalender</string>
   <string name="pref_calendar">Verwende app-eigenen Kalender</string>

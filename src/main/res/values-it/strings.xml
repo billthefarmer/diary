@@ -27,6 +27,7 @@
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>
+  <string name="backup">Di riserva</string>
   <string name="settings">Impostazioni</string>
   <string name="calendar">Calendario</string>
   <string name="pref_calendar">

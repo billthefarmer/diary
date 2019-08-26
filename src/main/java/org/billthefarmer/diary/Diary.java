@@ -2413,6 +2413,7 @@ public class Diary extends Activity
 
                 for (File file: files)
                 {
+                    // Check mime type
                     String type = FileUtils.getMimeType(file);
                     if (type == null || !type.startsWith(TEXT))
                         continue;
