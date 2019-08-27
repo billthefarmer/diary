@@ -33,6 +33,7 @@ The toolbar icons are, from left to right:
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Edit script** - show an editor to edit custom javascript
+* **Backup** - backup entries to a zip file
 * **Settings** - show the settings
 
 Depending on the device and orientation, some items may be on the
@@ -169,6 +170,10 @@ If you want to use javascript libraries or write a large script it
 might be a good idea to use the Google
 [Closure Compiler](https://developers.google.com/closure/compiler) to
 check and minimise your code. It will handle multiple input files.
+
+## Backup
+You may create a backup of all your entries in a zip file. The file
+will have the same name as the diary folder, default `Diary.zip`.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
