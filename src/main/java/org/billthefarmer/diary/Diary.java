@@ -2422,6 +2422,11 @@ public class Diary extends Activity
                     if (file.isDirectory())
                     {
                         ZipEntry entry = new ZipEntry(path + File.separator);
+                        entry.setMethod(ZipEntry.STORED);
+                        entry.setTime(file.lastModified());
+                        entry.setSize(0);
+                        entry.setCompressedSize(0);
+                        entry.setCrc(0);
                         output.putNextEntry(entry);
                     }
 
@@ -2433,9 +2438,11 @@ public class Diary extends Activity
                             continue;
 
                         ZipEntry entry = new ZipEntry(path);
+                        entry.setMethod(ZipEntry.DEFLATED);
+                        entry.setTime(file.lastModified());
+                        output.putNextEntry(entry);
                         CharSequence content = read(file);
                         byte[] bytes = content.toString().getBytes();
-                        output.putNextEntry(entry);
                         output.write(bytes, 0, bytes.length);
                     }
                 }
