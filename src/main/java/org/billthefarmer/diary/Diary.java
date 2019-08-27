@@ -2453,7 +2453,6 @@ public class Diary extends Activity
                 diary.textView.post(() ->
                     diary.alertDialog(R.string.appName, e.getMessage(),
                                       android.R.string.ok));
-                Log.e(TAG, e.getMessage());
             }
 
             return null;
