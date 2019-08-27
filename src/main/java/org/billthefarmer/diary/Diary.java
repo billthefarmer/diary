@@ -373,6 +373,7 @@ public class Diary extends Activity
 
                 else if (file.isDirectory())
                 {
+                    fileList.add(file);
                     listFiles(file, fileList);
                 }
             }
@@ -2388,6 +2389,7 @@ public class Diary extends Activity
         private WeakReference<Diary> diaryWeakReference;
         private String search;
 
+        // ZipTask
         public ZipTask(Diary diary)
         {
             diaryWeakReference = new WeakReference<>(diary);
@@ -2413,18 +2415,29 @@ public class Diary extends Activity
 
                 for (File file: files)
                 {
-                    // Check mime type
-                    String type = FileUtils.getMimeType(file);
-                    if (type == null || !type.startsWith(TEXT))
-                        continue;
-
+                    // Get path
                     String path = file.getPath();
                     path = path.substring(home.getPath().length() + 1);
-                    ZipEntry entry = new ZipEntry(path);
-                    CharSequence content = read(file);
-                    byte[] bytes = content.toString().getBytes();
-                    output.putNextEntry(entry);
-                    output.write(bytes, 0, bytes.length);
+
+                    if (file.isDirectory())
+                    {
+                        ZipEntry entry = new ZipEntry(path + File.separator);
+                        output.putNextEntry(entry);
+                    }
+
+                    else if (file.isFile())
+                    {
+                        // Check mime type
+                        String type = FileUtils.getMimeType(file);
+                        if (type == null || !type.startsWith(TEXT))
+                            continue;
+
+                        ZipEntry entry = new ZipEntry(path);
+                        CharSequence content = read(file);
+                        byte[] bytes = content.toString().getBytes();
+                        output.putNextEntry(entry);
+                        output.write(bytes, 0, bytes.length);
+                    }
                 }
             }
 
@@ -2447,6 +2460,7 @@ public class Diary extends Activity
         private WeakReference<Diary> diaryWeakReference;
         private String search;
 
+        // FindTask
         public FindTask(Diary diary)
         {
             diaryWeakReference = new WeakReference<>(diary);

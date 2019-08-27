@@ -30,6 +30,7 @@
   <string name="addMedia">Adicionar mídia</string>
   <string name="editStyles">Editar estilos…</string>
   <string name="editScript">Editar script…</string>
+  <string name="backup">Cópia de segurança</string>
   <string name="settings">Configurações</string>
   <string name="calendar">Calendário</string>
   <string name="pref_calendar">Usar calendário personalizado</string>
