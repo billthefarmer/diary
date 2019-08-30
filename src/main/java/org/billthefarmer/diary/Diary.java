@@ -64,8 +64,10 @@ import org.billthefarmer.view.CustomCalendarView;
 import org.billthefarmer.view.DayDecorator;
 import org.billthefarmer.view.DayView;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -100,7 +102,7 @@ public class Diary extends Activity
     private final static int REQUEST_WRITE = 2;
 
     private final static int POSITION_DELAY = 128;
-    private final static int BUFFER_SIZE = 1024;
+    private final static int BUFFER_SIZE = 4096;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
 
@@ -2409,6 +2411,8 @@ public class Diary extends Activity
             try (ZipOutputStream output = new
                  ZipOutputStream(new FileOutputStream(home.getPath() + ZIP)))
             {
+                byte[] buffer = new byte[BUFFER_SIZE];
+
                 // Get entry list
                 List<File> files = new ArrayList<>();
                 listFiles(home, files);
@@ -2432,18 +2436,20 @@ public class Diary extends Activity
 
                     else if (file.isFile())
                     {
-                        // Check mime type
-                        String type = FileUtils.getMimeType(file);
-                        if (type == null || !type.startsWith(TEXT))
-                            continue;
-
                         ZipEntry entry = new ZipEntry(path);
                         entry.setMethod(ZipEntry.DEFLATED);
                         entry.setTime(file.lastModified());
                         output.putNextEntry(entry);
-                        CharSequence content = read(file);
-                        byte[] bytes = content.toString().getBytes();
-                        output.write(bytes, 0, bytes.length);
+
+                        try (BufferedInputStream input = new
+                             BufferedInputStream(new FileInputStream(file)))
+                        {
+                            while (input.available() > 0)
+                            {
+                                int size = input.read(buffer);
+                                output.write(buffer, 0, size);
+                            }
+                        }
                     }
                 }
             }
