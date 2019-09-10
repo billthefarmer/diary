@@ -136,16 +136,6 @@ public class Editor extends Activity
                 }
             });
 
-            // onFocusChange
-            textView.setOnFocusChangeListener((v, hasFocus) ->
-            {
-                // Hide keyboard
-                InputMethodManager imm = (InputMethodManager)
-                    getSystemService(INPUT_METHOD_SERVICE);
-                if (!hasFocus)
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            });
-
             // On long click
             textView.setOnLongClickListener(v ->
             {
@@ -163,6 +153,12 @@ public class Editor extends Activity
                 CharSequence text = textView.getText();
                 if (changed)
                     write(text, file);
+
+                // Hide keyboard
+                InputMethodManager imm = (InputMethodManager)
+                    getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+
                 finish();
             });
 
@@ -212,6 +208,11 @@ public class Editor extends Activity
     @Override
     public void onBackPressed()
     {
+        // Hide keyboard
+        InputMethodManager imm = (InputMethodManager)
+            getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+
         finish();
     }
 
