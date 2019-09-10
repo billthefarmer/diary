@@ -29,7 +29,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.inputmethod.InputMethodManager;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -44,8 +46,6 @@ public class Editor extends Activity
     public final static String TAG = "Editor";
     public final static String CHANGED = "changed";
     public final static String CONTENT = "content";
-
-    private final static int BUFFER_SIZE = 1024;
 
     private File file;
 
@@ -102,46 +102,78 @@ public class Editor extends Activity
     // setListeners
     private void setListeners()
     {
+        ImageButton accept = findViewById(R.id.accept);
 
         if (textView != null)
+        {
+            // Text changed
             textView.addTextChangedListener(new TextWatcher()
-        {
-            // afterTextChanged
-            @Override
-            public void afterTextChanged(Editable s)
             {
-                changed = true;
-                invalidateOptionsMenu();
-            }
+                // afterTextChanged
+                @Override
+                public void afterTextChanged(Editable s)
+                {
+                    changed = true;
+                    invalidateOptionsMenu();
+                }
 
-            // beforeTextChanged
-            @Override
-            public void beforeTextChanged(CharSequence s,
+                // beforeTextChanged
+                @Override
+                public void beforeTextChanged(CharSequence s,
+                                              int start,
+                                              int count,
+                                              int after)
+                {
+                }
+
+                // onTextChanged
+                @Override
+                public void onTextChanged(CharSequence s,
                                           int start,
-                                          int count,
-                                          int after)
-            {
-            }
+                                          int before,
+                                          int count)
+                {
+                }
+            });
 
-            // onTextChanged
-            @Override
-            public void onTextChanged(CharSequence s,
-                                      int start,
-                                      int before,
-                                      int count)
+            // onFocusChange
+            textView.setOnFocusChangeListener((v, hasFocus) ->
             {
-            }
-        });
+                // Hide keyboard
+                InputMethodManager imm = (InputMethodManager)
+                    getSystemService(INPUT_METHOD_SERVICE);
+                if (!hasFocus)
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            });
 
-        ImageButton accept = findViewById(R.id.accept);
-        // On click
-        accept.setOnClickListener(v ->
+            // On long click
+            textView.setOnLongClickListener(v ->
+            {
+                // Reveal button
+                accept.setVisibility(View.VISIBLE);
+                return false;
+            });
+        }
+
+        if (accept != null)
         {
-            CharSequence text = textView.getText();
-            if (changed)
-                write(text, file);
-            finish();
-        });
+            // On click
+            accept.setOnClickListener(v ->
+            {
+                CharSequence text = textView.getText();
+                if (changed)
+                    write(text, file);
+                finish();
+            });
+
+            // On long click
+            accept.setOnLongClickListener(v ->
+            {
+                // Hide button
+                v.setVisibility(View.INVISIBLE);
+                return true;
+            });
+        }
     }
 
     // onRestoreInstanceState
