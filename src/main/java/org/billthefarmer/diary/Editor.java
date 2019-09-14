@@ -21,11 +21,14 @@
 
 package org.billthefarmer.diary;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -47,7 +50,11 @@ public class Editor extends Activity
     public final static String CHANGED = "changed";
     public final static String CONTENT = "content";
 
+    private final static int REQUEST_READ = 1;
+    private final static int REQUEST_WRITE = 2;
+
     private File file;
+    private Uri uri;
 
     private EditText textView;
 
@@ -150,9 +157,11 @@ public class Editor extends Activity
             // On click
             accept.setOnClickListener(v ->
             {
-                CharSequence text = textView.getText();
                 if (changed)
+                {
+                    CharSequence text = textView.getText();
                     write(text, file);
+                }
 
                 // Hide keyboard
                 InputMethodManager imm = (InputMethodManager)
@@ -216,6 +225,37 @@ public class Editor extends Activity
         finish();
     }
 
+    // onRequestPermissionsResult
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults)
+    {
+        switch (requestCode)
+        {
+        case REQUEST_WRITE:
+            for (int i = 0; i < grantResults.length; i++)
+                if (permissions[i].equals(Manifest.permission
+                                          .WRITE_EXTERNAL_STORAGE) &&
+                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                {
+                    // Granted, write
+                    CharSequence text = textView.getText();
+                    write(text, file);
+                }
+            break;
+
+        case REQUEST_READ:
+            for (int i = 0; i < grantResults.length; i++)
+                if (permissions[i].equals(Manifest.permission
+                                          .READ_EXTERNAL_STORAGE) &&
+                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    // Granted, read
+                    read(uri);
+            break;
+        }
+    }
+
     // resolveContent
     private Uri resolveContent(Uri uri)
     {
@@ -235,6 +275,20 @@ public class Editor extends Activity
     private CharSequence read(Uri uri)
     {
         StringBuilder stringBuilder = new StringBuilder();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]
+                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ);
+
+                return stringBuilder;
+            }
+        }
+
         try (BufferedReader reader =
              new BufferedReader(new InputStreamReader(getContentResolver()
                                                       .openInputStream(uri))))
@@ -256,6 +310,19 @@ public class Editor extends Activity
     // write
     private void write(CharSequence text, File file)
     {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]
+                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_WRITE);
+
+                return;
+            }
+        }
+
         if (file != null)
         {
             file.getParentFile().mkdirs();
