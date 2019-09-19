@@ -83,7 +83,7 @@ public class Editor extends Activity
         textView = findViewById(R.id.text);
 
         Intent intent = getIntent();
-        Uri uri = intent.getData();
+        uri = intent.getData();
 
         if (uri != null)
         {
@@ -250,8 +250,11 @@ public class Editor extends Activity
                 if (permissions[i].equals(Manifest.permission
                                           .READ_EXTERNAL_STORAGE) &&
                     grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                {
                     // Granted, read
-                    read(uri);
+                    CharSequence text = read(uri);
+                    textView.setText(text);
+                }
             break;
         }
     }
