@@ -2452,6 +2452,8 @@ public class Diary extends Activity
                         }
                     }
                 }
+
+                output.closeEntry();
             }
 
             catch (Exception e)
