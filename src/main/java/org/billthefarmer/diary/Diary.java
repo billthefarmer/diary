@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -38,6 +39,7 @@ import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,6 +56,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import android.support.v4.content.FileProvider;
@@ -230,6 +233,7 @@ public class Diary extends Activity
 
     private Deque<Calendar> entryStack;
 
+    private Toast toast;
     private View accept;
     private View edit;
 
@@ -1847,7 +1851,9 @@ public class Diary extends Activity
             {
                 alertDialog(R.string.appName, e.getMessage(),
                             android.R.string.ok);
-            }
+
+                e.printStackTrace();
+           }
         }
     }
 
@@ -1890,7 +1896,7 @@ public class Diary extends Activity
             }
         }
 
-        catch (Exception ignored) {}
+        catch (Exception e) {}
 
         return null;
     }
@@ -2128,7 +2134,7 @@ public class Diary extends Activity
                     media = Uri.parse(newName);
                 }
 
-                catch (Exception ignored) {}
+                catch (Exception e) {}
             }
         }
 
@@ -2248,6 +2254,27 @@ public class Diary extends Activity
 
         prevMonth.add(Calendar.MONTH, -1);
         return prevMonth;
+    }
+
+    // showToast
+    void showToast(int id)
+    {
+        Resources resources = getResources();
+        String text = resources.getString(id);
+        showToast(text);
+    }
+
+    // showToast
+    void showToast(String text)
+    {
+        // Cancel the last one
+        if (toast != null)
+            toast.cancel();
+
+        // Make a new one
+        toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     // animateSwipeLeft
@@ -2397,6 +2424,15 @@ public class Diary extends Activity
             diaryWeakReference = new WeakReference<>(diary);
         }
 
+        // onPreExecute
+        @Override
+        protected void onPreExecute()
+        {
+            final Diary diary = diaryWeakReference.get();
+            if (diary != null)
+                diary.showToast(R.string.start);
+        }
+
         // doInBackground
         @Override
         protected Void doInBackground(Void... noparams)
@@ -2453,17 +2489,28 @@ public class Diary extends Activity
                     }
                 }
 
+                // Close last entry
                 output.closeEntry();
             }
 
             catch (Exception e)
             {
-                diary.textView.post(() ->
+                diary.runOnUiThread (() ->
                     diary.alertDialog(R.string.appName, e.getMessage(),
                                       android.R.string.ok));
+                e.printStackTrace();
             }
 
             return null;
+        }
+
+        // onPostExecute
+        @Override
+        protected void onPostExecute(Void noresult)
+        {
+            final Diary diary = diaryWeakReference.get();
+            if (diary != null)
+                diary.showToast(R.string.complete);
         }
     }
 
@@ -2555,7 +2602,7 @@ public class Diary extends Activity
                                                      FIND_DELAY);
                     }
 
-                    catch (Exception ignored) {}
+                    catch (Exception e) {}
                 });
             }
 
@@ -2728,7 +2775,7 @@ public class Diary extends Activity
                 multi = false;
             }
 
-            catch (Exception ignored) {}
+            catch (Exception e) {}
 
             return result;
         }
