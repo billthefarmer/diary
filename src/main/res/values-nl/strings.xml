@@ -31,6 +31,8 @@
   <string name="editStyles">Stijlen bewerken…</string>
   <string name="editScript">Script bewerken…</string>
   <string name="backup">Backup</string>
+  <string name="start">Backup starten</string>
+  <string name="complete">Backup voltooid</string>
   <string name="settings">Instellingen</string>
   <string name="calendar">Kalender</string>
   <string name="pref_calendar">Aangepaste kalender gebruiken</string>

@@ -31,6 +31,8 @@
   <string name="editStyles">スタイルを編集する…</string>
   <string name="editScript">編集スクリプト…</string>
   <string name="backup">バックアップ</string>
+  <string name="start">バックアップを開始</string>
+  <string name="complete">バックアップ完了</string>
   <string name="settings">設定</string>
   <string name="calendar">カレンダー</string>
   <string name="pref_calendar">カスタムカレンダーを使用する</string>

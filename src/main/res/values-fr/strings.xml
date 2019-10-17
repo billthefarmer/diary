@@ -31,6 +31,8 @@
   <string name="editStyles">Modifier les styles…</string>
   <string name="editScript">Modifier le script…</string>
   <string name="backup">Sauvegarde</string>
+  <string name="start">Démarrer la sauvegarde</string>
+  <string name="complete">Sauvegarde terminée</string>
   <string name="settings">Paramètres</string>
   <string name="calendar">Calendrier</string>
   <string name="pref_calendar">Utiliser un calendrier alternatif</string>

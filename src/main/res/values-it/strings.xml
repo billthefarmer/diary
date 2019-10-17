@@ -28,6 +28,8 @@
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>
   <string name="backup">Esegui backup</string>
+  <string name="start">Backup avviato</string>
+  <string name="complete">Backup completato</string>
   <string name="settings">Impostazioni</string>
   <string name="calendar">Calendario</string>
   <string name="pref_calendar">

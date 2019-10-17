@@ -31,6 +31,8 @@
   <string name="editStyles">Edytuj style…</string>
   <string name="editScript">Edytuj skrypt…</string>
   <string name="backup">Utworzyć kopię zapasową</string>
+  <string name="start">Rozpocząć tworzenie kopii zapasowych</string>
+  <string name="complete">Tworzenie kopii zapasowej zakończone</string>
   <string name="settings">Ustawienia</string>
   <string name="calendar">Kalendarz</string>
   <string name="pref_calendar">Używaj niestandardowego kalendarza</string>
