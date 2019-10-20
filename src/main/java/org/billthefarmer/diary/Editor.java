@@ -23,6 +23,7 @@ package org.billthefarmer.diary;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -274,6 +275,21 @@ public class Editor extends Activity
         return uri;
     }
 
+    // alertDialog
+    private void alertDialog(int title, String message,
+                             int neutralButton)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        // Add the button
+        builder.setNeutralButton(neutralButton, null);
+
+        // Create the AlertDialog
+        builder.show();
+    }
+
     // read
     private CharSequence read(Uri uri)
     {
@@ -336,6 +352,10 @@ public class Editor extends Activity
             }
             catch (IOException e)
             {
+                alertDialog(R.string.appName, e.getMessage(),
+                            android.R.string.ok);
+
+                e.printStackTrace();
             }
         }
     }
