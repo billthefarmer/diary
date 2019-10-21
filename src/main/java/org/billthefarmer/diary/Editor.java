@@ -268,8 +268,7 @@ public class Editor extends Activity
         if (path != null)
         {
             File file = new File(path);
-            if (file.canRead())
-                uri = Uri.fromFile(file);
+            uri = Uri.fromFile(file);
         }
 
         return uri;

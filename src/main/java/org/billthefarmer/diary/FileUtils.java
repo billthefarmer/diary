@@ -291,8 +291,7 @@ public class FileUtils
                 Log.d(TAG, "Path " + path.toString());
 
             File file = new File(path.toString());
-            if (file.isFile())
-                return path.toString();
+            return path.toString();
         }
 
         if (list.size() > 1)
@@ -311,8 +310,7 @@ public class FileUtils
                 Log.d(TAG, "Path " + path.toString());
 
             File file = new File(path.toString());
-            if (file.isFile())
-                return path.toString();
+            return path.toString();
         }
 
         return null;
