@@ -204,7 +204,8 @@ more simply use an inline link `[Top](#)`.
 You may add custom styles to the markdown formatting by placing a
 `styles.css` file in the `Diary/css` folder, which will replace the
 built in styles file which simply limits the width of images to the
-page width. Use the built in editor to create a styles file.
+page width. Use the built in editor to create a styles file. You must
+use the editor `accept` tick button to save the edits.
 
 **Caution** - There is no such thing as a markdown syntax error, but
 syntax errors in a styles file may cause unpredictable results and
@@ -219,8 +220,8 @@ the first line.
 ## Javascript
 You may add custom javascript to be loaded into all diary pages by
 placing a `script.js` file in the `Diary/js` folder. Use the built in
-editor to create a script file. Errors in the script will be logged by
-the
+editor to create a script file.  You must use the editor `accept` tick
+button to save the edits. Errors in the script will be logged by the
 [WebView](https://developer.android.com/reference/android/webkit/WebView)
 which displays the page. See
 [Javascript tutorial](https://www.w3schools.com/js).
