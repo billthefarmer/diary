@@ -24,18 +24,19 @@ package org.billthefarmer.diary;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.inputmethod.InputMethodManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -223,7 +224,27 @@ public class Editor extends Activity
             getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
 
-        finish();
+        if (changed)
+            alertDialog(R.string.appName, R.string.changes,
+                        R.string.save, R.string.discard, (dialog, id) ->
+        {
+            switch (id)
+            {
+            case DialogInterface.BUTTON_POSITIVE:
+                CharSequence text = textView.getText();
+                write(text, file);
+                finish();
+                break;
+
+            case DialogInterface.BUTTON_NEGATIVE:
+                changed = false;
+                finish();
+                break;
+            }
+        });
+
+        else
+            finish();
     }
 
     // onRequestPermissionsResult
@@ -272,6 +293,23 @@ public class Editor extends Activity
         }
 
         return uri;
+    }
+
+    // alertDialog
+    private void alertDialog(int title, int message,
+                             int positiveButton, int negativeButton,
+                             DialogInterface.OnClickListener listener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        // Add the buttons
+        builder.setPositiveButton(positiveButton, listener);
+        builder.setNegativeButton(negativeButton, listener);
+
+        // Create the AlertDialog
+        builder.show();
     }
 
     // alertDialog
