@@ -33,6 +33,9 @@
   <string name="backup">后备</string>
   <string name="start">开始备份</string>
   <string name="complete">备份完成</string>
+  <string name="changes">保存更改？</string>
+  <string name="save">救</string>
+  <string name="discard">丢弃</string>
   <string name="settings">设置</string>
   <string name="calendar">日历</string>
   <string name="pref_calendar">使用内置日历</string>

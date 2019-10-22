@@ -33,6 +33,9 @@
   <string name="backup">Apoyo</string>
   <string name="start">Comenzar copia de seguridad</string>
   <string name="complete">Copia de seguridad completa</string>
+  <string name="changes">¿Guardar cambios?</string>
+  <string name="save">Guardar</string>
+  <string name="discard">Descartar</string>
   <string name="settings">Ajustes</string>
   <string name="calendar">Calendario</string>
   <string name="pref_calendar">Usar calendario personalizado</string>

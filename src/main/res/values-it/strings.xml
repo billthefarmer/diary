@@ -30,6 +30,9 @@
   <string name="backup">Esegui backup</string>
   <string name="start">Backup avviato</string>
   <string name="complete">Backup completato</string>
+  <string name="changes">Salvare le modifiche?</string>
+  <string name="save">Salvare</string>
+  <string name="discard">Scartare</string>
   <string name="settings">Impostazioni</string>
   <string name="calendar">Calendario</string>
   <string name="pref_calendar">

@@ -33,6 +33,9 @@
   <string name="backup">バックアップ</string>
   <string name="start">バックアップを開始</string>
   <string name="complete">バックアップ完了</string>
+  <string name="changes">変更内容を保存？</string>
+  <string name="save">セーブ</string>
+  <string name="discard">捨てる</string>
   <string name="settings">設定</string>
   <string name="calendar">カレンダー</string>
   <string name="pref_calendar">カスタムカレンダーを使用する</string>
