@@ -116,80 +116,84 @@ public class Diary extends Activity
     private static final int EDIT = 1;
 
     public final static String DIARY = "Diary";
-    private final static String TAG = DIARY;
+    public final static String TAG = DIARY;
 
-    private final static String YEAR = "year";
-    private final static String MONTH = "month";
-    private final static String DAY = "day";
+    public final static String YEAR = "year";
+    public final static String MONTH = "month";
+    public final static String DAY = "day";
 
-    private final static String SAVED = "saved";
-    private final static String SHOWN = "shown";
-    private final static String ENTRY = "entry";
+    public final static String SAVED = "saved";
+    public final static String SHOWN = "shown";
+    public final static String ENTRY = "entry";
 
     // Patterns
     public final static Pattern PATTERN_CHARS =
         Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
-    private final static Pattern MEDIA_PATTERN =
+    public final static Pattern MEDIA_PATTERN =
         Pattern.compile("!\\[(.*)\\]\\((.+)\\)", Pattern.MULTILINE);
-    private final static Pattern EVENT_PATTERN =
+    public final static Pattern EVENT_PATTERN =
         Pattern.compile("^@ *(\\d{1,2}:\\d{2}) +(.+)$", Pattern.MULTILINE);
-    private final static Pattern MAP_PATTERN =
+    public final static Pattern MAP_PATTERN =
         Pattern.compile("\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]",
                         Pattern.MULTILINE);
-    private final static Pattern GEO_PATTERN =
+    public final static Pattern GEO_PATTERN =
         Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
-    private final static Pattern DATE_PATTERN =
+    public final static Pattern DATE_PATTERN =
         Pattern.compile("\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)",
                         Pattern.MULTILINE);
-    private final static Pattern POSN_PATTERN =
+    public final static Pattern POSN_PATTERN =
         Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
                         Pattern.MULTILINE);
-    private final static Pattern FILE_PATTERN =
+    public final static Pattern FILE_PATTERN =
         Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).txt$");
 
-    private final static String YEAR_DIR = "^[0-9]{4}$";
-    private final static String MONTH_DIR = "^[0-9]{2}$";
-    private final static String DAY_FILE = "^[0-9]{2}.txt$";
+    public final static String YEAR_DIR = "^[0-9]{4}$";
+    public final static String MONTH_DIR = "^[0-9]{2}$";
+    public final static String DAY_FILE = "^[0-9]{2}.txt$";
 
-    private final static String ZIP = ".zip";
-    private final static String HELP = "help.md";
-    private final static String STYLES = "file:///android_asset/styles.css";
-    private final static String SCRIPT = "file:///android_asset/script.js";
-    private final static String CSS_STYLES = "css/styles.css";
-    private final static String TEXT_CSS = "text/css";
-    private final static String JS_SCRIPT = "js/script.js";
-    private final static String TEXT_JAVASCRIPT = "text/javascript";
+    public final static String ZIP = ".zip";
+    public final static String HELP = "help.md";
+    public final static String STYLES = "file:///android_asset/styles.css";
+    public final static String SCRIPT = "file:///android_asset/script.js";
+    public final static String CSS_STYLES = "css/styles.css";
+    public final static String TEXT_CSS = "text/css";
+    public final static String JS_SCRIPT = "js/script.js";
+    public final static String TEXT_JAVASCRIPT = "text/javascript";
+    public final static String FILE_PROVIDER =
+        "org.billthefarmer.diary.fileprovider";
+    public final static String FILE_URI =
+        "org.billthefarmer.diary.Uri";
 
-    private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
-    private final static String LINK_TEMPLATE = "[%s](%s)\n";
-    private final static String AUDIO_TEMPLATE =
+    public final static String MEDIA_TEMPLATE = "![%s](%s)\n";
+    public final static String LINK_TEMPLATE = "[%s](%s)\n";
+    public final static String AUDIO_TEMPLATE =
         "<audio controls src=\"%s\"></audio>\n";
-    private final static String VIDEO_TEMPLATE =
+    public final static String VIDEO_TEMPLATE =
         "<video controls src=\"%s\"></video>\n";
-    private final static String EVENT_TEMPLATE = "@:$1 $2";
-    private final static String MAP_TEMPLATE =
+    public final static String EVENT_TEMPLATE = "@:$1 $2";
+    public final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" " +
         "src=\"http://www.openstreetmap.org/export/embed.html?" +
         "bbox=%f,%f,%f,%f&amp;layer=mapnik\">" +
         "</iframe><br/><small>" +
         "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
-    private final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
-    private final static String POSN_TEMPLATE = "[#]: # (%d)";
+    public final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
+    public final static String POSN_TEMPLATE = "[#]: # (%d)";
 
-    private final static String BRACKET_CHARS = "([{<";
+    public final static String BRACKET_CHARS = "([{<";
 
-    private final static String GEO = "geo";
-    private final static String OSM = "osm";
-    private final static String HTTP = "http";
-    private final static String TEXT = "text";
-    private final static String HTTPS = "https";
-    private final static String CONTENT = "content";
-    private final static String TEXT_PLAIN = "text/plain";
-    private final static String WILD_WILD = "*/*";
-    private final static String IMAGE = "image";
-    private final static String AUDIO = "audio";
-    private final static String VIDEO = "video";
+    public final static String GEO = "geo";
+    public final static String OSM = "osm";
+    public final static String HTTP = "http";
+    public final static String TEXT = "text";
+    public final static String HTTPS = "https";
+    public final static String CONTENT = "content";
+    public final static String TEXT_PLAIN = "text/plain";
+    public final static String WILD_WILD = "*/*";
+    public final static String IMAGE = "image";
+    public final static String AUDIO = "audio";
+    public final static String VIDEO = "video";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -1510,7 +1514,7 @@ public class Diary extends Activity
 
         // Get file provider uri
         Uri uri = FileProvider.getUriForFile
-            (this, "org.billthefarmer.diary.fileprovider", file);
+            (this, FILE_PROVIDER, file);
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Path " + uri.getPath());
 
@@ -1518,6 +1522,9 @@ public class Diary extends Activity
         intent.setDataAndType(uri, TEXT_CSS);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        Uri extra = Uri.fromFile(file);
+        intent.putExtra(FILE_URI, extra);
         startActivity(intent);
     }
 
@@ -1528,7 +1535,7 @@ public class Diary extends Activity
 
         // Get file provider uri
         Uri uri = FileProvider.getUriForFile
-            (this, "org.billthefarmer.diary.fileprovider", file);
+            (this, FILE_PROVIDER, file);
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Path " + uri.getPath());
 
@@ -1536,6 +1543,9 @@ public class Diary extends Activity
         intent.setDataAndType(uri, TEXT_JAVASCRIPT);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        Uri extra = Uri.fromFile(file);
+        intent.putExtra(FILE_URI, extra);
         startActivity(intent);
     }
 

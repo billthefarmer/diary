@@ -90,7 +90,14 @@ public class Editor extends Activity
         if (uri != null)
         {
             if (CONTENT.equalsIgnoreCase(uri.getScheme()))
-                uri = resolveContent(uri);
+            {
+                Uri extra = intent.getParcelableExtra(Diary.FILE_URI);
+                if (extra != null)
+                    uri = extra;
+
+                else
+                    uri = resolveContent(uri);
+            }
 
             String title = uri.getLastPathSegment();
             setTitle(title);
