@@ -70,6 +70,7 @@ installing it does not seem to help.
 * Optional index page
 * Display media stored in diary folders
 * Display [OpenStreetMap](http://www.openstreetmap.org) maps
+* Share diary entries
 * Add media from media providers
 * Receive media from other apps
 * Receive geo uris from other apps
@@ -88,6 +89,7 @@ The toolbar icons are, from left to right:
 * **Index** - go to index page if set
 * **Search** - incremental search of diary entry
 * **Find all** - find all diary entries containing search text
+* **Share** - share current diary entry
 * **Add time** - Add the current time to diary entry
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
