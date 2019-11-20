@@ -24,8 +24,9 @@
   <string name="prevEntry">Vorheriger</string>
   <string name="nextEntry">Nächster</string>
   <string name="goToDate">Gehe zu Datum…</string>
-  <string name="search">Suche…</string>
+  <string name="search">Suchen…</string>
   <string name="findAll">Finde alle…</string>
+  <string name="share">"Teilen…"</string>
   <string name="addTime">Zeit hinzufügen</string>
   <string name="addMedia">Medien hinzufügen…</string>
   <string name="editStyles">Stile bearbeiten…</string>

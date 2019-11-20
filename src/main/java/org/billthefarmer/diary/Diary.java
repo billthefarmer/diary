@@ -622,6 +622,9 @@ public class Diary extends Activity
         case R.id.findAll:
             findAll();
             break;
+        case R.id.share:
+            share();
+            break;
         case R.id.addTime:
             addTime();
             break;
@@ -1485,6 +1488,16 @@ public class Diary extends Activity
         // Execute find task
         FindTask findTask = new FindTask(this);
         findTask.execute(search);
+    }
+
+    // share
+    public void share()
+    {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType(TEXT_PLAIN);
+        intent.putExtra(Intent.EXTRA_SUBJECT, getTitle().toString());
+        intent.putExtra(Intent.EXTRA_TEXT, textView.getText().toString());
+        startActivity(Intent.createChooser(intent, null));
     }
 
     // addTime
