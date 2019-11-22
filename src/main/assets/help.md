@@ -9,6 +9,7 @@
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Optional index page
+* Optional entry template
 * Display media stored in diary folders
 * Display [OpenStreetMap](http://www.openstreetmap.org) maps
 * Share diary entries
@@ -74,6 +75,10 @@ text to find the desired entry.
 ## Index
 You may use an index page. If an index page is set the app will start
 on that page unless receiving media from another app.
+
+## Template
+You may use an entry template. If a template is set it will be copied
+to the current day's entry if it is blank.
 
 ## Text
 You may receive text clips from another app. A date picker will pop
@@ -185,6 +190,7 @@ will have the same name as the diary folder, default `Diary.zip`.
 * **Folder** - Change diary entry storage folder. Caution - diary
   entries and styles will not be moved
 * **Index** - Set an index page. Use the date picker to choose a date.
+* **Template** - Set a template page. Use the date picker to choose a date.
 * **Browser** - Use browser for external links
 * **Copy images** - Copy images to current folder
 * **Dark theme** - Use dark theme for editing
