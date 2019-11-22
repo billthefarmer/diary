@@ -40,6 +40,8 @@ public class Settings extends Activity
     public final static String PREF_MARKDOWN = "pref_markdown";
     public final static String PREF_USE_INDEX = "pref_use_index";
     public final static String PREF_INDEX_PAGE = "pref_index_page";
+    public final static String PREF_USE_TEMPLATE = "pref_use_template";
+    public final static String PREF_TEMPLATE_PAGE = "pref_template_page";
     public final static String PREF_COPY_MEDIA = "pref_copy_media";
     public final static String PREF_DARK_THEME = "pref_dark_theme";
 

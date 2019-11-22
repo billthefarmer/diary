@@ -85,6 +85,27 @@
   </PreferenceCategory>
 
   <PreferenceCategory
+      android:key="pref_template_category"
+      android:title="@string/template">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="?attr/pref_use_template"
+        android:key="pref_use_template"
+        android:persistent="true"
+        android:summary="@string/pref_use_template_summ"
+        android:title="@string/pref_use_template" />
+
+    <org.billthefarmer.diary.DatePickerPreference
+        android:dependency="pref_use_template"
+        android:dialogIcon="?attr/pref_template_page"
+        android:icon="?attr/pref_template_page"
+        android:key="pref_template_page"
+        android:title="@string/pref_template_page" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
       android:key="pref_media_category"
       android:title="@string/media">
 

@@ -37,7 +37,9 @@
     <item name="pref_folder">@drawable/ic_pref_folder</item>
     <item name="pref_index_page">@drawable/ic_pref_calendar</item>
     <item name="pref_markdown">@drawable/ic_pref_markdown</item>
+    <item name="pref_template_page">@drawable/ic_pref_calendar</item>
     <item name="pref_use_index">@drawable/ic_pref_markdown</item>
+    <item name="pref_use_template">@drawable/ic_pref_markdown</item>
 
   </style>
 
@@ -56,7 +58,9 @@
     <item name="pref_folder">@drawable/ic_pref_folder_dark</item>
     <item name="pref_index_page">@drawable/ic_pref_calendar_dark</item>
     <item name="pref_markdown">@drawable/ic_pref_markdown_dark</item>
+    <item name="pref_template_page">@drawable/ic_pref_calendar_dark</item>
     <item name="pref_use_index">@drawable/ic_pref_markdown_dark</item>
+    <item name="pref_use_template">@drawable/ic_pref_markdown_dark</item>
 
   </style>
 

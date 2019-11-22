@@ -74,6 +74,19 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         String s = format.format(date);
         entry.setSummary(s);
 
+        // Get template preference
+        entry =
+            (DatePickerPreference) findPreference(Settings.PREF_TEMPLATE_PAGE);
+
+        // Get value
+        value = preferences.getLong(Settings.PREF_TEMPLATE_PAGE,
+                                    DatePickerPreference.DEFAULT_VALUE);
+        date = new Date(value);
+
+        // Set summary
+        s = format.format(date);
+        entry.setSummary(s);
+
         // Get about summary
         Preference about = findPreference(Settings.PREF_ABOUT);
         String sum = about.getSummary().toString();
@@ -151,6 +164,24 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             String s = format.format(date);
             entry.setSummary(s);
         }
+
+        if (key.equals(Settings.PREF_TEMPLATE_PAGE))
+        {
+            // Get template preference
+            DatePickerPreference entry =
+                (DatePickerPreference) findPreference(key);
+
+            // Get value
+            long value =
+                preferences.getLong(key, DatePickerPreference.DEFAULT_VALUE);
+            Date date = new Date(value);
+
+            // Set summary
+            DateFormat format = DateFormat.getDateInstance();
+            String s = format.format(date);
+            entry.setSummary(s);
+        }
+
         if (key.equals(Settings.PREF_DARK_THEME))
         {
             if (Build.VERSION.SDK_INT != Build.VERSION_CODES.M)

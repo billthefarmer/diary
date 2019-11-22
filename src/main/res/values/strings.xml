@@ -69,6 +69,12 @@
     Use index page for journal
   </string>
   <string name="pref_index_page">Index page</string>
+  <string name="template">Template</string>
+  <string name="pref_use_template">Use template</string>
+  <string name="pref_use_template_summ">
+    Use template for diary entries
+  </string>
+  <string name="pref_template_page">Template page</string>
   <string name="about">About</string>
   <string name="pref_about_summ">Diary <a href="https://github.com/billthefarmer/diary/releases/latest">version %s</a></string>
   <string name="built">Built %s</string>

@@ -103,6 +103,7 @@ public class Diary extends Activity
 
     private final static int REQUEST_READ = 1;
     private final static int REQUEST_WRITE = 2;
+    private final static int REQUEST_TEMPLATE = 3;
 
     private final static int POSITION_DELAY = 128;
     private final static int BUFFER_SIZE = 4096;
@@ -199,6 +200,7 @@ public class Diary extends Activity
     private boolean markdown = true;
     private boolean external = false;
     private boolean useIndex = false;
+    private boolean useTemplate = false;
     private boolean copyMedia = false;
     private boolean darkTheme = false;
 
@@ -216,6 +218,7 @@ public class Diary extends Activity
     private boolean haveMedia = false;
 
     private long indexPage;
+    private long templatePage;
 
     private String folder = DIARY;
 
@@ -1006,13 +1009,16 @@ public class Diary extends Activity
         markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
         external = preferences.getBoolean(Settings.PREF_EXTERNAL, false);
         useIndex = preferences.getBoolean(Settings.PREF_USE_INDEX, false);
+        useTemplate = preferences.getBoolean(Settings.PREF_USE_TEMPLATE, false);
         copyMedia = preferences.getBoolean(Settings.PREF_COPY_MEDIA, false);
         darkTheme = preferences.getBoolean(Settings.PREF_DARK_THEME, false);
 
         // Index page
         indexPage = preferences.getLong(Settings.PREF_INDEX_PAGE,
-                                         DatePickerPreference.DEFAULT_VALUE);
-
+                                        DatePickerPreference.DEFAULT_VALUE);
+        // Template page
+        templatePage = preferences.getLong(Settings.PREF_TEMPLATE_PAGE,
+                                           DatePickerPreference.DEFAULT_VALUE);
         // Folder
         folder = preferences.getString(Settings.PREF_FOLDER, DIARY);
     }
@@ -1589,30 +1595,35 @@ public class Diary extends Activity
     private File getYear(int year)
     {
         return new File(getHome(), String.format(Locale.ENGLISH,
-                        "%04d", year));
+                                                 "%04d", year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
         return new File(getYear(year), String.format(Locale.ENGLISH,
-                        "%02d", month + 1));
+                                                     "%02d", month + 1));
     }
 
     // getDay
     private File getDay(int year, int month, int day)
     {
-        return new
-               File(getMonth(year, month), String.format(Locale.ENGLISH,
-                       "%02d.txt", day));
+        return new File(getMonth(year, month), String.format(Locale.ENGLISH,
+                                                             "%02d.txt", day));
     }
 
     // getFile
     private File getFile()
     {
-        return getDay(currEntry.get(Calendar.YEAR),
-                      currEntry.get(Calendar.MONTH),
-                      currEntry.get(Calendar.DATE));
+        return getFile(currEntry);
+    }
+
+    // getFile
+    private File getFile(Calendar entry)
+    {
+        return getDay(entry.get(Calendar.YEAR),
+                      entry.get(Calendar.MONTH),
+                      entry.get(Calendar.DATE));
     }
 
     // prevYear
@@ -1804,6 +1815,15 @@ public class Diary extends Activity
                     grantResults[i] == PackageManager.PERMISSION_GRANTED)
                     // Granted, load
                     load();
+            break;
+
+        case REQUEST_TEMPLATE:
+            for (int i = 0; i < grantResults.length; i++)
+                if (permissions[i].equals(Manifest.permission
+                                          .READ_EXTERNAL_STORAGE) &&
+                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    // Granted, template
+                    template();
             break;
         }
     }
@@ -2132,6 +2152,33 @@ public class Diary extends Activity
         changeDate(index);
     }
 
+    // template
+    private void template()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]
+                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE,
+                     Manifest.permission.WRITE_CALENDAR,
+                     Manifest.permission.READ_CALENDAR}, REQUEST_TEMPLATE);
+
+                return;
+            }
+        }
+
+        Calendar template = Calendar.getInstance();
+        template.setTimeInMillis(templatePage);
+        CharSequence text = read(getFile(template));
+        textView.setText(text);
+
+        if (markdown)
+            loadMarkdown();
+    }
+        
     // addMedia
     private void addMedia(Uri media, boolean append)
     {
