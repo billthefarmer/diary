@@ -64,6 +64,12 @@
     Verwenden Sie die Indexseite für das Journal
   </string>
   <string name="pref_index_page">Indexseite</string>
+  <string name="template">Template</string>
+  <string name="pref_use_template">Benutze Template</string>
+  <string name="pref_use_template_summ">
+    Template für Tagebucheinträge verwenden
+  </string>
+  <string name="pref_template_page">Templateseite</string>
   <string name="theme">Thema</string>
   <string name="pref_dark_theme">Dunkel</string>
   <string name="pref_dark_theme_summ">

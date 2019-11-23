@@ -69,6 +69,12 @@
     Indexpagina gebruiken voor dagboek
   </string>
   <string name="pref_index_page">Indexpagina</string>
+  <string name="template">Sjabloon</string>
+  <string name="pref_use_template">Gebruik sjabloon</string>
+  <string name="pref_use_template_summ">
+    Gebruik sjabloon voor agenda-items
+  </string>
+  <string name="pref_template_page">Sjabloonpagina</string>
   <string name="about">Over</string>
   <string name="pref_about_summ">Dagboek, <a href="https://github.com/billthefarmer/diary/releases/latest">versie %s</a></string>
   <string name="built">Uitgebracht op %s</string>

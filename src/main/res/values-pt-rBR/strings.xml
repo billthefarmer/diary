@@ -69,6 +69,12 @@
     Use a página de índice para o diário
   </string>
   <string name="pref_index_page">Página de índice</string>
+  <string name="template">Modelo</string>
+  <string name="pref_use_template">Usar modelo</string>
+  <string name="pref_use_template_summ">
+    Usar modelo para entradas do diário
+  </string>
+  <string name="pref_template_page">Página de modelo</string>
   <string name="about">Sobre</string>
   <string name="pref_about_summ">Diário <a href="https://github.com/billthefarmer/diary/releases/latest">versão %s</a></string>
   <string name="built">Construído %s</string>

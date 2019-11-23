@@ -63,6 +63,12 @@
     Utilizza una pagina come indice del tuo diario
   </string>
   <string name="pref_index_page">Pagina indice</string>
+  <string name="template">Modello</string>
+  <string name="pref_use_template">Usa modello</string>
+  <string name="pref_use_template_summ">
+    Usa il modello per le voci del diario
+  </string>
+  <string name="pref_template_page">Pagina modello</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Scuro</string>
   <string name="pref_dark_theme_summ">
