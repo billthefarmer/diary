@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -183,6 +184,7 @@ public class Diary extends Activity
     public final static String POSN_TEMPLATE = "[#]: # (%d)";
 
     public final static String BRACKET_CHARS = "([{<";
+    public final static String DIARY_IMAGE = "Diary.png";
 
     public final static String GEO = "geo";
     public final static String OSM = "osm";
@@ -191,6 +193,7 @@ public class Diary extends Activity
     public final static String HTTPS = "https";
     public final static String CONTENT = "content";
     public final static String TEXT_PLAIN = "text/plain";
+    public final static String IMAGE_PNG = "image/png";
     public final static String WILD_WILD = "*/*";
     public final static String IMAGE = "image";
     public final static String AUDIO = "audio";
@@ -1498,14 +1501,39 @@ public class Diary extends Activity
     }
 
     // share
+    @SuppressWarnings("deprecation")
     public void share()
     {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(TEXT_PLAIN);
         intent.putExtra(Intent.EXTRA_SUBJECT,
                         getString(R.string.appName) + ": " +
                         getTitle().toString());
-        intent.putExtra(Intent.EXTRA_TEXT, textView.getText().toString());
+        if (shown)
+        {
+            intent.setType(IMAGE_PNG);
+            View v = markdownView.getRootView();
+            v.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+            v.setDrawingCacheEnabled(false);
+
+            File image = new File(getCacheDir(), DIARY_IMAGE);
+            try (FileOutputStream out = new FileOutputStream(image))
+            {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            }
+
+            catch (Exception e) {}
+            Uri imageUri = FileProvider
+                .getUriForFile(this, FILE_PROVIDER, image);
+            intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        }
+
+        else
+        {
+            intent.setType(TEXT_PLAIN);
+            intent.putExtra(Intent.EXTRA_TEXT, textView.getText().toString());
+        }
+
         startActivity(Intent.createChooser(intent, null));
     }
 
