@@ -25,6 +25,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,6 +34,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -56,6 +59,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -69,11 +73,14 @@ import org.billthefarmer.view.DayView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
@@ -636,6 +643,9 @@ public class Diary extends Activity
             break;
         case R.id.backup:
             backup();
+            break;
+        case R.id.share:
+            share();
             break;
         case R.id.settings:
             settings();
@@ -1554,6 +1564,28 @@ public class Diary extends Activity
     {
         ZipTask zipTask = new ZipTask(this);
         zipTask.execute();
+    }
+
+    // share
+    public void share() {
+
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        String market = "\n you can use this awsome app play follow this link : https://f-droid.org/ko/packages/org.billthefarmer.diary/";
+        String date= getTitle().toString();
+        String title = "I share the contents of my diary.This diary is written on this date: ";
+        title+=date;
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Title", null);
+        Uri imageUri = Uri.parse(path);
+        share.putExtra(Intent.EXTRA_STREAM, imageUri);
+        String abcd = textView.getText().toString();
+        abcd += market;
+        share.putExtra(Intent.EXTRA_TEXT, abcd);
+        share.putExtra(Intent.EXTRA_SUBJECT, title);
+        startActivity(Intent.createChooser(share, "select"));
     }
 
     // settings
