@@ -1502,7 +1502,9 @@ public class Diary extends Activity
     {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(TEXT_PLAIN);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getTitle().toString());
+        intent.putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.appName) + ": " +
+                        getTitle().toString());
         intent.putExtra(Intent.EXTRA_TEXT, textView.getText().toString());
         startActivity(Intent.createChooser(intent, null));
     }
