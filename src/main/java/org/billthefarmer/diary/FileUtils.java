@@ -343,7 +343,7 @@ public class FileUtils
         };
 
         try (Cursor cursor = context.getContentResolver()
-                                 .query(uri, projection, selection, selectionArgs, null))
+             .query(uri, projection, selection, selectionArgs, null))
         {
             if (cursor != null && cursor.moveToFirst())
             {

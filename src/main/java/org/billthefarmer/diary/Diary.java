@@ -706,26 +706,27 @@ public class Diary extends Activity
             if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                 uri = resolveContent(uri);
 
-            if (uri != null && !CONTENT.equalsIgnoreCase(uri.getScheme()))
+            if (uri != null)
             {
+                String type;
+
                 // Get type
-                String type = FileUtils.getMimeType(this, uri);
+                if (CONTENT.equalsIgnoreCase(uri.getScheme()))
+                    type = getContentResolver().getType(uri);
+
+                else
+                    type = FileUtils.getMimeType(this, uri);
 
                 if (type == null)
-                {
                     addLink(uri, uri.getLastPathSegment(), false);
 
-                }
                 else if (type.startsWith(IMAGE) ||
                          type.startsWith(AUDIO) ||
                          type.startsWith(VIDEO))
-                {
                     addMedia(uri, false);
-                }
+
                 else
-                {
                     addLink(uri, uri.getLastPathSegment(), false);
-                }
             }
         }
     }
@@ -2194,11 +2195,11 @@ public class Diary extends Activity
         {
             // Get type
             String type = FileUtils.getMimeType(this, media);
-            if (type.startsWith(IMAGE))
+            if (type != null && type.startsWith(IMAGE))
             {
                 File newMedia = new
-                File(getCurrent(), UUID.randomUUID().toString() +
-                     FileUtils.getExtension(media.toString()));
+                    File(getCurrent(), UUID.randomUUID().toString() +
+                         FileUtils.getExtension(media.toString()));
                 File oldMedia = FileUtils.getFile(this, media);
                 try
                 {
