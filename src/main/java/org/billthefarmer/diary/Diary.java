@@ -25,6 +25,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,6 +34,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -69,6 +72,7 @@ import org.billthefarmer.view.DayView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -1498,13 +1502,25 @@ public class Diary extends Activity
     }
 
     // share
-    public void share()
-    {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(TEXT_PLAIN);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getTitle().toString());
-        intent.putExtra(Intent.EXTRA_TEXT, textView.getText().toString());
-        startActivity(Intent.createChooser(intent, null));
+    public void share() {
+
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        String market = "Download this cool app from this link! \n : https://f-droid.org/ko/packages/org.billthefarmer.diary/";
+        String date= getTitle().toString();
+        String title = "I share my diary content. This diary is written on this date: ";
+        title+=date;
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Title", null);
+        Uri imageUri = Uri.parse(path);
+        share.putExtra(Intent.EXTRA_STREAM, imageUri);
+        String abcd = textView.getText().toString();
+        abcd += market;
+        share.putExtra(Intent.EXTRA_TEXT, abcd);
+        share.putExtra(Intent.EXTRA_SUBJECT, title);
+        startActivity(Intent.createChooser(share, "select"));
     }
 
     // addTime
