@@ -16,9 +16,9 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 
-    tasks.withType(JavaCompile) {
-        options.deprecation = true
-    }
+    // tasks.withType(JavaCompile) {
+    //     options.deprecation = true
+    // }
 }
 
 apply plugin: 'com.android.application'
