@@ -182,12 +182,12 @@ public class FileUtils
                 String filepath = file.getAbsolutePath();
 
                 // Construct path without file name.
-                String pathwithoutname = filepath.substring(0,
-                                         filepath.length() - filename.length());
+                String pathwithoutname = filepath.substring
+                    (0, filepath.length() - filename.length());
                 if (pathwithoutname.endsWith("/"))
                 {
                     pathwithoutname = pathwithoutname
-                                      .substring(0, pathwithoutname.length() - 1);
+                        .substring(0, pathwithoutname.length() - 1);
                 }
                 return new File(pathwithoutname);
             }

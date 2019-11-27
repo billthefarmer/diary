@@ -466,8 +466,9 @@ public class FileProvider extends ContentProvider {
      *
      * @param uri A content URI returned by
      * {@link #getUriForFile(Context, String, File) getUriForFile()}.
-     * @return If the associated file has an extension, the MIME type associated with that
-     * extension; otherwise <code>application/octet-stream</code>.
+     * @return If the associated file has an extension, the MIME type
+     * associated with that extension; otherwise
+     * <code>application/octet-stream</code>.
      */
     @Override
     public String getType(Uri uri) {
@@ -477,7 +478,8 @@ public class FileProvider extends ContentProvider {
         final int lastDot = file.getName().lastIndexOf('.');
         if (lastDot >= 0) {
             final String extension = file.getName().substring(lastDot + 1);
-            final String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+            final String mime = MimeTypeMap.getSingleton()
+                .getMimeTypeFromExtension(extension);
             if (mime != null) {
                 return mime;
             }
