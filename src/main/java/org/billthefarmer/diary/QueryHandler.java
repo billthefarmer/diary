@@ -39,18 +39,33 @@ public class QueryHandler extends AsyncQueryHandler
 {
     private static final String TAG = "QueryHandler";
 
-    // Projection arrays
+    // Projections
     private static final String[] CALENDAR_PROJECTION = new String[]
     {
         Calendars._ID
     };
 
-    // The indices for the projection array above.
-    private static final int CALENDAR_ID_INDEX = 0;
+    private static final String[] EVENT_PROJECTION = new String[]
+    {
+        Events.DTSTART, Events.TITLE, Events.DESCRIPTION
+    };
 
-    private static final int CALENDAR = 0;
-    private static final int EVENT = 1;
-    private static final int REMINDER = 2;
+    // Events selection
+    private static final String EVENT_SELECTION =
+        "((" + Events.CALENDAR_ID + " = ?) AND (" +
+        Events.DTSTART + " > ?) AND (" + Events.DTSTART + " < ?))";
+
+    // The indices for the projections above.
+    private static final int CALENDAR_ID_INDEX = 0;
+    private static final int EVENT_DTSTART_INDEX = 0;
+    private static final int EVENT_TITLE_INDEX = 1;
+    private static final int EVENT_DESCRIPTION_INDEX = 2;
+
+    private static final int EVENT_QUERY = 0;
+    private static final int EVENT_INSERT = 1;
+    private static final int EVENT_REMINDER = 2;
+    private static final int EVENT_REPORT = 3;
+    private static final int EVENT_DISCARD = 4;
 
     private static QueryHandler queryHandler;
 
@@ -58,6 +73,26 @@ public class QueryHandler extends AsyncQueryHandler
     private QueryHandler(ContentResolver resolver)
     {
         super(resolver);
+    }
+
+    // queryEvent
+    public static void queryEvent(Context context, long startTime,
+                                   long endTime, String title)
+    {
+        ContentResolver resolver = context.getContentResolver();
+
+        if (queryHandler == null)
+            queryHandler = new QueryHandler(resolver);
+
+        ContentValues values = new ContentValues();
+        values.put(Events.DTSTART, startTime);
+        values.put(Events.DTEND, endTime);
+
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Calendar query start");
+
+        queryHandler.startQuery(EVENT_QUERY, values, Calendars.CONTENT_URI,
+                                CALENDAR_PROJECTION, null, null, null);
     }
 
     // insertEvent
@@ -77,7 +112,7 @@ public class QueryHandler extends AsyncQueryHandler
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Calendar query start");
 
-        queryHandler.startQuery(CALENDAR, values, Calendars.CONTENT_URI,
+        queryHandler.startQuery(EVENT_INSERT, values, Calendars.CONTENT_URI,
                                 CALENDAR_PROJECTION, null, null, null);
     }
 
@@ -89,21 +124,51 @@ public class QueryHandler extends AsyncQueryHandler
         if (cursor == null || cursor.getCount() == 0)
             return;
 
-        // Use the cursor to move through the returned records
-        cursor.moveToFirst();
-
-        // Get the field values
-        long calendarID = cursor.getLong(CALENDAR_ID_INDEX);
-
         if (BuildConfig.DEBUG)
-            Log.d(TAG, "Calendar query complete " + calendarID);
+            Log.d(TAG, "Query complete");
 
         ContentValues values = (ContentValues) object;
-        values.put(Events.CALENDAR_ID, calendarID);
-        values.put(Events.EVENT_TIMEZONE,
-                   TimeZone.getDefault().getDisplayName());
+        long calendarID;
 
-        startInsert(EVENT, null, Events.CONTENT_URI, values);
+        switch (token)
+        {
+        case EVENT_QUERY:
+            // Use the cursor to move through the returned records
+            cursor.moveToFirst();
+            // Get the field value
+            calendarID = cursor.getLong(CALENDAR_ID_INDEX);
+            String[] selectionArgs = new String[]
+                {Long.toString(calendarID),
+                 values.getAsString(Events.DTSTART),
+                 values.getAsString(Events.DTSTART)};
+
+            queryHandler.startQuery(EVENT_REPORT, values, Events.CONTENT_URI,
+                                    EVENT_PROJECTION, EVENT_SELECTION,
+                                    selectionArgs, null);
+            break;
+
+        case EVENT_INSERT:
+            // Use the cursor to move through the returned records
+            cursor.moveToFirst();
+            // Get the field value
+            calendarID = cursor.getLong(CALENDAR_ID_INDEX);
+            values.put(Events.CALENDAR_ID, calendarID);
+            values.put(Events.EVENT_TIMEZONE,
+                       TimeZone.getDefault().getDisplayName());
+            startInsert(EVENT_REMINDER, null, Events.CONTENT_URI, values);
+            break;
+
+        case EVENT_REPORT:
+            while (cursor.moveToNext())
+            {
+                long startTime = cursor.getLong(EVENT_DTSTART_INDEX);
+                String title = cursor.getString(EVENT_TITLE_INDEX);
+                String description = cursor.getString(EVENT_DESCRIPTION_INDEX);
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Event " + startTime + ", " + title + ", " +
+                          description);
+            }
+        }
     }
 
     // onInsertComplete
@@ -117,13 +182,13 @@ public class QueryHandler extends AsyncQueryHandler
 
             switch (token)
             {
-            case EVENT:
+            case EVENT_REMINDER:
                 long eventID = Long.parseLong(uri.getLastPathSegment());
                 ContentValues values = new ContentValues();
                 values.put(Reminders.MINUTES, 10);
                 values.put(Reminders.EVENT_ID, eventID);
                 values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
-                startInsert(REMINDER, null, Reminders.CONTENT_URI, values);
+                startInsert(EVENT_DISCARD, null, Reminders.CONTENT_URI, values);
                 break;
             }
         }
