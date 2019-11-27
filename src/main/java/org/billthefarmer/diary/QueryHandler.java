@@ -47,13 +47,13 @@ public class QueryHandler extends AsyncQueryHandler
 
     private static final String[] EVENT_PROJECTION = new String[]
     {
-        Events.DTSTART, Events.TITLE, Events.DESCRIPTION
+        Events.DTSTART, Events.TITLE
     };
 
     // Events selection
     private static final String EVENT_SELECTION =
         "((" + Events.CALENDAR_ID + " = ?) AND (" +
-        Events.DTSTART + " > ?) AND (" + Events.DTSTART + " < ?))";
+        Events.DTSTART + " >= ?) AND (" + Events.DTSTART + " < ?))";
 
     // The indices for the projections above.
     private static final int CALENDAR_ID_INDEX = 0;
@@ -68,6 +68,7 @@ public class QueryHandler extends AsyncQueryHandler
     private static final int EVENT_DISCARD = 4;
 
     private static QueryHandler queryHandler;
+    private static EventListener listener;
 
     // QueryHandler
     private QueryHandler(ContentResolver resolver)
@@ -76,12 +77,15 @@ public class QueryHandler extends AsyncQueryHandler
     }
 
     // queryEvents
-    public static void queryEvents(Diary diary, long startTime, long endTime)
+    public static void queryEvents(Context context, long startTime,
+                                   long endTime, EventListener l)
     {
-        ContentResolver resolver = diary.getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
 
         if (queryHandler == null)
             queryHandler = new QueryHandler(resolver);
+
+        listener = l;
 
         ContentValues values = new ContentValues();
         values.put(Events.DTSTART, startTime);
@@ -95,10 +99,10 @@ public class QueryHandler extends AsyncQueryHandler
     }
 
     // insertEvent
-    public static void insertEvent(Diary diary, long startTime,
+    public static void insertEvent(Context context, long startTime,
                                    long endTime, String title)
     {
-        ContentResolver resolver = diary.getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
 
         if (queryHandler == null)
             queryHandler = new QueryHandler(resolver);
@@ -139,7 +143,7 @@ public class QueryHandler extends AsyncQueryHandler
             String[] selectionArgs = new String[]
                 {Long.toString(calendarID),
                  values.getAsString(Events.DTSTART),
-                 values.getAsString(Events.DTSTART)};
+                 values.getAsString(Events.DTEND)};
 
             queryHandler.startQuery(EVENT_REPORT, values, Events.CONTENT_URI,
                                     EVENT_PROJECTION, EVENT_SELECTION,
@@ -158,14 +162,16 @@ public class QueryHandler extends AsyncQueryHandler
             break;
 
         case EVENT_REPORT:
+            // Use the cursor to move through the returned records
             while (cursor.moveToNext())
             {
+                // Get the field values
                 long startTime = cursor.getLong(EVENT_DTSTART_INDEX);
                 String title = cursor.getString(EVENT_TITLE_INDEX);
-                String description = cursor.getString(EVENT_DESCRIPTION_INDEX);
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Event " + startTime + ", " + title + ", " +
-                          description);
+
+                // Return values
+                if (listener != null)
+                    listener.onEvent(startTime, title);
             }
         }
     }
@@ -194,5 +200,11 @@ public class QueryHandler extends AsyncQueryHandler
                 break;
             }
         }
+    }
+
+    // EventListener
+    public interface EventListener
+    {
+        public abstract void onEvent(long startTime, String title);
     }
 }

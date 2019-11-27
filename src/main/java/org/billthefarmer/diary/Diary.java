@@ -182,6 +182,7 @@ public class Diary extends Activity
         "View Larger Map</a></small>\n";
     public final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
     public final static String POSN_TEMPLATE = "[#]: # (%d)";
+    public final static String EVENTS_TEMPLATE = "@:%s %s\n";
 
     public final static String BRACKET_CHARS = "([{<";
     public final static String DIARY_IMAGE = "Diary.png";
@@ -1568,8 +1569,18 @@ public class Diary extends Activity
                               currEntry.get(Calendar.MONTH),
                               currEntry.get(Calendar.DATE));
         endTime.add(Calendar.DATE, 1);
-        QueryHandler.queryEvents(this, currEntry.getTimeInMillis() - 1,
-                                 endTime.getTimeInMillis());
+        QueryHandler.queryEvents(this, currEntry.getTimeInMillis(),
+                                 endTime.getTimeInMillis(),
+                                 (startTime, title) ->
+        {
+            DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
+            String time = format.format(startTime);
+            String event = String.format(EVENTS_TEMPLATE, time, title);
+            Editable editable = textView.getEditableText();
+            int position = textView.getSelectionStart();
+            editable.insert(position, event);
+            loadMarkdown();
+        });
     }
 
     // editStyles
