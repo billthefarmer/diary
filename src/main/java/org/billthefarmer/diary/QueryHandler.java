@@ -75,11 +75,10 @@ public class QueryHandler extends AsyncQueryHandler
         super(resolver);
     }
 
-    // queryEvent
-    public static void queryEvent(Context context, long startTime,
-                                   long endTime, String title)
+    // queryEvents
+    public static void queryEvents(Diary diary, long startTime, long endTime)
     {
-        ContentResolver resolver = context.getContentResolver();
+        ContentResolver resolver = diary.getContentResolver();
 
         if (queryHandler == null)
             queryHandler = new QueryHandler(resolver);
@@ -96,10 +95,10 @@ public class QueryHandler extends AsyncQueryHandler
     }
 
     // insertEvent
-    public static void insertEvent(Context context, long startTime,
+    public static void insertEvent(Diary diary, long startTime,
                                    long endTime, String title)
     {
-        ContentResolver resolver = context.getContentResolver();
+        ContentResolver resolver = diary.getContentResolver();
 
         if (queryHandler == null)
             queryHandler = new QueryHandler(resolver);
@@ -128,7 +127,7 @@ public class QueryHandler extends AsyncQueryHandler
             Log.d(TAG, "Query complete");
 
         ContentValues values = (ContentValues) object;
-        long calendarID;
+        long calendarID = 0;
 
         switch (token)
         {
@@ -189,6 +188,9 @@ public class QueryHandler extends AsyncQueryHandler
                 values.put(Reminders.EVENT_ID, eventID);
                 values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
                 startInsert(EVENT_DISCARD, null, Reminders.CONTENT_URI, values);
+                break;
+
+            case EVENT_DISCARD:
                 break;
             }
         }

@@ -637,6 +637,9 @@ public class Diary extends Activity
         case R.id.addMedia:
             addMedia();
             break;
+        case R.id.addEvents:
+            addEvents();
+            break;
         case R.id.editStyles:
             editStyles();
             break;
@@ -1555,6 +1558,18 @@ public class Diary extends Activity
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(WILD_WILD);
         startActivityForResult(Intent.createChooser(intent, null), ADD_MEDIA);
+    }
+
+    // addEvents
+    public void addEvents()
+    {
+        GregorianCalendar endTime = new
+            GregorianCalendar(currEntry.get(Calendar.YEAR),
+                              currEntry.get(Calendar.MONTH),
+                              currEntry.get(Calendar.DATE));
+        endTime.add(Calendar.DATE, 1);
+        QueryHandler.queryEvents(this, currEntry.getTimeInMillis() - 1,
+                                 endTime.getTimeInMillis());
     }
 
     // editStyles
