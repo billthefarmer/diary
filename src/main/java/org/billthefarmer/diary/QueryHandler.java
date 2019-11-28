@@ -59,7 +59,6 @@ public class QueryHandler extends AsyncQueryHandler
     private static final int CALENDAR_ID_INDEX = 0;
     private static final int EVENT_DTSTART_INDEX = 0;
     private static final int EVENT_TITLE_INDEX = 1;
-    private static final int EVENT_DESCRIPTION_INDEX = 2;
 
     private static final int EVENT_QUERY = 0;
     private static final int EVENT_INSERT = 1;
