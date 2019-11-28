@@ -61,10 +61,10 @@ public class QueryHandler extends AsyncQueryHandler
     private static final int EVENT_TITLE_INDEX = 1;
 
     private static final int EVENT_QUERY = 0;
-    private static final int EVENT_INSERT = 1;
-    private static final int EVENT_REMINDER = 2;
-    private static final int EVENT_REPORT = 3;
-    private static final int EVENT_DISCARD = 4;
+    private static final int EVENT_LISTEN = 1;
+    private static final int EVENT_INSERT = 2;
+    private static final int EVENT_REMIND = 3;
+    private static final int EVENT_DONE = 4;
 
     private static QueryHandler queryHandler;
     private static EventListener listener;
@@ -144,7 +144,7 @@ public class QueryHandler extends AsyncQueryHandler
                  values.getAsString(Events.DTSTART),
                  values.getAsString(Events.DTEND)};
 
-            queryHandler.startQuery(EVENT_REPORT, values, Events.CONTENT_URI,
+            queryHandler.startQuery(EVENT_LISTEN, values, Events.CONTENT_URI,
                                     EVENT_PROJECTION, EVENT_SELECTION,
                                     selectionArgs, null);
             break;
@@ -157,10 +157,10 @@ public class QueryHandler extends AsyncQueryHandler
             values.put(Events.CALENDAR_ID, calendarID);
             values.put(Events.EVENT_TIMEZONE,
                        TimeZone.getDefault().getDisplayName());
-            startInsert(EVENT_REMINDER, null, Events.CONTENT_URI, values);
+            startInsert(EVENT_REMIND, null, Events.CONTENT_URI, values);
             break;
 
-        case EVENT_REPORT:
+        case EVENT_LISTEN:
             // Use the cursor to move through the returned records
             while (cursor.moveToNext())
             {
@@ -186,16 +186,16 @@ public class QueryHandler extends AsyncQueryHandler
 
             switch (token)
             {
-            case EVENT_REMINDER:
+            case EVENT_REMIND:
                 long eventID = Long.parseLong(uri.getLastPathSegment());
                 ContentValues values = new ContentValues();
                 values.put(Reminders.MINUTES, 10);
                 values.put(Reminders.EVENT_ID, eventID);
                 values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
-                startInsert(EVENT_DISCARD, null, Reminders.CONTENT_URI, values);
+                startInsert(EVENT_DONE, null, Reminders.CONTENT_URI, values);
                 break;
 
-            case EVENT_DISCARD:
+            case EVENT_DONE:
                 break;
             }
         }
