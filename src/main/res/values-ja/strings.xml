@@ -28,6 +28,7 @@
   <string name="findAll">すべてを検索…</string>
   <string name="share">共有…</string>
   <string name="addTime">時間を追加</string>
+  <string name="addEvents">イベントを追加する</string>
   <string name="addMedia">メディアを追加…</string>
   <string name="editStyles">スタイルを編集する…</string>
   <string name="editScript">編集スクリプト…</string>

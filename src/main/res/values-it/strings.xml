@@ -25,6 +25,7 @@
   <string name="findAll">Cerca ovunque…</string>
   <string name="share">"Condividi…"</string>
   <string name="addTime">Aggiungi orario</string>
+  <string name="addEvents">Aggiungi eventi</string>
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>

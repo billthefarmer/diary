@@ -635,11 +635,11 @@ public class Diary extends Activity
         case R.id.addTime:
             addTime();
             break;
-        case R.id.addMedia:
-            addMedia();
-            break;
         case R.id.addEvents:
             addEvents();
+            break;
+        case R.id.addMedia:
+            addMedia();
             break;
         case R.id.editStyles:
             editStyles();
@@ -1552,15 +1552,6 @@ public class Diary extends Activity
         loadMarkdown();
     }
 
-    // addMedia
-    public void addMedia()
-    {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType(WILD_WILD);
-        startActivityForResult(Intent.createChooser(intent, null), ADD_MEDIA);
-    }
-
     // addEvents
     public void addEvents()
     {
@@ -1581,6 +1572,15 @@ public class Diary extends Activity
             editable.insert(position, event);
             loadMarkdown();
         });
+    }
+
+    // addMedia
+    public void addMedia()
+    {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(WILD_WILD);
+        startActivityForResult(Intent.createChooser(intent, null), ADD_MEDIA);
     }
 
     // editStyles

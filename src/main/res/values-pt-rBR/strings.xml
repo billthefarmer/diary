@@ -27,7 +27,8 @@
   <string name="search">Localizar…</string>
   <string name="findAll">Localizar tudo…</string>
   <string name="share">"Compartilhar…"</string>
-  <string name="addTime">Tempo extra</string>
+  <string name="addTime">Adicionar tempo</string>
+  <string name="addEvents">Adicionar eventos</string>
   <string name="addMedia">Adicionar mídia</string>
   <string name="editStyles">Editar estilos…</string>
   <string name="editScript">Editar script…</string>

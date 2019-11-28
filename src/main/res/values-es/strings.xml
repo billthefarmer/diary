@@ -28,6 +28,7 @@
   <string name="findAll">Encuentra todos…</string>
   <string name="share">"Compartir…"</string>
   <string name="addTime">Agregar tiempo</string>
+  <string name="addEvents">Agregar eventos</string>
   <string name="addMedia">Agregar medios…</string>
   <string name="editStyles">Editar estilos…</string>
   <string name="editScript">Editar script…</string>
