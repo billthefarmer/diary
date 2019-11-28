@@ -34,6 +34,7 @@ The toolbar icons are, from left to right:
 * **Find all** - find all diary entries containing search text
 * **Share** - share current diary entry
 * **Add time** - Add the current time to diary entry
+* **Add events** - Add calendar events to diary entry
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Edit script** - show an editor to edit custom javascript
