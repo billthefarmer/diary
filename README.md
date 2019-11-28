@@ -77,6 +77,7 @@ installing it does not seem to help.
 * Receive geo uris from other apps
 * Incremental search of diary entries
 * Add events to calendar
+* Add events from calendar
 * Dark or light theme for editing
 * Optional edit cursor position control
 
@@ -92,6 +93,7 @@ The toolbar icons are, from left to right:
 * **Find all** - find all diary entries containing search text
 * **Share** - share current diary entry
 * **Add time** - Add the current time to diary entry
+* **Add events** - Add calendar events to diary entry
 * **Add media** - show a media picker to select media
 * **Edit styles** - show an editor to edit the custom styles
 * **Edit script** - show an editor to edit custom javascript
@@ -191,7 +193,9 @@ which begins with an 'at' symbol followed by a time and an event title
 entry is saved. A colon will be added after the 'at' symbol when the
 event has been added `@:10:30 Dentist`. Use the Calendar app to remove
 or edit events. Do not remove the colon from the diary entry or the
-event will be added again.
+event will be added again. You may add events from the calendar to the
+current diary entry. Events will be added from the relevant calendar
+date.
 
 ## Cursor position
 You may put a line in an entry to control or remember the edit cursor
