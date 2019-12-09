@@ -2172,6 +2172,12 @@ public class Diary extends Activity
         setDate(date);
         load();
 
+        if (markdown && !shown)
+        {
+            animateAccept();
+            shown = true;
+        }
+
         entry = true;
     }
 
