@@ -321,15 +321,6 @@ public class Diary extends Activity
         return null;
     }
 
-    // setToMidnight
-    private static void setToMidnight(Calendar calendar)
-    {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-    }
-
     // parseTime
     private static long parseTime(File file)
     {
@@ -2114,8 +2105,10 @@ public class Diary extends Activity
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
 
-        Calendar today = Calendar.getInstance();
-        setToMidnight(today);
+        Calendar calendar = Calendar.getInstance();
+        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                               calendar.get(Calendar.MONTH),
+                                               calendar.get(Calendar.DATE));
 
         prevEntry = getPrevEntry(year, month, day);
         if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
