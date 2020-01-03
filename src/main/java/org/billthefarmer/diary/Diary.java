@@ -2238,7 +2238,7 @@ public class Diary extends Activity
         if (markdown)
             loadMarkdown();
     }
-        
+
     // addMedia
     private void addMedia(Uri media, boolean append)
     {
@@ -2908,6 +2908,59 @@ public class Diary extends Activity
             catch (Exception e) {}
 
             return result;
+        }
+
+        // onDoubleTap
+        @Override
+        public boolean onDoubleTap(MotionEvent e)
+        {
+            if (shown)
+            {
+                int[] l = new int[2];
+                markdownView.getLocationOnScreen(l);
+
+                // Get markdown position
+                float y = e.getY();
+                y -= l[1];
+
+                int scrollY = markdownView.getScrollY();
+                int contentHeight = markdownView.getContentHeight();
+                float density = getResources().getDisplayMetrics().density;
+
+                float p = (y + scrollY) / (contentHeight * density);
+
+                // Animation
+                animateEdit();
+
+                // Close text search
+                if (searchItem.isActionViewExpanded())
+                    searchItem.collapseActionView();
+
+                shown = false;
+
+                int h = textView.getHeight();
+                int v = Math.round(h * p);
+
+                final int line = textView.getLayout().getLineForVertical(v);
+                int offset = textView.getLayout()
+                    .getOffsetForHorizontal(line, 0);
+                textView.setSelection(offset);
+
+                // Scroll after delay
+                edit.postDelayed(() ->
+                {
+                    // get text position
+                    int position = textView.getLayout().getLineBaseline(line);
+
+                    // Scroll to it
+                    int height = scrollView.getHeight();
+                    scrollView.smoothScrollTo(0, position - height / 2);
+                }, POSITION_DELAY);
+
+                return true;
+            }
+
+            return false;
         }
     }
 
