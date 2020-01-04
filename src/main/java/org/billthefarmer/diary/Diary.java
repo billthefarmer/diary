@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -2389,8 +2388,7 @@ public class Diary extends Activity
     // showToast
     void showToast(int id)
     {
-        Resources resources = getResources();
-        String text = resources.getString(id);
+        String text = getString(id);
         showToast(text);
     }
 
