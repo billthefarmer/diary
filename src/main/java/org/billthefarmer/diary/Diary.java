@@ -2919,7 +2919,7 @@ public class Diary extends Activity
                 int[] l = new int[2];
                 markdownView.getLocationOnScreen(l);
 
-                // Get markdown position
+                // Get tap position
                 float y = e.getY();
                 y -= l[1];
 
@@ -2927,7 +2927,8 @@ public class Diary extends Activity
                 int contentHeight = markdownView.getContentHeight();
                 float density = getResources().getDisplayMetrics().density;
 
-                float p = (y + scrollY) / (contentHeight * density);
+                // Get markdown position
+                final float p = (y + scrollY) / (contentHeight * density);
 
                 // Animation
                 animateEdit();
@@ -2936,19 +2937,18 @@ public class Diary extends Activity
                 if (searchItem.isActionViewExpanded())
                     searchItem.collapseActionView();
 
-                shown = false;
-
-                int h = textView.getHeight();
-                int v = Math.round(h * p);
-
-                final int line = textView.getLayout().getLineForVertical(v);
-                int offset = textView.getLayout()
-                    .getOffsetForHorizontal(line, 0);
-                textView.setSelection(offset);
-
                 // Scroll after delay
-                edit.postDelayed(() ->
+                textView.postDelayed(() ->
                 {
+                    int h = textView.getLayout().getHeight();
+                    int v = Math.round(h * p);
+
+                    // Get line
+                    int line = textView.getLayout().getLineForVertical(v);
+                    int offset = textView.getLayout()
+                        .getOffsetForHorizontal(line, 0);
+                    textView.setSelection(offset);
+
                     // get text position
                     int position = textView.getLayout().getLineBaseline(line);
 
@@ -2956,6 +2956,8 @@ public class Diary extends Activity
                     int height = scrollView.getHeight();
                     scrollView.smoothScrollTo(0, position - height / 2);
                 }, POSITION_DELAY);
+
+                shown = false;
 
                 return true;
             }
