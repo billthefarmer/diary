@@ -162,8 +162,6 @@ public class Diary extends Activity
     public final static String TEXT_JAVASCRIPT = "text/javascript";
     public final static String FILE_PROVIDER =
         "org.billthefarmer.diary.fileprovider";
-    public final static String FILE_URI =
-        "org.billthefarmer.diary.Uri";
 
     public final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     public final static String LINK_TEMPLATE = "[%s](%s)\n";
@@ -315,6 +313,7 @@ public class Diary extends Activity
 
             return text;
         }
+
         catch (Exception e) {}
 
         return null;
@@ -1577,42 +1576,16 @@ public class Diary extends Activity
     public void editStyles()
     {
         File file = new File(getHome(), CSS_STYLES);
-
-        // Get file provider uri
-        Uri uri = FileProvider.getUriForFile
-            (this, FILE_PROVIDER, file);
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Path " + uri.getPath());
-
-        Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setDataAndType(uri, TEXT_CSS);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-        Uri extra = Uri.fromFile(file);
-        intent.putExtra(FILE_URI, extra);
-        startActivity(intent);
+        Uri uri = Uri.fromFile(file);
+        startActivity(new Intent(Intent.ACTION_EDIT, uri, this, Editor.class));
     }
 
     // editScript
     public void editScript()
     {
         File file = new File(getHome(), JS_SCRIPT);
-
-        // Get file provider uri
-        Uri uri = FileProvider.getUriForFile
-            (this, FILE_PROVIDER, file);
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Path " + uri.getPath());
-
-        Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setDataAndType(uri, TEXT_JAVASCRIPT);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-        Uri extra = Uri.fromFile(file);
-        intent.putExtra(FILE_URI, extra);
-        startActivity(intent);
+        Uri uri = Uri.fromFile(file);
+        startActivity(new Intent(Intent.ACTION_EDIT, uri, this, Editor.class));
     }
 
     // backup
