@@ -49,6 +49,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -812,6 +813,7 @@ public class Diary extends Activity
                         setTitleDate(currEntry.getTime());
                         view.clearHistory();
                     }
+
                     else
                     {
                         if (view.canGoBack())
@@ -822,6 +824,7 @@ public class Diary extends Activity
                             if (view.getTitle() != null)
                                 setTitle(view.getTitle());
                         }
+
                         else
                         {
                             getActionBar().setDisplayHomeAsUpEnabled(false);
@@ -855,6 +858,12 @@ public class Diary extends Activity
                         entryStack.push(currEntry);
                         changeDate(calendar);
                         return true;
+                    }
+
+                    if (URLUtil.isFileUrl(url) || URLUtil.isAssetUrl(url))
+                    {
+                        entry = false;
+                        return false;
                     }
 
                     // Use external browser
