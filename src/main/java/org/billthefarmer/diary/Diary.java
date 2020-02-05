@@ -173,10 +173,10 @@ public class Diary extends Activity
     public final static String EVENT_TEMPLATE = "@:$1 $2";
     public final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" " +
-        "src=\"http://www.openstreetmap.org/export/embed.html?" +
+        "src=\"https://www.openstreetmap.org/export/embed.html?" +
         "bbox=%f,%f,%f,%f&amp;layer=mapnik\">" +
         "</iframe><br/><small>" +
-        "<a href=\"http://www.openstreetmap.org/#map=16/%f/%f\">" +
+        "<a href=\"https://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
     public final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
     public final static String POSN_TEMPLATE = "[#]: # (%d)";
@@ -779,18 +779,14 @@ public class Diary extends Activity
             public void beforeTextChanged(CharSequence s,
                                           int start,
                                           int count,
-                                          int after)
-            {
-            }
+                                          int after) {}
 
             // onTextChanged
             @Override
             public void onTextChanged(CharSequence s,
                                       int start,
                                       int before,
-                                      int count)
-            {
-            }
+                                      int count) {}
         });
 
         if (markdownView != null)
@@ -1011,13 +1007,13 @@ public class Diary extends Activity
         SharedPreferences preferences =
             PreferenceManager.getDefaultSharedPreferences(this);
 
+        copyMedia = preferences.getBoolean(Settings.PREF_COPY_MEDIA, false);
         custom = preferences.getBoolean(Settings.PREF_CUSTOM, true);
-        markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
+        darkTheme = preferences.getBoolean(Settings.PREF_DARK_THEME, false);
         external = preferences.getBoolean(Settings.PREF_EXTERNAL, false);
+        markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
         useIndex = preferences.getBoolean(Settings.PREF_USE_INDEX, false);
         useTemplate = preferences.getBoolean(Settings.PREF_USE_TEMPLATE, false);
-        copyMedia = preferences.getBoolean(Settings.PREF_COPY_MEDIA, false);
-        darkTheme = preferences.getBoolean(Settings.PREF_DARK_THEME, false);
 
         // Index page
         indexPage = preferences.getLong(Settings.PREF_INDEX_PAGE,
@@ -1431,12 +1427,14 @@ public class Diary extends Activity
                 layoutSwitcher.setDisplayedChild(MARKDOWN);
                 buttonSwitcher.setDisplayedChild(EDIT);
             }
+
             else
             {
                 layoutSwitcher.setDisplayedChild(EDIT_TEXT);
                 buttonSwitcher.setDisplayedChild(ACCEPT);
             }
         }
+
         else
         {
             layoutSwitcher.setDisplayedChild(EDIT_TEXT);
@@ -1458,10 +1456,10 @@ public class Diary extends Activity
     private void showCustomCalendarDialog(Calendar date)
     {
         CustomCalendarDialog dialog = new
-        CustomCalendarDialog(this, this,
-                             date.get(Calendar.YEAR),
-                             date.get(Calendar.MONTH),
-                             date.get(Calendar.DATE));
+            CustomCalendarDialog(this, this,
+                                 date.get(Calendar.YEAR),
+                                 date.get(Calendar.MONTH),
+                                 date.get(Calendar.DATE));
         // Show the dialog
         dialog.show();
 
@@ -1483,10 +1481,10 @@ public class Diary extends Activity
     private void showDatePickerDialog(Calendar date)
     {
         DatePickerDialog dialog = new
-        DatePickerDialog(this, this,
-                         date.get(Calendar.YEAR),
-                         date.get(Calendar.MONTH),
-                         date.get(Calendar.DATE));
+            DatePickerDialog(this, this,
+                             date.get(Calendar.YEAR),
+                             date.get(Calendar.MONTH),
+                             date.get(Calendar.DATE));
         // Show the dialog
         dialog.show();
     }

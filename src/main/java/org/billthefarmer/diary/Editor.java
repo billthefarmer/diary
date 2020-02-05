@@ -131,18 +131,14 @@ public class Editor extends Activity
                 public void beforeTextChanged(CharSequence s,
                                               int start,
                                               int count,
-                                              int after)
-                {
-                }
+                                              int after) {}
 
                 // onTextChanged
                 @Override
                 public void onTextChanged(CharSequence s,
                                           int start,
                                           int before,
-                                          int count)
-                {
-                }
+                                          int count) {}
             });
 
             // On long click
@@ -188,7 +184,6 @@ public class Editor extends Activity
     public void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
-
         changed = savedInstanceState.getBoolean(CHANGED);
     }
 
@@ -209,6 +204,7 @@ public class Editor extends Activity
             onBackPressed();
             return true;
         }
+
         else
         {
             return super.onOptionsItemSelected(item);
@@ -345,9 +341,9 @@ public class Editor extends Activity
             }
         }
 
-        try (BufferedReader reader =
-             new BufferedReader(new InputStreamReader(getContentResolver()
-                                                      .openInputStream(uri))))
+        try (BufferedReader reader = new
+             BufferedReader(new InputStreamReader(getContentResolver()
+                                                  .openInputStream(uri))))
         {
             String line;
             while ((line = reader.readLine()) != null)
@@ -387,6 +383,7 @@ public class Editor extends Activity
                 fileWriter.append(text);
                 fileWriter.close();
             }
+
             catch (IOException e)
             {
                 alertDialog(R.string.appName, e.getMessage(),
