@@ -26,21 +26,21 @@
 ## Toolbar
 The toolbar icons are, from left to right:
 
-* **Previous** - show the previous entry or today
-* **Next** - show the next entry or today if next
-* **Today** - show today's entry
-* **Go to date** - show a date picker calendar to select a new date
-* **Index** - go to index page if set
-* **Search** - incremental search of diary entry
-* **Find all** - find all diary entries containing search text
-* **Share** - share current diary entry
-* **Add time** - Add the current time to diary entry
-* **Add events** - Add calendar events to diary entry
-* **Add media** - show a media picker to select media
-* **Edit styles** - show an editor to edit the custom styles
-* **Edit script** - show an editor to edit custom javascript
-* **Backup** - backup entries to a zip file
-* **Settings** - show the settings
+* **Previous** &ndash; show the previous entry or today
+* **Next** &ndash; show the next entry or today if next
+* **Today** &ndash; show today's entry
+* **Go to date** &ndash; show a date picker calendar to select a new date
+* **Index** &ndash; go to index page if set
+* **Search** &ndash; incremental search of diary entry
+* **Find all** &ndash; find all diary entries containing search text
+* **Share** &ndash; share current diary entry
+* **Add time** &ndash; Add the current time to diary entry
+* **Add events** &ndash; Add calendar events to diary entry
+* **Add media** &ndash; show a media picker to select media
+* **Edit styles** &ndash; show an editor to edit the custom styles
+* **Edit script** &ndash; show an editor to edit custom javascript
+* **Backup** &ndash; backup entries to a zip file
+* **Settings** &ndash; show the settings
 
 Depending on the device and orientation, some items may be on the
 menu.
@@ -141,7 +141,7 @@ decimal point, and a comma or a semicolon (`[,;]`) for the co-ordinate
 separator. Use the correct convention for your locale. Geo uris
 received from other apps will be converted to `[osm](<lat>,<lng>)`
 syntax in the diary entry. Diary entries using `[<lat>,<lng>]` syntax
-will be converted to geo uri syntax. **Caution** - geo uris use a
+will be converted to geo uri syntax. **Caution** &ndash; geo uris use a
 period (`[.]`) for a decimal point and a comma (`[,]`) for the
 co-ordinate separator regardless of locale.
 
@@ -166,7 +166,7 @@ the entry is saved `[#]: # (nnn)`. Because entries are only saved if
 they are changed, moving the cursor with no other change will not move
 the saved position.
 
-**Note** - Using this functionality will not stop reference type links
+**Note** &ndash; Using this functionality will not stop reference type links
 to the top of the current entry, `[Top][#]` working. However you can
 more simply use an inline link `[Top](#)`.
 
@@ -177,7 +177,7 @@ built in styles file which simply limits the width of images to the
 page width. Use the built in editor to create a styles file. You must
 use the editor `accept` tick button to save the edits.
 
-**Caution** - There is no such thing as a markdown syntax error, but
+**Caution** &ndash; There is no such thing as a markdown syntax error, but
 syntax errors in a styles file may cause unpredictable results and
 affect all diary pages. See
 [CSS Tutorial](https://www.w3schools.com/Css).
@@ -212,14 +212,15 @@ card not part of the device storage may work on some devices, but is
 not supported. Adding media may also work, but may not be persistent.
 
 ## Settings
-* **Use custom calendar** - Use custom calendar that shows diary
-  entries rather than date picker calendar
-* **Use markdown** - Use markdown formatting for diary entries
-* **Folder** - Change diary entry storage folder. Caution - diary
-  entries and styles will not be moved
-* **Index** - Set an index page. Use the date picker to choose a date.
-* **Template** - Set a template page. Use the date picker to choose a date.
-* **Browser** - Use browser for external links
-* **Copy images** - Copy images to current folder
-* **Dark theme** - Use dark theme for editing
-* **About** - Show app version, licence and credits
+* **Use custom calendar** &ndash; Use custom calendar that shows diary
+    entries rather than date picker calendar
+* **Use markdown** &ndash; Use markdown formatting for diary entries
+* **Folder** &ndash; Change diary entry storage folder. Caution &ndash;
+    diary entries and styles will not be moved
+* **Index** &ndash; Set an index page. Use the date picker to choose a date.
+* **Template** &ndash; Set a template page. Use the date picker to
+    choose a date.
+* **Browser** &ndash; Use browser for external links
+* **Copy images** &ndash; Copy images to current folder
+* **Dark theme** &ndash; Use dark theme for editing
+* **About** &ndash; Show app version, licence and credits
