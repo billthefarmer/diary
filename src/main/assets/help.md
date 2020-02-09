@@ -20,6 +20,7 @@
 * Add events to calendar
 * Add events from calendar
 * Dark or light theme for editing
+* Back up entries to a zip file
 * Optional edit cursor position control
 
 ## Toolbar
@@ -104,7 +105,8 @@ media will be appended to the selected page. Content URIs
 to file URIs (`file:///`) if possible. Media will be added using
 markdown image syntax (`![<name>](<url>)`), which will be parsed into
 an HTML5 media player, text clips will be added as above, URLs will be
-added as a link.
+added as a link. Media added from removable SD cards not part of the
+device storage may work but may not be persistent and is not supported.
 
 ## LaTeX
 Diary doesn't support [LaTeX](https://en.wikipedia.org/wiki/LaTeX),
@@ -202,6 +204,12 @@ check and minimise your code. It will handle multiple input files.
 ## Backup
 You may create a backup of all your entries in a zip file. The file
 will have the same name as the diary folder, default `Diary.zip`.
+
+## Removable SD cards
+Android allows removable SD cards to be used like a USB stick or as
+part of the device storage. Storing diary entries on a removable SD
+card not part of the device storage may work on some devices, but is
+not supported. Adding media may also work, but may not be persistent.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary

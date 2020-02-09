@@ -149,7 +149,8 @@ media will be appended to the selected page. Content URIs
 to file URIs (`file:///`) if possible. Media will be added using
 markdown image syntax (`![<name>](<url>)`), which will be parsed into
 an HTML5 media player, text clips will be added as above, URLs will be
-added as a link.
+added as a link. Media added from removable SD cards not part of the
+device storage may work but may not be persistent and is not supported.
 
 ## LaTeX
 Diary doesn't support [LaTeX](https://en.wikipedia.org/wiki/LaTeX),
@@ -233,7 +234,7 @@ the first line.
 ## Javascript
 You may add custom javascript to be loaded into all diary pages by
 placing a `script.js` file in the `Diary/js` folder. Use the built in
-editor to create a script file.  You must use the editor `accept` tick
+editor to create a script file. You must use the editor `accept` tick
 button to save the edits. Errors in the script will be logged by the
 [WebView](https://developer.android.com/reference/android/webkit/WebView)
 which displays the page. See
@@ -247,6 +248,12 @@ check and minimise your code. It will handle multiple input files.
 ## Backup
 You may create a backup of all your entries in a zip file. The file
 will have the same name as the diary folder, default `Diary.zip`.
+
+## Removable SD cards
+Android allows removable SD cards to be used like a USB stick or as
+part of the device storage. Storing diary entries on a removable SD
+card not part of the device storage may work on some devices, but is
+not supported. Adding media may also work, but may not be persistent.
 
 ## Settings
 * **Use custom calendar** - Use custom calendar that shows diary
