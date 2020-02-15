@@ -107,6 +107,7 @@ public class Diary extends Activity
     private final static int REQUEST_TEMPLATE = 3;
 
     private final static int POSITION_DELAY = 128;
+    private final static int VISIBLE_DELAY = 2048;
     private final static int BUFFER_SIZE = 4096;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
@@ -208,6 +209,9 @@ public class Diary extends Activity
 
     private boolean changed = false;
     private boolean shown = true;
+
+    private boolean scrollUp = false;
+    private boolean scrollDn = false;
 
     private boolean multi = false;
     private boolean entry = false;
@@ -763,32 +767,6 @@ public class Diary extends Activity
 
     private void setListeners()
     {
-        if (textView != null)
-            textView.addTextChangedListener(new TextWatcher()
-        {
-            // afterTextChanged
-            @Override
-            public void afterTextChanged(Editable s)
-            {
-                // Text changed
-                changed = true;
-            }
-
-            // beforeTextChanged
-            @Override
-            public void beforeTextChanged(CharSequence s,
-                                          int start,
-                                          int count,
-                                          int after) {}
-
-            // onTextChanged
-            @Override
-            public void onTextChanged(CharSequence s,
-                                      int start,
-                                      int before,
-                                      int count) {}
-        });
-
         if (markdownView != null)
         {
             markdownView.setWebViewClient(new WebViewClient()
@@ -877,11 +855,61 @@ public class Diary extends Activity
                 }
             });
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                final Runnable showEdit = () ->
+                {
+                    startAnimation(edit, R.anim.fade_in, View.VISIBLE);
+                    scrollUp = false;
+                };
+
+                // onScrollChange
+                markdownView.setOnScrollChangeListener((v, x, y, oldX, oldY) ->
+                {
+                    // Scroll up
+                    if (y > oldY)
+                    {
+                        if (!scrollUp)
+                        {
+                            // Hide button
+                            // edit.setVisibility(View.INVISIBLE);
+                            startAnimation(edit, R.anim.fade_out,
+                                           View.INVISIBLE);
+
+                            // Set flags
+                            scrollUp = true;
+                            scrollDn = false;
+                        }
+
+                        // Show button delayed
+                        markdownView.removeCallbacks(showEdit);
+                        markdownView.postDelayed(showEdit, VISIBLE_DELAY);
+                    }
+
+                    else if (!scrollDn)
+                    {
+                        // Set flags
+                        scrollUp = false;
+                        scrollDn = true;
+
+                        // Show button
+                        if (edit.getVisibility() != View.VISIBLE)
+                        {
+                            // edit.setVisibility(View.VISIBLE);
+                            startAnimation(edit, R.anim.fade_in, View.VISIBLE);
+                            markdownView.removeCallbacks(showEdit);
+                        }
+                   }
+                });
+            }
+
             // On long click
             markdownView.setOnLongClickListener(v ->
             {
-                // Reveal button
-                edit.setVisibility(View.VISIBLE);
+                // Show button
+                if (edit.getVisibility() != View.VISIBLE)
+                    startAnimation(edit, R.anim.fade_in, View.VISIBLE);
+                scrollUp = false;
                 return false;
             });
         }
@@ -919,6 +947,7 @@ public class Diary extends Activity
             {
                 // Hide button
                 v.setVisibility(View.INVISIBLE);
+                scrollUp = true;
                 return true;
             });
         }
@@ -958,12 +987,38 @@ public class Diary extends Activity
             {
                 // Hide button
                 v.setVisibility(View.INVISIBLE);
+                scrollUp = true;
                 return true;
             });
         }
 
         if (textView != null)
         {
+            textView.addTextChangedListener(new TextWatcher()
+            {
+                // afterTextChanged
+                @Override
+                public void afterTextChanged(Editable s)
+                {
+                    // Text changed
+                    changed = true;
+                }
+
+                // beforeTextChanged
+                @Override
+                public void beforeTextChanged(CharSequence s,
+                                              int start,
+                                              int count,
+                                              int after) {}
+
+                // onTextChanged
+                @Override
+                public void onTextChanged(CharSequence s,
+                                          int start,
+                                          int before,
+                                          int count) {}
+            });
+
             // onFocusChange
             textView.setOnFocusChangeListener((v, hasFocus) ->
             {
@@ -977,11 +1032,63 @@ public class Diary extends Activity
             // On long click
             textView.setOnLongClickListener(v ->
             {
-                // Reveal button
-                accept.setVisibility(View.VISIBLE);
+                // Show button
+                if (accept.getVisibility() != View.VISIBLE)
+                    startAnimation(accept, R.anim.fade_in, View.VISIBLE);
+                scrollUp = false;
                 return false;
             });
         }
+
+        if (scrollView != null)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                final Runnable showAccept = () ->
+                {
+                    startAnimation(accept, R.anim.fade_in, View.VISIBLE);
+                    scrollUp = false;
+                };
+
+                // onScrollChange
+                scrollView.setOnScrollChangeListener((v, x, y, oldX, oldY) ->
+                {
+                    // Scroll up
+                    if (y > oldY)
+                    {
+                        if (!scrollUp)
+                        {
+                            // Hide button
+                            // accept.setVisibility(View.INVISIBLE);
+                            startAnimation(accept, R.anim.fade_out,
+                                           View.INVISIBLE);
+
+                            // Set flags
+                            scrollUp = true;
+                            scrollDn = false;
+                        }
+
+                        // Show button delayed
+                        scrollView.removeCallbacks(showAccept);
+                        scrollView.postDelayed(showAccept, VISIBLE_DELAY);
+                    }
+
+                    else if (!scrollDn)
+                    {
+                        // Set flags
+                        scrollUp = false;
+                        scrollDn = true;
+
+                        // Show button
+                        if (accept.getVisibility() != View.VISIBLE)
+                        {
+                            // accept.setVisibility(View.VISIBLE);
+                            startAnimation(accept, R.anim.fade_in,
+                                           View.VISIBLE);
+                            scrollView.removeCallbacks(showAccept);
+                        }
+                    }
+                });
+            }
     }
 
     // animateAccept
@@ -998,6 +1105,14 @@ public class Diary extends Activity
         // Animation
         layoutSwitcher.setDisplayedChild(EDIT_TEXT);
         buttonSwitcher.setDisplayedChild(ACCEPT);
+    }
+
+    // startAnimation
+    private void startAnimation(View view, int anim, int visibility)
+    {
+        Animation animation = AnimationUtils.loadAnimation(this, anim);
+        view.startAnimation(animation);
+        view.setVisibility(visibility);
     }
 
     // getPreferences
