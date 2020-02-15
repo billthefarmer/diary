@@ -765,6 +765,7 @@ public class Diary extends Activity
         return super.dispatchTouchEvent(event);
     }
 
+    // setListeners
     private void setListeners()
     {
         if (markdownView != null)
@@ -910,6 +911,7 @@ public class Diary extends Activity
                 if (edit.getVisibility() != View.VISIBLE)
                     startAnimation(edit, R.anim.fade_in, View.VISIBLE);
                 scrollUp = false;
+                scrollDn = false;
                 return false;
             });
         }
@@ -948,6 +950,7 @@ public class Diary extends Activity
                 // Hide button
                 v.setVisibility(View.INVISIBLE);
                 scrollUp = true;
+                scrollDn = false;
                 return true;
             });
         }
@@ -988,6 +991,7 @@ public class Diary extends Activity
                 // Hide button
                 v.setVisibility(View.INVISIBLE);
                 scrollUp = true;
+                scrollDn = false;
                 return true;
             });
         }
@@ -1036,6 +1040,7 @@ public class Diary extends Activity
                 if (accept.getVisibility() != View.VISIBLE)
                     startAnimation(accept, R.anim.fade_in, View.VISIBLE);
                 scrollUp = false;
+                scrollDn = false;
                 return false;
             });
         }
