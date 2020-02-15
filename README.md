@@ -112,10 +112,14 @@ long touch on the page.
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
 
+## Scrolling
+Scrolling the page up will temporarily hide the floating
+button. Scrolling down restores it.
+
 ## Search
 You may search diary entries, the search will update as text is
 entered into the search field. Use the search widget or keyboard
-action button for find next.
+action button to find the next match.
 
 ## Find all
 You may find all diary entries that contain the current search
