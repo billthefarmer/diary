@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Manage on Diary</title>
-    <link>https://billthefarmer.github.io/notes/manage/</link>
+    <link>https://billthefarmer.github.io/diary/manage/</link>
     <description>Recent content in Manage on Diary</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2020 Bill Farmer</copyright>
     <lastBuildDate>Sun, 16 Feb 2020 19:07:08 +0000</lastBuildDate>
     
-	<atom:link href="https://billthefarmer.github.io/notes/manage/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://billthefarmer.github.io/diary/manage/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Backup</title>
-      <link>https://billthefarmer.github.io/notes/manage/backup/</link>
+      <link>https://billthefarmer.github.io/diary/manage/backup/</link>
       <pubDate>Sun, 16 Feb 2020 19:13:37 +0000</pubDate>
       
-      <guid>https://billthefarmer.github.io/notes/manage/backup/</guid>
+      <guid>https://billthefarmer.github.io/diary/manage/backup/</guid>
       <description>You may create a backup of all your entries in a zip file. The file will have the same name as the diary folder, default Diary.zip.</description>
     </item>
     
     <item>
       <title>Sync</title>
-      <link>https://billthefarmer.github.io/notes/manage/sync/</link>
+      <link>https://billthefarmer.github.io/diary/manage/sync/</link>
       <pubDate>Mon, 17 Feb 2020 09:44:17 +0000</pubDate>
       
-      <guid>https://billthefarmer.github.io/notes/manage/sync/</guid>
+      <guid>https://billthefarmer.github.io/diary/manage/sync/</guid>
       <description>Android cloud storage apps when last tested appeared not to be capable of syncing a real storage folder on the device. However Syncthing does just that and can sync your diary folder with other devices and desktop computers.</description>
     </item>
     
     <item>
       <title>SD Cards</title>
-      <link>https://billthefarmer.github.io/notes/manage/sd-cards/</link>
+      <link>https://billthefarmer.github.io/diary/manage/sd-cards/</link>
       <pubDate>Sun, 16 Feb 2020 19:14:14 +0000</pubDate>
       
-      <guid>https://billthefarmer.github.io/notes/manage/sd-cards/</guid>
+      <guid>https://billthefarmer.github.io/diary/manage/sd-cards/</guid>
       <description>Android allows removable SD cards to be used like a USB stick or as part of the device storage. Storing diary entries on a removable SD card not part of the device storage may work on some devices, but is not supported. Adding media may also work, but may not be persistent.</description>
     </item>
     

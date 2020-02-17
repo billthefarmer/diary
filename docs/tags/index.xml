@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Diary</title>
-    <link>https://billthefarmer.github.io/notes/tags/</link>
+    <link>https://billthefarmer.github.io/diary/tags/</link>
     <description>Recent content in Tags on Diary</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2020 Bill Farmer</copyright>
     
-	<atom:link href="https://billthefarmer.github.io/notes/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://billthefarmer.github.io/diary/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
