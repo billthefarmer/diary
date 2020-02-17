@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Content on Diary</title>
+    <link>https://billthefarmer.github.io/notes/content/</link>
+    <description>Recent content in Content on Diary</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Copyright &amp;copy; 2020 Bill Farmer</copyright>
+    <lastBuildDate>Sun, 16 Feb 2020 19:07:48 +0000</lastBuildDate>
+    
+	<atom:link href="https://billthefarmer.github.io/notes/content/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Text</title>
+      <link>https://billthefarmer.github.io/notes/content/text/</link>
+      <pubDate>Sun, 16 Feb 2020 19:12:44 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/text/</guid>
+      <description>You may receive text clips from another app. A date picker will pop up. The text will be appended to the entry selected.</description>
+    </item>
+    
+    <item>
+      <title>Media</title>
+      <link>https://billthefarmer.github.io/notes/content/media/</link>
+      <pubDate>Sun, 16 Feb 2020 19:12:10 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/media/</guid>
+      <description>You may store media in the diary storage folders and reference them in diary entries, so markdown text ![cat](cat.jpg) will display cat.jpg stored in the current month folder which is Diary/&amp;lt;year&amp;gt;/&amp;lt;month&amp;gt; on the sdcard. You may either add media from media providers like file managers or image managers or receive media sent by other apps. Media added will be added at the current cursor position. Media sent by other apps will pop up a date picker.</description>
+    </item>
+    
+    <item>
+      <title>Latex</title>
+      <link>https://billthefarmer.github.io/notes/content/latex/</link>
+      <pubDate>Sun, 16 Feb 2020 19:10:57 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/latex/</guid>
+      <description>Diary doesn&amp;rsquo;t support LaTeX, but it is possible to use an external site to add LaTeX formatted images.
+![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2} &amp;amp;bc=cornsilk&amp;amp;fc=black&amp;amp;im=jpg&amp;amp;fs=24&amp;amp;ff=arev) \sum_{i=1}^{n}x_{i}^{2}  </description>
+    </item>
+    
+    <item>
+      <title>Links</title>
+      <link>https://billthefarmer.github.io/notes/content/links/</link>
+      <pubDate>Sun, 16 Feb 2020 19:11:43 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/links/</guid>
+      <description>You may put links in diary pages, so [DuckDuckGo](https://duckduckgo.com) will show a link to DuckDuckGo. Links will be followed if touched. Use the back button in the toolbar or the navigation bar to return to the diary page. Links to other diary pages may either be a relative reference to the entry file [Sunday](25.txt), or use a date URI [Whenever](date:17/10/2017). Use your local convention for short form numeric dates (UK: dd/mm/yyyy, US: mm/dd/yyyy).</description>
+    </item>
+    
+    <item>
+      <title>Maps</title>
+      <link>https://billthefarmer.github.io/notes/content/maps/</link>
+      <pubDate>Sun, 16 Feb 2020 19:12:00 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/maps/</guid>
+      <description>You may put OpenStreetMap maps in diary pages with the syntax [&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;], or [osm:&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;]. Because of differing conventions in different locales, the app parser will accept a comma or a dot ([,.]) for the decimal point, and a comma or a semicolon ([,;]) for the co-ordinate separator. Use the correct convention for your locale. Geo uris received from other apps will be converted to [osm](&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;) syntax in the diary entry. Diary entries using [&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;] syntax will be converted to geo uri syntax.</description>
+    </item>
+    
+    <item>
+      <title>Events</title>
+      <link>https://billthefarmer.github.io/notes/content/events/</link>
+      <pubDate>Mon, 17 Feb 2020 09:32:41 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/events/</guid>
+      <description>You may add an event to the calendar by adding a line to a diary entry which begins with an at symbol (@) followed by a time and an event title @ 10:30 Dentist. An event will be added to the calendar when the entry is saved. A colon will be added after the &amp;lsquo;at&amp;rsquo; symbol when the event has been added @:10:30 Dentist. Use the Calendar app to remove or edit events.</description>
+    </item>
+    
+    <item>
+      <title>Cursor Position</title>
+      <link>https://billthefarmer.github.io/notes/content/cursor/</link>
+      <pubDate>Mon, 17 Feb 2020 09:36:25 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/cursor/</guid>
+      <description>You may put a line in an entry to control or remember the edit cursor position. This will not appear in the markdown view. Put [&amp;lt;]: # on a line for the start of an entry, [&amp;gt;]: # for the end of an entry. Put [#]: # for the cursor position to be remembered. There should be no other text on the line. The current cursor position will be added when the entry is saved [#]: # (nnn).</description>
+    </item>
+    
+    <item>
+      <title>Styles</title>
+      <link>https://billthefarmer.github.io/notes/content/styles/</link>
+      <pubDate>Sun, 16 Feb 2020 19:12:37 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/styles/</guid>
+      <description>You may add custom styles to the markdown formatting by placing a styles.css file in the Diary/css folder, which will replace the built in styles file which simply limits the width of images to the page width. Use the built in editor to create a styles file. You must use the editor accept tick button to save the edits.
+Caution – There is no such thing as a markdown syntax error, but syntax errors in a styles file may cause unpredictable results and affect all diary pages.</description>
+    </item>
+    
+    <item>
+      <title>Scripts</title>
+      <link>https://billthefarmer.github.io/notes/content/scripts/</link>
+      <pubDate>Sun, 16 Feb 2020 19:12:20 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/content/scripts/</guid>
+      <description>You may add custom javascript to be loaded into all diary pages by placing a script.js file in the Diary/js folder. Use the built in editor to create a script file. You must use the editor accept tick button to save the edits. Errors in the script will be logged by the WebView which displays the page. See Javascript tutorial.
+If you want to use javascript libraries or write a large script it might be a good idea to use the Google Closure Compiler to check and minimise your code.</description>
+    </item>
+    
+  </channel>
+</rss>

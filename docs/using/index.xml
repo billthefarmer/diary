@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Using on Diary</title>
+    <link>https://billthefarmer.github.io/notes/using/</link>
+    <description>Recent content in Using on Diary</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Copyright &amp;copy; 2020 Bill Farmer</copyright>
+    <lastBuildDate>Sun, 16 Feb 2020 19:07:31 +0000</lastBuildDate>
+    
+	<atom:link href="https://billthefarmer.github.io/notes/using/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Toolbar</title>
+      <link>https://billthefarmer.github.io/notes/using/toolbar/</link>
+      <pubDate>Sun, 16 Feb 2020 19:16:22 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/toolbar/</guid>
+      <description>The toolbar items:
+ Previous – show the previous entry or today Next – show the next entry or today if next Today – show today&amp;rsquo;s entry  And on the menu:
+ Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Share – share current diary entry Add time – Add the current time to diary entry Add events – Add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings  </description>
+    </item>
+    
+    <item>
+      <title>Swipe</title>
+      <link>https://billthefarmer.github.io/notes/using/swipe/</link>
+      <pubDate>Sun, 16 Feb 2020 19:28:32 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/swipe/</guid>
+      <description>Left and right Swipe left and right in the diary page will show the next or previous day, or in the custom calendar will show the next or previous month.
+Up and down Swipe up and down with two fingers in the diary page will show the previous or next month, or in the custom calendar will show the previous or next year.</description>
+    </item>
+    
+    <item>
+      <title>Double Tap</title>
+      <link>https://billthefarmer.github.io/notes/using/double-tap/</link>
+      <pubDate>Sun, 16 Feb 2020 19:15:28 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/double-tap/</guid>
+      <description>In the formatted view a double tap on the screen will switch to the edit view in approximately the same position in the markdown text. The accuracy is dependent on the text formatting and media in the entry.</description>
+    </item>
+    
+    <item>
+      <title>Editing</title>
+      <link>https://billthefarmer.github.io/notes/using/editing/</link>
+      <pubDate>Sun, 16 Feb 2020 19:15:38 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/editing/</guid>
+      <description>In markdown mode the Edit button floating above the page allows editing entries. The Accept button restores the formatted view. A long touch on the button hides it until the device is rotated or a long touch on the page.
+See Markdown for markdown syntax.</description>
+    </item>
+    
+    <item>
+      <title>Scrolling</title>
+      <link>https://billthefarmer.github.io/notes/using/scrolling/</link>
+      <pubDate>Sun, 16 Feb 2020 19:16:01 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/scrolling/</guid>
+      <description>Scrolling the page up will temporarily hide the floating button. Scrolling down restores it.</description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>https://billthefarmer.github.io/notes/using/search/</link>
+      <pubDate>Sun, 16 Feb 2020 19:16:11 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/search/</guid>
+      <description>You may search diary entries, the search will update as text is entered into the search field. Use the search widget or keyboard action button to find the next match.</description>
+    </item>
+    
+    <item>
+      <title>Find All</title>
+      <link>https://billthefarmer.github.io/notes/using/find-all/</link>
+      <pubDate>Sun, 16 Feb 2020 19:48:32 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/find-all/</guid>
+      <description>You may find all diary entries that contain the current search text. This menu item will only appear while the search widget is active. A dialog will pop up with a list of matching entries. Touch an entry to open that entry. You may repeat this or refine the search text to find the desired entry.</description>
+    </item>
+    
+    <item>
+      <title>Index Page</title>
+      <link>https://billthefarmer.github.io/notes/using/index-page/</link>
+      <pubDate>Sun, 16 Feb 2020 19:51:58 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/index-page/</guid>
+      <description>You may use an index page. If an index page is set the app will start on that page unless receiving media from another app.</description>
+    </item>
+    
+    <item>
+      <title>Help</title>
+      <link>https://billthefarmer.github.io/notes/using/help/</link>
+      <pubDate>Sun, 16 Feb 2020 19:15:48 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/notes/using/help/</guid>
+      <description>There is a help, a test, an example styles file and an example script file, which may be copied in to an entry for reference if required.</description>
+    </item>
+    
+  </channel>
+</rss>
