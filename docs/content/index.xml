@@ -55,7 +55,7 @@
       <pubDate>Sun, 16 Feb 2020 19:12:00 +0000</pubDate>
       
       <guid>https://billthefarmer.github.io/diary/content/maps/</guid>
-      <description>You may put OpenStreetMap maps in diary pages with the syntax [&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;], or [osm:&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;]. Because of differing conventions in different locales, the app parser will accept a comma or a dot ([,.]) for the decimal point, and a comma or a semicolon ([,;]) for the co-ordinate separator. Use the correct convention for your locale. Geo uris received from other apps will be converted to [osm](&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;) syntax in the diary entry. Diary entries using [&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;] syntax will be converted to geo uri syntax.</description>
+      <description>You may put OpenStreetMap maps in diary pages with a geo URI ![osm](geo:&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;). Geo uris received from other apps will be converted to ![osm](geo:&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;) syntax in the diary entry.</description>
     </item>
     
     <item>

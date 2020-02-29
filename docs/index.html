@@ -515,16 +515,9 @@ to clear the navigation entries.</p>
     
     <div class="content">
         <p>You may put <a href="http://www.openstreetmap.org">OpenStreetMap</a> maps in
-diary pages with the syntax <code>[&lt;lat&gt;,&lt;lng&gt;]</code>, or
-<code>[osm:&lt;lat&gt;,&lt;lng&gt;]</code>. Because of differing conventions in different
-locales, the app parser will accept a comma or a dot (<code>[,.]</code>) for the
-decimal point, and a comma or a semicolon (<code>[,;]</code>) for the co-ordinate
-separator. Use the correct convention for your locale. Geo uris
-received from other apps will be converted to <code>[osm](&lt;lat&gt;,&lt;lng&gt;)</code>
-syntax in the diary entry. Diary entries using <code>[&lt;lat&gt;,&lt;lng&gt;]</code> syntax
-will be converted to geo uri syntax. <strong>Caution</strong> – geo uris use a
-period (<code>[.]</code>) for a decimal point and a comma (<code>[,]</code>) for the
-co-ordinate separator regardless of locale.</p>
+diary pages with a geo URI <code>![osm](geo:&lt;lat&gt;,&lt;lng&gt;)</code>. Geo uris
+received from other apps will be converted to
+<code>![osm](geo:&lt;lat&gt;,&lt;lng&gt;)</code> syntax in the diary entry.</p>
 
     </div>
 </section>
