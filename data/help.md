@@ -11,7 +11,7 @@
 * Optional index page
 * Optional entry template
 * Display media stored in diary folders
-* Display [OpenStreetMap](http://www.openstreetmap.org) maps
+* Display [OpenStreetMap](https://www.openstreetmap.org) maps
 * Share diary entries
 * Add media from media providers
 * Receive media from other apps
@@ -137,7 +137,7 @@ through diary entries and external web pages. Use the **Today** button
 to clear the navigation entries.
 
 ## Maps
-You may put [OpenStreetMap](http://www.openstreetmap.org) maps in
+You may put [OpenStreetMap](https://www.openstreetmap.org) maps in
 diary pages with a geo URI `![osm](geo:<lat>,<lng>)`. Geo uris
 received from other apps will be converted to
 `![osm](geo:<lat>,<lng>)` syntax in the diary entry.
