@@ -123,6 +123,9 @@ images.
 
 ![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2}&bc=cornsilk&fc=black&im=jpg&fs=24&ff=arev)
 
+If you don't intend to change the image, you can copy it and use that
+instead, which will then work offline.
+
 ## Links
 You may put links in diary pages, so
 `[DuckDuckGo](https://duckduckgo.com)` will show a link to

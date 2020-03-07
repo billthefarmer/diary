@@ -131,7 +131,7 @@ See Markdown for markdown syntax.</description>
       
       <guid>https://billthefarmer.github.io/diary/content/latex/</guid>
       <description>Diary doesn&amp;rsquo;t support LaTeX, but it is possible to use an external site to add LaTeX formatted images.
-![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2} &amp;amp;bc=cornsilk&amp;amp;fc=black&amp;amp;im=jpg&amp;amp;fs=24&amp;amp;ff=arev) \sum_{i=1}^{n}x_{i}^{2}  </description>
+![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2} &amp;amp;bc=cornsilk&amp;amp;fc=black&amp;amp;im=jpg&amp;amp;fs=24&amp;amp;ff=arev) \sum_{i=1}^{n}x_{i}^{2}  If you don&amp;rsquo;t intend to change the image, you can copy it and use that instead, which will then work offline.</description>
     </item>
     
     <item>
