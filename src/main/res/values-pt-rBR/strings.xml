@@ -77,14 +77,14 @@
   </string>
   <string name="pref_template_page">Página de modelo</string>
   <string name="about">Sobre</string>
-  <string name="pref_about_summ">Diário <a href="https://github.com/billthefarmer/diary/releases/latest">versão %s</a></string>
+  <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Versão %s</a></string>
   <string name="built">Construído %s</string>
   <string name="licence">Licença <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
   <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
-  Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\nCalendário
+  Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\n\nCalendário
   personalizado por <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
-  Calendar View</a>\nVisão Markdown por <a href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\nTradução para o português por <a href="https://github.com/jeisoncp">Jeison Pandini</a>\nUtilidades
+  Calendar View</a>, Visão Markdown por <a href="https://github.com/falnatsheh/MarkdownView">Markdown
+  View</a>, Tradução para o português por <a href="https://github.com/jeisoncp">Jeison Pandini</a>, Utilidades
   de aquivo por <a href="https://github.com/iPaulPro">Paul
   Burke</a></string>
 </resources>

@@ -77,15 +77,15 @@
     Użyj ciemnego motywu do edycji
   </string>
   <string name="about">O aplikacji</string>
-  <string name="pref_about_summ">Wersja <a href="https://github.com/billthefarmer/diary/releases/latest">Diary: %s</a></string>
+  <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Wersja %s</a></string>
   <string name="built">Zbudowano: %s</string>
   <string name="licence">Licencja <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
   <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
   Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill
-  Farmer</a>\nNiestandardowy kalendarz: <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
-  Calendar View</a>\nWidok markdown: <a href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\nPolskie tłumaczenie według <a href="https://github.com/bla-ke">Daria Szatan</a>\nNarzędzia plików:
+  Farmer</a>\n\nNiestandardowy kalendarz: <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>, Widok markdown: <a href="https://github.com/falnatsheh/MarkdownView">Markdown
+  View</a>, Polskie tłumaczenie według <a href="https://github.com/bla-ke">Daria Szatan</a>, Narzędzia plików:
   <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>

@@ -77,13 +77,13 @@
     编辑时使用暗色主题
   </string>
   <string name="about">关于</string>
-  <string name="pref_about_summ">Diary <a href="https://github.com/billthefarmer/diary/releases/latest">版本 %s</a></string>
+  <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">版本 %s</a></string>
   <string name="built">构建时间 %s</string>
   <string name="licence">许可证 <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
   <string name="copyright">\u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
-  Florit</a> 著作权所有\n\u00A9 2017 <a href="https://billthefarmer.github.io">Bill Farmer</a> 著作权所有\n第三方日历来自 <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
-  Calendar View</a>\nMarkdown 视图来自 <a href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\n简体中文翻译来自 <a href="https://github.com/Therhokar">Therhokar Yang</a>\n文件工具来自 <a href="https://github.com/iPaulPro">Paul Burke</a>
+  Florit</a>\n著作权所有\n\u00A9 2017 <a href="https://billthefarmer.github.io">Bill Farmer</a>\n\n著作权所有, 第三方日历来自 <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>, Markdown 视图来自 <a href="https://github.com/falnatsheh/MarkdownView">Markdown
+  View</a>, 简体中文翻译来自 <a href="https://github.com/Therhokar">Therhokar Yang</a>, 文件工具来自 <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>
