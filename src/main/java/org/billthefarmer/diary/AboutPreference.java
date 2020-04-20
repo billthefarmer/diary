@@ -51,14 +51,12 @@ public class AboutPreference extends DialogPreference
         // Get version text view
         TextView version = view.findViewById(R.id.about);
 
-        // Set version in text view
+        // Set version in text view, replace all text
         if (version != null)
         {
             SpannableStringBuilder builder =
                 new SpannableStringBuilder(version.getText());
-            int st = builder.toString().indexOf("%s");
-            int en = builder.length();
-            builder.replace(st, en, BuildConfig.VERSION_NAME);
+            builder.replace(0, builder.length(), BuildConfig.VERSION_NAME);
             version.setText(builder);
             version.setMovementMethod(LinkMovementMethod.getInstance());
         }

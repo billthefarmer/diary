@@ -146,8 +146,8 @@
       android:title="@string/about">
 
     <org.billthefarmer.diary.AboutPreference
-        android:dialogIcon="?attr/pref_about"
         android:dialogLayout="@layout/about"
+        android:dialogTitle="@string/appName"
         android:icon="?attr/pref_about"
         android:key="pref_about"
         android:negativeButtonText=""

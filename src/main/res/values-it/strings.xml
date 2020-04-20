@@ -24,8 +24,8 @@
   <string name="search">Cerca…</string>
   <string name="findAll">Cerca ovunque…</string>
   <string name="share">"Condividi…"</string>
-  <string name="addTime">Aggiungi orario…</string>
-  <string name="addEvents">Aggiungi eventi…</string>
+  <string name="addTime">Aggiungi orario</string>
+  <string name="addEvents">Aggiungi eventi</string>
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>
@@ -76,15 +76,20 @@
     Utilizza il tema scuro durante la modifica
   </string>
   <string name="about">Altro su</string>
-  <string name="pref_about_summ">Versione <a href="https://github.com/billthefarmer/diary/releases/latest">Diary %s</a></string>
+  <string name="pref_about_summ">Versione <a href="https://github.com/billthefarmer/diary/releases/latest">%s</a></string>
   <string name="built">Assemblato il %s</string>
   <string name="licence">Licenza <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
-  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
-  Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\nCustom
-  calendar by <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
-  Calendar View</a>\nMarkdown view by <a href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>\nItalian translation by <a href="https://github.com/marcoM32">Marco Magliano</a>\nFile
-  utilities by <a href="https://github.com/iPaulPro">Paul Burke</a>
+  <string name="copyright">Copyright \u00A9 2012 <a
+  href="mailto:hola@josep-portella.com">Josep Portella
+  Florit</a>\nCopyright \u00A9 2017 <a
+  href="http://billthefarmer.github.io">Bill Farmer</a>\n\nCustom
+  calendar by <a
+  href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>, Markdown view by <a
+  href="https://github.com/falnatsheh/MarkdownView">Markdown View</a>,
+  Italian translation by <a href="https://github.com/marcoM32">Marco
+  Magliano</a>, File utilities by <a
+  href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>

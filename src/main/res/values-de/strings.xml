@@ -82,10 +82,10 @@
   <string name="licence">Lizenz <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
   <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
-  Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\n App-eigener
+  Florit</a>\nCopyright \u00A9 2017 <a href="http://billthefarmer.github.io">Bill Farmer</a>\n\nApp-eigener
   Kalender von <a href="https://github.com/npanigrahy/Custom-Calendar-View">App-eigene
-  Kalenderansicht</a>\nMarkdown-Ansicht von <a href="https://github.com/falnatsheh/MarkdownView">Markdown-Ansicht</a>\nDeutsche
+  Kalenderansicht</a>, Markdown-Ansicht von <a href="https://github.com/falnatsheh/MarkdownView">Markdown-Ansicht</a>, Deutsche
   Übersetzung von <a href="https://github.com/jaller94">Christian
-  Paul</a>\nDatei Dienstprogramme von <a href="https://github.com/iPaulPro">Paul Burke</a>
+  Paul</a>, Datei Dienstprogramme von <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>
