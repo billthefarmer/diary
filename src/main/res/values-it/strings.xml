@@ -24,17 +24,17 @@
   <string name="search">Cerca…</string>
   <string name="findAll">Cerca ovunque…</string>
   <string name="share">"Condividi…"</string>
-  <string name="addTime">Aggiungi orario</string>
-  <string name="addEvents">Aggiungi eventi</string>
+  <string name="addTime">Aggiungi orario…</string>
+  <string name="addEvents">Aggiungi eventi…</string>
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>
   <string name="backup">Esegui backup</string>
   <string name="start">Backup avviato</string>
   <string name="complete">Backup completato</string>
-  <string name="changes">Salvare le modifiche?</string>
-  <string name="save">Salvare</string>
-  <string name="discard">Scartare</string>
+  <string name="changes">Desideri salvare le modifiche?</string>
+  <string name="save">Salva</string>
+  <string name="discard">Annulla</string>
   <string name="settings">Impostazioni</string>
   <string name="calendar">Calendario</string>
   <string name="pref_calendar">
@@ -59,21 +59,21 @@
   </string>
   <string name="folder">Cartella di salvataggio</string>
   <string name="index">Indice</string>
-  <string name="pref_use_index">Pagina indice</string>
+  <string name="pref_use_index">Imposta una pagina indice</string>
   <string name="pref_use_index_summ">
     Utilizza una pagina come indice del tuo diario
   </string>
   <string name="pref_index_page">Pagina indice</string>
-  <string name="template">Modello</string>
-  <string name="pref_use_template">Usa modello</string>
+  <string name="template">Template</string>
+  <string name="pref_use_template">Imposta un template</string>
   <string name="pref_use_template_summ">
-    Usa il modello per le voci del diario
+    Utilizza una pagina di template per le nuove voci del tuo diario
   </string>
-  <string name="pref_template_page">Pagina modello</string>
+  <string name="pref_template_page">Pagina di template</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Scuro</string>
   <string name="pref_dark_theme_summ">
-    Usa il tema scuro durante la modifica
+    Utilizza il tema scuro durante la modifica
   </string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ">Versione <a href="https://github.com/billthefarmer/diary/releases/latest">Diary %s</a></string>
