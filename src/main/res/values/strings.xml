@@ -77,21 +77,36 @@
   </string>
   <string name="pref_template_page">Template page</string>
   <string name="about">About</string>
-  <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Version %s</a></string>
-  <string name="built">Built %s</string>
-  <string name="licence">Licence <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  <string name="pref_about_summ">
+    <a
+    href="https://github.com/billthefarmer/diary/releases/latest">Version
+    %s</a>
   </string>
-  <string name="copyright">Copyright \u00A9 2012 <a href="mailto:hola@josep-portella.com">Josep Portella
-  Florit</a>\nCopyright \u00A9 2017 <a href="https://billthefarmer.github.io">Bill Farmer</a>\n\nCustom
-  calendar by <a href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
-  Calendar View</a>, Markdown view by <a href="https://github.com/falnatsheh/MarkdownView">Markdown
-  View</a>, Japanese translation by <a href="https://github.com/naofum">naofum</a>, German translation by
+  <string name="built">Built %s</string>
+  <string name="licence">
+    Licence <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  </string>
+  <string name="copyright">Copyright \u00A9 2012 <a
+  href="mailto:hola@josep-portella.com">Josep Portella
+  Florit</a>\nCopyright \u00A9 2017 <a
+  href="https://billthefarmer.github.io">Bill Farmer</a>\n\nCustom
+  calendar by <a
+  href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>, Markdown view by <a
+  href="https://github.com/falnatsheh/MarkdownView">Markdown View</a>,
+  Japanese translation by <a
+  href="https://github.com/naofum">naofum</a>, German translation by
   <a href="https://github.com/jaller94">Christian Paul</a>, French
-  translation by <a href="https://github.com/comptuzus">David
-  Ta</a>, Italian translation by <a href="https://github.com/marcoM32">Marco Magliano</a>, Polish
-  translation by <a href="https://github.com/bla-ke">Daria
-  Szatan</a>, Simplified Chinese translation by <a href="https://github.com/Therhokar">Therhokar Yang</a>, Brazilian
-  Portuguese translation by <a href="https://github.com/jeisoncp">Jeison Pandini</a>, Dutch translation by <a href="https://github.com/Vistaus">Heimen Stoffels</a>, File
-  utilities by <a href="https://github.com/iPaulPro">Paul Burke</a>
+  translation by <a href="https://github.com/comptuzus">David Ta</a>,
+  Italian translation by <a href="https://github.com/marcoM32">Marco
+  Magliano</a>, Polish translation by <a
+  href="https://github.com/bla-ke">Daria Szatan</a>, Simplified
+  Chinese translation by <a
+  href="https://github.com/Therhokar">Therhokar Yang</a>, Brazilian
+  Portuguese translation by <a
+  href="https://github.com/jeisoncp">Jeison Pandini</a>, Dutch
+  translation by <a href="https://github.com/Vistaus">Heimen
+  Stoffels</a>, File utilities by <a
+  href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
 </resources>
