@@ -77,7 +77,9 @@
   </string>
   <string name="pref_template_page">Pàgina de plantilles</string>
   <string name="about">Sobre</string>
-  <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Version %s</a></string>
+  <string name="pref_about_summ"><a
+  href="https://github.com/billthefarmer/diary/releases/latest">Version
+  %s</a></string>
   <string name="built">Construït %s</string>
   <string name="licence">Llicència <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>

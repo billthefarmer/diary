@@ -76,7 +76,9 @@
     Utilizza il tema scuro durante la modifica
   </string>
   <string name="about">Altro su</string>
-  <string name="pref_about_summ">Versione <a href="https://github.com/billthefarmer/diary/releases/latest">%s</a></string>
+  <string name="pref_about_summ"><a
+  href="https://github.com/billthefarmer/diary/releases/latest">Versione
+  %s</a></string>
   <string name="built">Assemblato il %s</string>
   <string name="licence">Licenza <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
