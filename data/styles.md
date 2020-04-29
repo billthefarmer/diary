@@ -11,7 +11,7 @@
 </table>
 
 ### Example
-
+```css
     @import url("file:///android_asset/styles.css");
     img {
         max-width: 80%;
@@ -22,3 +22,4 @@
     ol {
         background: yellow;
     }
+```
