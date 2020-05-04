@@ -153,6 +153,7 @@ public class Diary extends Activity
     public final static String YEAR_DIR = "^[0-9]{4}$";
     public final static String MONTH_DIR = "^[0-9]{2}$";
     public final static String DAY_FILE = "^[0-9]{2}.txt$";
+    public final static String MD_FILE = "^[0-9]{2}.md$";
 
     public final static String ZIP = ".zip";
     public final static String HELP = "help.md";
@@ -285,7 +286,8 @@ public class Diary extends Activity
     {
         // accept
         return sortFiles(monthDir.listFiles((dir, filename) ->
-                                            filename.matches(DAY_FILE)));
+                                            filename.matches(DAY_FILE) ||
+                                            filename.matches(MD_FILE)));
     }
 
     // yearValue
@@ -360,7 +362,8 @@ public class Diary extends Activity
         if (files != null)
             for (File file : files)
             {
-                if (file.isFile() && file.getName().matches(DAY_FILE))
+                if (file.isFile() && (file.getName().matches(DAY_FILE) ||
+                                      file.getName().matches(MD_FILE)))
                 {
                     fileList.add(file);
                 }
