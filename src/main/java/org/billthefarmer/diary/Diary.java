@@ -1740,8 +1740,17 @@ public class Diary extends Activity
     // getDay
     private File getDay(int year, int month, int day)
     {
-        return new File(getMonth(year, month), String.format(Locale.ENGLISH,
-                                                             "%02d.txt", day));
+        File folder = getMonth(year, month);
+        File file = new File(folder, String.format(Locale.ENGLISH,
+                                                   "%02d.txt", day));
+        if (file.exists())
+            return file;
+
+        else if (markdown)
+            return new File(folder, String.format(Locale.ENGLISH,
+                                                  "%02d.md", day));
+        else
+            return file;
     }
 
     // getFile
