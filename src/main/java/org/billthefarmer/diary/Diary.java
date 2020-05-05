@@ -148,12 +148,16 @@ public class Diary extends Activity
         Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
                         Pattern.MULTILINE);
     public final static Pattern FILE_PATTERN =
-        Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).txt$");
+        Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).(txt|md)$");
 
     public final static String YEAR_DIR = "^[0-9]{4}$";
     public final static String MONTH_DIR = "^[0-9]{2}$";
-    public final static String DAY_FILE = "^[0-9]{2}.txt$";
-    public final static String MD_FILE = "^[0-9]{2}.md$";
+    public final static String DAY_FILE = "^[0-9]{2}.(txt|md)$";
+
+    public final static String YEAR_FORMAT = "%04d";
+    public final static String MONTH_FORMAT = "%02d";
+    public final static String DAY_FORMAT = "%02d.txt";
+    public final static String MD_FORMAT = "%02d.md";
 
     public final static String ZIP = ".zip";
     public final static String HELP = "help.md";
@@ -286,8 +290,7 @@ public class Diary extends Activity
     {
         // accept
         return sortFiles(monthDir.listFiles((dir, filename) ->
-                                            filename.matches(DAY_FILE) ||
-                                            filename.matches(MD_FILE)));
+                                            filename.matches(DAY_FILE)));
     }
 
     // yearValue
@@ -362,8 +365,7 @@ public class Diary extends Activity
         if (files != null)
             for (File file : files)
             {
-                if (file.isFile() && (file.getName().matches(DAY_FILE) ||
-                                      file.getName().matches(MD_FILE)))
+                if (file.isFile() && (file.getName().matches(DAY_FILE)))
                 {
                     fileList.add(file);
                 }
@@ -1730,14 +1732,14 @@ public class Diary extends Activity
     private File getYear(int year)
     {
         return new File(getHome(), String.format(Locale.ENGLISH,
-                                                 "%04d", year));
+                                                 YEAR_FORMAT, year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
         return new File(getYear(year), String.format(Locale.ENGLISH,
-                                                     "%02d", month + 1));
+                                                     MONTH_FORMAT, month + 1));
     }
 
     // getDay
@@ -1745,13 +1747,13 @@ public class Diary extends Activity
     {
         File folder = getMonth(year, month);
         File file = new File(folder, String.format(Locale.ENGLISH,
-                                                   "%02d.txt", day));
+                                                   DAY_FORMAT, day));
         if (file.exists())
             return file;
 
         else if (markdown)
             return new File(folder, String.format(Locale.ENGLISH,
-                                                  "%02d.md", day));
+                                                  MD_FORMAT, day));
         else
             return file;
     }
