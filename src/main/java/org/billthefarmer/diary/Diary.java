@@ -365,15 +365,11 @@ public class Diary extends Activity
         if (files != null)
             for (File file : files)
             {
-                if (file.isFile() && (file.getName().matches(DAY_FILE)))
-                {
+                if (file.isFile() && file.getName().matches(DAY_FILE))
                     fileList.add(file);
-                }
 
                 else if (file.isDirectory())
-                {
                     listEntries(file, fileList);
-                }
             }
     }
 
@@ -386,9 +382,7 @@ public class Diary extends Activity
             for (File file : files)
             {
                 if (file.isFile())
-                {
                     fileList.add(file);
-                }
 
                 else if (file.isDirectory())
                 {
