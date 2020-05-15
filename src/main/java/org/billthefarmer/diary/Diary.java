@@ -133,7 +133,7 @@ public class Diary extends Activity
     public final static Pattern PATTERN_CHARS =
         Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
     public final static Pattern MEDIA_PATTERN =
-        Pattern.compile("!\\[(.*)\\]\\((.+)\\)", Pattern.MULTILINE);
+        Pattern.compile("!\\[(.*?)\\]\\((.+?)\\)", Pattern.MULTILINE);
     public final static Pattern EVENT_PATTERN =
         Pattern.compile("^@ *(\\d{1,2}:\\d{2}) +(.+)$", Pattern.MULTILINE);
     public final static Pattern MAP_PATTERN =
@@ -142,7 +142,7 @@ public class Diary extends Activity
     public final static Pattern GEO_PATTERN =
         Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
     public final static Pattern DATE_PATTERN =
-        Pattern.compile("\\[(.+)\\]\\(date:(\\d+.\\d+.\\d+)\\)",
+        Pattern.compile("\\[(.+?)\\]\\(date:(\\d+.\\d+.\\d+)\\)",
                         Pattern.MULTILINE);
     public final static Pattern POSN_PATTERN =
         Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
