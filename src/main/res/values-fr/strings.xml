@@ -27,7 +27,7 @@
   <string name="search">Chercher…</string>
   <string name="findAll">Trouver tout…</string>
   <string name="share">"Partager…"</string>
-  <string name="addTime">Ajouter du temps</string>
+  <string name="addTime">Ajouter l\'heure</string>
   <string name="addEvents">Ajouter des événements</string>
   <string name="addMedia">Ajouter des médias…</string>
   <string name="editStyles">Modifier les styles…</string>
@@ -35,7 +35,7 @@
   <string name="backup">Sauvegarde</string>
   <string name="start">Démarrer la sauvegarde</string>
   <string name="complete">Sauvegarde terminée</string>
-  <string name="changes">Sauvegarder les modifications?</string>
+  <string name="changes">Sauvegarder les modifications ?</string>
   <string name="save">Sauvegarder</string>
   <string name="discard">Jeter</string>
   <string name="settings">Paramètres</string>
