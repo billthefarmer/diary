@@ -78,8 +78,9 @@ The toolbar icons are, from left to right:
 * **Search** &ndash; incremental search of diary entry
 * **Find all** &ndash; find all diary entries containing search text
 * **Share** &ndash; share current diary entry
-* **Add time** &ndash; Add the current time to diary entry
-* **Add events** &ndash; Add calendar events to diary entry
+* **Use template** &ndash; use template for current entry if empty
+* **Add time** &ndash; add the current time to diary entry
+* **Add events** &ndash; add calendar events to diary entry
 * **Add media** &ndash; show a media picker to select media
 * **Edit styles** &ndash; show an editor to edit the custom styles
 * **Edit script** &ndash; show an editor to edit custom javascript
@@ -134,7 +135,8 @@ on that page unless receiving media from another app.
 
 ## Template
 You may use an entry template. If a template is set it will be copied
-to the current day's entry if it is blank.
+to today's entry if it is empty. Use the menu item to copy the template
+to the current entry if it is empty.
 
 ## Text
 You may receive text clips from another app. A date picker will pop
