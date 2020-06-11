@@ -29,7 +29,7 @@
       <guid>https://billthefarmer.github.io/diary/using/toolbar/</guid>
       <description>The toolbar items:
  Previous – show the previous entry or today Next – show the next entry or today if next Today – show today&amp;rsquo;s entry  And on the menu:
- Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Share – share current diary entry Add time – Add the current time to diary entry Add events – Add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings  </description>
+ Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Share – share current diary entry Use template – use template for current entry if empty Add time – add the current time to diary entry Add events – add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings  </description>
     </item>
     
     <item>
