@@ -555,6 +555,7 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
+        menu.findItem(R.id.useTemplate).setVisible(useTemplate);
         menu.findItem(R.id.index).setVisible(useIndex);
 
         // Set up search view
@@ -607,6 +608,9 @@ public class Diary extends Activity
             break;
         case R.id.share:
             share();
+            break;
+        case R.id.useTemplate:
+            template();
             break;
         case R.id.addTime:
             addTime();
@@ -2291,7 +2295,7 @@ public class Diary extends Activity
         changeDate(today);
 
         // Check template
-        if (useTemplate && textView.length() == 0)
+        if (useTemplate)
             template();
     }
 
@@ -2307,6 +2311,10 @@ public class Diary extends Activity
     // template
     private void template()
     {
+        // No template if not empty
+        if (textView.length() > 0)
+            return;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
