@@ -1634,12 +1634,16 @@ public class Diary extends Activity
             Uri imageUri = FileProvider
                 .getUriForFile(this, FILE_PROVIDER, image);
             intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            intent.putExtra(Intent.EXTRA_TEXT, textView.getText());
         }
 
         else
         {
             intent.setType(TEXT_PLAIN);
-            intent.putExtra(Intent.EXTRA_TEXT, textView.getText().toString());
+            Uri fileUri = FileProvider
+                .getUriForFile(this, FILE_PROVIDER, getFile());
+            intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            intent.putExtra(Intent.EXTRA_TEXT, textView.getText());
         }
 
         startActivity(Intent.createChooser(intent, null));
