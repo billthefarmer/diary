@@ -555,7 +555,6 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
-        menu.findItem(R.id.useTemplate).setVisible(useTemplate);
         menu.findItem(R.id.index).setVisible(useIndex);
 
         // Set up search view
@@ -608,9 +607,6 @@ public class Diary extends Activity
             break;
         case R.id.share:
             share();
-            break;
-        case R.id.useTemplate:
-            template();
             break;
         case R.id.addTime:
             addTime();
