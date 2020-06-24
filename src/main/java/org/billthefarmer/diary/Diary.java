@@ -954,6 +954,10 @@ public class Diary extends Activity
                 if (searchItem.isActionViewExpanded())
                     searchItem.collapseActionView();
 
+                // Check template
+                if (useTemplate)
+                    template();
+
                 // Scroll after delay
                 edit.postDelayed(() ->
                 {
@@ -2297,10 +2301,6 @@ public class Diary extends Activity
                                                calendar.get(Calendar.DATE));
         entryStack.clear();
         changeDate(today);
-
-        // Check template
-        if (useTemplate)
-            template();
     }
 
     // index
