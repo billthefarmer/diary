@@ -555,6 +555,7 @@ public class Diary extends Activity
                                              today.get(Calendar.DATE));
         menu.findItem(R.id.nextEntry).setEnabled(nextEntry != null);
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
+        menu.findItem(R.id.cancel).setVisible(changed);
         menu.findItem(R.id.index).setVisible(useIndex);
 
         // Set up search view
@@ -586,6 +587,9 @@ public class Diary extends Activity
         {
         case android.R.id.home:
             onBackPressed();
+            break;
+        case R.id.cancel:
+            cancel();
             break;
         case R.id.prevEntry:
             prevEntry();
@@ -915,6 +919,8 @@ public class Diary extends Activity
                     changed = false;
                     // Set flag
                     entry = true;
+                    // Update menu
+                    invalidateOptionsMenu();
                 }
 
                 // Animation
@@ -993,6 +999,7 @@ public class Diary extends Activity
                 {
                     // Text changed
                     changed = true;
+                    invalidateOptionsMenu();
                 }
 
                 // beforeTextChanged
@@ -1083,8 +1090,14 @@ public class Diary extends Activity
             }
     }
 
+    // cancel
+    private void cancel()
+    {
+        load();
+    }
+
     // animateAccept
-    public void animateAccept()
+    private void animateAccept()
     {
         // Animation
         layoutSwitcher.setDisplayedChild(MARKDOWN);
@@ -2113,6 +2126,7 @@ public class Diary extends Activity
         CharSequence text = read(getFile());
         textView.setText(text);
         changed = false;
+        invalidateOptionsMenu();
         if (markdown)
             loadMarkdown();
 
@@ -2297,6 +2311,10 @@ public class Diary extends Activity
                                                calendar.get(Calendar.DATE));
         entryStack.clear();
         changeDate(today);
+
+        // Check template
+        if (useTemplate && !markdown)
+            template();
     }
 
     // index

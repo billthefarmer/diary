@@ -29,6 +29,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/findAll"
       android:visible="false" />
   <item
+      android:id="@+id/cancel"
+      android:icon="@drawable/ic_action_cancel"
+      android:showAsAction="ifRoom"
+      android:title="@android:string/cancel"
+      android:visible="false" />
+  <item
       android:id="@+id/prevEntry"
       android:icon="@drawable/ic_action_previous"
       android:showAsAction="ifRoom"
