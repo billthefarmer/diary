@@ -119,90 +119,90 @@ public class Diary extends Activity
     private static final int EDIT = 1;
 
     public final static String DIARY = "Diary";
-    public final static String TAG = DIARY;
+    private final static String TAG = DIARY;
 
-    public final static String YEAR = "year";
-    public final static String MONTH = "month";
-    public final static String DAY = "day";
+    private final static String YEAR = "year";
+    private final static String MONTH = "month";
+    private final static String DAY = "day";
 
-    public final static String SAVED = "saved";
-    public final static String SHOWN = "shown";
-    public final static String ENTRY = "entry";
+    private final static String SAVED = "saved";
+    private final static String SHOWN = "shown";
+    private final static String ENTRY = "entry";
 
     // Patterns
-    public final static Pattern PATTERN_CHARS =
+    private final static Pattern PATTERN_CHARS =
         Pattern.compile("[\\(\\)\\[\\]\\{\\}\\<\\>\"'`]");
-    public final static Pattern MEDIA_PATTERN =
+    private final static Pattern MEDIA_PATTERN =
         Pattern.compile("!\\[(.*?)\\]\\((.+?)\\)", Pattern.MULTILINE);
-    public final static Pattern EVENT_PATTERN =
+    private final static Pattern EVENT_PATTERN =
         Pattern.compile("^@ *(\\d{1,2}:\\d{2}) +(.+)$", Pattern.MULTILINE);
-    public final static Pattern MAP_PATTERN =
+    private final static Pattern MAP_PATTERN =
         Pattern.compile("\\[(?:osm:)?(-?\\d+[,.]\\d+)[,;] ?(-?\\d+[,.]\\d+)\\]",
                         Pattern.MULTILINE);
-    public final static Pattern GEO_PATTERN =
+    private final static Pattern GEO_PATTERN =
         Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
-    public final static Pattern DATE_PATTERN =
+    private final static Pattern DATE_PATTERN =
         Pattern.compile("\\[(.+?)\\]\\(date:(\\d+.\\d+.\\d+)\\)",
                         Pattern.MULTILINE);
-    public final static Pattern POSN_PATTERN =
+    private final static Pattern POSN_PATTERN =
         Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
                         Pattern.MULTILINE);
-    public final static Pattern FILE_PATTERN =
+    private final static Pattern FILE_PATTERN =
         Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).(txt|md)$");
 
-    public final static String YEAR_DIR = "^[0-9]{4}$";
-    public final static String MONTH_DIR = "^[0-9]{2}$";
-    public final static String DAY_FILE = "^[0-9]{2}.(txt|md)$";
+    private final static String YEAR_DIR = "^[0-9]{4}$";
+    private final static String MONTH_DIR = "^[0-9]{2}$";
+    private final static String DAY_FILE = "^[0-9]{2}.(txt|md)$";
 
-    public final static String YEAR_FORMAT = "%04d";
-    public final static String MONTH_FORMAT = "%02d";
-    public final static String DAY_FORMAT = "%02d.txt";
-    public final static String MD_FORMAT = "%02d.md";
+    private final static String YEAR_FORMAT = "%04d";
+    private final static String MONTH_FORMAT = "%02d";
+    private final static String DAY_FORMAT = "%02d.txt";
+    private final static String MD_FORMAT = "%02d.md";
 
-    public final static String ZIP = ".zip";
-    public final static String HELP = "help.md";
-    public final static String STYLES = "file:///android_asset/styles.css";
-    public final static String SCRIPT = "file:///android_asset/script.js";
-    public final static String CSS_STYLES = "css/styles.css";
-    public final static String TEXT_CSS = "text/css";
-    public final static String JS_SCRIPT = "js/script.js";
-    public final static String TEXT_JAVASCRIPT = "text/javascript";
-    public final static String FILE_PROVIDER =
+    private final static String ZIP = ".zip";
+    private final static String HELP = "help.md";
+    private final static String STYLES = "file:///android_asset/styles.css";
+    private final static String SCRIPT = "file:///android_asset/script.js";
+    private final static String CSS_STYLES = "css/styles.css";
+    private final static String TEXT_CSS = "text/css";
+    private final static String JS_SCRIPT = "js/script.js";
+    private final static String TEXT_JAVASCRIPT = "text/javascript";
+    private final static String FILE_PROVIDER =
         "org.billthefarmer.diary.fileprovider";
 
-    public final static String MEDIA_TEMPLATE = "![%s](%s)\n";
-    public final static String LINK_TEMPLATE = "[%s](%s)\n";
-    public final static String AUDIO_TEMPLATE =
+    private final static String MEDIA_TEMPLATE = "![%s](%s)\n";
+    private final static String LINK_TEMPLATE = "[%s](%s)\n";
+    private final static String AUDIO_TEMPLATE =
         "<audio controls src=\"%s\"></audio>\n";
-    public final static String VIDEO_TEMPLATE =
+    private final static String VIDEO_TEMPLATE =
         "<video controls src=\"%s\"></video>\n";
-    public final static String EVENT_TEMPLATE = "@:$1 $2";
-    public final static String MAP_TEMPLATE =
+    private final static String EVENT_TEMPLATE = "@:$1 $2";
+    private final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" " +
         "src=\"https://www.openstreetmap.org/export/embed.html?" +
         "bbox=%f,%f,%f,%f&amp;layer=mapnik\">" +
         "</iframe><br/><small>" +
         "<a href=\"https://www.openstreetmap.org/#map=16/%f/%f\">" +
         "View Larger Map</a></small>\n";
-    public final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
-    public final static String POSN_TEMPLATE = "[#]: # (%d)";
-    public final static String EVENTS_TEMPLATE = "@:%s %s\n";
+    private final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
+    private final static String POSN_TEMPLATE = "[#]: # (%d)";
+    private final static String EVENTS_TEMPLATE = "@:%s %s\n";
 
-    public final static String BRACKET_CHARS = "([{<";
-    public final static String DIARY_IMAGE = "Diary.png";
+    private final static String BRACKET_CHARS = "([{<";
+    private final static String DIARY_IMAGE = "Diary.png";
 
-    public final static String GEO = "geo";
-    public final static String OSM = "osm";
-    public final static String HTTP = "http";
-    public final static String TEXT = "text";
-    public final static String HTTPS = "https";
-    public final static String CONTENT = "content";
-    public final static String TEXT_PLAIN = "text/plain";
-    public final static String IMAGE_PNG = "image/png";
-    public final static String WILD_WILD = "*/*";
-    public final static String IMAGE = "image";
-    public final static String AUDIO = "audio";
-    public final static String VIDEO = "video";
+    private final static String GEO = "geo";
+    private final static String OSM = "osm";
+    private final static String HTTP = "http";
+    private final static String TEXT = "text";
+    private final static String HTTPS = "https";
+    private final static String CONTENT = "content";
+    private final static String TEXT_PLAIN = "text/plain";
+    private final static String IMAGE_PNG = "image/png";
+    private final static String WILD_WILD = "*/*";
+    private final static String IMAGE = "image";
+    private final static String AUDIO = "audio";
+    private final static String VIDEO = "video";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -1610,7 +1610,7 @@ public class Diary extends Activity
     }
 
     // findAll
-    public void findAll()
+    private void findAll()
     {
         // Get search string
         String search = searchView.getQuery().toString();
@@ -1622,7 +1622,7 @@ public class Diary extends Activity
 
     // share
     @SuppressWarnings("deprecation")
-    public void share()
+    private void share()
     {
         Intent intent = new Intent(Intent.ACTION_SEND);
         String title =
@@ -1663,7 +1663,7 @@ public class Diary extends Activity
     }
 
     // addTime
-    public void addTime()
+    private void addTime()
     {
         DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
         String time = format.format(new Date());
@@ -1674,7 +1674,7 @@ public class Diary extends Activity
     }
 
     // addEvents
-    public void addEvents()
+    private void addEvents()
     {
         GregorianCalendar endTime = new
             GregorianCalendar(currEntry.get(Calendar.YEAR),
@@ -1696,7 +1696,7 @@ public class Diary extends Activity
     }
 
     // addMedia
-    public void addMedia()
+    private void addMedia()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -1705,7 +1705,7 @@ public class Diary extends Activity
     }
 
     // editStyles
-    public void editStyles()
+    private void editStyles()
     {
         File file = new File(getHome(), CSS_STYLES);
         Uri uri = Uri.fromFile(file);
@@ -1713,7 +1713,7 @@ public class Diary extends Activity
     }
 
     // editScript
-    public void editScript()
+    private void editScript()
     {
         File file = new File(getHome(), JS_SCRIPT);
         Uri uri = Uri.fromFile(file);
@@ -1721,7 +1721,7 @@ public class Diary extends Activity
     }
 
     // backup
-    public void backup()
+    private void backup()
     {
         ZipTask zipTask = new ZipTask(this);
         zipTask.execute();

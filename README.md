@@ -68,8 +68,9 @@ installing it does not seem to help.
 * Optional edit cursor position control
 
 ## Toolbar
-The toolbar icons are, from left to right:
+The toolbar buttons are, from left to right:
 
+* **Cancel** &ndash; cancel edits of current entry
 * **Previous** &ndash; show the previous entry or today
 * **Next** &ndash; show the next entry or today if next
 * **Today** &ndash; show today's entry
@@ -108,7 +109,8 @@ accuracy is dependent on the text formatting and media in the entry.
 In markdown mode the **Edit** button floating above the page allows
 editing entries. The **Accept** button restores the formatted view. A
 long touch on the button hides it until the device is rotated or a
-long touch on the page.
+long touch on the page. The **Cancel** button cancels edits to the
+current entry. It will appear only when there are changes to cancel.
 
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
