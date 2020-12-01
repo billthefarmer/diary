@@ -526,7 +526,11 @@ public class Diary extends Activity
         super.onPause();
 
         if (changed)
+        {
             save();
+            // Clear flag
+            changed = false;
+        }
 
         saved = getFile().lastModified();
     }
@@ -2274,7 +2278,11 @@ public class Diary extends Activity
     private void changeDate(Calendar date)
     {
         if (changed)
+        {
             save();
+            // Clear flag
+            changed = false;
+        }
 
         setDate(date);
         load();
