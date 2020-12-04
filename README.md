@@ -32,7 +32,9 @@ a
 [test](https://github.com/billthefarmer/diary/blob/master/data/test.md),
 an example
 [styles](https://github.com/billthefarmer/diary/blob/master/data/styles.md)
-file and an example
+file, a dark theme example
+[styles](https://github.com/billthefarmer/diary/blob/master/data/dark.md)
+file, and an example
 [script](https://github.com/billthefarmer/diary/blob/master/data/script.md)
 file, which may be copied in to an entry for reference if required.
 
