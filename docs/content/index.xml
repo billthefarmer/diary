@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2020 Bill Farmer</copyright>
-    <lastBuildDate>Sun, 16 Feb 2020 19:07:48 +0000</lastBuildDate>
-    
-	<atom:link href="https://billthefarmer.github.io/diary/content/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 16 Feb 2020 19:07:48 +0000</lastBuildDate><atom:link href="https://billthefarmer.github.io/diary/content/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Text</title>
       <link>https://billthefarmer.github.io/diary/content/text/</link>
@@ -38,6 +34,15 @@
       <guid>https://billthefarmer.github.io/diary/content/latex/</guid>
       <description>Diary doesn&amp;rsquo;t support LaTeX, but it is possible to use an external site to add LaTeX formatted images.
 ![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2} &amp;amp;bc=cornsilk&amp;amp;fc=black&amp;amp;im=jpg&amp;amp;fs=24&amp;amp;ff=arev) \sum_{i=1}^{n}x_{i}^{2}  If you don&amp;rsquo;t intend to change the image, you can copy it and use that instead, which will then work offline.</description>
+    </item>
+    
+    <item>
+      <title>Svgbob</title>
+      <link>https://billthefarmer.github.io/diary/content/svgbob/</link>
+      <pubDate>Wed, 16 Dec 2020 15:12:09 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/diary/content/svgbob/</guid>
+      <description>Diary doesn&amp;rsquo;t support text diagrams, but will display SVG images produced by an online editor Svgbob Editor.</description>
     </item>
     
     <item>
