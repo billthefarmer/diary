@@ -40,7 +40,7 @@
       android:usesCleartextTraffic="true"
       android:icon="@drawable/ic_launcher"
       android:label="@string/appName"
-      android:theme="@style/AppTheme"
+      android:theme="@style/AppDarkTheme"
       tools:ignore="AllowBackup">
 
     <activity

@@ -59,8 +59,8 @@ public class Settings extends Activity
         boolean darkTheme =
             preferences.getBoolean(PREF_DARK_THEME, false);
 
-        if (darkTheme)
-            setTheme(R.style.AppDarkTheme);
+        if (!darkTheme)
+            setTheme(R.style.AppTheme);
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()

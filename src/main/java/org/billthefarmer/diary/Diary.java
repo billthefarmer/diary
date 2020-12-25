@@ -401,8 +401,8 @@ public class Diary extends Activity
         // Get preferences
         getPreferences();
 
-        if (darkTheme)
-            setTheme(R.style.AppDarkTheme);
+        if (!darkTheme)
+            setTheme(R.style.AppTheme);
 
         setContentView(R.layout.main);
 

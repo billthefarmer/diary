@@ -75,8 +75,8 @@ public class Editor extends Activity
         boolean darkTheme =
                 preferences.getBoolean(Settings.PREF_DARK_THEME, false);
 
-        if (darkTheme)
-            setTheme(R.style.AppDarkTheme);
+        if (!darkTheme)
+            setTheme(R.style.AppTheme);
 
         setContentView(R.layout.editor);
 
