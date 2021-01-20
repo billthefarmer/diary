@@ -136,17 +136,20 @@ public class QueryHandler extends AsyncQueryHandler
         {
         case EVENT_QUERY:
             // Use the cursor to move through the returned records
-            cursor.moveToFirst();
-            // Get the field value
-            calendarID = cursor.getLong(CALENDAR_ID_INDEX);
-            String[] selectionArgs = new String[]
-                {Long.toString(calendarID),
-                 values.getAsString(Events.DTSTART),
-                 values.getAsString(Events.DTEND)};
+            while (cursor.moveToNext())
+            {
+                // Get the field value
+                calendarID = cursor.getLong(CALENDAR_ID_INDEX);
+                String[] selectionArgs = new String[]
+                    {Long.toString(calendarID),
+                     values.getAsString(Events.DTSTART),
+                     values.getAsString(Events.DTEND)};
 
-            queryHandler.startQuery(EVENT_LISTEN, values, Events.CONTENT_URI,
-                                    EVENT_PROJECTION, EVENT_SELECTION,
-                                    selectionArgs, null);
+                queryHandler.startQuery(EVENT_LISTEN, values,
+                                        Events.CONTENT_URI,
+                                        EVENT_PROJECTION, EVENT_SELECTION,
+                                        selectionArgs, null);
+            }
             break;
 
         case EVENT_INSERT:
