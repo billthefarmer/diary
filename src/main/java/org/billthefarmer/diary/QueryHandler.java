@@ -29,6 +29,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
+import android.provider.CalendarContract.Instances;
 import android.provider.CalendarContract.Reminders;
 import android.util.Log;
 
@@ -45,23 +46,22 @@ public class QueryHandler extends AsyncQueryHandler
         Calendars._ID
     };
 
-    private static final String[] EVENT_PROJECTION = new String[]
+    private static final String[] INSTANCE_PROJECTION = new String[]
     {
-        Events.DTSTART, Events.TITLE
+        Instances.BEGIN, Instances.TITLE
     };
 
-    // Events selection
-    private static final String EVENT_SELECTION =
-        "((" + Events.CALENDAR_ID + " = ?) AND (" +
-        Events.DTSTART + " >= ?) AND (" + Events.DTSTART + " < ?))";
+    // Instances selection -- handles recurring events
+    private static final String INSTANCE_SELECTION = "(" + Instances.CALENDAR_ID + " = ?)";
+    private static final String INSTANCE_ORDERBY = Instances.BEGIN + " ASC";
 
     // The indices for the projections above.
     private static final int CALENDAR_ID_INDEX = 0;
-    private static final int EVENT_DTSTART_INDEX = 0;
-    private static final int EVENT_TITLE_INDEX = 1;
+    private static final int INSTANCE_BEGIN_INDEX = 0;
+    private static final int INSTANCE_TITLE_INDEX = 1;
 
-    private static final int EVENT_QUERY = 0;
-    private static final int EVENT_LISTEN = 1;
+    private static final int INSTANCE_QUERY = 0;
+    private static final int INSTANCE_LISTEN = 1;
     private static final int EVENT_INSERT = 2;
     private static final int EVENT_REMIND = 3;
     private static final int EVENT_DONE = 4;
@@ -87,13 +87,13 @@ public class QueryHandler extends AsyncQueryHandler
         listener = l;
 
         ContentValues values = new ContentValues();
-        values.put(Events.DTSTART, startTime);
-        values.put(Events.DTEND, endTime);
+        values.put(Instances.BEGIN, startTime);
+        values.put(Instances.END, endTime);
 
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Calendar query start");
 
-        queryHandler.startQuery(EVENT_QUERY, values, Calendars.CONTENT_URI,
+        queryHandler.startQuery(INSTANCE_QUERY, values, Calendars.CONTENT_URI,
                                 CALENDAR_PROJECTION, null, null, null);
     }
 
@@ -107,8 +107,8 @@ public class QueryHandler extends AsyncQueryHandler
             queryHandler = new QueryHandler(resolver);
 
         ContentValues values = new ContentValues();
-        values.put(Events.DTSTART, startTime);
-        values.put(Events.DTEND, endTime);
+        values.put(Instances.BEGIN, startTime);
+        values.put(Instances.END, endTime);
         values.put(Events.TITLE, title);
 
         if (BuildConfig.DEBUG)
@@ -134,21 +134,24 @@ public class QueryHandler extends AsyncQueryHandler
 
         switch (token)
         {
-        case EVENT_QUERY:
+        case INSTANCE_QUERY:
             // Use the cursor to move through the returned records
             while (cursor.moveToNext())
             {
                 // Get the field value
                 calendarID = cursor.getLong(CALENDAR_ID_INDEX);
-                String[] selectionArgs = new String[]
-                    {Long.toString(calendarID),
-                     values.getAsString(Events.DTSTART),
-                     values.getAsString(Events.DTEND)};
+                String[] selectionArgs = new String[] {Long.toString(calendarID)};
+                Uri path = Instances.CONTENT_URI;
+                path = Uri.withAppendedPath(path, values.getAsString(Instances.BEGIN));
+                path = Uri.withAppendedPath(path, values.getAsString(Instances.END));
 
-                queryHandler.startQuery(EVENT_LISTEN, values,
-                                        Events.CONTENT_URI,
-                                        EVENT_PROJECTION, EVENT_SELECTION,
-                                        selectionArgs, null);
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, String.format("Query with path %s and arguments %s ",
+                            path, String.join(" ", selectionArgs)));
+
+                queryHandler.startQuery(INSTANCE_LISTEN, values, path,
+                                        INSTANCE_PROJECTION, INSTANCE_SELECTION,
+                                        selectionArgs, INSTANCE_ORDERBY);
             }
             break;
 
@@ -163,13 +166,16 @@ public class QueryHandler extends AsyncQueryHandler
             startInsert(EVENT_REMIND, null, Events.CONTENT_URI, values);
             break;
 
-        case EVENT_LISTEN:
+        case INSTANCE_LISTEN:
             // Use the cursor to move through the returned records
             while (cursor.moveToNext())
             {
                 // Get the field values
-                long startTime = cursor.getLong(EVENT_DTSTART_INDEX);
-                String title = cursor.getString(EVENT_TITLE_INDEX);
+                long startTime = cursor.getLong(INSTANCE_BEGIN_INDEX);
+                String title = cursor.getString(INSTANCE_TITLE_INDEX);
+
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, String.format("Found event with title %s on %s", title, startTime));
 
                 // Return values
                 if (listener != null)
