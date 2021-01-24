@@ -105,8 +105,8 @@ public class QueryHandler extends AsyncQueryHandler
             queryHandler = new QueryHandler(resolver);
 
         ContentValues values = new ContentValues();
-        values.put(Instances.BEGIN, startTime);
-        values.put(Instances.END, endTime);
+        values.put(Events.DTSTART, startTime);
+        values.put(Events.DTEND, endTime);
         values.put(Events.TITLE, title);
 
         if (BuildConfig.DEBUG)
@@ -152,7 +152,8 @@ public class QueryHandler extends AsyncQueryHandler
                 String title = cursor.getString(INSTANCE_TITLE_INDEX);
 
                 if (BuildConfig.DEBUG)
-                    Log.d(TAG, String.format("Found event with title %s on %s", title, startTime));
+                    Log.d(TAG, String.format("Found event with title %s on %s",
+                                             title, startTime));
 
                 // Return values
                 if (listener != null)
