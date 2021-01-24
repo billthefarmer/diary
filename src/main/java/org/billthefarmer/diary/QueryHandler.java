@@ -51,8 +51,6 @@ public class QueryHandler extends AsyncQueryHandler
         Instances.BEGIN, Instances.TITLE
     };
 
-    // Instances selection -- handles recurring events
-    private static final String INSTANCE_SELECTION = "(" + Instances.CALENDAR_ID + " = ?)";
     private static final String INSTANCE_ORDERBY = Instances.BEGIN + " ASC";
 
     // The indices for the projections above.
@@ -60,11 +58,10 @@ public class QueryHandler extends AsyncQueryHandler
     private static final int INSTANCE_BEGIN_INDEX = 0;
     private static final int INSTANCE_TITLE_INDEX = 1;
 
-    private static final int INSTANCE_QUERY = 0;
-    private static final int INSTANCE_LISTEN = 1;
-    private static final int EVENT_INSERT = 2;
-    private static final int EVENT_REMIND = 3;
-    private static final int EVENT_DONE = 4;
+    private static final int INSTANCE_LISTEN = 0;
+    private static final int EVENT_INSERT = 1;
+    private static final int EVENT_REMIND = 2;
+    private static final int EVENT_DONE = 3;
 
     private static QueryHandler queryHandler;
     private static EventListener listener;
@@ -86,15 +83,16 @@ public class QueryHandler extends AsyncQueryHandler
 
         listener = l;
 
-        ContentValues values = new ContentValues();
-        values.put(Instances.BEGIN, startTime);
-        values.put(Instances.END, endTime);
+        Uri path = Instances.CONTENT_URI;
+        path = Uri.withAppendedPath(path, String.valueOf(startTime));
+        path = Uri.withAppendedPath(path, String.valueOf(endTime));
 
         if (BuildConfig.DEBUG)
-            Log.d(TAG, "Calendar query start");
+            Log.d(TAG, String.format("Query with path %s", path));
 
-        queryHandler.startQuery(INSTANCE_QUERY, values, Calendars.CONTENT_URI,
-                                CALENDAR_PROJECTION, null, null, null);
+        queryHandler.startQuery(INSTANCE_LISTEN, null, path,
+                INSTANCE_PROJECTION, null,
+                null, INSTANCE_ORDERBY);
     }
 
     // insertEvent
@@ -134,27 +132,6 @@ public class QueryHandler extends AsyncQueryHandler
 
         switch (token)
         {
-        case INSTANCE_QUERY:
-            // Use the cursor to move through the returned records
-            while (cursor.moveToNext())
-            {
-                // Get the field value
-                calendarID = cursor.getLong(CALENDAR_ID_INDEX);
-                String[] selectionArgs = new String[] {Long.toString(calendarID)};
-                Uri path = Instances.CONTENT_URI;
-                path = Uri.withAppendedPath(path, values.getAsString(Instances.BEGIN));
-                path = Uri.withAppendedPath(path, values.getAsString(Instances.END));
-
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, String.format("Query with path %s and arguments %s ",
-                            path, String.join(" ", selectionArgs)));
-
-                queryHandler.startQuery(INSTANCE_LISTEN, values, path,
-                                        INSTANCE_PROJECTION, INSTANCE_SELECTION,
-                                        selectionArgs, INSTANCE_ORDERBY);
-            }
-            break;
-
         case EVENT_INSERT:
             // Use the cursor to move through the returned records
             cursor.moveToFirst();
