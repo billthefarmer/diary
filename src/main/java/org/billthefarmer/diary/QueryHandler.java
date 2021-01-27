@@ -91,8 +91,8 @@ public class QueryHandler extends AsyncQueryHandler
             Log.d(TAG, String.format("Query with path %s", path));
 
         queryHandler.startQuery(INSTANCE_LISTEN, null, path,
-                INSTANCE_PROJECTION, null,
-                null, INSTANCE_ORDERBY);
+                                INSTANCE_PROJECTION, null,
+                                null, INSTANCE_ORDERBY);
     }
 
     // insertEvent
