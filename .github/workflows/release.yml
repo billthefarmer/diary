@@ -22,3 +22,4 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: "Version ${{ steps.version.outputs.VERSION }}"
+          body: "![Icon](src/main/res/drawable-hdpi/ic_launcher.png)"
