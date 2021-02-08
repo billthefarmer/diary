@@ -10,20 +10,10 @@ jobs:
     steps:
       - uses: "actions/checkout@v2"
 
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: List files
-        run: find
-
       - name: Get the tag version
         id: version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
 
-      - name: Show checksums
-        run: |
-          sha256sum library/build/outputs/aar/library-release.aar
-          sha256sum app/build/outputs/apk/debug/app-debug.apk
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -32,24 +22,3 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: "Version ${{ steps.version.outputs.VERSION }}"
-          body: "![Icon](src/main/res/drawable-hdpi/ic_launcher.png)"
-
-      - name: Upload library
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: library/build/outputs/aar/library-release.aar
-          asset_name: "MarkdownView-${{ steps.version.outputs.VERSION }}.aar"
-          asset_content_type: application/java-archive
-
-      - name: Upload APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: "MarkdownViewTest-${{ steps.version.outputs.VERSION }}.apk"
-          asset_content_type: application/vnd.android.package-archive
