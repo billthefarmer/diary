@@ -51,6 +51,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.billthefarmer:CustomCalendarView:v1.05'
-    implementation 'com.github.billthefarmer:MarkdownView:v1.05'
+    implementation 'com.github.billthefarmer:CustomCalendarView:v1.06'
+    implementation 'com.github.billthefarmer:MarkdownView:v1.06'
 }
