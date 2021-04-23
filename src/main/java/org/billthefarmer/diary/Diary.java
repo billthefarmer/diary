@@ -108,6 +108,7 @@ public class Diary extends Activity
 
     private final static int POSITION_DELAY = 128;
     private final static int VISIBLE_DELAY = 2048;
+    private final static int LARGE_SIZE = 262144;
     private final static int BUFFER_SIZE = 4096;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
@@ -322,14 +323,14 @@ public class Diary extends Activity
             {
                 text.append(line);
                 text.append(System.getProperty("line.separator"));
+                if (text.length() >= LARGE_SIZE)
+                    break;
             }
-
-            return text;
         }
 
         catch (Exception e) {}
 
-        return null;
+        return text;
     }
 
     // parseTime
