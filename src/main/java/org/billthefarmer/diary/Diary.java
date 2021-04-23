@@ -363,6 +363,9 @@ public class Diary extends Activity
         // Get all entry files from a directory.
         File[] files = directory.listFiles();
         if (files != null)
+        {
+            // Sort files
+            Arrays.sort(files);
             for (File file : files)
             {
                 if (file.isFile() && file.getName().matches(DAY_FILE))
@@ -371,6 +374,7 @@ public class Diary extends Activity
                 else if (file.isDirectory())
                     listEntries(file, fileList);
             }
+        }
     }
 
     // listFiles
