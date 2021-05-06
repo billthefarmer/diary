@@ -84,6 +84,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.GregorianCalendar;
@@ -365,8 +366,8 @@ public class Diary extends Activity
         File[] files = directory.listFiles();
         if (files != null)
         {
-            // Sort files
-            Arrays.sort(files);
+            // Sort files, reverse order
+            Arrays.sort(files, Collections.reverseOrder());
             for (File file : files)
             {
                 if (file.isFile() && file.getName().matches(DAY_FILE))
