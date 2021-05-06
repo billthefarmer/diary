@@ -113,6 +113,7 @@ public class Diary extends Activity
     private final static int BUFFER_SIZE = 4096;
     private final static int SCALE_RATIO = 128;
     private final static int FIND_DELAY = 256;
+    private final static int FIND_SIZE = 16;
 
     // Indices for the ViewSwitchers
     private static final int EDIT_TEXT = 0;
@@ -205,6 +206,7 @@ public class Diary extends Activity
     private final static String IMAGE = "image";
     private final static String AUDIO = "audio";
     private final static String VIDEO = "video";
+    private final static String ELLIPSIS = "…";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -2817,6 +2819,8 @@ public class Diary extends Activity
                 if (matcher.find())
                 {
                     String headline = content.toString().split("\n")[0];
+                    if (headline.length() > FIND_SIZE)
+                        headline = headline.substring(0, FIND_SIZE) + ELLIPSIS;
                     matches.add
                         (dateFormat.format(parseTime(file)) + "  " + headline);
                 }
