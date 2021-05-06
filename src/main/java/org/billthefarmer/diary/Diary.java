@@ -199,6 +199,7 @@ public class Diary extends Activity
     private final static String HTTP = "http";
     private final static String TEXT = "text";
     private final static String HTTPS = "https";
+    private final static String MAILTO = "mailto";
     private final static String CONTENT = "content";
     private final static String TEXT_PLAIN = "text/plain";
     private final static String IMAGE_PNG = "image/png";
@@ -839,10 +840,10 @@ public class Diary extends Activity
                         return false;
                     }
 
-                    // Use external browser
-                    if (external)
+                    Uri uri = Uri.parse(url);
+                    // Email url or use external browser
+                    if (external || MAILTO.equalsIgnoreCase(uri.getScheme()))
                     {
-                        Uri uri = Uri.parse(url);
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         if (intent.resolveActivity(getPackageManager()) != null)
                             startActivity(intent);
