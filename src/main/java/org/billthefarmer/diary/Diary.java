@@ -317,7 +317,7 @@ public class Diary extends Activity
     }
 
     // read
-    private static CharSequence read(File file)
+    private static StringBuilder read(File file)
     {
         StringBuilder text = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file)))
@@ -2815,11 +2815,12 @@ public class Diary extends Activity
             // Check the entries
             for (File file : entries)
             {
-                CharSequence content = read(file);
+                StringBuilder content = read(file);
                 Matcher matcher = pattern.matcher(content);
                 if (matcher.find())
                 {
-                    String headline = content.toString().split("\n")[0];
+                    String headline =
+                        content.substring(0, content.indexOf("\n"));
                     if (headline.length() > FIND_SIZE)
                         headline = headline.substring(0, FIND_SIZE) + ELLIPSIS;
                     matches.add
