@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2008 OpenIntents.org
+ * Copyright (C) 2018 OpenIntents.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,11 +155,7 @@ public class FileUtils
      */
     public static Uri getUri(File file)
     {
-        if (file != null)
-        {
-            return Uri.fromFile(file);
-        }
-        return null;
+        return (file != null) ? Uri.fromFile(file) : null;
     }
 
     /**
@@ -188,7 +184,7 @@ public class FileUtils
                 if (pathwithoutname.endsWith(File.separator))
                 {
                     pathwithoutname = pathwithoutname
-                                      .substring(0, pathwithoutname.length() - 1);
+                        .substring(0, pathwithoutname.length() - 1);
                 }
                 return new File(pathwithoutname);
             }
