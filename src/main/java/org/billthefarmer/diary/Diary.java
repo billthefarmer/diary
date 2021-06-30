@@ -102,6 +102,7 @@ public class Diary extends Activity
     CustomCalendarDialog.OnDateSetListener
 {
     private final static int ADD_MEDIA = 1;
+    private final static int EDIT_STYLES = 2;
 
     private final static int REQUEST_READ = 1;
     private final static int REQUEST_WRITE = 2;
@@ -729,6 +730,9 @@ public class Diary extends Activity
                     addLink(uri, uri.getLastPathSegment(), false);
             }
         }
+
+        if (requestCode == EDIT_STYLES)
+            markdownView.reload();
     }
 
     // onDateSet
@@ -1722,7 +1726,8 @@ public class Diary extends Activity
     {
         File file = new File(getHome(), CSS_STYLES);
         Uri uri = Uri.fromFile(file);
-        startActivity(new Intent(Intent.ACTION_EDIT, uri, this, Editor.class));
+        startActivityForResult(new Intent(Intent.ACTION_EDIT, uri,
+                                          this, Editor.class), EDIT_STYLES);
     }
 
     // editScript
@@ -1730,7 +1735,8 @@ public class Diary extends Activity
     {
         File file = new File(getHome(), JS_SCRIPT);
         Uri uri = Uri.fromFile(file);
-        startActivity(new Intent(Intent.ACTION_EDIT, uri, this, Editor.class));
+        startActivityForResult(new Intent(Intent.ACTION_EDIT, uri,
+                                          this, Editor.class), EDIT_STYLES);
     }
 
     // backup

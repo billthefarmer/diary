@@ -166,6 +166,8 @@ public class Editor extends Activity
                     getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
 
+                // Return result
+                setResult(RESULT_OK, null);
                 finish();
             });
 
@@ -229,18 +231,23 @@ public class Editor extends Activity
             case DialogInterface.BUTTON_POSITIVE:
                 CharSequence text = textView.getText();
                 write(text, file);
+                setResult(RESULT_OK, null);
                 finish();
                 break;
 
             case DialogInterface.BUTTON_NEGATIVE:
                 changed = false;
+                setResult(RESULT_CANCELED, null);
                 finish();
                 break;
             }
         });
 
         else
+        {
+            setResult(RESULT_CANCELED, null);
             finish();
+        }
     }
 
     // onRequestPermissionsResult
