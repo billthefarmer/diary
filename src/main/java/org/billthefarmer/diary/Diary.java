@@ -32,6 +32,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -571,6 +574,8 @@ public class Diary extends Activity
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
         menu.findItem(R.id.cancel).setVisible(changed);
         menu.findItem(R.id.index).setVisible(useIndex);
+        menu.findItem(R.id.print)
+            .setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
 
         // Set up search view
         searchItem = menu.findItem(R.id.search);
@@ -622,6 +627,9 @@ public class Diary extends Activity
             break;
         case R.id.findAll:
             findAll();
+            break;
+        case R.id.print:
+            print();
             break;
         case R.id.share:
             share();
@@ -1635,6 +1643,29 @@ public class Diary extends Activity
         // Execute find task
         FindTask findTask = new FindTask(this);
         findTask.execute(search);
+    }
+
+    // print
+    private void print()
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return;
+
+        // Get a PrintManager instance
+        PrintManager printManager = (PrintManager)
+            getSystemService(PRINT_SERVICE);
+
+        String jobName = getString(R.string.appName) + " Document";
+
+        // Get a print adapter instance
+        PrintDocumentAdapter printAdapter =
+            markdownView.createPrintDocumentAdapter(jobName);
+
+        // Create a print job with name and adapter instance
+        printManager.print(jobName, printAdapter,
+                           new PrintAttributes.Builder()
+                           .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                           .build());
     }
 
     // share

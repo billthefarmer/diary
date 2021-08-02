@@ -58,6 +58,7 @@ installing it does not seem to help.
 * Optional entry template
 * Display media stored in diary folders
 * Display [OpenStreetMap](https://www.openstreetmap.org) maps
+* Print diary entries
 * Share diary entries
 * Add media from media providers
 * Receive media from other apps
@@ -80,6 +81,7 @@ The toolbar buttons are, from left to right:
 * **Index** &ndash; go to index page if set
 * **Search** &ndash; incremental search of diary entry
 * **Find all** &ndash; find all diary entries containing search text
+* **Print** &ndash; print current diary entry
 * **Share** &ndash; share current diary entry
 * **Use template** &ndash; use template for current entry if empty
 * **Add time** &ndash; add the current time to diary entry

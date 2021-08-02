@@ -46,6 +46,7 @@
     <activity
         android:name="Diary"
         android:label="@string/appName"
+        android:exported="true"
         android:windowSoftInputMode="stateHidden|adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -78,6 +79,7 @@
 
     <activity
         android:name="Editor"
+        android:exported="true"
         android:windowSoftInputMode="stateHidden|adjustResize">
       <intent-filter
           android:scheme="http"

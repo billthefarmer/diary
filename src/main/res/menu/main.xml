@@ -67,6 +67,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/findAll"
       android:visible="false" />
   <item
+      android:id="@+id/print"
+      android:icon="@drawable/ic_action_print"
+      android:showAsAction="ifRoom"
+      android:title="@string/print" />
+  <item
       android:id="@+id/share"
       android:icon="@drawable/ic_action_share"
       android:showAsAction="ifRoom"
