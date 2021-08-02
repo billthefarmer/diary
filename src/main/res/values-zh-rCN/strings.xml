@@ -23,15 +23,16 @@
   <string name="today">今天</string>
   <string name="prevEntry">上一篇</string>
   <string name="nextEntry">下一篇</string>
-  <string name="goToDate">转到日期......</string>
-  <string name="search">搜索......</string>
-  <string name="findAll">查找全部......</string>
-  <string name="share">分享......</string>
+  <string name="goToDate">转到日期...</string>
+  <string name="search">搜索...</string>
+  <string name="findAll">查找全部...</string>
+  <string name="print">打印…</string>
+  <string name="share">分享...</string>
   <string name="addTime">添加时间</string>
   <string name="addEvents">添加事件</string>
-  <string name="addMedia">添加媒体文件......</string>
-  <string name="editStyles">编辑样式......</string>
-  <string name="editScript">编辑脚本......</string>
+  <string name="addMedia">添加媒体文件...</string>
+  <string name="editStyles">编辑样式...</string>
+  <string name="editScript">编辑脚本...</string>
   <string name="backup">备份</string>
   <string name="start">开始备份</string>
   <string name="complete">备份完成</string>
@@ -64,14 +65,14 @@
   <string name="pref_dark_theme_summ">
     编辑时使用深色模式
   </string>
-  <string name="index">目录</string>
-  <string name="pref_use_index">使用目录</string>
+  <string name="index">索引</string>
+  <string name="pref_use_index">使用索引</string>
   <string name="pref_use_index_summ">
-    日记使用目录页
+    日记使用索引页
   </string>
-  <string name="pref_index_page">目录页</string>
+  <string name="pref_index_page">索引页</string>
   <string name="template">模板</string>
-  <string name="pref_use_template">使用目录页</string>
+  <string name="pref_use_template">使用模板</string>
   <string name="pref_use_template_summ">
     日记条目使用模板
   </string>
