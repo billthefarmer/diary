@@ -23,6 +23,7 @@
   <string name="goToDate">Vai alla data</string>
   <string name="search">Cerca…</string>
   <string name="findAll">Cerca ovunque…</string>
+  <string name="print">Stampa…</string>
   <string name="share">"Condividi…"</string>
   <string name="addTime">Aggiungi orario</string>
   <string name="addEvents">Aggiungi eventi</string>

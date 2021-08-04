@@ -126,7 +126,9 @@ button. Scrolling down restores it.
 ## Search
 You may search diary entries, the search will update as text is
 entered into the search field. Use the search widget or keyboard
-action button to find the next match.
+action button to find the next match. To find and edit text, search in
+the markdown view, and then double tap where you want to edit. This
+will switch to the edit view at about the right place.
 
 ## Find all
 You may find all diary entries that contain the current search
@@ -141,8 +143,7 @@ on that page unless receiving media from another app.
 
 ## Template
 You may use an entry template. If a template is set it will be copied
-to today's entry if it is empty. Use the menu item to copy the template
-to the current entry if it is empty.
+to today's entry if it is empty.
 
 ## Text
 You may receive text clips from another app. A date picker will pop

@@ -26,6 +26,7 @@
   <string name="goToDate">日付に…</string>
   <string name="search">サーチ…</string>
   <string name="findAll">すべてを検索…</string>
+  <string name="print">印刷…</string>
   <string name="share">共有…</string>
   <string name="addTime">時間を追加</string>
   <string name="addEvents">イベントを追加する</string>

@@ -26,6 +26,7 @@
   <string name="goToDate">Aller à la date…</string>
   <string name="search">Chercher…</string>
   <string name="findAll">Trouver tout…</string>
+  <string name="print">Imprimer…</string>
   <string name="share">"Partager…"</string>
   <string name="addTime">Ajouter l\'heure</string>
   <string name="addEvents">Ajouter des événements</string>

@@ -46,7 +46,7 @@ android {
             'IconDuplicates', 'UnusedAttribute', 'OldTargetApi',
             'NonConstantResourceId', 'ExpiredTargetSdkVersion',
             'MediaCapabilities'
-        abortOnError false
+        // abortOnError false
     }
 }
 

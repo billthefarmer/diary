@@ -26,6 +26,7 @@
   <string name="goToDate">Ga naar datum…</string>
   <string name="search">Zoeken…</string>
   <string name="findAll">Alles zoeken…</string>
+  <string name="print">Afdrukken…</string>
   <string name="share">"Delen…"</string>
   <string name="addTime">Voeg tijd toe</string>
   <string name="addEvents">Evenementen toevoegen</string>
