@@ -14,7 +14,7 @@
       <pubDate>Sun, 16 Feb 2020 19:09:23 +0000</pubDate>
       
       <guid>https://billthefarmer.github.io/diary/introduction/features/</guid>
-      <description> Entries saved in plain text files Browse entries English, Catalan, Spanish, Italian, Japanese, German, French, Polish, Brazilian Portuguese, Dutch and simplified Chinese Choice of date picker calendars Diary entries may use markdown formatting Optional index page Optional entry template Display media stored in diary folders Display OpenStreetMap maps Share diary entries Add media from media providers Receive media from other apps Receive geo uris from other apps Incremental search of diary entries Add events to calendar Add events from calendar Dark or light theme for editing Back up entries to a zip file Optional edit cursor position control  </description>
+      <description> Entries saved in plain text files Browse entries English, Catalan, Spanish, Italian, Japanese, German, French, Polish, Brazilian Portuguese, Dutch and simplified Chinese Choice of date picker calendars Diary entries may use markdown formatting Optional index page Optional entry template Display media stored in diary folders Display OpenStreetMap maps Print diary entries Share diary entries Add media from media providers Receive media from other apps Receive geo uris from other apps Incremental search of diary entries Add events to calendar Add events from calendar Dark or light theme for editing Back up entries to a zip file Optional edit cursor position control  </description>
     </item>
     
     <item>
@@ -25,7 +25,7 @@
       <guid>https://billthefarmer.github.io/diary/using/toolbar/</guid>
       <description>The toolbar items:
  Previous – show the previous entry or today Next – show the next entry or today if next Today – show today&amp;rsquo;s entry  And on the menu:
- Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Share – share current diary entry Use template – use template for current entry if empty Add time – add the current time to diary entry Add events – add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings  </description>
+ Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Print – print current diary entry Share – share current diary entry Use template – use template for current entry if empty Add time – add the current time to diary entry Add events – add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings  </description>
     </item>
     
     <item>
@@ -72,7 +72,7 @@ See Markdown for markdown syntax.</description>
       <pubDate>Sun, 16 Feb 2020 19:16:11 +0000</pubDate>
       
       <guid>https://billthefarmer.github.io/diary/using/search/</guid>
-      <description>You may search diary entries, the search will update as text is entered into the search field. Use the search widget or keyboard action button to find the next match.</description>
+      <description>You may search diary entries, the search will update as text is entered into the search field. Use the search widget or keyboard action button to find the next match. To find and edit text, search in the markdown view, and then double tap where you want to edit. This will switch to the edit view at about the right place.</description>
     </item>
     
     <item>
