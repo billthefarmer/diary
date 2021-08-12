@@ -133,13 +133,18 @@ will switch to the edit view at about the right place.
 ## Find all
 You may find all diary entries that contain the current search
 text. This menu item will only appear while the search widget is
-active. A dialog will pop up with a list of matching entries. Touch an
+active. A dialog will pop up with a list of matching entries. Touch an 
 entry to open that entry. You may repeat this or refine the search
 text to find the desired entry.
 
 ## Index
 You may use an index page. If an index page is set the app will start
-on that page unless receiving media from another app.
+on that page unless receiving media from another app. To link to specific 
+dates use the following format:
+```
+[February 2000](date:1/2/2000)
+[March 2000](date:1/3/2000)
+```
 
 ## Template
 You may use an entry template. If a template is set it will be copied
