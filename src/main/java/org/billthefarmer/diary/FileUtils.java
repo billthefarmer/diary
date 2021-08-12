@@ -198,7 +198,8 @@ public class FileUtils
     public static String getMimeType(File file)
     {
 
-        String extension = getExtension(file.getName());
+        String extension =
+            getExtension(file.getName()).toLowerCase(Locale.getDefault());
 
         if (extension.length() > 0)
             return MimeTypeMap.getSingleton()
@@ -267,33 +268,12 @@ public class FileUtils
     public static String fileProviderPath(Uri uri)
     {
         StringBuilder path = new StringBuilder();
-        Uri storage = Uri.fromFile(Environment.getExternalStorageDirectory());
-        List<String> storageList = storage.getPathSegments();
         List<String> uriList = uri.getPathSegments();
 
         if (BuildConfig.DEBUG)
-            Log.d(TAG, "Uri: " + uri);
         {
-            for (String segment: uriList)
-                if (!uriList.contains(segment))
-                    break;
-
-            List<String> segments =
-                uriList.subList(uriList.indexOf(storageList.get(0)),
-                                uriList.size());
-
-            for (String segment : segments)
-            {
-                path.append(File.separator);
-                path.append(segment);
-            }
-
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Path: " + path);
-
-            File file = new File(path.toString());
-            if (file.isFile())
-                return path.toString();
+            Log.d(TAG, "Uri: " + uri);
+            Log.d(TAG, "Path: " + uriList);
         }
 
         if (uriList.size() > 1)
