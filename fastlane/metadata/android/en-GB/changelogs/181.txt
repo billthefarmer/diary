@@ -1,0 +1,2 @@
+* Update file provider URI resolver
+* Update about dialog layout
