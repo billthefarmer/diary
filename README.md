@@ -139,12 +139,8 @@ text to find the desired entry.
 
 ## Index
 You may use an index page. If an index page is set the app will start
-on that page unless receiving media from another app. To link to specific 
-dates use the following format:
-```
-[February 2000](date:1/2/2000)
-[March 2000](date:1/3/2000)
-```
+on that page unless receiving media from another app. See **Links**
+for the syntax for links to other diary entries and external sites.
 
 ## Template
 You may use an entry template. If a template is set it will be copied
