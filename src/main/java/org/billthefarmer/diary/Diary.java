@@ -1680,10 +1680,10 @@ public class Diary extends Activity
         if (shown)
         {
             intent.setType(IMAGE_PNG);
-            View v = markdownView.getRootView();
-            v.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
-            v.setDrawingCacheEnabled(false);
+            // View v = markdownView.getRootView();
+            markdownView.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(markdownView.getDrawingCache());
+            markdownView.setDrawingCacheEnabled(false);
 
             File image = new File(getCacheDir(), DIARY_IMAGE);
             try (FileOutputStream out = new FileOutputStream(image))
