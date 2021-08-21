@@ -1489,21 +1489,25 @@ public class Diary extends Activity
                 if (CONTENT.equalsIgnoreCase(media.getScheme()))
                     media = resolveContent(media);
 
-                // Attempt to get web uri
-                String path = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (media != null)
+                    addMedia(media, true);
 
-                if (path != null)
+                else
                 {
-                    // Try to get the path as an uri
-                    Uri uri = Uri.parse(path);
-                    // Check if it's an URL
-                    if ((uri != null) &&
-                        (HTTP.equalsIgnoreCase(uri.getScheme()) ||
-                         HTTPS.equalsIgnoreCase(uri.getScheme())))
-                        media = uri;
-                }
+                    // Attempt to get web uri
+                    String path = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-                addMedia(media, true);
+                    if (path != null)
+                    {
+                        // Try to get the path as an uri
+                        media = Uri.parse(path);
+                        // Check if it's an URL
+                        if ((media != null) &&
+                            (HTTP.equalsIgnoreCase(media.getScheme()) ||
+                             HTTPS.equalsIgnoreCase(media.getScheme())))
+                            addMedia(media, true);
+                    }
+                }
             }
             else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
             {
@@ -1692,6 +1696,7 @@ public class Diary extends Activity
             }
 
             catch (Exception e) {}
+
             Uri imageUri = FileProvider
                 .getUriForFile(this, FILE_PROVIDER, image);
             intent.putExtra(Intent.EXTRA_STREAM, imageUri);
@@ -1952,9 +1957,14 @@ public class Diary extends Activity
     // getEntries
     private List<Calendar> getEntries()
     {
-        List<Calendar> list = new ArrayList<>();
         Calendar entry = getNextEntry(1970, Calendar.JANUARY, 1);
-        while (entry != null)
+        return getEntries(entry);
+    }
+
+    private List<Calendar> getEntries(Calendar entry)
+    {
+        List<Calendar> list = new ArrayList<>();
+        while (entry != null && currEntry.compareTo(entry) <= 0)
         {
             list.add(entry);
             entry = getNextEntry(entry.get(Calendar.YEAR),
@@ -2424,15 +2434,27 @@ public class Diary extends Activity
             String type = FileUtils.getMimeType(this, media);
             if (type != null && type.startsWith(IMAGE))
             {
-                File newMedia = new
-                    File(getCurrent(), UUID.randomUUID().toString() +
-                         FileUtils.getExtension(media.toString()));
+                // File newMedia = new
+                //     File(getCurrent(), UUID.randomUUID().toString() +
+                //          FileUtils.getExtension(media.toString()));
                 File oldMedia = FileUtils.getFile(this, media);
+                File newMedia = new File(getCurrent(), name);
+                int i = 1;
+                while (newMedia.exists())
+                {
+                    String newName = String.format
+                        (Locale.getDefault(),
+                         "%s_%d%s", FileUtils.getPathWithoutExtension(name),
+                         i++, FileUtils.getExtension(name));
+                    newMedia = new File(getCurrent(), newName);
+                }
+
                 try
                 {
                     FileUtils.copyFile(oldMedia, newMedia);
                     String newName =
                         Uri.fromFile(newMedia).getLastPathSegment();
+                    name = newName;
                     media = Uri.parse(newName);
                 }
 

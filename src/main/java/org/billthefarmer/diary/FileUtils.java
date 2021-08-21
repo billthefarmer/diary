@@ -130,6 +130,23 @@ public class FileUtils
     }
 
     /**
+     * Gets the path of a file without the extension.
+     *
+     * @param path
+     * @return Path of the file without extension; null if path was
+     *         null.
+     */
+    public static String getPathWithoutExtension(String path)
+    {
+        if (path == null)
+        {
+            return null;
+        }
+
+        return path.substring(0, path.length() - getExtension(path).length());
+    }
+
+    /**
      * @return Whether the URI is a local one.
      */
     public static boolean isLocal(String url)
@@ -213,6 +230,9 @@ public class FileUtils
      */
     public static String getMimeType(Context context, Uri uri)
     {
+        if (getPath(context, uri) == null)
+            return null;
+
         File file = new File(getPath(context, uri));
         return getMimeType(file);
     }
@@ -357,6 +377,47 @@ public class FileUtils
         catch (Exception e) {}
 
         return null;
+    }
+
+    /**
+     * Get the size for this Uri. This is useful for MediaStore Uris,
+     * and other file-based ContentProviders.
+     *
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
+     * @param selectionArgs (Optional) Selection arguments used in the
+     *                      query.
+     * @return The size of the file referred to by the Uri
+     * @author Bill Farmer
+     */
+    public static long getSize(Context context, Uri uri,
+                              String selection,
+                              String[] selectionArgs)
+    {
+        final String column = OpenableColumns.SIZE;
+        final String[] projection =
+            {
+                column
+            };
+
+        try (Cursor cursor = context.getContentResolver()
+             .query(uri, projection, selection, selectionArgs, null))
+        {
+            if (cursor != null && cursor.moveToFirst())
+            {
+                if (BuildConfig.DEBUG)
+                    DatabaseUtils.dumpCursor(cursor);
+
+                final int column_index = cursor.getColumnIndex(column);
+                if (column_index >= 0)
+                    return cursor.getLong(column_index);
+            }
+        }
+
+        catch (Exception e) {}
+
+        return 0;
     }
 
     /**
@@ -629,7 +690,7 @@ public class FileUtils
      * @return
      * @author paulburke
      */
-    public static String getReadableFileSize(int size)
+    public static String getReadableFileSize(long size)
     {
         final int BYTES_IN_KILOBYTES = 1024;
         final DecimalFormat dec = new DecimalFormat("###.#");
