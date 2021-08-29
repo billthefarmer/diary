@@ -2436,9 +2436,6 @@ public class Diary extends Activity
             String type = FileUtils.getMimeType(this, media);
             if (type != null && type.startsWith(IMAGE))
             {
-                // File newMedia = new
-                //     File(getCurrent(), UUID.randomUUID().toString() +
-                //          FileUtils.getExtension(media.toString()));
                 File oldMedia = FileUtils.getFile(this, media);
                 File newMedia = new File(getCurrent(), name);
                 int i = 1;
