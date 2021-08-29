@@ -1431,6 +1431,7 @@ public class Diary extends Activity
     // addMedia
     private void addMedia(Intent intent)
     {
+        // Get type
         String type = intent.getType();
 
         if (type == null)
@@ -1684,7 +1685,7 @@ public class Diary extends Activity
         if (shown)
         {
             intent.setType(IMAGE_PNG);
-            // View v = markdownView.getRootView();
+
             markdownView.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(markdownView.getDrawingCache());
             markdownView.setDrawingCacheEnabled(false);
@@ -1961,6 +1962,7 @@ public class Diary extends Activity
         return getEntries(entry);
     }
 
+    // getEntries
     private List<Calendar> getEntries(Calendar entry)
     {
         List<Calendar> list = new ArrayList<>();
