@@ -710,33 +710,31 @@ public class Diary extends Activity
         {
             // Get uri
             Uri uri = data.getData();
+            if (uri == null)
+                return;
 
             // Resolve content uri
             if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                 uri = resolveContent(uri);
 
-            if (uri != null)
-            {
-                String type;
+            String title = (CONTENT.equalsIgnoreCase(uri.getScheme()))?
+                FileUtils.getDisplayName(this, uri, null, null):
+                uri.getLastPathSegment();
 
-                // Get type
-                if (CONTENT.equalsIgnoreCase(uri.getScheme()))
-                    type = getContentResolver().getType(uri);
+            String type = (CONTENT.equalsIgnoreCase(uri.getScheme()))?
+                getContentResolver().getType(uri):
+                FileUtils.getMimeType(this, uri);
 
-                else
-                    type = FileUtils.getMimeType(this, uri);
+            if (type == null)
+                addLink(uri, title, false);
 
-                if (type == null)
-                    addLink(uri, uri.getLastPathSegment(), false);
+            else if (type.startsWith(IMAGE) ||
+                     type.startsWith(AUDIO) ||
+                     type.startsWith(VIDEO))
+                addMedia(uri, false);
 
-                else if (type.startsWith(IMAGE) ||
-                         type.startsWith(AUDIO) ||
-                         type.startsWith(VIDEO))
-                    addMedia(uri, false);
-
-                else
-                    addLink(uri, uri.getLastPathSegment(), false);
-            }
+            else
+                addLink(uri, title, false);
         }
 
         if (requestCode == EDIT_STYLES)
