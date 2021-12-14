@@ -2142,14 +2142,12 @@ public class Diary extends Activity
         try
         {
             // Open file
-            try (InputStream input = getAssets().open(file))
+            try (BufferedReader reader = new BufferedReader
+                 (new InputStreamReader(getAssets().open(file))))
             {
-                BufferedReader bufferedReader =
-                    new BufferedReader(new InputStreamReader(input));
-                StringBuilder content =
-                    new StringBuilder(input.available());
+                StringBuilder content = new StringBuilder();
                 String line;
-                while ((line = bufferedReader.readLine()) != null)
+                while ((line = reader.readLine()) != null)
                 {
                     content.append(line);
                     content.append(System.getProperty("line.separator"));

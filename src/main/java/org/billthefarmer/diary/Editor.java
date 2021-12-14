@@ -348,9 +348,8 @@ public class Editor extends Activity
             }
         }
 
-        try (BufferedReader reader = new
-             BufferedReader(new InputStreamReader(getContentResolver()
-                                                  .openInputStream(uri))))
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader
+              (getContentResolver().openInputStream(uri))))
         {
             String line;
             while ((line = reader.readLine()) != null)
