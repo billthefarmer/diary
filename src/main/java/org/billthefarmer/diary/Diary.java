@@ -1615,14 +1615,19 @@ public class Diary extends Activity
         List<DayDecorator> decorators = new ArrayList<DayDecorator>();
         decorators.add(new EntryDecorator());
 
-        // Get the calendar
+        // Get the calendar view
         CustomCalendarView calendarView = dialog.getCalendarView();
 
         // Set the decorators
         calendarView.setDecorators(decorators);
 
+        // New calendar for calendar view
+        GregorianCalendar calendar = new
+            GregorianCalendar(date.get(Calendar.YEAR),
+                              date.get(Calendar.MONTH),
+                              date.get(Calendar.DATE));
         // Refresh the calendar
-        calendarView.refreshCalendar(date);
+        calendarView.refreshCalendar(calendar);
     }
 
     // showDatePickerDialog
