@@ -219,6 +219,7 @@ public class Diary extends Activity
     private boolean useIndex = false;
     private boolean useTemplate = false;
     private boolean copyMedia = false;
+    private boolean haveMedia = false;
     private boolean darkTheme = false;
 
     private boolean changed = false;
@@ -234,8 +235,6 @@ public class Diary extends Activity
 
     private float minScale = 1000;
 
-    private boolean canSwipe = true;
-    private boolean haveMedia = false;
 
     private long indexPage;
     private long templatePage;
@@ -815,18 +814,6 @@ public class Diary extends Activity
                             setTitleDate(currEntry.getTime());
                         }
                     }
-                }
-
-                // onScaleChanged
-                @Override
-                public void onScaleChanged(WebView view,
-                                           float oldScale,
-                                           float newScale)
-                {
-                    if (minScale > oldScale)
-                        minScale = oldScale;
-                    canSwipe = (Math.abs(newScale - minScale) <
-                                minScale / SCALE_RATIO);
                 }
 
                 // shouldOverrideUrlLoading
@@ -2621,10 +2608,8 @@ public class Diary extends Activity
     // onSwipeLeft
     private void onSwipeLeft()
     {
-        if (!canSwipe && shown)
-            return;
-
         Calendar nextDay = getNextCalendarDay();
+        entryStack.push(currEntry);
         changeDate(nextDay);
 
         if (markdown && shown)
@@ -2634,10 +2619,8 @@ public class Diary extends Activity
     // onSwipeRight
     private void onSwipeRight()
     {
-        if (!canSwipe && shown)
-            return;
-
         Calendar prevDay = getPrevCalendarDay();
+        entryStack.push(currEntry);
         changeDate(prevDay);
 
         if (markdown && shown)
@@ -2647,10 +2630,8 @@ public class Diary extends Activity
     // onSwipeDown
     private void onSwipeDown()
     {
-        if (!canSwipe && shown)
-            return;
-
         Calendar prevMonth = getPrevCalendarMonth();
+        entryStack.push(currEntry);
         changeDate(prevMonth);
 
         if (markdown && shown)
@@ -2660,10 +2641,8 @@ public class Diary extends Activity
     // onSwipeUp
     private void onSwipeUp()
     {
-        if (!canSwipe && shown)
-            return;
-
         Calendar nextMonth = getNextCalendarMonth();
+        entryStack.push(currEntry);
         changeDate(nextMonth);
 
         if (markdown && shown)
@@ -3058,6 +3037,9 @@ public class Diary extends Activity
         {
             boolean result = false;
 
+            if (!multi)
+                return result;
+
             try
             {
                 float diffY = e2.getY() - e1.getY();
@@ -3082,8 +3064,7 @@ public class Diary extends Activity
                 else
                 {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD &&
-                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD &&
-                        multi)
+                        Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)
                     {
                         if (diffY > 0)
                         {
@@ -3097,12 +3078,11 @@ public class Diary extends Activity
 
                     result = true;
                 }
-
-                multi = false;
             }
 
             catch (Exception e) {}
 
+            multi = false;
             return result;
         }
 
