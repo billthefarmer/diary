@@ -45,7 +45,6 @@
 
     <activity
         android:name="Diary"
-        android:label="@string/appName"
         android:exported="true"
         android:windowSoftInputMode="stateHidden|adjustResize">
       <intent-filter>

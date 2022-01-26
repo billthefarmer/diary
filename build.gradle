@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.1.0'
     }
 }
 
@@ -30,8 +30,8 @@ android {
         applicationId "org.billthefarmer.diary"
         minSdkVersion 14
         targetSdkVersion 28
-        versionName "1.83"
-        versionCode 183
+        versionName "1.84"
+        versionCode 184
 
         buildConfigField "long", "BUILT", System.currentTimeMillis() + "L"
     }
