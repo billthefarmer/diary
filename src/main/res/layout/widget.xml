@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+    Diary - Personal diary for Android
+    Copyright (C) 2017	Bill Farmer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/header"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
+      android:paddingTop="4dp"
+      android:paddingBottom="4dp"
+      android:textColor="@android:color/white"
+      android:background="@drawable/header_background" />
+
+  <TextView
+      android:id="@+id/entry"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
+      android:paddingTop="4dp"
+      android:paddingBottom="4dp"
+      android:background="@drawable/entry_background" />
+
+</LinearLayout>
