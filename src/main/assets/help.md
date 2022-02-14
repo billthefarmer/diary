@@ -20,6 +20,7 @@
 * Incremental search of diary entries
 * Add events to calendar
 * Add events from calendar
+* Show today's entry in app widget
 * Dark or light theme for editing
 * Back up entries to a zip file
 * Optional edit cursor position control
@@ -171,6 +172,11 @@ or edit events. Do not remove the colon from the diary entry or the
 event will be added again. You may add events from the calendar to the
 current diary entry. Events will be added from the relevant calendar
 date.
+
+## App widgets
+You may put Diary app widgets on the home screen. This will show
+today's entry. The widget will be updated when today's entry is
+updated.
 
 ## Cursor position
 You may put a line in an entry to control or remember the edit cursor

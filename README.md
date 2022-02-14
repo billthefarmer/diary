@@ -11,13 +11,13 @@ continued innovation in technology has paved the way to the
 development of paperless diary and notebooks.
 
 It will help you keep it ordered by date like a traditional journal or
- personal diary.  You can make predictions about what will happen and
- see if they come true, and you can see how you changed over time, and
- read over memories, having a few laughs.  It's the funniest, quickest
- and easiest way to document your life through a series of notes.  The
- app is available on
- [F-Droid](https://f-droid.org/packages/org.billthefarmer.diary) and
- [here](https://github.com/billthefarmer/diary/releases).
+personal diary.  You can make predictions about what will happen and
+see if they come true, and you can see how you changed over time, and
+read over memories, having a few laughs.  It's the funniest, quickest
+and easiest way to document your life through a series of notes.  The
+app is available on
+[F-Droid](https://f-droid.org/packages/org.billthefarmer.diary) and
+[here](https://github.com/billthefarmer/diary/releases).
 
 ![Diary](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Diary-phone.png) ![Calendar](https://github.com/billthefarmer/billthefarmer.github.io/raw/master/images/diary/Calendar-phone.png)
 
@@ -67,6 +67,7 @@ installing it does not seem to help.
 * Incremental search of diary entries
 * Add events to calendar
 * Add events from calendar
+* Show today's entry in app widget
 * Dark or light theme for editing
 * Back up entries to a zip file
 * Optional edit cursor position control
@@ -218,6 +219,11 @@ or edit events. Do not remove the colon from the diary entry or the
 event will be added again. You may add events from the calendar to the
 current diary entry. Events will be added from the relevant calendar
 date.
+
+## App widgets
+You may put Diary app widgets on the home screen. This will show
+today's entry. The widget will be updated when today's entry is
+updated.
 
 ## Cursor position
 You may put a line in an entry to control or remember the edit cursor
