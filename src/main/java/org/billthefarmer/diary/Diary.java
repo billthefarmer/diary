@@ -20,6 +20,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -36,6 +38,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.text.Editable;
+import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
@@ -58,18 +61,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import android.support.v4.content.FileProvider;
-
-import org.billthefarmer.markdown.MarkdownView;
-import org.billthefarmer.view.CustomCalendarDialog;
-import org.billthefarmer.view.CustomCalendarView;
-import org.billthefarmer.view.DayDecorator;
-import org.billthefarmer.view.DayView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -98,6 +96,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import org.billthefarmer.markdown.MarkdownView;
+import org.billthefarmer.view.CustomCalendarDialog;
+import org.billthefarmer.view.CustomCalendarView;
+import org.billthefarmer.view.DayDecorator;
+import org.billthefarmer.view.DayView;
+
+import org.commonmark.node.*;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 // Diary
 public class Diary extends Activity
@@ -2074,6 +2082,9 @@ public class Diary extends Activity
 
             // Save text
             save(text);
+
+            // Update app widgets
+            updateWidgets();
         }
     }
 
@@ -2126,6 +2137,45 @@ public class Diary extends Activity
 
         // Create the AlertDialog
         builder.show();
+    }
+
+    // updateWidgets
+    @SuppressWarnings("deprecation")
+    private void updateWidgets()
+    {
+        Calendar today = Calendar.getInstance();
+        if (currEntry != null &&
+            currEntry.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+            currEntry.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+            currEntry.get(Calendar.DATE) == today.get(Calendar.DATE))
+        {
+            // Get date
+            DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            String date = format.format(new Date());
+
+            // Get text
+            CharSequence text = read(getFile());
+
+            if (markdown)
+            {
+                // Use commonmark
+                Parser parser = Parser.builder().build();
+                Node document = parser.parse(text.toString());
+                HtmlRenderer renderer = HtmlRenderer.builder().build();
+
+                String html = renderer.render(document);
+                text = Html.fromHtml(html);
+            }
+
+            AppWidgetManager manager = AppWidgetManager.getInstance(this);
+            ComponentName provider = new
+                ComponentName(this, DiaryWidgetProvider.class);
+            RemoteViews views = new
+                RemoteViews(getPackageName(), R.layout.widget);
+            views.setTextViewText(R.id.header, date);
+            views.setTextViewText(R.id.entry, text);
+            manager.updateAppWidget(provider, views);
+        }
     }
 
     // readAssetFile

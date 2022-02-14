@@ -26,6 +26,6 @@
       android:topLeftRadius="10dp"
       android:topRightRadius="10dp" />
 
-  <solid android:color="#cf000000" />
+  <solid android:color="#df000000" />
 
 </shape>

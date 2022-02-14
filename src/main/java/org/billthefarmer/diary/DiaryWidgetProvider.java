@@ -106,7 +106,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
         for (int i = 0; i < appWidgetIds.length; i++)
         {
             int appWidgetId = appWidgetIds[i];
-            // Create an Intent to launch ExampleActivity
+            // Create an Intent to launch Diary
             Intent intent = new Intent(context, Diary.class);
             PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, intent,
