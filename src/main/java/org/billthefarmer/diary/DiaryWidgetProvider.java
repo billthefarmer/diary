@@ -43,7 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.commonmark.node.*;
+import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
@@ -59,13 +59,8 @@ public class DiaryWidgetProvider extends AppWidgetProvider
                                           int appWidgetId, 
                                           Bundle newOptions)
     {
-        // Get the views
-        RemoteViews views = new
-            RemoteViews(context.getPackageName(), R.layout.widget);
-
-        // Tell the AppWidgetManager to perform an update on the
-        // current app widget.
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        int appWidgetIds[] = {appWidgetId};
+        onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     // onUpdate

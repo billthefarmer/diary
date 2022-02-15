@@ -103,7 +103,7 @@ import org.billthefarmer.view.CustomCalendarView;
 import org.billthefarmer.view.DayDecorator;
 import org.billthefarmer.view.DayView;
 
-import org.commonmark.node.*;
+import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
@@ -2084,7 +2084,7 @@ public class Diary extends Activity
             save(text);
 
             // Update app widgets
-            updateWidgets();
+            updateWidgets(text);
         }
     }
 
@@ -2141,7 +2141,7 @@ public class Diary extends Activity
 
     // updateWidgets
     @SuppressWarnings("deprecation")
-    private void updateWidgets()
+    private void updateWidgets(CharSequence text)
     {
         Calendar today = Calendar.getInstance();
         if (currEntry != null &&
@@ -2151,10 +2151,7 @@ public class Diary extends Activity
         {
             // Get date
             DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
-            String date = format.format(new Date());
-
-            // Get text
-            CharSequence text = read(getFile());
+            String date = format.format(today.getTime());
 
             if (markdown)
             {
