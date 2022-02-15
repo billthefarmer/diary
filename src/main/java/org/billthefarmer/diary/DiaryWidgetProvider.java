@@ -52,17 +52,6 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     String folder;
     boolean markdown;
 
-    // onAppWidgetOptionsChanged
-    @Override
-    public void onAppWidgetOptionsChanged(Context context, 
-                                          AppWidgetManager appWidgetManager, 
-                                          int appWidgetId, 
-                                          Bundle newOptions)
-    {
-        int appWidgetIds[] = {appWidgetId};
-        onUpdate(context, appWidgetManager, appWidgetIds);
-    }
-
     // onUpdate
     @Override
     @SuppressLint("InlinedApi")
@@ -96,30 +85,24 @@ public class DiaryWidgetProvider extends AppWidgetProvider
             text = Html.fromHtml(html);
         }
 
-        // Perform this loop procedure for each widget that belongs to
-        // this provider.
-        for (int i = 0; i < appWidgetIds.length; i++)
-        {
-            int appWidgetId = appWidgetIds[i];
-            // Create an Intent to launch Diary
-            Intent intent = new Intent(context, Diary.class);
-            PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 0, intent,
-                                          PendingIntent.FLAG_UPDATE_CURRENT |
-                                          PendingIntent.FLAG_IMMUTABLE);
+        // Create an Intent to launch Diary
+        Intent intent = new Intent(context, Diary.class);
+        PendingIntent pendingIntent =
+            PendingIntent.getActivity(context, 0, intent,
+                                      PendingIntent.FLAG_UPDATE_CURRENT |
+                                      PendingIntent.FLAG_IMMUTABLE);
 
-            // Get the layout for the widget and attach an on-click
-            // listener to the view.
-            RemoteViews views = new
-                RemoteViews(context.getPackageName(), R.layout.widget);
-            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-            views.setTextViewText(R.id.header, date);
-            views.setTextViewText(R.id.entry, text);
+        // Get the layout for the widget and attach an on-click
+        // listener to the view.
+        RemoteViews views = new
+            RemoteViews(context.getPackageName(), R.layout.widget);
+        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
+        views.setTextViewText(R.id.header, date);
+        views.setTextViewText(R.id.entry, text);
 
-            // Tell the AppWidgetManager to perform an update on the
-            // current app widget.
-            appWidgetManager.updateAppWidget(appWidgetId, views);
-        }
+        // Tell the AppWidgetManager to perform an update on the
+        // current app widget.
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
     }
 
     // getHome
