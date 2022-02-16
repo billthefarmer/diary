@@ -21,9 +21,9 @@
 <appwidget-provider
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="120dp"
-    android:minHeight="80dp"
+    android:minHeight="40dp"
     android:minResizeWidth="60dp"
-    android:minResizeHeight="40dp"
+    android:minResizeHeight="20dp"
     android:updatePeriodMillis="3600000"
     android:previewImage="@drawable/widget"
     android:initialLayout="@layout/widget"
