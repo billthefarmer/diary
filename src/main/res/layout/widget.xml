@@ -34,7 +34,8 @@
       android:paddingTop="4dp"
       android:paddingBottom="4dp"
       android:textColor="@android:color/white"
-      android:background="@drawable/header_background" />
+      android:background="@drawable/header_background"
+      android:textAppearance="?android:attr/textAppearanceMedium"/>
 
   <TextView
       android:id="@+id/entry"
