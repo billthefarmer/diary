@@ -102,6 +102,16 @@ for the syntax for links to other diary entries and external sites.
 You may use an entry template. If a template is set it will be copied
 to today's entry if it is empty.
 
+## Widget
+The widget will show as much of the entry as will fit in the size
+chosen. Images, maps, and other media will not display because of
+android widget limitations. Bullet points do not work very well, but
+can be constructed using HTML entities so they appear the same in the
+widget:
+```html
+&nbsp; &#bullet;&nbsp; Test item<br>
+```
+
 ## Text
 You may receive text clips from another app. A date picker will pop
 up. The text will be appended to the entry selected.
