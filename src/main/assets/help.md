@@ -109,7 +109,7 @@ android widget limitations. Bullet points do not work very well, but
 can be constructed using HTML entities so they appear the same in the
 widget:
 ```html
-&nbsp; &#bullet;&nbsp; Test item<br>
+&nbsp; &bullet;&nbsp; Test item<br>
 ```
 
 ## Text
