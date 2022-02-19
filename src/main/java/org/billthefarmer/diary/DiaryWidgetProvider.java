@@ -52,13 +52,68 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     String folder;
     boolean markdown;
 
+    // onAppWidgetOptionsChanged
+    @Override
+    public void onAppWidgetOptionsChanged(Context context,
+                                          AppWidgetManager appWidgetManager,
+                                          int appWidgetId,
+                                          Bundle newOptions)
+    {
+        // Get date
+        DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        String date = format.format(new Date());
+
+        // Get text
+        CharSequence text = getText(context);
+
+        // Get the views
+        RemoteViews views = new
+            RemoteViews(context.getPackageName(), R.layout.widget);
+        views.setTextViewText(R.id.header, date);
+        views.setTextViewText(R.id.entry, text);
+
+        // Tell the AppWidgetManager to perform an update on the
+        // current app widget.
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
     // onUpdate
     @Override
     @SuppressLint("InlinedApi")
-    @SuppressWarnings("deprecation")
     public void onUpdate(Context context,
                          AppWidgetManager appWidgetManager,
                          int[] appWidgetIds)
+    {
+        // Get date
+        DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        String date = format.format(new Date());
+
+        // Get text
+        CharSequence text = getText(context);
+
+        // Create an Intent to launch Diary
+        Intent intent = new Intent(context, Diary.class);
+        PendingIntent pendingIntent =
+            PendingIntent.getActivity(context, 0, intent,
+                                      PendingIntent.FLAG_UPDATE_CURRENT |
+                                      PendingIntent.FLAG_IMMUTABLE);
+
+        // Get the layout for the widget and attach an on-click
+        // listener to the view.
+        RemoteViews views = new
+            RemoteViews(context.getPackageName(), R.layout.widget);
+        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
+        views.setTextViewText(R.id.header, date);
+        views.setTextViewText(R.id.entry, text);
+
+        // Tell the AppWidgetManager to perform an update on the
+        // current app widget.
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
+    }
+
+    // getText
+    @SuppressWarnings("deprecation")
+    private CharSequence getText(Context context)
     {
         // Get preferences
         SharedPreferences preferences =
@@ -85,24 +140,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
             text = Html.fromHtml(html);
         }
 
-        // Create an Intent to launch Diary
-        Intent intent = new Intent(context, Diary.class);
-        PendingIntent pendingIntent =
-            PendingIntent.getActivity(context, 0, intent,
-                                      PendingIntent.FLAG_UPDATE_CURRENT |
-                                      PendingIntent.FLAG_IMMUTABLE);
-
-        // Get the layout for the widget and attach an on-click
-        // listener to the view.
-        RemoteViews views = new
-            RemoteViews(context.getPackageName(), R.layout.widget);
-        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-        views.setTextViewText(R.id.header, date);
-        views.setTextViewText(R.id.entry, text);
-
-        // Tell the AppWidgetManager to perform an update on the
-        // current app widget.
-        appWidgetManager.updateAppWidget(appWidgetIds, views);
+        return text;
     }
 
     // getHome
