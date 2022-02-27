@@ -12,6 +12,7 @@ Includes basic functionality for browsing the old entries.
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Optional index page
+* Optional entry template
 * Display media stored in diary folders
 * Display OpenStreetMap maps
 * Add media from media providers
@@ -19,7 +20,10 @@ Includes basic functionality for browsing the old entries.
 * Receive geo uris from other apps
 * Incremental search of diary entries
 * Add events to calendar
+* Add events from calendar
+* Show today's entry in app widget
 * Dark or light theme for editing
+* Back up entries to a zip file
 * Optional edit cursor position control
 
 Forked from [https://git.savannah.gnu.org/cgit/diary.git] Updated for android 4

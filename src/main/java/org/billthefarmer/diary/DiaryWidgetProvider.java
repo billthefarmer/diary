@@ -106,8 +106,8 @@ public class DiaryWidgetProvider extends AppWidgetProvider
         views.setTextViewText(R.id.header, date);
         views.setTextViewText(R.id.entry, text);
 
-        // Tell the AppWidgetManager to perform an update on the
-        // current app widget.
+        // Tell the AppWidgetManager to perform an update on the app
+        // widgets.
         appWidgetManager.updateAppWidget(appWidgetIds, views);
     }
 
