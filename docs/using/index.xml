@@ -85,6 +85,25 @@ See Markdown for markdown syntax.</description>
     </item>
     
     <item>
+      <title>Template</title>
+      <link>https://billthefarmer.github.io/diary/using/template/</link>
+      <pubDate>Sun, 27 Feb 2022 19:08:55 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/diary/using/template/</guid>
+      <description>You may use an entry template. If a template is set it will be copied to today&amp;rsquo;s entry if it is empty.</description>
+    </item>
+    
+    <item>
+      <title>Widget</title>
+      <link>https://billthefarmer.github.io/diary/using/widget/</link>
+      <pubDate>Sun, 27 Feb 2022 19:09:07 +0000</pubDate>
+      
+      <guid>https://billthefarmer.github.io/diary/using/widget/</guid>
+      <description>The widget will show as much of the entry as will fit in the size chosen. Images, maps, and other media will not display because of android widget limitations. Bullet points do not work very well, but can be constructed using HTML entities so they appear the same in the widget:
+&amp;amp;nbsp; &amp;amp;bullet;&amp;amp;nbsp; Test item&amp;lt;br&amp;gt;   • Test item</description>
+    </item>
+    
+    <item>
       <title>Help</title>
       <link>https://billthefarmer.github.io/diary/using/help/</link>
       <pubDate>Sun, 16 Feb 2020 19:15:48 +0000</pubDate>
