@@ -94,7 +94,11 @@ on that page unless receiving media from another app.
 ## Template
 You may use an entry template. If a template is set it will be copied
 to today's entry if it is empty. Use the menu item to copy the template
-to the current entry if it is empty.
+to the current entry if it is empty. If the template contains a date code
+`<<date>>` or date pattern `<<date EEEE d MMMM yyyy HH:mm>>` the
+current date/time will be inserted in the diary entry. See
+[here](https://developer.android.com/reference/java/text/SimpleDateFormat#date-and-time-patterns)
+for the pattern documentation.
 
 ## Text
 You may receive text clips from another app. A date picker will pop

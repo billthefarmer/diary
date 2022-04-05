@@ -100,7 +100,11 @@ for the syntax for links to other diary entries and external sites.
 
 ## Template
 You may use an entry template. If a template is set it will be copied
-to today's entry if it is empty.
+to today's entry if it is empty. If the template contains a date code
+`<<date>>` or date pattern `<<date EEEE d MMMM yyyy HH:mm>>` the
+current date/time will be inserted in the diary entry. See
+[here](https://developer.android.com/reference/java/text/SimpleDateFormat#date-and-time-patterns)
+for the pattern documentation.
 
 ## Widget
 The widget will show as much of the entry as will fit in the size
