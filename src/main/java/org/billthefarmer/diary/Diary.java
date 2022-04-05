@@ -81,6 +81,7 @@ import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,6 +165,11 @@ public class Diary extends Activity
                         Pattern.MULTILINE);
     public final static Pattern FILE_PATTERN =
         Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).(txt|md)$");
+
+    public final static Pattern TEMP_PATTERN =
+        Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
+
+    public final static String DATE_FORMAT = "EEEE d MMMM yyyy HH:mm";
 
     public final static String YEAR_DIR = "^[0-9]{4}$";
     public final static String MONTH_DIR = "^[0-9]{2}$";
@@ -2452,10 +2458,57 @@ public class Diary extends Activity
         Calendar template = Calendar.getInstance();
         template.setTimeInMillis(templatePage);
         CharSequence text = read(getFile(template));
+        text = dateCheck(text, DATE_FORMAT);
         textView.setText(text);
 
         if (markdown)
             loadMarkdown();
+    }
+
+    // dateCheck
+    private CharSequence dateCheck(CharSequence text, String pattern)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Matcher matcher = TEMP_PATTERN.matcher(text);
+
+        // Find matches
+        while (matcher.find())
+        {
+            if (matcher.group(1).isEmpty())
+            {
+
+                DateFormat format = new
+                    SimpleDateFormat(pattern, Locale.getDefault());
+                // Create date
+                String date = format.format(new Date());
+                matcher.appendReplacement(buffer, date);
+            }
+
+            else
+            {
+                try
+                {
+                    DateFormat format = new
+                        SimpleDateFormat(matcher.group(1), Locale.getDefault());
+                    // Create date
+                    String date = format.format(new Date());
+                    matcher.appendReplacement(buffer, date);
+                }
+
+                catch (Exception e)
+                {
+                    alertDialog(R.string.appName, e.getMessage(),
+                                android.R.string.ok);
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Append rest of entry
+        matcher.appendTail(buffer);
+
+        return buffer;
     }
 
     // addMedia
