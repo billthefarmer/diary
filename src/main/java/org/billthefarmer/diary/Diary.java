@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -2171,9 +2172,9 @@ public class Diary extends Activity
             }
 
             // Create an Intent to launch Diary
-            Intent intent = new Intent(context, Diary.class);
+            Intent intent = new Intent(this, Diary.class);
             PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 0, intent,
+                PendingIntent.getActivity(this, 0, intent,
                                           PendingIntent.FLAG_UPDATE_CURRENT |
                                           PendingIntent.FLAG_IMMUTABLE);
 
