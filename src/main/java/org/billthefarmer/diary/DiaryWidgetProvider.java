@@ -66,9 +66,17 @@ public class DiaryWidgetProvider extends AppWidgetProvider
         // Get text
         CharSequence text = getText(context);
 
+        // Create an Intent to launch Diary
+        Intent intent = new Intent(context, Diary.class);
+        PendingIntent pendingIntent =
+            PendingIntent.getActivity(context, 0, intent,
+                                      PendingIntent.FLAG_UPDATE_CURRENT |
+                                      PendingIntent.FLAG_IMMUTABLE);
+
         // Get the views
         RemoteViews views = new
             RemoteViews(context.getPackageName(), R.layout.widget);
+        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
         views.setTextViewText(R.id.header, date);
         views.setTextViewText(R.id.entry, text);
 
