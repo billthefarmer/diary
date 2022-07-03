@@ -34,6 +34,8 @@
   <string name="editStyles">Edit styles…</string>
   <string name="editScript">Edit script…</string>
   <string name="backup">Backup</string>
+  <string name="choose">Choose a file name</string>
+  <string name="storage">Storage</string>
   <string name="start">Start backup</string>
   <string name="complete">Backup complete</string>
   <string name="changes">Save changes?</string>

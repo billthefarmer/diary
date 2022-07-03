@@ -34,6 +34,8 @@
   <string name="editStyles">编辑样式…</string>
   <string name="editScript">编辑脚本…</string>
   <string name="backup">备份</string>
+  <string name="choose">选择一个文件</string>
+  <string name="storage">存储空间</string>
   <string name="start">开始备份</string>
   <string name="complete">备份完成</string>
   <string name="changes">保存更改？</string>

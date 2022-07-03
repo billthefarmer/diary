@@ -34,6 +34,8 @@
   <string name="editStyles">Edita estils…</string>
   <string name="editScript">Edita script…</string>
   <string name="backup">Còpia de seguretat</string>
+  <string name="choose">Trieu un nom de fitxer</string>
+  <string name="storage">Emmagatzematge</string>
   <string name="start">Inicia la còpia de seguretat</string>
   <string name="complete">S\'ha completat la còpia de seguretat</string>
   <string name="changes">Guardar canvis?</string>

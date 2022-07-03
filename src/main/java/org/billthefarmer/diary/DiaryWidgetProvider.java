@@ -54,6 +54,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
 
     // onAppWidgetOptionsChanged
     @Override
+    @SuppressLint("InlinedApi")
     public void onAppWidgetOptionsChanged(Context context,
                                           AppWidgetManager appWidgetManager,
                                           int appWidgetId,

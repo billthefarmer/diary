@@ -17,12 +17,15 @@
 package org.billthefarmer.diary;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -47,6 +50,7 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,6 +69,7 @@ import android.widget.EditText;
 import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -116,6 +121,7 @@ public class Diary extends Activity
 {
     public final static int ADD_MEDIA = 1;
     public final static int EDIT_STYLES = 2;
+    public final static int CREATE_BACKUP = 3;
 
     public final static int REQUEST_READ = 1;
     public final static int REQUEST_WRITE = 2;
@@ -189,6 +195,7 @@ public class Diary extends Activity
     public final static String TEXT_CSS = "text/css";
     public final static String JS_SCRIPT = "js/script.js";
     public final static String TEXT_JAVASCRIPT = "text/javascript";
+    public final static String APPLICATION_ZIP = "application/zip";
     public final static String FILE_PROVIDER =
         "org.billthefarmer.diary.fileprovider";
 
@@ -720,8 +727,9 @@ public class Diary extends Activity
         if (resultCode != RESULT_OK)
             return;
 
-        if (requestCode == ADD_MEDIA)
+        switch (requestCode)
         {
+        case ADD_MEDIA:
             // Get uri
             Uri uri = data.getData();
             if (uri == null)
@@ -749,10 +757,22 @@ public class Diary extends Activity
 
             else
                 addLink(uri, title, false);
-        }
+            break;
 
-        if (requestCode == EDIT_STYLES)
+        case EDIT_STYLES:
             markdownView.reload();
+            break;
+
+        case CREATE_BACKUP:
+            // Check data
+            if (data == null || data.getData() == null)
+                return;
+
+            uri = data.getData();
+            ZipTask zipTask = new ZipTask(this);
+            zipTask.execute(uri);
+            break;
+        }
     }
 
     // onDateSet
@@ -1784,8 +1804,79 @@ public class Diary extends Activity
     // backup
     private void backup()
     {
-        ZipTask zipTask = new ZipTask(this);
-        zipTask.execute();
+        // Remove path prefix
+        String name = (getHome().getPath() + ZIP)
+            .replaceFirst(Environment.getExternalStorageDirectory()
+                          .getPath() + File.separator, "");
+
+        saveAsDialog(name, R.string.backup, R.string.choose, (dialog, id) ->
+        {
+            switch (id)
+            {
+            case DialogInterface.BUTTON_POSITIVE:
+                EditText text = ((Dialog) dialog).findViewById(R.id.pathText);
+                String string = text.getText().toString();
+
+                // Ignore empty string
+                if (string.isEmpty())
+                    return;
+
+                File file = new File(string);
+
+                // Check absolute file
+                if (!file.isAbsolute())
+                    file = new
+                        File(Environment.getExternalStorageDirectory(), string);
+
+                // Start zip task
+                Uri uri = Uri.fromFile(file);
+                ZipTask zipTask = new ZipTask(this);
+                zipTask.execute(uri);
+                break;
+
+            case DialogInterface.BUTTON_NEUTRAL:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                    intent.setType(APPLICATION_ZIP);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    // {
+                    //     uri = Uri.fromFile(new File(getHome().getPath() + ZIP));
+                    //     intent.putExtra(DocumentsContract
+                    //                     .EXTRA_INITIAL_URI, uri);
+                    // }
+                    startActivityForResult(intent, CREATE_BACKUP);
+                }
+                break;
+            }
+        });
+    }
+
+    // saveAsDialog
+    private void saveAsDialog(String path, int title, int message,
+                              DialogInterface.OnClickListener listener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        // Add the buttons
+        builder.setPositiveButton(R.string.save, listener);
+        builder.setNegativeButton(android.R.string.cancel, listener);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            builder.setNeutralButton(R.string.storage, listener);
+
+        // Create edit text
+        LayoutInflater inflater = (LayoutInflater) builder.getContext()
+            .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.save_path, null);
+        builder.setView(view);
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.show();
+        TextView text = dialog.findViewById(R.id.pathText);
+        text.setText(path);
     }
 
     // settings
@@ -2148,6 +2239,7 @@ public class Diary extends Activity
 
     // updateWidgets
     @SuppressWarnings("deprecation")
+    @SuppressLint("InlinedApi")
     private void updateWidgets(CharSequence text)
     {
         Calendar today = Calendar.getInstance();
@@ -2824,7 +2916,7 @@ public class Diary extends Activity
 
     // ZipTask
     private static class ZipTask
-            extends AsyncTask<Void, Void, Void>
+            extends AsyncTask<Uri, Void, Void>
     {
         private WeakReference<Diary> diaryWeakReference;
         private String search;
@@ -2846,7 +2938,7 @@ public class Diary extends Activity
 
         // doInBackground
         @Override
-        protected Void doInBackground(Void... noparams)
+        protected Void doInBackground(Uri... uris)
         {
             final Diary diary = diaryWeakReference.get();
             if (diary == null)
@@ -2855,8 +2947,8 @@ public class Diary extends Activity
             File home = diary.getHome();
 
             // Create output stream
-            try (ZipOutputStream output = new
-                 ZipOutputStream(new FileOutputStream(home.getPath() + ZIP)))
+            try (ZipOutputStream output = new ZipOutputStream
+                 (diary.getContentResolver().openOutputStream(uris[0])))
             {
                 byte[] buffer = new byte[BUFFER_SIZE];
 

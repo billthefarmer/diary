@@ -34,6 +34,8 @@
   <string name="editStyles">Edytuj style…</string>
   <string name="editScript">Edytuj skrypt…</string>
   <string name="backup">Utworzyć kopię zapasową</string>
+  <string name="choose">Wybierz nazwę pliku</string>
+  <string name="storage">Pamięć wewnętrzna</string>
   <string name="start">Rozpocząć tworzenie kopii zapasowych</string>
   <string name="complete">Tworzenie kopii zapasowej zakończone</string>
   <string name="changes">Zapisz zmiany?</string>
