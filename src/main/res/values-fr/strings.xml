@@ -33,7 +33,7 @@
   <string name="addMedia">Ajouter des médias…</string>
   <string name="editStyles">Modifier les styles…</string>
   <string name="editScript">Modifier le script…</string>
-  <string name="backup">Sauvegarde</string>
+  <string name="backup">Sauvegarde…</string>
   <string name="choose">Entrez le chemin complet d\'accès au fichier</string>
   <string name="storage">Stockage</string>
   <string name="start">Démarrer la sauvegarde</string>

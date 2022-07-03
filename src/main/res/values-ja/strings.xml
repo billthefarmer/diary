@@ -33,7 +33,7 @@
   <string name="addMedia">メディアを追加…</string>
   <string name="editStyles">スタイルを編集する…</string>
   <string name="editScript">編集スクリプト…</string>
-  <string name="backup">バックアップ</string>
+  <string name="backup">バックアップ…</string>
   <string name="choose">ファイル名を選択する</string>
   <string name="storage">貯蔵</string>
   <string name="start">バックアップを開始</string>

@@ -33,7 +33,7 @@
   <string name="addMedia">Afegeix mitjans…</string>
   <string name="editStyles">Edita estils…</string>
   <string name="editScript">Edita script…</string>
-  <string name="backup">Còpia de seguretat</string>
+  <string name="backup">Còpia de seguretat…</string>
   <string name="choose">Trieu un nom de fitxer</string>
   <string name="storage">Emmagatzematge</string>
   <string name="start">Inicia la còpia de seguretat</string>

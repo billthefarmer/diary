@@ -30,7 +30,7 @@
   <string name="addMedia">Aggiungi media…</string>
   <string name="editStyles">Modifica stili…</string>
   <string name="editScript">Modifica script…</string>
-  <string name="backup">Esegui backup</string>
+  <string name="backup">Esegui backup…</string>
   <string name="choose">Scegli il nome del file</string>
   <string name="storage">Archiviazione</string>
   <string name="start">Backup avviato</string>
