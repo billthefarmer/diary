@@ -1858,7 +1858,7 @@ public class Diary extends Activity
                               DialogInterface.OnClickListener listener)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
+        builder.setTitle(getString(title).replace("…", ""));
         builder.setMessage(message);
 
         // Add the buttons
