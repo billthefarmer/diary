@@ -1840,12 +1840,7 @@ public class Diary extends Activity
                     Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
                     intent.setType(APPLICATION_ZIP);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    // {
-                    //     uri = Uri.fromFile(new File(getHome().getPath() + ZIP));
-                    //     intent.putExtra(DocumentsContract
-                    //                     .EXTRA_INITIAL_URI, uri);
-                    // }
+                    intent.putExtra(Intent.EXTRA_TITLE, name);
                     startActivityForResult(intent, CREATE_BACKUP);
                 }
                 break;
