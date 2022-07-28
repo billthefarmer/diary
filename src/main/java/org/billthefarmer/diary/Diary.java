@@ -133,7 +133,7 @@ public class Diary extends Activity
     public final static int BUFFER_SIZE = 4096;
     public final static int SCALE_RATIO = 128;
     public final static int FIND_DELAY = 256;
-    public final static int FIND_SIZE = 16;
+    public final static int FIND_SIZE = 64;
 
     // Indices for the ViewSwitchers
     public static final int EDIT_TEXT = 0;
@@ -3053,12 +3053,26 @@ public class Diary extends Activity
                 Matcher matcher = pattern.matcher(content);
                 if (matcher.find())
                 {
-                    String headline =
-                        content.substring(0, content.indexOf("\n"));
-                    if (headline.length() > FIND_SIZE)
-                        headline = headline.substring(0, FIND_SIZE) + ELLIPSIS;
-                    matches.add
-                        (dateFormat.format(parseTime(file)) + "  " + headline);
+                    int start = content.lastIndexOf("\n", matcher.start()) + 1;
+                    int end = matcher.end();
+                    boolean truncEnd = false;
+                    if (start < end - FIND_SIZE)
+                        start = end - FIND_SIZE;
+                    if (start < 0)
+                        start = 0;
+                    end = content.indexOf("\n", end);
+                    if (end - start > FIND_SIZE)
+                    {
+                        end = start + FIND_SIZE;
+                        truncEnd = true;
+                    }
+                    if (end > content.length())
+                        end = content.length();
+                    String headline = content.substring(start, end);
+                    if (truncEnd)
+                        headline += "…";
+                    matches.add (dateFormat.format(parseTime(file)) +
+                                 "  " + headline);
                 }
             }
 
