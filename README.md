@@ -260,7 +260,7 @@ built in styles file which simply limits the width of images to the
 page width. Use the built in editor to create a styles file. You must
 use the editor `accept` tick button to save the edits.
 
-**Caution** &ndash; There is no such thing as a markdown syntax error, but
+**Caution** &ndash; There is no such thing as a markdown [syntax](https://www.scaler.com/topics/css/css-syntax/) error, but
 syntax errors in a styles file may cause unpredictable results and
 affect all diary pages. See
 [CSS Tutorial](https://www.w3schools.com/Css).
