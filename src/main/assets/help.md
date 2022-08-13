@@ -9,6 +9,7 @@
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Optional index page
+* Index link template
 * Optional entry template
 * Display media stored in diary folders
 * Display [OpenStreetMap](https://www.openstreetmap.org) maps
@@ -34,6 +35,7 @@ The toolbar buttons are, from left to right:
 * **Today** &ndash; show today's entry
 * **Go to date** &ndash; show a date picker calendar to select a new date
 * **Index** &ndash; go to index page if set
+* **Add link** &ndash; add link to current entry to index page
 * **Search** &ndash; incremental search of diary entry
 * **Find all** &ndash; find all diary entries containing search text
 * **Print** &ndash; print current diary entry
@@ -96,9 +98,19 @@ text to find the desired entry.
 ## Index
 You may use an index page. If an index page is set the app will start
 on that page unless receiving media from another app. See **Links**
-for the syntax for links to other diary entries and external sites.
+for the syntax for links to other diary entries and external
+sites. The **Add link** menu item will add a link, using the index
+template, to the index.
 
-## Template
+
+## Index template
+The index template defaults to `<<date>>`, which gives an entry that
+looks like [Sunday 13 August 2022](#). The template uses the same
+rules as the entry template date code or pattern below. Text outside
+the angle brackets will be used unchanged, text inside the angle
+brackets will be interpreted as a date code or date pattern, as below.
+
+## Entry template
 You may use an entry template. If a template is set it will be copied
 to today's entry if it is empty. If the template contains a date code
 `<<date>>` or date pattern `<<date EEEE d MMMM yyyy HH:mm>>` the

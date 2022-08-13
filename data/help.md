@@ -9,9 +9,11 @@
 * Choice of date picker calendars
 * Diary entries may use markdown formatting
 * Optional index page
+* Index link template
 * Optional entry template
 * Display media stored in diary folders
 * Display [OpenStreetMap](https://www.openstreetmap.org) maps
+* Print diary entries
 * Share diary entries
 * Add media from media providers
 * Receive media from other apps
@@ -19,6 +21,7 @@
 * Incremental search of diary entries
 * Add events to calendar
 * Add events from calendar
+* Show today's entry in app widget
 * Dark or light theme for editing
 * Back up entries to a zip file
 * Optional edit cursor position control
@@ -32,8 +35,10 @@ The toolbar buttons are, from left to right:
 * **Today** &ndash; show today's entry
 * **Go to date** &ndash; show a date picker calendar to select a new date
 * **Index** &ndash; go to index page if set
+* **Add link** &ndash; add link to current entry to index page
 * **Search** &ndash; incremental search of diary entry
 * **Find all** &ndash; find all diary entries containing search text
+* **Print** &ndash; print current diary entry
 * **Share** &ndash; share current diary entry
 * **Use template** &ndash; use template for current entry if empty
 * **Add time** &ndash; Add the current time to diary entry
@@ -48,8 +53,9 @@ Depending on the device and orientation, some items may be on the
 menu.
 
 ## Swipe left and right
-Swipe left and right in the diary page will show the next or previous
-day, or in the custom calendar will show the next or previous month.
+Swipe left and right with two fingers in the diary page will show the
+next or previous day, or in the custom calendar will show the next or
+previous month.
 
 ## Swipe up and down
 Swipe up and down with two fingers in the diary page will show the
@@ -78,7 +84,9 @@ button. Scrolling down restores it.
 ## Search
 You may search diary entries, the search will update as text is
 entered into the search field. Use the search widget or keyboard
-action button to find the next match.
+action button to find the next match. To find and edit text, search in
+the markdown view, and then double tap where you want to edit. This
+will switch to the edit view at about the right place.
 
 ## Find all
 You may find all diary entries that contain the current search
@@ -89,16 +97,33 @@ text to find the desired entry.
 
 ## Index
 You may use an index page. If an index page is set the app will start
-on that page unless receiving media from another app.
+on that page unless receiving media from another app. The **Add link**
+menu item will add a link, using the index template, to the index.
 
-## Template
+## Index template
+The index template defaults to `<<date>>`, which gives an entry that
+looks like [Sunday 13 August 2022](#). The template uses the same
+rules as the entry template date code or pattern below. Text outside
+the angle brackets will be used unchanged, text inside the angle
+brackets will be interpreted as a date code or date pattern, as below.
+
+## Entry template
 You may use an entry template. If a template is set it will be copied
-to today's entry if it is empty. Use the menu item to copy the template
-to the current entry if it is empty. If the template contains a date code
+to today's entry if it is empty. If the template contains a date code
 `<<date>>` or date pattern `<<date EEEE d MMMM yyyy HH:mm>>` the
 current date/time will be inserted in the diary entry. See
 [here](https://developer.android.com/reference/java/text/SimpleDateFormat#date-and-time-patterns)
 for the pattern documentation.
+
+## Widget
+The widget will show as much of the entry as will fit in the size
+chosen. Images, maps, and other media will not display because of
+android widget limitations. Bullet points do not work very well, but
+can be constructed using HTML entities so they appear the same in the
+widget:
+```html
+&nbsp; &bullet;&nbsp; Test item<br>
+```
 
 ## Text
 You may receive text clips from another app. A date picker will pop
@@ -170,6 +195,11 @@ or edit events. Do not remove the colon from the diary entry or the
 event will be added again. You may add events from the calendar to the
 current diary entry. Events will be added from the relevant calendar
 date.
+
+## App widgets
+You may put Diary app widgets on the home screen. This will show
+today's entry. The widget will be updated when today's entry is
+updated.
 
 ## Cursor position
 You may put a line in an entry to control or remember the edit cursor
