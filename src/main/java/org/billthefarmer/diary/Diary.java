@@ -177,6 +177,8 @@ public class Diary extends Activity
         Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
 
     public final static String DATE_FORMAT = "EEEE d MMMM yyyy HH:mm";
+    public final static String TEMP_FORMAT = "EEEE d MMMM yyyy";
+    public final static String LINK_FORMAT = "date:%s";
 
     public final static String YEAR_DIR = "^[0-9]{4}$";
     public final static String MONTH_DIR = "^[0-9]{2}$";
@@ -201,6 +203,7 @@ public class Diary extends Activity
 
     public final static String MEDIA_TEMPLATE = "![%s](%s)\n";
     public final static String LINK_TEMPLATE = "[%s](%s)\n";
+    public final static String INDEX_TEMPLATE = "<<date>>";
     public final static String AUDIO_TEMPLATE =
         "<audio controls src=\"%s\"></audio>\n";
     public final static String VIDEO_TEMPLATE =
@@ -262,6 +265,7 @@ public class Diary extends Activity
     private long templatePage;
 
     private String folder = DIARY;
+    private String template = INDEX_TEMPLATE;
 
     private Calendar prevEntry;
     private Calendar currEntry;
@@ -595,6 +599,7 @@ public class Diary extends Activity
         menu.findItem(R.id.prevEntry).setEnabled(prevEntry != null);
         menu.findItem(R.id.cancel).setVisible(changed);
         menu.findItem(R.id.index).setVisible(useIndex);
+        menu.findItem(R.id.link).setVisible(useIndex);
         menu.findItem(R.id.print)
             .setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
 
@@ -645,6 +650,9 @@ public class Diary extends Activity
             break;
         case R.id.index:
             index();
+            break;
+        case R.id.link:
+            addIndexLink();
             break;
         case R.id.findAll:
             findAll();
@@ -1188,6 +1196,10 @@ public class Diary extends Activity
                                            DatePickerPreference.DEFAULT_VALUE);
         // Folder
         folder = preferences.getString(Settings.PREF_FOLDER, DIARY);
+
+        // Link template
+        template = preferences.getString(Settings.PREF_INDEX_TEMPLATE,
+                                         INDEX_TEMPLATE);
     }
 
     // mediaCheck
@@ -2527,6 +2539,73 @@ public class Diary extends Activity
         Calendar index = Calendar.getInstance();
         index.setTimeInMillis(indexPage);
         changeDate(index);
+    }
+
+    // addIndexLink
+    private void addIndexLink()
+    {
+        if (!useIndex)
+            return;
+
+        Date linkDate = currEntry.getTime();
+        index();
+
+        DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
+        String date = format.format(linkDate);
+        String title = dateCheck(template, TEMP_FORMAT, linkDate).toString();
+        String dateUrl = String.format(Locale.getDefault(), LINK_FORMAT, date);
+        String linkText = String.format(Locale.getDefault(), LINK_TEMPLATE,
+                                        title, dateUrl);
+        textView.append(linkText);
+
+        if (markdown)
+            loadMarkdown();
+    }
+
+    // dateCheck
+    private CharSequence dateCheck(CharSequence text, String pattern, Date when)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Matcher matcher = TEMP_PATTERN.matcher(text);
+
+        // Find matches
+        while (matcher.find())
+        {
+            if (matcher.group(1).isEmpty())
+            {
+
+                DateFormat format = new
+                    SimpleDateFormat(pattern, Locale.getDefault());
+                // Create date
+                String date = format.format(when);
+                matcher.appendReplacement(buffer, date);
+            }
+
+            else
+            {
+                try
+                {
+                    DateFormat format = new
+                        SimpleDateFormat(matcher.group(1), Locale.getDefault());
+                    // Create date
+                    String date = format.format(when);
+                    matcher.appendReplacement(buffer, date);
+                }
+
+                catch (Exception e)
+                {
+                    alertDialog(R.string.appName, e.getMessage(),
+                                android.R.string.ok);
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Append rest of entry
+        matcher.appendTail(buffer);
+
+        return buffer;
     }
 
     // template

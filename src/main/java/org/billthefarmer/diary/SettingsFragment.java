@@ -74,6 +74,13 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         String s = format.format(date);
         entry.setSummary(s);
 
+        // Get link template preference
+        EditTextPreference link =
+            (EditTextPreference) findPreference(Settings.PREF_INDEX_TEMPLATE);
+
+        // Set template in text view
+        link.setSummary(preferences.getString(Settings.PREF_INDEX_TEMPLATE,
+                                              Diary.INDEX_TEMPLATE));
         // Get template preference
         entry =
             (DatePickerPreference) findPreference(Settings.PREF_TEMPLATE_PAGE);
@@ -163,6 +170,16 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             DateFormat format = DateFormat.getDateInstance();
             String s = format.format(date);
             entry.setSummary(s);
+        }
+
+        if (key.equals(Settings.PREF_INDEX_TEMPLATE))
+        {
+            // Get template summary
+            EditTextPreference link =
+                (EditTextPreference) findPreference(key);
+
+            // Set folder in text view
+            link.setSummary(preferences.getString(key, Diary.INDEX_TEMPLATE));
         }
 
         if (key.equals(Settings.PREF_TEMPLATE_PAGE))

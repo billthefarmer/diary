@@ -55,6 +55,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/index"
       android:visible="false" />
   <item
+      android:id="@+id/link"
+      android:icon="@drawable/ic_action_today"
+      android:showAsAction="ifRoom"
+      android:title="@string/addLink"
+      android:visible="false" />
+  <item
       android:id="@+id/search"
       android:actionViewClass="android.widget.SearchView"
       android:icon="@drawable/ic_action_search"

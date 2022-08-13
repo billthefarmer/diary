@@ -24,6 +24,7 @@
   <string name="prevEntry">Previous</string>
   <string name="nextEntry">Next</string>
   <string name="goToDate">Go to date…</string>
+  <string name="addLink">Add link</string>
   <string name="search">Search…</string>
   <string name="findAll">Find all…</string>
   <string name="print">Print…</string>
@@ -79,6 +80,7 @@
     Use template for diary entries
   </string>
   <string name="pref_template_page">Template page</string>
+  <string name="pref_index_template">Index template</string>
   <string name="about">About</string>
   <string name="pref_about_summ"><a
     href="https://github.com/billthefarmer/diary/releases/latest">Version

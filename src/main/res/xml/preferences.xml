@@ -82,6 +82,14 @@
         android:key="pref_index_page"
         android:title="@string/pref_index_page" />
 
+    <EditTextPreference
+        android:dependency="pref_use_index"
+        android:defaultValue="&lt;&lt;date&gt;&gt;"
+        android:icon="?attr/pref_use_index"
+        android:key="pref_index_template"
+        android:persistent="true"
+        android:title="@string/pref_index_template" />
+
   </PreferenceCategory>
 
   <PreferenceCategory
