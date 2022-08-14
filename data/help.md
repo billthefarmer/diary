@@ -102,9 +102,9 @@ menu item will add a link, using the index template, to the index.
 
 ## Index template
 The index template defaults to `<<date>>`, which gives an entry that
-looks like [Sunday 13 August 2022](#). The template uses the same
+looks like [Sunday 14 August 2022](#). The template uses the same
 rules as the entry template date code or pattern below. Text outside
-the angle brackets will be used unchanged, text inside the angle
+the angle brackets will be copied unchanged, text inside the angle
 brackets will be interpreted as a date code or date pattern, as below.
 
 ## Entry template
