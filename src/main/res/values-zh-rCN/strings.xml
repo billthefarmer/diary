@@ -24,6 +24,7 @@
   <string name="prevEntry">上一篇</string>
   <string name="nextEntry">下一篇</string>
   <string name="goToDate">转到日期…</string>
+  <string name="addLink">添加链接</string>
   <string name="search">搜索…</string>
   <string name="findAll">查找全部…</string>
   <string name="print">打印…</string>
@@ -79,6 +80,7 @@
     日记条目使用模板
   </string>
   <string name="pref_template_page">模板页</string>
+  <string name="pref_index_template">索引模板</string>
   <string name="about">关于</string>
   <string name="pref_about_summ"><a
     href="https://github.com/billthefarmer/diary/releases/latest">版本
