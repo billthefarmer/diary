@@ -24,6 +24,7 @@
   <string name="prevEntry">Anterior</string>
   <string name="nextEntry">Siguiente</string>
   <string name="goToDate">Ir a fecha…</string>
+  <string name="addLink">Añadir enlace</string>
   <string name="search">Buscar…</string>
   <string name="findAll">Encuentra todos…</string>
   <string name="print">Imprimir…</string>
@@ -74,6 +75,7 @@
     Usar plantilla para entradas de diario
   </string>
   <string name="pref_template_page">Página de plantilla</string>
+  <string name="pref_index_template">Plantilla de índice</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Oscuro</string>
   <string name="pref_dark_theme_summ">

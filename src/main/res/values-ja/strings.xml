@@ -24,6 +24,7 @@
   <string name="prevEntry">前へ</string>
   <string name="nextEntry">次へ</string>
   <string name="goToDate">日付に…</string>
+  <string name="addLink">リンクを追加</string>
   <string name="search">サーチ…</string>
   <string name="findAll">すべてを検索…</string>
   <string name="print">印刷…</string>
@@ -74,6 +75,7 @@
     日記エントリにテンプレートを使用する
   </string>
   <string name="pref_template_page">テンプレートページ</string>
+  <string name="pref_index_template">インデックステンプレート</string>
   <string name="theme">テーマ</string>
   <string name="pref_dark_theme">ダーク</string>
   <string name="pref_dark_theme_summ">

@@ -21,6 +21,7 @@
   <string name="prevEntry">Giorno precedente</string>
   <string name="nextEntry">Giorno successivo</string>
   <string name="goToDate">Vai alla data</string>
+  <string name="addLink">Aggiungi link</string>
   <string name="search">Cerca…</string>
   <string name="findAll">Cerca ovunque…</string>
   <string name="print">Stampa…</string>
@@ -73,6 +74,7 @@
     Utilizza una pagina di template per le nuove voci del tuo diario
   </string>
   <string name="pref_template_page">Pagina di template</string>
+  <string name="pref_index_template">Modello di indice</string>
   <string name="theme">Tema</string>
   <string name="pref_dark_theme">Scuro</string>
   <string name="pref_dark_theme_summ">

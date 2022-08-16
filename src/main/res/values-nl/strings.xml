@@ -24,6 +24,7 @@
   <string name="prevEntry">Vorige</string>
   <string name="nextEntry">Volgende</string>
   <string name="goToDate">Ga naar datum…</string>
+  <string name="addLink">Link toevoegen</string>
   <string name="search">Zoeken…</string>
   <string name="findAll">Alles zoeken…</string>
   <string name="print">Afdrukken…</string>
@@ -79,6 +80,7 @@
     Gebruik sjabloon voor agenda-items
   </string>
   <string name="pref_template_page">Sjabloonpagina</string>
+  <string name="pref_index_template">Index sjabloon</string>
   <string name="about">Over</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Versie %s</a></string>
   <string name="built">Uitgebracht op %s</string>

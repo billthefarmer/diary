@@ -24,6 +24,7 @@
   <string name="prevEntry">Anterior</string>
   <string name="nextEntry">Próximo</string>
   <string name="goToDate">Ir para a data…</string>
+  <string name="addLink">Adicionar link</string>
   <string name="search">Localizar…</string>
   <string name="findAll">Localizar tudo…</string>
   <string name="print">Impressão…</string>
@@ -79,6 +80,7 @@
     Usar modelo para entradas do diário
   </string>
   <string name="pref_template_page">Página de modelo</string>
+  <string name="pref_index_template">Modelo de índice</string>
   <string name="about">Sobre</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Versão %s</a></string>
   <string name="built">Construído %s</string>

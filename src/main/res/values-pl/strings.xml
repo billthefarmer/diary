@@ -24,6 +24,7 @@
   <string name="prevEntry">Poprzedni</string>
   <string name="nextEntry">Następny</string>
   <string name="goToDate">Idź do daty…</string>
+  <string name="addLink">Dodaj link</string>
   <string name="search">Szukaj…</string>
   <string name="findAll">Znajdź wszystkie…</string>
   <string name="print">Wydrukować…</string>
@@ -74,6 +75,7 @@
     Użyj szablonu do wpisów w pamiętniku
   </string>
   <string name="pref_template_page">Strona szablonu</string>
+  <string name="pref_index_template">Szablon indeksu</string>
   <string name="theme">Motyw</string>
   <string name="pref_dark_theme">Ciemny</string>
   <string name="pref_dark_theme_summ">

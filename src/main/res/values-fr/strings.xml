@@ -24,6 +24,7 @@
   <string name="prevEntry">Précédent</string>
   <string name="nextEntry">Suivant</string>
   <string name="goToDate">Aller à la date…</string>
+  <string name="addLink">Ajouter un lien</string>
   <string name="search">Chercher…</string>
   <string name="findAll">Trouver tout…</string>
   <string name="print">Imprimer…</string>
@@ -74,6 +75,7 @@
     Utiliser un modèle pour les entrées de journal
   </string>
   <string name="pref_template_page">Page de modèle</string>
+  <string name="pref_index_template">Modèle d’index</string>
   <string name="theme">Thème</string>
   <string name="pref_dark_theme">Sombre</string>
   <string name="pref_dark_theme_summ">

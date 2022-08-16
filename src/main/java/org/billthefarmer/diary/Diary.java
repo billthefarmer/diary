@@ -2572,33 +2572,22 @@ public class Diary extends Activity
         // Find matches
         while (matcher.find())
         {
-            if (matcher.group(1).isEmpty())
+            try
             {
-
                 DateFormat format = new
-                    SimpleDateFormat(pattern, Locale.getDefault());
+                    SimpleDateFormat(matcher.group(1).isEmpty()?
+                                     pattern: matcher.group(1),
+                                     Locale.getDefault());
                 // Create date
                 String date = format.format(when);
                 matcher.appendReplacement(buffer, date);
             }
 
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    DateFormat format = new
-                        SimpleDateFormat(matcher.group(1), Locale.getDefault());
-                    // Create date
-                    String date = format.format(when);
-                    matcher.appendReplacement(buffer, date);
-                }
-
-                catch (Exception e)
-                {
-                    alertDialog(R.string.appName, e.getMessage(),
-                                android.R.string.ok);
-                    e.printStackTrace();
-                }
+                alertDialog(R.string.appName, e.getMessage(),
+                            android.R.string.ok);
+                e.printStackTrace();
             }
         }
 
@@ -2650,33 +2639,22 @@ public class Diary extends Activity
         // Find matches
         while (matcher.find())
         {
-            if (matcher.group(1).isEmpty())
+            try
             {
-
                 DateFormat format = new
-                    SimpleDateFormat(pattern, Locale.getDefault());
+                SimpleDateFormat(matcher.group(1).isEmpty()?
+                                 pattern: matcher.group(1),
+                                 Locale.getDefault());
                 // Create date
                 String date = format.format(new Date());
                 matcher.appendReplacement(buffer, date);
             }
 
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    DateFormat format = new
-                        SimpleDateFormat(matcher.group(1), Locale.getDefault());
-                    // Create date
-                    String date = format.format(new Date());
-                    matcher.appendReplacement(buffer, date);
-                }
-
-                catch (Exception e)
-                {
-                    alertDialog(R.string.appName, e.getMessage(),
-                                android.R.string.ok);
-                    e.printStackTrace();
-                }
+                alertDialog(R.string.appName, e.getMessage(),
+                            android.R.string.ok);
+                e.printStackTrace();
             }
         }
 
