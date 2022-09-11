@@ -228,6 +228,15 @@ button to return. The back button may be used to retrace your path
 through diary entries and external web pages. Use the **Today** button
 to clear the navigation entries.
 
+## Help file
+You may put a link to the embedded [help
+file](file:///android_asset/help.md),
+`[Help](file:///android_asset/help.md)` in an entry. Selecting it will load
+a copy into the markdown view. Long touch on a word and choose
+**Select all** on the pop up menu. Select **Share**, and **Diary** in
+the Share dialog. Choose a date in the date picker, and you will have
+a copy in the chosen entry.
+
 ## Maps
 You may put [OpenStreetMap](https://www.openstreetmap.org) maps in
 diary pages with a geo URI `![osm](geo:<lat>,<lng>)`. Geo uris
