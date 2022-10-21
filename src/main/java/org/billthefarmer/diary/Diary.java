@@ -201,13 +201,13 @@ public class Diary extends Activity
     public final static String FILE_PROVIDER =
         "org.billthefarmer.diary.fileprovider";
 
-    public final static String MEDIA_TEMPLATE = "![%s](%s)\n";
-    public final static String LINK_TEMPLATE = "[%s](%s)\n";
+    public final static String MEDIA_TEMPLATE = "![%s](%s)";
+    public final static String LINK_TEMPLATE = "[%s](%s)";
     public final static String INDEX_TEMPLATE = "<<date>>";
     public final static String AUDIO_TEMPLATE =
-        "<audio controls src=\"%s\"></audio>\n";
+        "<audio controls src=\"%s\"></audio>";
     public final static String VIDEO_TEMPLATE =
-        "<video controls src=\"%s\"></video>\n";
+        "<video controls src=\"%s\"></video>";
     public final static String EVENT_TEMPLATE = "@:$1 $2";
     public final static String MAP_TEMPLATE =
         "<iframe width=\"560\" height=\"420\" " +
@@ -215,7 +215,7 @@ public class Diary extends Activity
         "bbox=%f,%f,%f,%f&amp;layer=mapnik\">" +
         "</iframe><br/><small>" +
         "<a href=\"https://www.openstreetmap.org/#map=16/%f/%f\">" +
-        "View Larger Map</a></small>\n";
+        "View Larger Map</a></small>";
     public final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
     public final static String POSN_TEMPLATE = "[#]: # (%d)";
     public final static String EVENTS_TEMPLATE = "@:%s %s\n";
