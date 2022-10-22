@@ -255,6 +255,14 @@ might be a good idea to use the Google
 [Closure Compiler](https://developers.google.com/closure/compiler) to
 check and minimise your code. It will handle multiple input files.
 
+## Emojies
+There is a script,
+[emojies.js](https://github.com/billthefarmer/diary/blob/master/data/emojies.js)
+in the data folder and a minimised version,
+[emojies.min.js](https://github.com/billthefarmer/diary/blob/master/data/emojies.min.js). Either
+may be copied to the `script.js` file as above. The script is a work
+in progress, it could do with some TLC from an expert.
+
 ## Backup
 You may create a backup of all your entries in a zip file. The file
 will have the same name as the diary folder, default `Diary.zip`.

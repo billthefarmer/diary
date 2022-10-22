@@ -31,8 +31,8 @@ android {
         applicationId "org.billthefarmer.diary"
         minSdkVersion 14
         targetSdkVersion 28
-        versionName "1.91"
-        versionCode 191
+        versionName "1.92"
+        versionCode 192
 
         buildConfigField "long", "BUILT", System.currentTimeMillis() + "L"
     }
@@ -53,6 +53,6 @@ android {
 
 dependencies {
     implementation 'com.github.billthefarmer:CustomCalendarView:v1.06'
-    implementation 'com.github.billthefarmer:MarkdownView:v1.09'
-    implementation 'org.commonmark:commonmark:0.18.0'
+    implementation 'com.github.billthefarmer:MarkdownView:v1.10'
+    implementation 'org.commonmark:commonmark:0.20.0'
 }
