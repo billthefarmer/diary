@@ -1,14 +1,14 @@
 window.onload = function() {
     let l = document.querySelectorAll('p, td, li, dd, h1, h2, h3, h4, span');
     for (let p of l) {
-        let emoes = p.textContent.match(/:[\w-]+?:/g);
+        let emoes = p.innerHTML.match(/:[\w-]+?:/g);
         if (emoes)
         {
             for (let emo of emoes) {
                 let em = emo.replaceAll(":", "");
                 let e = emojies[em];
                 if (e) {
-                    p.textContent = p.textContent.replace(emo, e);
+                    p.innerHTML = p.innerHTML.replace(emo, e);
                 }
             }
         }
