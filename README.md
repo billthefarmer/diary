@@ -194,6 +194,12 @@ an HTML5 media player, text clips will be added as above, URLs will be
 added as a link. Media added from removable SD cards not part of the
 device storage may work but may not be persistent and is not supported.
 
+## Markdown
+Diary supports several markdown extensions including autolink, tables
+using vertical bar characters, heading anchor, underlining using
+`++underline++`, YAML front matter, task lists using `- [x] task #1`,
+`- [ ] task #2`, superscript using `^super^`, subscript using `+sub+`.
+
 ## LaTeX
 Diary doesn't support [LaTeX](https://en.wikipedia.org/wiki/LaTeX),
 but it is possible to use an external site to add LaTeX formatted

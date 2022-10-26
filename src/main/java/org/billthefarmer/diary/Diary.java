@@ -165,7 +165,7 @@ public class Diary extends Activity
     public final static Pattern GEO_PATTERN =
         Pattern.compile("geo:(-?\\d+[.]\\d+), ?(-?\\d+[.]\\d+).*");
     public final static Pattern DATE_PATTERN =
-        Pattern.compile("\\[(.+?)\\]\\(date:(\\d+.\\d+.\\d+)\\)",
+        Pattern.compile("(?<!`)\\[(.+?)\\]\\(date: ?(\\d+.\\d+.\\d+)\\)(?!`)",
                         Pattern.MULTILINE);
     public final static Pattern POSN_PATTERN =
         Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
