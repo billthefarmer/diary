@@ -1154,7 +1154,25 @@ public class Diary extends Activity
     // cancel
     private void cancel()
     {
-        load();
+        if (changed)
+            alertDialog(R.string.appName, R.string.changes,
+                        R.string.save, R.string.discard, (dialog, id) ->
+        {
+            switch (id)
+            {
+            case DialogInterface.BUTTON_POSITIVE:
+                save();
+                load();
+                break;
+
+            case DialogInterface.BUTTON_NEGATIVE:
+                load();
+                break;
+            }
+        });
+
+        else
+            load();
     }
 
     // animateAccept
@@ -2269,6 +2287,23 @@ public class Diary extends Activity
                 e.printStackTrace();
            }
         }
+    }
+
+    // alertDialog
+    private void alertDialog(int title, int message,
+                             int positiveButton, int negativeButton,
+                             DialogInterface.OnClickListener listener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        // Add the buttons
+        builder.setPositiveButton(positiveButton, listener);
+        builder.setNegativeButton(negativeButton, listener);
+
+        // Create the AlertDialog
+        builder.show();
     }
 
     // alertDialog
