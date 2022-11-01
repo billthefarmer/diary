@@ -176,10 +176,10 @@ public class Diary extends Activity
     public final static Pattern TEMP_PATTERN =
         Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
     public final static Pattern SUP_PATTERN =
-        Pattern.compile("(?<!\\^)\\^(?!\\^)(.+?)(?<!\\^)\\^(?!\\^)",
+        Pattern.compile("(?<!\\^|`)\\^(?!\\^)(.+?)(?<!\\^)\\^(?!\\^|`)",
                         Pattern.MULTILINE);
     public final static Pattern SUB_PATTERN =
-        Pattern.compile("(?<!~)~(?!~)(.+?)(?<!~)~(?!~)",
+        Pattern.compile("(?<!~|`)~(?!~)(.+?)(?<!~)~(?!~|`)",
                         Pattern.MULTILINE);
 
     public final static String DATE_FORMAT = "EEEE d MMMM yyyy HH:mm";
