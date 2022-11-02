@@ -1,0 +1,1 @@
+ * Update super and subscript regex
