@@ -53,6 +53,6 @@ android {
 
 dependencies {
     implementation 'com.github.billthefarmer:CustomCalendarView:v1.06'
-    implementation 'com.github.billthefarmer:MarkdownView:v1.10'
+    implementation 'com.github.billthefarmer:MarkdownView:v1.11'
     implementation 'org.commonmark:commonmark:0.20.0'
 }

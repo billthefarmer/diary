@@ -175,12 +175,6 @@ public class Diary extends Activity
 
     public final static Pattern TEMP_PATTERN =
         Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
-    public final static Pattern SUP_PATTERN =
-        Pattern.compile("(?<!\\^|`)\\^(?!\\^)(.+?)(?<!\\^)\\^(?!\\^|`)",
-                        Pattern.MULTILINE);
-    public final static Pattern SUB_PATTERN =
-        Pattern.compile("(?<!~|`)~(?!~)(.+?)(?<!~)~(?!~|`)",
-                        Pattern.MULTILINE);
 
     public final static String DATE_FORMAT = "EEEE d MMMM yyyy HH:mm";
     public final static String TEMP_FORMAT = "EEEE d MMMM yyyy";
@@ -225,8 +219,6 @@ public class Diary extends Activity
     public final static String GEO_TEMPLATE = "![osm](geo:%f,%f)";
     public final static String POSN_TEMPLATE = "[#]: # (%d)";
     public final static String EVENTS_TEMPLATE = "@:%s %s\n";
-    public final static String SUP_TEMPLATE = "<sup>%s</sup>";
-    public final static String SUB_TEMPLATE = "<sub>%s</sub>";
 
     public final static String BRACKET_CHARS = "([{<";
     public final static String DIARY_IMAGE = "Diary.png";
@@ -1308,42 +1300,8 @@ public class Diary extends Activity
     // markdownCheck
     private String markdownCheck(CharSequence text)
     {
-        Matcher matcher = SUP_PATTERN.matcher(text);
-        StringBuffer buffer = new StringBuffer();
-
-        // Find matches
-        while (matcher.find())
-        {
-            // Create replacement
-            String replace =
-                String.format(SUP_TEMPLATE, matcher.group(1));
-
-            // Append replacement
-            matcher.appendReplacement(buffer, replace);
-        }
-
-        // Append rest of entry
-        matcher.appendTail(buffer);
-
-        matcher = SUB_PATTERN.matcher(buffer);
-        buffer = new StringBuffer();
-
-        // Find matches
-        while (matcher.find())
-        {
-            // Create replacement
-            String replace =
-                String.format(SUB_TEMPLATE, matcher.group(1));
-
-            // Append replacement
-            matcher.appendReplacement(buffer, replace);
-        }
-
-        // Append rest of entry
-        matcher.appendTail(buffer);
-
         // Date check
-        text = dateCheck(buffer);
+        text = dateCheck(text);
 
         // Check for map
         text = mapCheck(text);
