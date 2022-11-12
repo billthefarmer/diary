@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+    Diary - Personal diary for Android
+    Copyright © 2012  Josep Portella Florit <hola@josep-portella.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  -->
+
+<resources>
+  <string name="appName">Günlük</string>
+  <string name="today">Bugün</string>
+  <string name="prevEntry">Önceki</string>
+  <string name="nextEntry">Sonraki</string>
+  <string name="goToDate">Tarihe git…</string>
+  <string name="addLink">Bağlantı ekle</string>
+  <string name="search">Ara…</string>
+  <string name="findAll">Tümünü bul…</string>
+  <string name="print">Yazdır…</string>
+  <string name="share">Paylaş…</string>
+  <string name="addTime">Zaman ekle</string>
+  <string name="addEvents">Olay ekle</string>
+  <string name="addMedia">Medya ekle…</string>
+  <string name="editStyles">Görünümleri düzenle…</string>
+  <string name="editScript">Yazıyı düzenle…</string>
+  <string name="backup">Yedekle…</string>
+  <string name="choose">Dosya adı seç</string>
+  <string name="storage">Depolama</string>
+  <string name="start">Yedeklemeyi başlat</string>
+  <string name="complete">Yedekleme tamamlandı</string>
+  <string name="changes">Değişiklikler kaydedilsin mi?</string>
+  <string name="save">Kaydet</string>
+  <string name="discard">At</string>
+  <string name="settings">Ayarlar</string>
+  <string name="calendar">Takvim</string>
+  <string name="pref_calendar">Özel takvim kullan</string>
+  <string name="pref_calendar_summ">
+    Tarih seçici yerine özel takvim kullanın
+  </string>
+  <string name="markdown">Markdown</string>
+  <string name="pref_markdown">Markdown kullan</string>
+  <string name="pref_markdown_summ">
+    Girdileri biçimlendirmek için markdown kullanın
+  </string>
+  <string name="media">Medya</string>
+  <string name="pref_copy_media">Resimleri kopyala</string>
+  <string name="pref_copy_media_summ">
+    Eklenen resimleri geçerli klasöre kopyalayın
+  </string>
+  <string name="pref_external">Tarayıcı</string>
+  <string name="pref_external_summ">
+    Harici bağlantılar için tarayıcı kullanın
+  </string>
+  <string name="folder">Klasör</string>
+  <string name="theme">Tema</string>
+  <string name="pref_dark_theme">Koyu</string>
+  <string name="pref_dark_theme_summ">
+    Düzenleme için koyu tema kullanın
+  </string>
+  <string name="index">Dizin</string>
+  <string name="pref_use_index">Dizin kullan</string>
+  <string name="pref_use_index_summ">
+    Günlük için dizin sayfası kullanın
+  </string>
+  <string name="pref_index_page">Dizin sayfası</string>
+  <string name="template">Şablon</string>
+  <string name="pref_use_template">Şablon kullan</string>
+  <string name="pref_use_template_summ">
+    Günlük girdileri için şablon kullanın
+  </string>
+  <string name="pref_template_page">Şablon sayfası</string>
+  <string name="pref_index_template">Dizin şablonu</string>
+  <string name="about">Hakkında</string>
+  <string name="pref_about_summ"><a
+    href="https://github.com/billthefarmer/diary/releases/latest">Sürüm
+    %s</a>
+  </string>
+  <string name="built">Derleme %s</string>
+  <string name="licence">Lisans <a
+  href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
+  </string>
+  <string name="copyright">Telif hakkı \u00A9 2012 <a
+  href="mailto:hola@josep-portella.com">Josep Portella
+  Florit</a>\nTelif hakkı \u00A9 2017 <a
+  href="https://billthefarmer.github.io">Bill Farmer</a>\n\nÖzel
+  takvim <a
+  href="https://github.com/npanigrahy/Custom-Calendar-View">Custom
+  Calendar View</a>, Markdown görünümü <a
+  href="https://github.com/falnatsheh/MarkdownView">Markdown View</a>,
+  Japonca çeviri <a
+  href="https://github.com/naofum">naofum</a>, Almanca çeviri
+  <a href="https://github.com/jaller94">Christian Paul</a>, Fransızca
+  çeviri <a href="https://github.com/comptuzus">David Ta</a>,
+  İtalyanca çeviri <a href="https://github.com/marcoM32">Marco
+  Magliano</a>, Lehçe çeviri <a
+  href="https://github.com/bla-ke">Daria Szatan</a>, Basitleştirilmiş
+  Çince çeviri <a
+  href="https://github.com/Therhokar">Therhokar Yang</a>, Brezilya
+  Portekizcesi çeviri <a
+  href="https://github.com/jeisoncp">Jeison Pandini</a>, Felemenkçe
+  çeviri <a href="https://github.com/Vistaus">Heimen
+  Stoffels</a>, Dosya araçları <a
+  href="https://github.com/iPaulPro">Paul Burke</a>
+  </string>
+</resources>
