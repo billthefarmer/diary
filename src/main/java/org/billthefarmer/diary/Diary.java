@@ -141,6 +141,8 @@ public class Diary extends Activity
     public static final int ACCEPT = 0;
     public static final int EDIT = 1;
 
+    public static final int VERSION_CODE_S_V2 = 32;
+
     public final static String DIARY = "Diary";
     public final static String TAG = DIARY;
 
@@ -2874,7 +2876,7 @@ public class Diary extends Activity
         toast.setGravity(Gravity.CENTER, 0, 0);
         // Fix for android 13
         View view = toast.getView();
-        if (view != null && Build.VERSION.SDK_INT > Build.VERSION_CODES.P)
+        if (view != null && Build.VERSION.SDK_INT > VERSION_CODE_S_V2)
             view.setBackgroundResource(R.drawable.toast_frame);
         toast.show();
     }
