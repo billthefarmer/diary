@@ -1,0 +1,2 @@
+ * Add Turkish translation
+ * Update toasts
