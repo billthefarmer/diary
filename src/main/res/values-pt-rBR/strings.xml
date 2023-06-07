@@ -64,10 +64,6 @@
   </string>
   <string name="folder">Pasta</string>
   <string name="theme">Tema</string>
-  <string name="pref_dark_theme">Escuro</string>
-  <string name="pref_dark_theme_summ">
-    Utilize o tema escuro para edição
-  </string>
   <string name="index">Índice</string>
   <string name="pref_use_index">Use o índice</string>
   <string name="pref_use_index_summ">

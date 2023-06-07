@@ -64,10 +64,6 @@
   </string>
   <string name="folder">Klasör</string>
   <string name="theme">Tema</string>
-  <string name="pref_dark_theme">Koyu</string>
-  <string name="pref_dark_theme_summ">
-    Düzenleme için koyu tema kullanın
-  </string>
   <string name="index">Dizin</string>
   <string name="pref_use_index">Dizin kullan</string>
   <string name="pref_use_index_summ">

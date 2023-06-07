@@ -76,10 +76,6 @@
   <string name="pref_template_page">Pagina di template</string>
   <string name="pref_index_template">Modello di indice</string>
   <string name="theme">Tema</string>
-  <string name="pref_dark_theme">Scuro</string>
-  <string name="pref_dark_theme_summ">
-    Utilizza il tema scuro durante la modifica
-  </string>
   <string name="about">Altro su</string>
   <string name="pref_about_summ"><a
   href="https://github.com/billthefarmer/diary/releases/latest">Versione

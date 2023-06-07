@@ -77,10 +77,6 @@
   <string name="pref_template_page">Página de plantilla</string>
   <string name="pref_index_template">Plantilla de índice</string>
   <string name="theme">Tema</string>
-  <string name="pref_dark_theme">Oscuro</string>
-  <string name="pref_dark_theme_summ">
-    Usa el tema oscuro para editar
-  </string>
   <string name="about">Acerca de</string>
   <string name="pref_about_summ"><a
   href="https://github.com/billthefarmer/diary/releases/latest">Version

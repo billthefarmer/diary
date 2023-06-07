@@ -20,18 +20,6 @@
 
 <resources>
 
-  <declare-styleable name="Diary">
-    <attr name="pref_about" format="reference" />
-    <attr name="pref_calendar" format="reference" />
-    <attr name="pref_copy_media" format="reference" />
-    <attr name="pref_external" format="reference" />
-    <attr name="pref_folder" format="reference" />
-    <attr name="pref_index_page" format="reference" />
-    <attr name="pref_markdown" format="reference" />
-    <attr name="pref_template_page" format="reference" />
-    <attr name="pref_theme" format="reference" />
-    <attr name="pref_use_index" format="reference" />
-    <attr name="pref_use_template" format="reference" />
-  </declare-styleable>
+    <integer name="default_theme">0</integer>
 
 </resources>

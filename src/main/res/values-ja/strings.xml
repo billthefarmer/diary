@@ -77,10 +77,6 @@
   <string name="pref_template_page">テンプレートページ</string>
   <string name="pref_index_template">インデックステンプレート</string>
   <string name="theme">テーマ</string>
-  <string name="pref_dark_theme">ダーク</string>
-  <string name="pref_dark_theme_summ">
-    編集に暗いテーマを使用する
-  </string>
   <string name="about">アプリについて</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">バージョン %s</a></string>
   <string name="licence">ライセンス <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>

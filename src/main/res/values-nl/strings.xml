@@ -64,10 +64,6 @@
   </string>
   <string name="folder">Map</string>
   <string name="theme">Thema</string>
-  <string name="pref_dark_theme">Donker</string>
-  <string name="pref_dark_theme_summ">
-    Donker thema gebruiken in bewerkmodus
-  </string>
   <string name="index">Index</string>
   <string name="pref_use_index">Index gebruiken</string>
   <string name="pref_use_index_summ">

@@ -26,6 +26,7 @@ package org.billthefarmer.diary;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -34,17 +35,17 @@ import android.view.MenuItem;
 public class Settings extends Activity
 {
     public final static String PREF_ABOUT = "pref_about";
+    public final static String PREF_THEME = "pref_theme";
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
     public final static String PREF_EXTERNAL = "pref_external";
     public final static String PREF_MARKDOWN = "pref_markdown";
     public final static String PREF_USE_INDEX = "pref_use_index";
+    public final static String PREF_COPY_MEDIA = "pref_copy_media";
     public final static String PREF_INDEX_PAGE = "pref_index_page";
     public final static String PREF_USE_TEMPLATE = "pref_use_template";
-    public final static String PREF_INDEX_TEMPLATE = "pref_index_template";
     public final static String PREF_TEMPLATE_PAGE = "pref_template_page";
-    public final static String PREF_COPY_MEDIA = "pref_copy_media";
-    public final static String PREF_DARK_THEME = "pref_dark_theme";
+    public final static String PREF_INDEX_TEMPLATE = "pref_index_template";
 
     // onCreate
     @Override
@@ -57,11 +58,34 @@ public class Settings extends Activity
         SharedPreferences preferences =
             PreferenceManager.getDefaultSharedPreferences(this);
 
-        boolean darkTheme =
-            preferences.getBoolean(PREF_DARK_THEME, false);
+        int theme = Integer.parseInt(preferences.getString(PREF_THEME, "0"));
 
-        if (!darkTheme)
+        Configuration config = getResources().getConfiguration();
+        int night = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        switch (theme)
+        {
+        case Diary.LIGHT:
             setTheme(R.style.AppTheme);
+            break;
+
+        case Diary.DARK:
+            setTheme(R.style.AppDarkTheme);
+            break;
+
+        case Diary.SYSTEM:
+            switch (night)
+            {
+            case Configuration.UI_MODE_NIGHT_NO:
+                setTheme(R.style.AppTheme);
+                break;
+
+            case Configuration.UI_MODE_NIGHT_YES:
+                setTheme(R.style.AppDarkTheme);
+                break;
+            }
+            break;
+        }
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()

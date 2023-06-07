@@ -141,6 +141,10 @@ public class Diary extends Activity
     public static final int ACCEPT = 0;
     public static final int EDIT = 1;
 
+    public static final int LIGHT  = 0;
+    public static final int DARK   = 1;
+    public static final int SYSTEM = 2;
+
     public static final int VERSION_CODE_S_V2 = 32;
 
     public final static String DIARY = "Diary";
@@ -247,7 +251,6 @@ public class Diary extends Activity
     private boolean useTemplate = false;
     private boolean copyMedia = false;
     private boolean haveMedia = false;
-    private boolean darkTheme = false;
 
     private boolean changed = false;
     private boolean shown = true;
@@ -262,9 +265,10 @@ public class Diary extends Activity
 
     private float minScale = 1000;
 
-
     private long indexPage;
     private long templatePage;
+
+    private int theme = 0;
 
     private String folder = DIARY;
     private String template = INDEX_TEMPLATE;
@@ -441,8 +445,32 @@ public class Diary extends Activity
         // Get preferences
         getPreferences();
 
-        if (!darkTheme)
+        Configuration config = getResources().getConfiguration();
+        int night = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        switch (theme)
+        {
+        case LIGHT:
             setTheme(R.style.AppTheme);
+            break;
+
+        case DARK:
+            setTheme(R.style.AppDarkTheme);
+            break;
+
+        case SYSTEM:
+            switch (night)
+            {
+            case Configuration.UI_MODE_NIGHT_NO:
+                setTheme(R.style.AppTheme);
+                break;
+
+            case Configuration.UI_MODE_NIGHT_YES:
+                setTheme(R.style.AppDarkTheme);
+                break;
+            }
+            break;
+        }
 
         setContentView(R.layout.main);
 
@@ -508,13 +536,13 @@ public class Diary extends Activity
     {
         super.onResume();
 
-        boolean dark = darkTheme;
+        int last = theme;
 
         // Get preferences
         getPreferences();
 
         // Recreate
-        if (dark != darkTheme && Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
+        if (last != theme && Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
             recreate();
 
         // Set date
@@ -1200,9 +1228,11 @@ public class Diary extends Activity
         SharedPreferences preferences =
             PreferenceManager.getDefaultSharedPreferences(this);
 
+        theme = Integer.parseInt(preferences.getString(Settings.PREF_THEME,
+                                                       "0"));
+
         copyMedia = preferences.getBoolean(Settings.PREF_COPY_MEDIA, false);
         custom = preferences.getBoolean(Settings.PREF_CUSTOM, true);
-        darkTheme = preferences.getBoolean(Settings.PREF_DARK_THEME, false);
         external = preferences.getBoolean(Settings.PREF_EXTERNAL, false);
         markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
         useIndex = preferences.getBoolean(Settings.PREF_USE_INDEX, false);

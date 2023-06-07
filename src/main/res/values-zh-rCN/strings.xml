@@ -64,10 +64,6 @@
   </string>
   <string name="folder">文件夹</string>
   <string name="theme">主题</string>
-  <string name="pref_dark_theme">深色</string>
-  <string name="pref_dark_theme_summ">
-    编辑时使用深色模式
-  </string>
   <string name="index">索引</string>
   <string name="pref_use_index">使用索引</string>
   <string name="pref_use_index_summ">

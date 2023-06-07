@@ -70,10 +70,6 @@
   </string>
   <string name="pref_index_page">Pàgina d\'índex</string>
   <string name="theme">Tema</string>
-  <string name="pref_dark_theme">Fosc</string>
-  <string name="pref_dark_theme_summ">
-    Utilitza el tema fosc per editar
-  </string>
   <string name="template">Plantilla</string>
   <string name="pref_use_template">Utilitzeu la plantilla</string>
   <string name="pref_use_template_summ">
