@@ -297,5 +297,5 @@ not supported. Adding media may also work, but may not be persistent.
     choose a date.
 * **Browser** &ndash; Use browser for external links
 * **Copy images** &ndash; Copy images to current folder
-* **Dark theme** &ndash; Use dark theme for editing
+* **Theme** &ndash; Choose app theme
 * **About** &ndash; Show app version, licence and credits
