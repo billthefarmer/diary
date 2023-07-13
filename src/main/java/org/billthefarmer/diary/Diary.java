@@ -17,12 +17,10 @@
 package org.billthefarmer.diary;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -109,10 +107,6 @@ import org.billthefarmer.view.CustomCalendarDialog;
 import org.billthefarmer.view.CustomCalendarView;
 import org.billthefarmer.view.DayDecorator;
 import org.billthefarmer.view.DayView;
-
-import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.HtmlRenderer;
 
 // Diary
 public class Diary extends Activity
@@ -2313,47 +2307,18 @@ public class Diary extends Activity
 
     // updateWidgets
     @SuppressWarnings("deprecation")
-    @SuppressLint("InlinedApi")
     private void updateWidgets(CharSequence text)
     {
-        Calendar today = Calendar.getInstance();
-        if (currEntry != null &&
-            currEntry.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-            currEntry.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
-            currEntry.get(Calendar.DATE) == today.get(Calendar.DATE))
-        {
-            // Get date
-            DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
-            String date = format.format(today.getTime());
+        // Get manager
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        ComponentName provider = new ComponentName
+            (this, DiaryWidgetProvider.class);
 
-            if (markdown)
-            {
-                // Use commonmark
-                Parser parser = Parser.builder().build();
-                Node document = parser.parse(text.toString());
-                HtmlRenderer renderer = HtmlRenderer.builder().build();
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(provider);
 
-                String html = renderer.render(document);
-                text = Html.fromHtml(html);
-            }
-
-            // Create an Intent to launch Diary
-            Intent intent = new Intent(this, Diary.class);
-            PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent,
-                                          PendingIntent.FLAG_UPDATE_CURRENT |
-                                          PendingIntent.FLAG_IMMUTABLE);
-
-            AppWidgetManager manager = AppWidgetManager.getInstance(this);
-            ComponentName provider = new
-                ComponentName(this, DiaryWidgetProvider.class);
-            RemoteViews views = new
-                RemoteViews(getPackageName(), R.layout.widget);
-            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-            views.setTextViewText(R.id.header, date);
-            views.setTextViewText(R.id.entry, text);
-            manager.updateAppWidget(provider, views);
-        }
+        Intent broadcast = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        sendBroadcast(broadcast);
     }
 
     // readAssetFile

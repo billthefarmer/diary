@@ -23,7 +23,6 @@
 
 package org.billthefarmer.diary;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -39,13 +38,17 @@ import android.widget.RemoteViews;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import org.commonmark.Extension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 
 public class DiaryWidgetProvider extends AppWidgetProvider
 {
@@ -54,41 +57,18 @@ public class DiaryWidgetProvider extends AppWidgetProvider
 
     // onAppWidgetOptionsChanged
     @Override
-    @SuppressLint("InlinedApi")
     public void onAppWidgetOptionsChanged(Context context,
                                           AppWidgetManager appWidgetManager,
                                           int appWidgetId,
                                           Bundle newOptions)
     {
-        // Get date
-        DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        String date = format.format(new Date());
-
-        // Get text
-        CharSequence text = getText(context);
-
-        // Create an Intent to launch Diary
-        Intent intent = new Intent(context, Diary.class);
-        PendingIntent pendingIntent =
-            PendingIntent.getActivity(context, 0, intent,
-                                      PendingIntent.FLAG_UPDATE_CURRENT |
-                                      PendingIntent.FLAG_IMMUTABLE);
-
-        // Get the views
-        RemoteViews views = new
-            RemoteViews(context.getPackageName(), R.layout.widget);
-        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-        views.setTextViewText(R.id.header, date);
-        views.setTextViewText(R.id.entry, text);
-
-        // Tell the AppWidgetManager to perform an update on the
-        // current app widget.
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        // Update widget, ignore options
+        int[] appWidgetIds = {appWidgetId};
+        onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     // onUpdate
     @Override
-    @SuppressLint("InlinedApi")
     public void onUpdate(Context context,
                          AppWidgetManager appWidgetManager,
                          int[] appWidgetIds)
@@ -102,6 +82,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
 
         // Create an Intent to launch Diary
         Intent intent = new Intent(context, Diary.class);
+        //noinspection InlinedApi
         PendingIntent pendingIntent =
             PendingIntent.getActivity(context, 0, intent,
                                       PendingIntent.FLAG_UPDATE_CURRENT |
@@ -141,9 +122,12 @@ public class DiaryWidgetProvider extends AppWidgetProvider
         if (markdown)
         {
             // Use commonmark
-            Parser parser = Parser.builder().build();
+            List<Extension> extensions =
+                Arrays.asList(YamlFrontMatterExtension.create());
+            Parser parser = Parser.builder().extensions(extensions).build();
             Node document = parser.parse(text.toString());
-            HtmlRenderer renderer = HtmlRenderer.builder().build();
+            HtmlRenderer renderer = HtmlRenderer.builder()
+                .extensions(extensions).build();
 
             String html = renderer.render(document);
             text = Html.fromHtml(html);
