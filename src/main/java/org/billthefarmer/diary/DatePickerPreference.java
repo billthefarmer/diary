@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 // DatePickerPreference
+@SuppressWarnings("deprecation")
 public class DatePickerPreference extends DialogPreference
 {
     protected final static long DEFAULT_VALUE = 946684800000L;

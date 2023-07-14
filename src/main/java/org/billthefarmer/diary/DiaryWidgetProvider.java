@@ -50,6 +50,8 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 
+// DiaryWidgetProvider
+@SuppressWarnings("deprecation")
 public class DiaryWidgetProvider extends AppWidgetProvider
 {
     String folder;

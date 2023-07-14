@@ -50,6 +50,7 @@ import java.util.Locale;
  * @author Bill Farmer (billthefarmer)
  * @version 2017-06-22
  */
+@SuppressWarnings("deprecation")
 public class FileUtils
 {
     /**
@@ -517,7 +518,7 @@ public class FileUtils
                 }
                 else if ("home".equalsIgnoreCase(type))
                 {
-                    return Environment .getExternalStorageDirectory() +
+                    return Environment.getExternalStorageDirectory() +
                         "/Documents/" + id;
                 }
                 else if (type != null && type.matches("[0-9A-Z]{4}-[0-9A-Z]{4}"))
@@ -531,7 +532,7 @@ public class FileUtils
                 }
                 else if ("document".equalsIgnoreCase(segments.get(0)))
                 {
-                    return Environment .getExternalStorageDirectory() +
+                    return Environment.getExternalStorageDirectory() +
                         File.separator + id;
                 }
 

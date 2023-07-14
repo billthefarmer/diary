@@ -47,6 +47,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+// Editor
+@SuppressWarnings("deprecation")
 public class Editor extends Activity
 {
     public final static String TAG = "Editor";

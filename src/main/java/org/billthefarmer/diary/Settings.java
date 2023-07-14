@@ -32,6 +32,7 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 // Settings
+@SuppressWarnings("deprecation")
 public class Settings extends Activity
 {
     public final static String PREF_ABOUT = "pref_about";

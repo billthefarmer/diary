@@ -36,6 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // AboutPreference class
+@SuppressWarnings("deprecation")
 public class AboutPreference extends DialogPreference
 {
     // Constructor

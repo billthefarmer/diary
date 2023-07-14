@@ -109,6 +109,7 @@ import org.billthefarmer.view.DayDecorator;
 import org.billthefarmer.view.DayView;
 
 // Diary
+@SuppressWarnings("deprecation")
 public class Diary extends Activity
     implements DatePickerDialog.OnDateSetListener,
     CustomCalendarDialog.OnDateSetListener
