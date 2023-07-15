@@ -173,9 +173,11 @@ public class Diary extends Activity
                         Pattern.MULTILINE);
     public final static Pattern FILE_PATTERN =
         Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).(txt|md)$");
-
     public final static Pattern TEMP_PATTERN =
         Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
+    public final static Pattern CHECK_PATTERN =
+        Pattern.compile("^\\s*[-+*]\\s+\\[(X|x| )\\]\\s+",
+                        Pattern.MULTILINE);
 
     public final static String DATE_FORMAT = "EEEE d MMMM yyyy HH:mm";
     public final static String TEMP_FORMAT = "EEEE d MMMM yyyy";
@@ -1103,6 +1105,37 @@ public class Diary extends Activity
                     getSystemService(INPUT_METHOD_SERVICE);
                 if (!hasFocus)
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            });
+
+            // On click
+            textView.setOnClickListener(v ->
+            {
+                // Get selection
+                int selection = textView.getSelectionStart();
+
+                // Get text position
+                int line = textView.getLayout().getLineForOffset(selection);
+                int start = textView.getLayout().getLineStart(line);
+                int end = textView.getLayout().getLineEnd(line);
+
+                // Match checkbox pattern
+                Matcher matcher = CHECK_PATTERN.matcher(textView.getText());
+                if (matcher.region(start, end).find() &&
+                    matcher.end() > selection)
+                {
+                    Editable editable = textView.getEditableText();
+                    switch (editable.charAt(matcher.start(1)))
+                    {
+                    case 'x':
+                    case 'X':
+                        editable.replace(matcher.start(1), matcher.end(1), " ");
+                        break;
+
+                    case ' ':
+                        editable.replace(matcher.start(1), matcher.end(1), "x");
+                        break;
+                    }
+                }
             });
 
             // On long click
