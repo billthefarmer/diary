@@ -27,6 +27,24 @@
     </item>
     
     <item>
+      <title>Markdown</title>
+      <link>https://billthefarmer.github.io/diary/content/markdown/</link>
+      <pubDate>Sat, 15 Jul 2023 19:26:02 +0100</pubDate>
+      
+      <guid>https://billthefarmer.github.io/diary/content/markdown/</guid>
+      <description>Diary supports several markdown extensions including autolink, tables using vertical bar characters, heading anchor, underlining using ++underline++, strikethrough using ~~strike~~, YAML front matter, task lists using - [x] task #1, - [ ] task #2, superscript using ^super^, subscript using ~sub~.</description>
+    </item>
+    
+    <item>
+      <title>Task Lists</title>
+      <link>https://billthefarmer.github.io/diary/content/task-lists/</link>
+      <pubDate>Sat, 15 Jul 2023 19:30:46 +0100</pubDate>
+      
+      <guid>https://billthefarmer.github.io/diary/content/task-lists/</guid>
+      <description>To change the state of check boxes in a task list switch to the edit view and tap on the box [ ]. The box will change state and the edit cursor will be where you tapped.</description>
+    </item>
+    
+    <item>
       <title>Latex</title>
       <link>https://billthefarmer.github.io/diary/content/latex/</link>
       <pubDate>Sun, 16 Feb 2020 19:10:57 +0000</pubDate>
@@ -99,6 +117,15 @@ Caution – There is no such thing as a markdown syntax error, but syntax errors
       <guid>https://billthefarmer.github.io/diary/content/scripts/</guid>
       <description>You may add custom javascript to be loaded into all diary pages by placing a script.js file in the Diary/js folder. Use the built in editor to create a script file. You must use the editor accept tick button to save the edits. Errors in the script will be logged by the WebView which displays the page. See Javascript tutorial.
 If you want to use javascript libraries or write a large script it might be a good idea to use the Google Closure Compiler to check and minimise your code.</description>
+    </item>
+    
+    <item>
+      <title>Emojies</title>
+      <link>https://billthefarmer.github.io/diary/content/emojies/</link>
+      <pubDate>Sat, 15 Jul 2023 19:36:58 +0100</pubDate>
+      
+      <guid>https://billthefarmer.github.io/diary/content/emojies/</guid>
+      <description>There is a script, emojies.js in the data folder and a minimised version, emojies.min.js. Either may be copied to the script.js file as above. The script is a work in progress, it could do with some TLC from an expert.</description>
     </item>
     
   </channel>

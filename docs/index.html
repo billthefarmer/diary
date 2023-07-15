@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb">
 <head>
-  <meta name="generator" content="Hugo 0.102.0" />
+  <meta name="generator" content="Hugo 0.115.0">
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -139,6 +139,14 @@
                 
             
                 
+                    <li><a href="#markdown">Markdown</a></li>
+                
+            
+                
+                    <li><a href="#task-lists">Task Lists</a></li>
+                
+            
+                
                     <li><a href="#latex">Latex</a></li>
                 
             
@@ -168,6 +176,10 @@
             
                 
                     <li><a href="#scripts">Scripts</a></li>
+                
+            
+                
+                    <li><a href="#emojies">Emojies</a></li>
                 
             
         </ul>
@@ -227,7 +239,7 @@
 
   <div class="version">
     <p id="version">
-  Copyright &copy; 2022 Bill Farmer
+  Copyright &copy; 2023 Bill Farmer
 </p>
 
   </div>
@@ -318,6 +330,7 @@ Polish, Brazilian Portuguese, Dutch and simplified Chinese</li>
     <div class="content">
         <p>The toolbar items:</p>
 <ul>
+<li><strong>Cancel</strong> – cancel edits of current entry</li>
 <li><strong>Previous</strong> – show the previous entry or today</li>
 <li><strong>Next</strong> – show the next entry or today if next</li>
 <li><strong>Today</strong> – show today&rsquo;s entry</li>
@@ -524,6 +537,13 @@ widget:</p>
         <p>There is a <a href="https://github.com/billthefarmer/diary/blob/master/data/help.md">help</a>, a <a href="https://github.com/billthefarmer/diary/blob/master/data/test.md">test</a>, an example <a href="https://github.com/billthefarmer/diary/blob/master/data/styles.md">styles</a> file and an
 example <a href="https://github.com/billthefarmer/diary/blob/master/data/script.md">script</a> file, which may be copied in to an entry for
 reference if required.</p>
+<p>You may put a link to the embedded <a href="">help
+file</a>,
+<code>[Help](file:///android_asset/help.md)</code> in an entry. Selecting it will
+load a copy into the markdown view. Long touch on a word and choose
+<strong>Select all</strong> on the pop up menu. Select <strong>Share</strong>, and <strong>Diary</strong> in
+the Share dialog. Choose a date in the date picker, and you will have
+a copy in the chosen entry.</p>
 
     </div>
 </section>
@@ -586,6 +606,42 @@ markdown image syntax (<code>![&lt;name&gt;](&lt;url&gt;)</code>), which will be
 an HTML5 media player, text clips will be added as above, URLs will be
 added as a link. Media added from removable SD cards not part of the
 device storage may work but may not be persistent and is not supported.</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="markdown">
+    
+    <h3>
+        <a href="#markdown">Markdown</a>
+    </h3>
+    
+    <div class="content">
+        <p>Diary supports several markdown extensions including autolink, tables
+using vertical bar characters, heading anchor, underlining using
+<code>++underline++</code>, strikethrough using <code>~~strike~~</code>, YAML front matter,
+task lists using <code>- [x] task #1</code>, <code>- [ ] task #2</code>, superscript using
+<code>^super^</code>, subscript using <code>~sub~</code>.</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="task-lists">
+    
+    <h3>
+        <a href="#task-lists">Task Lists</a>
+    </h3>
+    
+    <div class="content">
+        <p>To change the state of check boxes in a task list switch to the edit
+view and tap on the box <code>[ ]</code>. The box will change state and the edit
+cursor will be where you tapped.</p>
 
     </div>
 </section>
@@ -747,6 +803,9 @@ affect all diary pages. See
 <code>@import &quot;file:///android_asset/styles.css&quot;;</code> or
 <code>@import url(&quot;file:///android_asset/styles.css&quot;);</code>, which should be on
 the first line.</p>
+<p>There is a dark theme example
+<a href="https://github.com/billthefarmer/diary/blob/master/data/dark.md">styles</a>
+file, which may be copied to the styles editor.</p>
 
     </div>
 </section>
@@ -772,6 +831,26 @@ which displays the page. See
 might be a good idea to use the Google
 <a href="https://developers.google.com/closure/compiler">Closure Compiler</a> to
 check and minimise your code. It will handle multiple input files.</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="emojies">
+    
+    <h3>
+        <a href="#emojies">Emojies</a>
+    </h3>
+    
+    <div class="content">
+        <p>There is a script,
+<a href="https://github.com/billthefarmer/diary/blob/master/data/emojies.js">emojies.js</a>
+in the data folder and a minimised version,
+<a href="https://github.com/billthefarmer/diary/blob/master/data/emojies.min.js">emojies.min.js</a>. Either
+may be copied to the <code>script.js</code> file as above. The script is a work
+in progress, it could do with some TLC from an expert.</p>
 
     </div>
 </section>
@@ -884,7 +963,7 @@ diary entries and styles will not be moved</li>
 choose a date.</li>
 <li><strong>Browser</strong> – Use browser for external links</li>
 <li><strong>Copy images</strong> – Copy images to current folder</li>
-<li><strong>Dark theme</strong> – Use dark theme for editing</li>
+<li><strong>Theme</strong> – Choose theme for editing</li>
 <li><strong>About</strong> – Show app version, licence and credits</li>
 </ul>
 
