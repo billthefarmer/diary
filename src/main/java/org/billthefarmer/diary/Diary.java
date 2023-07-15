@@ -176,7 +176,7 @@ public class Diary extends Activity
     public final static Pattern TEMP_PATTERN =
         Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
     public final static Pattern CHECK_PATTERN =
-        Pattern.compile("^\\s*[-+*]\\s+\\[(X|x| )\\]\\s+",
+        Pattern.compile("^ *(?:[-+*]|\\d+\\.) +\\[(X|x| )\\] +",
                         Pattern.MULTILINE);
 
     public final static String DATE_FORMAT = "EEEE d MMMM yyyy HH:mm";

@@ -152,6 +152,11 @@ using vertical bar characters, heading anchor, underlining using
 task lists using `- [x] task #1`, `- [ ] task #2`, superscript using
 `^super^`, subscript using `~sub~`.
 
+## Task lists
+To change the state of check boxes in a task list switch to the edit
+view and tap on the box `[ ]`. The box will change state and the edit
+cursor will be where you tapped.
+
 ## LaTeX
 Diary doesn't support [LaTeX](https://en.wikipedia.org/wiki/LaTeX),
 but it is possible to use an external site to add LaTeX formatted
