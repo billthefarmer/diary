@@ -175,7 +175,6 @@ public class Diary extends Activity
         Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).(txt|md)$");
     public final static Pattern TEMP_PATTERN =
         Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
-    public final static Pattern CHECK_PATTERN =
     public final static Pattern CHECK_PATTERN = Pattern.compile
         ("^\\s*(?:[-+*]|\\d+\\.)\\s+\\[(X|x|\\s)\\]\\s+(?=\\p{Graph}+)",
                         Pattern.MULTILINE);
