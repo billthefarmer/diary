@@ -1,4 +1,4 @@
-# ![Logo](src/main/res/drawable-hdpi/ic_launcher.png) Diary [![.github/workflows/main.yml](https://github.com/billthefarmer/diary/workflows/.github/workflows/build.yml/badge.svg)](https://github.com/billthefarmer/diary/actions) [![Release](https://img.shields.io/github/release/billthefarmer/diary.svg?logo=github)](https://github.com/billthefarmer/diary/releases)
+# ![Logo](src/main/res/drawable-hdpi/ic_launcher.png) Diary [![.github/workflows/main.yml](https://github.com/billthefarmer/diary/workflows/.github/workflows/build.yml/badge.svg)](https://github.com/billthefarmer/diary/actions) [![Release](https://img.shields.io/github/release/billthefarmer/diary.svg?logo=github)](https://github.com/billthefarmer/diary/releases) [![Project Map](https://sourcespy.com/shield.svg)](https://sourcespy.com/github/billthefarmerdiary/)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.svg" alt="Get it on F-Droid" height="80">](https://f-droid.org/packages/org.billthefarmer.diary)
 
 
