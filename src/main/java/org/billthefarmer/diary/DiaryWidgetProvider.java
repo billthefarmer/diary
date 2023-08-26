@@ -29,6 +29,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -54,8 +55,45 @@ import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 @SuppressWarnings("deprecation")
 public class DiaryWidgetProvider extends AppWidgetProvider
 {
+    public final static String TAG = "DiaryWidgetProvider";
+    public final static String WIDGET = "widget://";
+    public final static String ENTRY = "org.billthefarmer.diary.ENTRY";
+    public final static String PREF_WIDGET_ENTRY = "pref_widget_entry";
+
+    public final static int PREV = 1;
+    public final static int NEXT = 2;
+    public final static int TODAY = 0;
+
     String folder;
     boolean markdown;
+    Calendar entry;
+
+    // onReceive
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "onReceive " + intent);
+
+        // Get preferences
+        SharedPreferences preferences =
+            PreferenceManager.getDefaultSharedPreferences(context);
+        // Get folder
+        folder = preferences.getString(Settings.PREF_FOLDER, Diary.DIARY);
+        markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
+
+        entry = Calendar.getInstance();
+        long date = intent.getLongExtra(ENTRY, new Date().getTime());
+
+        if (date != TODAY)
+            entry.setTimeInMillis(date);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(PREF_WIDGET_ENTRY, date);
+        editor.apply();
+
+        super.onReceive(context, intent);
+    }
 
     // onAppWidgetOptionsChanged
     @Override
@@ -77,7 +115,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     {
         // Get date
         DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        String date = format.format(new Date());
+        String date = format.format(entry.getTime());
 
         // Get text
         CharSequence text = getText(context);
@@ -89,12 +127,47 @@ public class DiaryWidgetProvider extends AppWidgetProvider
             PendingIntent.getActivity(context, 0, intent,
                                       PendingIntent.FLAG_UPDATE_CURRENT |
                                       PendingIntent.FLAG_IMMUTABLE);
+        // Create an Intent to update widget
+        Intent prev = new Intent(context, DiaryWidgetUpdate.class);
+        // This bit of jiggery hackery is to force the system to
+        // keep a different intent for each widget
+        Uri uri = Uri.parse(WIDGET + String.valueOf(PREV));
+        prev.setData(uri);
+        prev.putExtra(ENTRY, PREV);
+        //noinspection InlinedApi
+        PendingIntent prevIntent =
+            PendingIntent.getActivity(context, 0, prev,
+                                      PendingIntent.FLAG_UPDATE_CURRENT |
+                                      PendingIntent.FLAG_IMMUTABLE);
+        // Create an Intent to update widget
+        Intent next = new Intent(context, DiaryWidgetUpdate.class);
+        // This bit of jiggery hackery is to force the system to
+        // keep a different intent for each widget
+        uri = Uri.parse(WIDGET + String.valueOf(NEXT));
+        next.setData(uri);
+        next.putExtra(ENTRY, NEXT);
+        //noinspection InlinedApi
+        PendingIntent nextIntent =
+            PendingIntent.getActivity(context, 0, next,
+                                      PendingIntent.FLAG_UPDATE_CURRENT |
+                                      PendingIntent.FLAG_IMMUTABLE);
+        // Create an Intent to update widget
+        Intent today = new Intent(context, DiaryWidgetUpdate.class);
+        today.putExtra(ENTRY, TODAY);
+        //noinspection InlinedApi
+        PendingIntent todayIntent =
+            PendingIntent.getActivity(context, 0, today,
+                                      PendingIntent.FLAG_UPDATE_CURRENT |
+                                      PendingIntent.FLAG_IMMUTABLE);
 
         // Get the layout for the widget and attach an on-click
         // listener to the view.
         RemoteViews views = new
             RemoteViews(context.getPackageName(), R.layout.widget);
         views.setOnClickPendingIntent(R.id.widget, pendingIntent);
+        views.setOnClickPendingIntent(R.id.prev, prevIntent);
+        views.setOnClickPendingIntent(R.id.next, nextIntent);
+        views.setOnClickPendingIntent(R.id.today, todayIntent);
         views.setTextViewText(R.id.header, date);
         views.setTextViewText(R.id.entry, text);
 
@@ -107,19 +180,8 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     @SuppressWarnings("deprecation")
     private CharSequence getText(Context context)
     {
-        // Get preferences
-        SharedPreferences preferences =
-            PreferenceManager.getDefaultSharedPreferences(context);
-        // Get folder
-        folder = preferences.getString(Settings.PREF_FOLDER, Diary.DIARY);
-        markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
-
-        // Get date
-        DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        String date = format.format(new Date());
-
         // Get text
-        CharSequence text = Diary.read(getFile());
+        CharSequence text = Diary.read(getFile(entry));
 
         if (markdown)
         {

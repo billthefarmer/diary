@@ -101,6 +101,10 @@
         android:name="Settings"
         android:label="@string/settings" />
 
+    <activity
+        android:name="DiaryWidgetUpdate"
+        android:theme="@android:style/Theme.NoDisplay" />
+
     <receiver
         android:name="DiaryWidgetProvider"
         android:exported="true">

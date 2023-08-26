@@ -20,22 +20,62 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="RtlHardcoded">
 
-  <TextView
-      android:id="@+id/header"
+  <LinearLayout
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:paddingLeft="8dp"
-      android:paddingRight="8dp"
-      android:paddingTop="4dp"
-      android:paddingBottom="4dp"
-      android:textColor="@android:color/white"
-      android:background="@drawable/header_background"
-      android:textAppearance="?android:attr/textAppearanceMedium"/>
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:background="@drawable/header_background">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/ic_action_previous_item_w"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/ic_action_next_item_w"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_action_expand_w"
+        tools:ignore="ContentDescription" />
+
+  </LinearLayout>
 
   <TextView
       android:id="@+id/entry"
