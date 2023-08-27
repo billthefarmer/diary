@@ -502,6 +502,10 @@ public class Diary extends Activity
             if (useIndex && Intent.ACTION_MAIN.equals(intent.getAction()))
                 index();
 
+            // Check start from widget
+            else if (intent.hasExtra(DiaryWidgetProvider.ENTRY))
+                changeDate(intent.getLongExtra(DiaryWidgetProvider.ENTRY,
+                                               new Date().getTime()));
             // Set the date
             else
                 today();
@@ -2567,6 +2571,17 @@ public class Diary extends Activity
         }
 
         entry = true;
+    }
+
+    // changeDate
+    private void changeDate(long entry)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(entry);
+        Calendar date = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                              calendar.get(Calendar.MONTH),
+                                              calendar.get(Calendar.DATE));
+        changeDate(date);
     }
 
     // prevEntry

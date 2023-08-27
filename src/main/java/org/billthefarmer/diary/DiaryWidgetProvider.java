@@ -122,6 +122,11 @@ public class DiaryWidgetProvider extends AppWidgetProvider
 
         // Create an Intent to launch Diary
         Intent intent = new Intent(context, Diary.class);
+        // This bit of jiggery hackery is to force the system to
+        // keep a different intent for each widget
+        Uri uri = Uri.parse(WIDGET + String.valueOf(TODAY));
+        intent.setData(uri);
+        intent.putExtra(ENTRY, entry.getTimeInMillis());
         //noinspection InlinedApi
         PendingIntent pendingIntent =
             PendingIntent.getActivity(context, 0, intent,
@@ -131,7 +136,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
         Intent prev = new Intent(context, DiaryWidgetUpdate.class);
         // This bit of jiggery hackery is to force the system to
         // keep a different intent for each widget
-        Uri uri = Uri.parse(WIDGET + String.valueOf(PREV));
+        uri = Uri.parse(WIDGET + String.valueOf(PREV));
         prev.setData(uri);
         prev.putExtra(ENTRY, PREV);
         //noinspection InlinedApi
