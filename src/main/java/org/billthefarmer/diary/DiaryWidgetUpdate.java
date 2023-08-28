@@ -64,9 +64,8 @@ public class DiaryWidgetUpdate extends Activity
         // Get folder
         folder = preferences.getString(Settings.PREF_FOLDER, Diary.DIARY);
         // Get widget entry
-        long entry = new Date().getTime();
-        entry = preferences.getLong(DiaryWidgetProvider.PREF_WIDGET_ENTRY,
-                                    entry);
+        long entry = preferences.getLong(DiaryWidgetProvider.PREF_WIDGET_ENTRY,
+                                         new Date().getTime());
 
         // Get calendar
         Calendar calendar = Calendar.getInstance();

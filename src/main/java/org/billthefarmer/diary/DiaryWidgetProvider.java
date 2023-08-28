@@ -158,6 +158,10 @@ public class DiaryWidgetProvider extends AppWidgetProvider
                                       PendingIntent.FLAG_IMMUTABLE);
         // Create an Intent to update widget
         Intent today = new Intent(context, DiaryWidgetUpdate.class);
+        // This bit of jiggery hackery is to force the system to
+        // keep a different intent for each widget
+        uri = Uri.parse(WIDGET + String.valueOf(TODAY));
+        intent.setData(uri);
         today.putExtra(ENTRY, TODAY);
         //noinspection InlinedApi
         PendingIntent todayIntent =
@@ -219,15 +223,16 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     private File getYear(int year)
     {
         return new File(getHome(), String.format(Locale.ENGLISH,
-                                                 Diary.YEAR_FORMAT, year));
+                                                 Diary.YEAR_FORMAT,
+                                                 year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
-        return new File(getYear(year),
-                        String.format(Locale.ENGLISH,
-                                      Diary.MONTH_FORMAT, month + 1));
+        return new File(getYear(year), String.format(Locale.ENGLISH,
+                                                     Diary.MONTH_FORMAT,
+                                                     month + 1));
     }
 
     // getDay
@@ -235,13 +240,15 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     {
         File folder = getMonth(year, month);
         File file = new File(folder, String.format(Locale.ENGLISH,
-                                                   Diary.DAY_FORMAT, day));
+                                                   Diary.DAY_FORMAT,
+                                                   day));
         if (file.exists())
             return file;
 
         else if (markdown)
             return new File(folder, String.format(Locale.ENGLISH,
-                                                  Diary.MD_FORMAT, day));
+                                                  Diary.MD_FORMAT,
+                                                  day));
         else
             return file;
     }

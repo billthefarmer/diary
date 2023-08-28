@@ -1988,14 +1988,16 @@ public class Diary extends Activity
     private File getYear(int year)
     {
         return new File(getHome(), String.format(Locale.ENGLISH,
-                                                 YEAR_FORMAT, year));
+                                                 YEAR_FORMAT,
+                                                 year));
     }
 
     // getMonth
     private File getMonth(int year, int month)
     {
         return new File(getYear(year), String.format(Locale.ENGLISH,
-                                                     MONTH_FORMAT, month + 1));
+                                                     MONTH_FORMAT,
+                                                     month + 1));
     }
 
     // getDay
@@ -2003,13 +2005,15 @@ public class Diary extends Activity
     {
         File folder = getMonth(year, month);
         File file = new File(folder, String.format(Locale.ENGLISH,
-                                                   DAY_FORMAT, day));
+                                                   DAY_FORMAT,
+                                                   day));
         if (file.exists())
             return file;
 
         else if (markdown)
             return new File(folder, String.format(Locale.ENGLISH,
-                                                  MD_FORMAT, day));
+                                                  MD_FORMAT,
+                                                  day));
         else
             return file;
     }
