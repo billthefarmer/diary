@@ -2810,19 +2810,59 @@ public class Diary extends Activity
             title = uri.getLastPathSegment();
 
         String url = uri.toString();
-        String linkText = String.format(LINK_TEMPLATE, title, url);
-
-        if (append)
-            textView.append(linkText);
-
-        else
+        addLinkDialog(url, title, (dialog, id) ->
         {
-            Editable editable = textView.getEditableText();
-            int position = textView.getSelectionStart();
-            editable.insert(position, linkText);
-        }
+            switch (id)
+            {
+            case DialogInterface.BUTTON_POSITIVE:
+                EditText text = ((Dialog) dialog).findViewById(R.id.pathText);
+                String string = text.getText().toString();
 
-        loadMarkdown();
+                // Ignore empty string
+                if (string.isEmpty())
+                    return;
+
+                String linkText = String.format(LINK_TEMPLATE, string, url);
+
+                if (append)
+                    textView.append(linkText);
+
+                else
+                {
+                    Editable editable = textView.getEditableText();
+                    int position = textView.getSelectionStart();
+                    editable.insert(position, linkText);
+                }
+
+                loadMarkdown();
+                break;
+            }
+        });
+    }
+
+    // addLinkDialog
+    private void addLinkDialog(String url, String title,
+                               DialogInterface.OnClickListener listener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.addLink);
+        builder.setMessage(url);
+
+        // Add the buttons
+        builder.setPositiveButton(R.string.addLink, listener);
+        builder.setNegativeButton(android.R.string.cancel, listener);
+
+        // Create edit text
+        LayoutInflater inflater = (LayoutInflater) builder.getContext()
+            .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.save_path, null);
+        builder.setView(view);
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.show();
+        TextView text = dialog.findViewById(R.id.pathText);
+        text.setHint("");
+        text.setText(title);
     }
 
     // addMap
