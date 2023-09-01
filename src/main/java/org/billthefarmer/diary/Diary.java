@@ -1568,8 +1568,13 @@ public class Diary extends Activity
                 if ((uri != null) && (uri.getScheme() != null) &&
                         (uri.getScheme().equalsIgnoreCase(HTTP) ||
                          uri.getScheme().equalsIgnoreCase(HTTPS)))
-                    addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE),
-                            true);
+                {
+                    String title = intent.getStringExtra(Intent.EXTRA_TITLE);
+                    if (title == null)
+                        title = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+                    addLink(uri, title, true);
+                }
+
                 else
                 {
                     textView.append(text);
