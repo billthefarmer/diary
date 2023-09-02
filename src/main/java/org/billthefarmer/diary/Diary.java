@@ -1569,9 +1569,9 @@ public class Diary extends Activity
                         (uri.getScheme().equalsIgnoreCase(HTTP) ||
                          uri.getScheme().equalsIgnoreCase(HTTPS)))
                 {
-                    String title = intent.getStringExtra(Intent.EXTRA_TITLE);
-                    if (title == null)
-                        title = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+                    String title = intent.hasExtra(Intent.EXTRA_TITLE)?
+                        intent.getStringExtra(Intent.EXTRA_TITLE):
+                        intent.getStringExtra(Intent.EXTRA_SUBJECT);
                     addLink(uri, title, true);
                 }
 
@@ -1592,9 +1592,13 @@ public class Diary extends Activity
                 if (CONTENT.equalsIgnoreCase(uri.getScheme()))
                     uri = resolveContent(uri);
 
-                addLink(uri, intent.getStringExtra(Intent.EXTRA_TITLE), true);
+                String title = intent.hasExtra(Intent.EXTRA_TITLE)?
+                    intent.getStringExtra(Intent.EXTRA_TITLE):
+                    intent.getStringExtra(Intent.EXTRA_SUBJECT);
+                addLink(uri, title, true);
             }
         }
+
         else if (type.startsWith(IMAGE) ||
                  type.startsWith(AUDIO) ||
                  type.startsWith(VIDEO))
