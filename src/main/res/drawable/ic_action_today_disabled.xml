@@ -19,6 +19,6 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:drawable="@drawable/ic_action_expand" />
+  <item android:drawable="@drawable/ic_expand_more_white_24dp" />
   <item android:drawable="@color/dark" />
 </layer-list>

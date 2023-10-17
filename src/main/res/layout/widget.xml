@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="4dp"
-        android:src="@drawable/ic_action_previous_item_w"
+        android:src="@drawable/ic_chevron_left_white_24dp"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="4dp"
-        android:src="@drawable/ic_action_next_item_w"
+        android:src="@drawable/ic_chevron_right_white_24dp"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
-        android:src="@drawable/ic_action_expand_w"
+        android:src="@drawable/ic_expand_more_white_24dp"
         tools:ignore="ContentDescription" />
 
   </LinearLayout>

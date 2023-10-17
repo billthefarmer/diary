@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     tools:ignore="AppCompatResource">
   <item
       android:id="@+id/cancel"
-      android:icon="@drawable/ic_action_cancel"
+      android:icon="@drawable/ic_clear_white_24dp"
       android:showAsAction="ifRoom"
       android:title="@android:string/cancel"
       android:visible="false" />
@@ -45,7 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/today" />
   <item
       android:id="@+id/goToDate"
-      android:icon="@drawable/ic_action_go_to_date"
+      android:icon="@drawable/ic_expand_less_white_24dp"
       android:showAsAction="ifRoom"
       android:title="@string/goToDate" />
   <item
