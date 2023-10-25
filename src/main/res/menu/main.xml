@@ -45,7 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:title="@string/today" />
   <item
       android:id="@+id/goToDate"
-      android:icon="@drawable/ic_expand_less_white_24dp"
+      android:icon="@drawable/ic_date_range_white_24dp"
       android:showAsAction="ifRoom"
       android:title="@string/goToDate" />
   <item
@@ -56,65 +56,53 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:visible="false" />
   <item
       android:id="@+id/link"
-      android:icon="@drawable/ic_action_today"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/addLink"
       android:visible="false" />
   <item
       android:id="@+id/search"
       android:actionViewClass="android.widget.SearchView"
-      android:icon="@drawable/ic_action_search"
       android:showAsAction="ifRoom|collapseActionView"
       android:title="@string/search" />
   <item
       android:id="@+id/findAll"
-      android:icon="@drawable/ic_action_search"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/findAll"
       android:visible="false" />
   <item
       android:id="@+id/print"
-      android:icon="@drawable/ic_action_print"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/print" />
   <item
       android:id="@+id/share"
-      android:icon="@drawable/ic_action_share"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/share" />
   <item
       android:id="@+id/addTime"
-      android:icon="@drawable/ic_action_time"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/addTime" />
   <item
       android:id="@+id/addEvents"
-      android:icon="@drawable/ic_action_time"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/addEvents" />
   <item
       android:id="@+id/addMedia"
-      android:icon="@drawable/ic_action_picture"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/addMedia" />
   <item
       android:id="@+id/editStyles"
-      android:icon="@drawable/ic_action_save"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/editStyles" />
   <item
       android:id="@+id/editScript"
-      android:icon="@drawable/ic_action_save"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/editScript" />
   <item
       android:id="@+id/backup"
-      android:icon="@drawable/ic_action_save"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/backup" />
   <item
       android:id="@+id/settings"
-      android:icon="@drawable/ic_action_settings"
-      android:showAsAction="ifRoom"
+      android:showAsAction="never"
       android:title="@string/settings" />
 </menu>
