@@ -51,6 +51,20 @@
   </PreferenceCategory>
 
   <PreferenceCategory
+      android:key="pref_selection_category"
+      android:title="@string/selection">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:icon="?attr/pref_extended"
+        android:key="pref_extended"
+        android:persistent="true"
+        android:summary="@string/pref_extended_summ"
+        android:title="@string/pref_extended" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
       android:key="pref_folder_category"
       android:title="@string/folder">
 

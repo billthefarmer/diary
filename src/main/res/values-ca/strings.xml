@@ -53,6 +53,11 @@
   <string name="pref_markdown_summ">
     Utilitzeu markdown a les entrades de format
   </string>
+  <string name="selection">Selecció</string>
+  <string name="pref_extended">Utilitzar la selecció ampliada</string>
+  <string name="pref_extended_summ">
+    Utilitzar la selecció ampliada mentre s\'editen les entrades
+  </string>
   <string name="media">Mitjans</string>
   <string name="pref_copy_media">Copiar imatges</string>
   <string name="pref_copy_media_summ">

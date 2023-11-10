@@ -24,6 +24,7 @@
     <attr name="pref_about" format="reference" />
     <attr name="pref_calendar" format="reference" />
     <attr name="pref_copy_media" format="reference" />
+    <attr name="pref_extended" format="reference" />
     <attr name="pref_external" format="reference" />
     <attr name="pref_folder" format="reference" />
     <attr name="pref_index_page" format="reference" />

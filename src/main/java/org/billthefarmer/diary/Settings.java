@@ -39,6 +39,7 @@ public class Settings extends Activity
     public final static String PREF_THEME = "pref_theme";
     public final static String PREF_CUSTOM = "pref_custom";
     public final static String PREF_FOLDER = "pref_folder";
+    public final static String PREF_EXTENDED = "pref_extended";
     public final static String PREF_EXTERNAL = "pref_external";
     public final static String PREF_MARKDOWN = "pref_markdown";
     public final static String PREF_USE_INDEX = "pref_use_index";

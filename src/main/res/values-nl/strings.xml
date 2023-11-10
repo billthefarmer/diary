@@ -53,6 +53,11 @@
   <string name="pref_markdown_summ">
     Markdown gebruiken om items te voorzien van opmaak
   </string>
+  <string name="selection">Selectie</string>
+  <string name="pref_extended">Uitgebreide selectie gebruiken</string>
+  <string name="pref_extended_summ">
+    Uitgebreide selectie gebruiken bij het bewerken van items
+  </string>
   <string name="media">Media</string>
   <string name="pref_copy_media">Afbeeldingen kopiëren</string>
   <string name="pref_copy_media_summ">

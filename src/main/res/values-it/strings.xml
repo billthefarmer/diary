@@ -52,6 +52,11 @@
   <string name="pref_markdown_summ">
     Utilizza il Markdown per la formattazione
   </string>
+  <string name="selection">Selezione</string>
+  <string name="pref_extended">Usa la selezione estesa</string>
+  <string name="pref_extended_summ">
+    Utilizzare la selezione estesa durante la modifica delle voci
+  </string>
   <string name="media">Media</string>
   <string name="pref_copy_media">Backup risorse esterne</string>
   <string name="pref_copy_media_summ">

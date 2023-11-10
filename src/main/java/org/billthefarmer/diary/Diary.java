@@ -243,6 +243,7 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true;
+    private boolean extended = true;
     private boolean external = false;
     private boolean useIndex = false;
     private boolean useTemplate = false;
@@ -1265,6 +1266,7 @@ public class Diary extends Activity
 
         copyMedia = preferences.getBoolean(Settings.PREF_COPY_MEDIA, false);
         custom = preferences.getBoolean(Settings.PREF_CUSTOM, true);
+        extended = preferences.getBoolean(Settings.PREF_EXTENDED, true);
         external = preferences.getBoolean(Settings.PREF_EXTERNAL, false);
         markdown = preferences.getBoolean(Settings.PREF_MARKDOWN, true);
         useIndex = preferences.getBoolean(Settings.PREF_USE_INDEX, false);
@@ -3047,7 +3049,7 @@ public class Diary extends Activity
         super.onActionModeStarted(mode);
 
         // Not on markdown view
-        if (!shown)
+        if (!shown && extended)
         {
             // Get the start and end of the selection
             int start = textView.getSelectionStart();

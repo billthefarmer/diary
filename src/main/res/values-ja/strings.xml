@@ -53,6 +53,11 @@
   <string name="pref_markdown_summ">
     書式項目に使用記法
   </string>
+  <string name="selection">選定</string>
+  <string name="pref_extended">拡張選択を使用</string>
+  <string name="pref_extended_summ">
+    エントリの編集中に拡張選択を使用
+  </string>
   <string name="media">メディア</string>
   <string name="pref_copy_media">画像をコピーする</string>
   <string name="pref_copy_media_summ">

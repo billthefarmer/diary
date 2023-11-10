@@ -53,6 +53,11 @@
   <string name="pref_markdown_summ">
     Utilize markdown para formatar o texto
   </string>
+  <string name="selection">Seleção</string>
+  <string name="pref_extended">Usar seleção estendida</string>
+  <string name="pref_extended_summ">
+    Usar seleção estendida ao editar entradas
+  </string>
   <string name="media">Mídia</string>
   <string name="pref_copy_media">Copiar imagens</string>
   <string name="pref_copy_media_summ">

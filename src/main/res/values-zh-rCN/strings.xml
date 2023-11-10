@@ -53,6 +53,11 @@
   <string name="pref_markdown_summ">
     条目使用 markdown 格式
   </string>
+  <string name="selection">选择</string>
+  <string name="pref_extended">使用扩展选择</string>
+  <string name="pref_extended_summ">
+    编辑条目时使用扩展选择
+  </string>
   <string name="media">媒体文件</string>
   <string name="pref_copy_media">复制图片</string>
   <string name="pref_copy_media_summ">
