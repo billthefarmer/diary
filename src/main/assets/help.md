@@ -77,6 +77,11 @@ current entry. It will appear only when there are changes to cancel.
 See [Markdown](https://daringfireball.net/projects/markdown) for
 markdown syntax.
 
+## Selection
+In edit mode a long touch or double tap will select text. If extended
+selection is enabled the selection will be extended to enclosing
+quotes or brackets on the same line.
+
 ## Scrolling
 Scrolling the page up will temporarily hide the floating
 button. Scrolling down restores it.
@@ -298,6 +303,8 @@ not supported. Adding media may also work, but may not be persistent.
 * **Use custom calendar** &ndash; Use custom calendar that shows diary
     entries rather than date picker calendar
 * **Use markdown** &ndash; Use markdown formatting for diary entries
+* **Use extended selection** &ndash; Use extended selection for
+    editing entries
 * **Folder** &ndash; Change diary entry storage folder. Caution &ndash;
     diary entries and styles will not be moved
 * **Index** &ndash; Set an index page. Use the date picker to choose a date.
