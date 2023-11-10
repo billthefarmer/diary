@@ -1,0 +1,2 @@
+ * Update icons
+ * Add extended selection preference
