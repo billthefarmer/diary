@@ -632,8 +632,6 @@ public class Diary extends Activity
         menu.findItem(R.id.cancel).setVisible(changed);
         menu.findItem(R.id.index).setVisible(useIndex);
         menu.findItem(R.id.link).setVisible(useIndex);
-        menu.findItem(R.id.print)
-            .setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
 
         // Set up search view
         searchItem = menu.findItem(R.id.search);
@@ -1783,9 +1781,6 @@ public class Diary extends Activity
     // print
     private void print()
     {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            return;
-
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager)
             getSystemService(PRINT_SERVICE);
@@ -1940,14 +1935,11 @@ public class Diary extends Activity
                 break;
 
             case DialogInterface.BUTTON_NEUTRAL:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                {
-                    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-                    intent.setType(APPLICATION_ZIP);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.putExtra(Intent.EXTRA_TITLE, name);
-                    startActivityForResult(intent, CREATE_BACKUP);
-                }
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                intent.setType(APPLICATION_ZIP);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_TITLE, name);
+                startActivityForResult(intent, CREATE_BACKUP);
                 break;
             }
         });
@@ -1964,8 +1956,7 @@ public class Diary extends Activity
         // Add the buttons
         builder.setPositiveButton(R.string.save, listener);
         builder.setNegativeButton(android.R.string.cancel, listener);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            builder.setNeutralButton(R.string.storage, listener);
+        builder.setNeutralButton(R.string.storage, listener);
 
         // Create edit text
         LayoutInflater inflater = (LayoutInflater) builder.getContext()
