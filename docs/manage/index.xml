@@ -7,33 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2006 Bill Farmer</copyright>
-    <lastBuildDate>Sun, 16 Feb 2020 19:07:08 +0000</lastBuildDate><atom:link href="https://billthefarmer.github.io/diary/manage/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Feb 2020 09:44:17 +0000</lastBuildDate>
+    <atom:link href="https://billthefarmer.github.io/diary/manage/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Backup</title>
       <link>https://billthefarmer.github.io/diary/manage/backup/</link>
       <pubDate>Sun, 16 Feb 2020 19:13:37 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/manage/backup/</guid>
       <description>You may create a backup of all your entries in a zip file. The file will have the same name as the diary folder, default Diary.zip.</description>
     </item>
-    
     <item>
       <title>Sync</title>
       <link>https://billthefarmer.github.io/diary/manage/sync/</link>
       <pubDate>Mon, 17 Feb 2020 09:44:17 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/manage/sync/</guid>
       <description>Android cloud storage apps when last tested appeared not to be capable of syncing a real storage folder on the device. However Syncthing does just that and can sync your diary folder with other devices and desktop computers.</description>
     </item>
-    
     <item>
       <title>SD Cards</title>
       <link>https://billthefarmer.github.io/diary/manage/sd-cards/</link>
       <pubDate>Sun, 16 Feb 2020 19:14:14 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/manage/sd-cards/</guid>
       <description>Android allows removable SD cards to be used like a USB stick or as part of the device storage. Storing diary entries on a removable SD card not part of the device storage may work on some devices, but is not supported. Adding media may also work, but may not be persistent.</description>
     </item>
-    
   </channel>
 </rss>

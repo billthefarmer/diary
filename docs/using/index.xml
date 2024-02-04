@@ -7,111 +7,84 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2006 Bill Farmer</copyright>
-    <lastBuildDate>Sun, 16 Feb 2020 19:07:31 +0000</lastBuildDate><atom:link href="https://billthefarmer.github.io/diary/using/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Feb 2022 19:09:07 +0000</lastBuildDate>
+    <atom:link href="https://billthefarmer.github.io/diary/using/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Toolbar</title>
       <link>https://billthefarmer.github.io/diary/using/toolbar/</link>
       <pubDate>Sun, 16 Feb 2020 19:16:22 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/toolbar/</guid>
-      <description>The toolbar items:
-Cancel – cancel edits of current entry Previous – show the previous entry or today Next – show the next entry or today if next Today – show today&amp;rsquo;s entry And on the menu:
-Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Print – print current diary entry Share – share current diary entry Use template – use template for current entry if empty Add time – add the current time to diary entry Add events – add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings </description>
+      <description>The toolbar items:&#xA;Cancel – cancel edits of current entry Previous – show the previous entry or today Next – show the next entry or today if next Today – show today&amp;rsquo;s entry And on the menu:&#xA;Go to date – show a date picker calendar to select a new date Index – go to index page if set Search – incremental search of diary entry Find all – find all diary entries containing search text Print – print current diary entry Share – share current diary entry Use template – use template for current entry if empty Add time – add the current time to diary entry Add events – add calendar events to diary entry Add media – show a media picker to select media Edit styles – show an editor to edit the custom styles Edit script – show an editor to edit custom javascript Backup – backup entries to a zip file Settings – show the settings </description>
     </item>
-    
     <item>
       <title>Swipe</title>
       <link>https://billthefarmer.github.io/diary/using/swipe/</link>
       <pubDate>Sun, 16 Feb 2020 19:28:32 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/swipe/</guid>
-      <description>Left and right Swipe left and right in the diary page will show the next or previous day, or in the custom calendar will show the next or previous month.
-Up and down Swipe up and down with two fingers in the diary page will show the previous or next month, or in the custom calendar will show the previous or next year.</description>
+      <description>Left and right Swipe left and right in the diary page will show the next or previous day, or in the custom calendar will show the next or previous month.&#xA;Up and down Swipe up and down with two fingers in the diary page will show the previous or next month, or in the custom calendar will show the previous or next year.</description>
     </item>
-    
     <item>
       <title>Double Tap</title>
       <link>https://billthefarmer.github.io/diary/using/double-tap/</link>
       <pubDate>Sun, 16 Feb 2020 19:15:28 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/double-tap/</guid>
       <description>In the formatted view a double tap on the screen will switch to the edit view in approximately the same position in the markdown text. The accuracy is dependent on the text formatting and media in the entry.</description>
     </item>
-    
     <item>
       <title>Editing</title>
       <link>https://billthefarmer.github.io/diary/using/editing/</link>
       <pubDate>Sun, 16 Feb 2020 19:15:38 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/editing/</guid>
-      <description>In markdown mode the Edit button floating above the page allows editing entries. The Accept button restores the formatted view. A long touch on the button hides it until the device is rotated or a long touch on the page.
-See Markdown for markdown syntax.</description>
+      <description>In markdown mode the Edit button floating above the page allows editing entries. The Accept button restores the formatted view. A long touch on the button hides it until the device is rotated or a long touch on the page.&#xA;See Markdown for markdown syntax.</description>
     </item>
-    
     <item>
       <title>Scrolling</title>
       <link>https://billthefarmer.github.io/diary/using/scrolling/</link>
       <pubDate>Sun, 16 Feb 2020 19:16:01 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/scrolling/</guid>
       <description>Scrolling the page up will temporarily hide the floating button. Scrolling down restores it.</description>
     </item>
-    
     <item>
       <title>Search</title>
       <link>https://billthefarmer.github.io/diary/using/search/</link>
       <pubDate>Sun, 16 Feb 2020 19:16:11 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/search/</guid>
       <description>You may search diary entries, the search will update as text is entered into the search field. Use the search widget or keyboard action button to find the next match. To find and edit text, search in the markdown view, and then double tap where you want to edit. This will switch to the edit view at about the right place.</description>
     </item>
-    
     <item>
       <title>Find All</title>
       <link>https://billthefarmer.github.io/diary/using/find-all/</link>
       <pubDate>Sun, 16 Feb 2020 19:48:32 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/find-all/</guid>
       <description>You may find all diary entries that contain the current search text. This menu item will only appear while the search widget is active. A dialog will pop up with a list of matching entries. Touch an entry to open that entry. You may repeat this or refine the search text to find the desired entry.</description>
     </item>
-    
     <item>
       <title>Index Page</title>
       <link>https://billthefarmer.github.io/diary/using/index-page/</link>
       <pubDate>Sun, 16 Feb 2020 19:51:58 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/index-page/</guid>
       <description>You may use an index page. If an index page is set the app will start on that page unless receiving media from another app.See Links for the syntax for links to other diary entries and external sites.</description>
     </item>
-    
     <item>
       <title>Template</title>
       <link>https://billthefarmer.github.io/diary/using/template/</link>
       <pubDate>Sun, 27 Feb 2022 19:08:55 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/template/</guid>
       <description>You may use an entry template. If a template is set it will be copied to today&amp;rsquo;s entry if it is empty.</description>
     </item>
-    
     <item>
       <title>Widget</title>
       <link>https://billthefarmer.github.io/diary/using/widget/</link>
       <pubDate>Sun, 27 Feb 2022 19:09:07 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/widget/</guid>
-      <description>The widget will show as much of the entry as will fit in the size chosen. Images, maps, and other media will not display because of android widget limitations. Bullet points do not work very well, but can be constructed using HTML entities so they appear the same in the widget:
-&amp;amp;nbsp; &amp;amp;bullet;&amp;amp;nbsp; Test item&amp;lt;br&amp;gt; • Test item</description>
+      <description>The widget will show as much of the entry as will fit in the size chosen. Images, maps, and other media will not display because of android widget limitations. Bullet points do not work very well, but can be constructed using HTML entities so they appear the same in the widget:&#xA;&amp;amp;nbsp; &amp;amp;bullet;&amp;amp;nbsp; Test item&amp;lt;br&amp;gt; • Test item</description>
     </item>
-    
     <item>
       <title>Help</title>
       <link>https://billthefarmer.github.io/diary/using/help/</link>
       <pubDate>Sun, 16 Feb 2020 19:15:48 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/using/help/</guid>
-      <description>There is a help, a test, an example styles file and an example script file, which may be copied in to an entry for reference if required.
-You may put a link to the embedded help file, [Help](file:///android_asset/help.md) in an entry. Selecting it will load a copy into the markdown view. Long touch on a word and choose Select all on the pop up menu. Select Share, and Diary in the Share dialog.</description>
+      <description>There is a help, a test, an example styles file and an example script file, which may be copied in to an entry for reference if required.&#xA;You may put a link to the embedded help file, [Help](file:///android_asset/help.md) in an entry. Selecting it will load a copy into the markdown view. Long touch on a word and choose Select all on the pop up menu. Select Share, and Diary in the Share dialog.</description>
     </item>
-    
   </channel>
 </rss>

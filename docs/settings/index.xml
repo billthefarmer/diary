@@ -7,15 +7,14 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2006 Bill Farmer</copyright>
-    <lastBuildDate>Sun, 16 Feb 2020 19:07:20 +0000</lastBuildDate><atom:link href="https://billthefarmer.github.io/diary/settings/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Feb 2020 19:14:54 +0000</lastBuildDate>
+    <atom:link href="https://billthefarmer.github.io/diary/settings/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Settings</title>
       <link>https://billthefarmer.github.io/diary/settings/settings/</link>
       <pubDate>Sun, 16 Feb 2020 19:14:54 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/settings/settings/</guid>
       <description>Use custom calendar – Use custom calendar that shows diary entries rather than date picker calendar Use markdown – Use markdown formatting for diary entries Folder – Change diary entry storage folder. Caution – diary entries and styles will not be moved Index – Set an index page. Use the date picker to choose a date. Template – Set a template page. Use the date picker to choose a date.</description>
     </item>
-    
   </channel>
 </rss>

@@ -7,126 +7,98 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright &amp;copy; 2006 Bill Farmer</copyright>
-    <lastBuildDate>Sun, 16 Feb 2020 19:07:48 +0000</lastBuildDate><atom:link href="https://billthefarmer.github.io/diary/content/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 19:36:58 +0100</lastBuildDate>
+    <atom:link href="https://billthefarmer.github.io/diary/content/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Text</title>
       <link>https://billthefarmer.github.io/diary/content/text/</link>
       <pubDate>Sun, 16 Feb 2020 19:12:44 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/text/</guid>
       <description>You may receive text clips from another app. A date picker will pop up. The text will be appended to the entry selected.</description>
     </item>
-    
     <item>
       <title>Media</title>
       <link>https://billthefarmer.github.io/diary/content/media/</link>
       <pubDate>Sun, 16 Feb 2020 19:12:10 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/media/</guid>
       <description>You may store media in the diary storage folders and reference them in diary entries, so markdown text ![cat](cat.jpg) will display cat.jpg stored in the current month folder which is Diary/&amp;lt;year&amp;gt;/&amp;lt;month&amp;gt; on the sdcard. You may either add media from media providers like file managers or image managers or receive media sent by other apps. Media added will be added at the current cursor position. Media sent by other apps will pop up a date picker.</description>
     </item>
-    
     <item>
       <title>Markdown</title>
       <link>https://billthefarmer.github.io/diary/content/markdown/</link>
       <pubDate>Sat, 15 Jul 2023 19:26:02 +0100</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/markdown/</guid>
       <description>Diary supports several markdown extensions including autolink, tables using vertical bar characters, heading anchor, underlining using ++underline++, strikethrough using ~~strike~~, YAML front matter, task lists using - [x] task #1, - [ ] task #2, superscript using ^super^, subscript using ~sub~.</description>
     </item>
-    
     <item>
       <title>Task Lists</title>
       <link>https://billthefarmer.github.io/diary/content/task-lists/</link>
       <pubDate>Sat, 15 Jul 2023 19:30:46 +0100</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/task-lists/</guid>
       <description>To change the state of check boxes in a task list switch to the edit view and tap on the box [ ]. The box will change state and the edit cursor will be where you tapped.</description>
     </item>
-    
     <item>
       <title>Latex</title>
       <link>https://billthefarmer.github.io/diary/content/latex/</link>
       <pubDate>Sun, 16 Feb 2020 19:10:57 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/latex/</guid>
-      <description>Diary doesn&amp;rsquo;t support LaTeX, but it is possible to use an external site to add LaTeX formatted images.
-![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2} &amp;amp;bc=cornsilk&amp;amp;fc=black&amp;amp;im=jpg&amp;amp;fs=24&amp;amp;ff=arev) \sum_{i=1}^{n}x_{i}^{2} If you don&amp;rsquo;t intend to change the image, you can copy it and use that instead, which will then work offline.</description>
+      <description>Diary doesn&amp;rsquo;t support LaTeX, but it is possible to use an external site to add LaTeX formatted images.&#xA;![Math](http://www.sciweavers.org/tex2img.php?eq=\sum_{i=1}^{n}x_{i}^{2} &amp;amp;bc=cornsilk&amp;amp;fc=black&amp;amp;im=jpg&amp;amp;fs=24&amp;amp;ff=arev) \sum_{i=1}^{n}x_{i}^{2} \( \sum_{i=1}^{n}x_{i}^{2} \)&#xA;If you don&amp;rsquo;t intend to change the image, you can copy it and use that instead, which will then work offline.</description>
     </item>
-    
     <item>
       <title>Svgbob</title>
       <link>https://billthefarmer.github.io/diary/content/svgbob/</link>
       <pubDate>Wed, 16 Dec 2020 15:12:09 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/svgbob/</guid>
       <description>Diary doesn&amp;rsquo;t support text diagrams, but will display SVG images produced by an online editor Svgbob Editor.</description>
     </item>
-    
     <item>
       <title>Links</title>
       <link>https://billthefarmer.github.io/diary/content/links/</link>
       <pubDate>Sun, 16 Feb 2020 19:11:43 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/links/</guid>
       <description>You may put links in diary pages, so [DuckDuckGo](https://duckduckgo.com) will show a link to DuckDuckGo. Links will be followed if touched. Use the back button in the toolbar or the navigation bar to return to the diary page. Links to other diary pages may either be a relative reference to the entry file [Sunday](25.txt), or use a date URI [Whenever](date:17/10/2017). Use your local convention for short form numeric dates (UK: dd/mm/yyyy, US: mm/dd/yyyy).</description>
     </item>
-    
     <item>
       <title>Maps</title>
       <link>https://billthefarmer.github.io/diary/content/maps/</link>
       <pubDate>Sun, 16 Feb 2020 19:12:00 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/maps/</guid>
       <description>You may put OpenStreetMap maps in diary pages with a geo URI ![osm](geo:&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;). Geo uris received from other apps will be converted to ![osm](geo:&amp;lt;lat&amp;gt;,&amp;lt;lng&amp;gt;) syntax in the diary entry.</description>
     </item>
-    
     <item>
       <title>Events</title>
       <link>https://billthefarmer.github.io/diary/content/events/</link>
       <pubDate>Mon, 17 Feb 2020 09:32:41 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/events/</guid>
       <description>You may add an event to the calendar by adding a line to a diary entry which begins with an at symbol (@) followed by a time and an event title @ 10:30 Dentist. An event will be added to the calendar when the entry is saved. A colon will be added after the &amp;lsquo;at&amp;rsquo; symbol when the event has been added @:10:30 Dentist. Use the Calendar app to remove or edit events.</description>
     </item>
-    
     <item>
       <title>Cursor Position</title>
       <link>https://billthefarmer.github.io/diary/content/cursor/</link>
       <pubDate>Mon, 17 Feb 2020 09:36:25 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/cursor/</guid>
       <description>You may put a line in an entry to control or remember the edit cursor position. This will not appear in the markdown view. Put [&amp;lt;]: # on a line for the start of an entry, [&amp;gt;]: # for the end of an entry. Put [#]: # for the cursor position to be remembered. There should be no other text on the line. The current cursor position will be added when the entry is saved [#]: # (nnn).</description>
     </item>
-    
     <item>
       <title>Styles</title>
       <link>https://billthefarmer.github.io/diary/content/styles/</link>
       <pubDate>Sun, 16 Feb 2020 19:12:37 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/styles/</guid>
-      <description>You may add custom styles to the markdown formatting by placing a styles.css file in the Diary/css folder, which will replace the built in styles file which simply limits the width of images to the page width. Use the built in editor to create a styles file. You must use the editor accept tick button to save the edits.
-Caution – There is no such thing as a markdown syntax error, but syntax errors in a styles file may cause unpredictable results and affect all diary pages.</description>
+      <description>You may add custom styles to the markdown formatting by placing a styles.css file in the Diary/css folder, which will replace the built in styles file which simply limits the width of images to the page width. Use the built in editor to create a styles file. You must use the editor accept tick button to save the edits.&#xA;Caution – There is no such thing as a markdown syntax error, but syntax errors in a styles file may cause unpredictable results and affect all diary pages.</description>
     </item>
-    
     <item>
       <title>Scripts</title>
       <link>https://billthefarmer.github.io/diary/content/scripts/</link>
       <pubDate>Sun, 16 Feb 2020 19:12:20 +0000</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/scripts/</guid>
-      <description>You may add custom javascript to be loaded into all diary pages by placing a script.js file in the Diary/js folder. Use the built in editor to create a script file. You must use the editor accept tick button to save the edits. Errors in the script will be logged by the WebView which displays the page. See Javascript tutorial.
-If you want to use javascript libraries or write a large script it might be a good idea to use the Google Closure Compiler to check and minimise your code.</description>
+      <description>You may add custom javascript to be loaded into all diary pages by placing a script.js file in the Diary/js folder. Use the built in editor to create a script file. You must use the editor accept tick button to save the edits. Errors in the script will be logged by the WebView which displays the page. See Javascript tutorial.&#xA;If you want to use javascript libraries or write a large script it might be a good idea to use the Google Closure Compiler to check and minimise your code.</description>
     </item>
-    
     <item>
       <title>Emojies</title>
       <link>https://billthefarmer.github.io/diary/content/emojies/</link>
       <pubDate>Sat, 15 Jul 2023 19:36:58 +0100</pubDate>
-      
       <guid>https://billthefarmer.github.io/diary/content/emojies/</guid>
       <description>There is a script, emojies.js in the data folder and a minimised version, emojies.min.js. Either may be copied to the script.js file as above. The script is a work in progress, it could do with some TLC from an expert.</description>
     </item>
-    
   </channel>
 </rss>
