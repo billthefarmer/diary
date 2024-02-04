@@ -1278,6 +1278,8 @@ public class Diary extends Activity
                                            DatePickerPreference.DEFAULT_VALUE);
         // Folder
         folder = preferences.getString(Settings.PREF_FOLDER, DIARY);
+        if (folder.isEmpty())
+            folder = DIARY;
 
         // Link template
         template = preferences.getString(Settings.PREF_INDEX_TEMPLATE,

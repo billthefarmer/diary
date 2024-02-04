@@ -57,16 +57,18 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         EditTextPreference folder =
             (EditTextPreference) findPreference(Settings.PREF_FOLDER);
 
+        if (folder.getText().isEmpty())
+            folder.setText(Diary.DIARY);
+
         // Set folder in text view
-        folder.setSummary(preferences.getString(Settings.PREF_FOLDER,
-                                                Diary.DIARY));
+        folder.setSummary(folder.getText());
+
         // Get index preference
         DatePickerPreference entry =
             (DatePickerPreference) findPreference(Settings.PREF_INDEX_PAGE);
 
         // Get value
-        long value = preferences.getLong(Settings.PREF_INDEX_PAGE,
-                                         DatePickerPreference.DEFAULT_VALUE);
+        long value = entry.getValue();
         Date date = new Date(value);
 
         // Set summary
@@ -79,15 +81,13 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             (EditTextPreference) findPreference(Settings.PREF_INDEX_TEMPLATE);
 
         // Set template in text view
-        link.setSummary(preferences.getString(Settings.PREF_INDEX_TEMPLATE,
-                                              Diary.INDEX_TEMPLATE));
+        link.setSummary(link.getText());
         // Get template preference
         entry =
             (DatePickerPreference) findPreference(Settings.PREF_TEMPLATE_PAGE);
 
         // Get value
-        value = preferences.getLong(Settings.PREF_TEMPLATE_PAGE,
-                                    DatePickerPreference.DEFAULT_VALUE);
+        value = entry.getValue();
         date = new Date(value);
 
         // Set summary
@@ -151,8 +151,11 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             EditTextPreference folder =
                 (EditTextPreference) findPreference(key);
 
+            if (folder.getText().isEmpty())
+                folder.setText(Diary.DIARY);
+
             // Set folder in text view
-            folder.setSummary(preferences.getString(key, Diary.DIARY));
+            folder.setSummary(folder.getText());
         }
 
         if (key.equals(Settings.PREF_INDEX_PAGE))
@@ -162,8 +165,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
                 (DatePickerPreference) findPreference(key);
 
             // Get value
-            long value =
-                preferences.getLong(key, DatePickerPreference.DEFAULT_VALUE);
+            long value = entry.getValue();
             Date date = new Date(value);
 
             // Set summary
@@ -179,7 +181,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
                 (EditTextPreference) findPreference(key);
 
             // Set folder in text view
-            link.setSummary(preferences.getString(key, Diary.INDEX_TEMPLATE));
+            link.setSummary(link.getText());
         }
 
         if (key.equals(Settings.PREF_TEMPLATE_PAGE))
@@ -189,8 +191,7 @@ public class SettingsFragment extends android.preference.PreferenceFragment
                 (DatePickerPreference) findPreference(key);
 
             // Get value
-            long value =
-                preferences.getLong(key, DatePickerPreference.DEFAULT_VALUE);
+            long value = entry.getValue();
             Date date = new Date(value);
 
             // Set summary
