@@ -1,0 +1,2 @@
+ * Prevent empty diary folder
+ * Update icon
