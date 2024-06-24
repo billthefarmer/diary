@@ -236,6 +236,7 @@ public class Diary extends Activity
     public final static String TEXT_PLAIN = "text/plain";
     public final static String IMAGE_PNG = "image/png";
     public final static String WILD_WILD = "*/*";
+    public final static String UTF_8 = "utf-8";
     public final static String IMAGE = "image";
     public final static String AUDIO = "audio";
     public final static String VIDEO = "video";
@@ -564,8 +565,7 @@ public class Diary extends Activity
             prevEntry == null && nextEntry == null && textView.length() == 0)
             textView.setText(readAssetFile(HELP));
 
-        if (markdown && changed)
-            loadMarkdown();
+        loadMarkdown();
 
         setVisibility();
     }
@@ -1359,8 +1359,11 @@ public class Diary extends Activity
     // loadMarkdown
     private void loadMarkdown(CharSequence text)
     {
-        markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
-                                  getStyles(), getScript());
+        if (markdown)
+            markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
+                                      getStyles(), getScript());
+        else
+            markdownView.loadData(text.toString(), TEXT_PLAIN, UTF_8);
     }
 
     // markdownCheck
@@ -1693,29 +1696,37 @@ public class Diary extends Activity
     // setVisibility
     private void setVisibility()
     {
-        if (markdown)
-        {
-            buttonSwitcher.setVisibility(View.VISIBLE);
-            // Check if shown
-            if (shown)
-            {
-                layoutSwitcher.setDisplayedChild(MARKDOWN);
-                buttonSwitcher.setDisplayedChild(EDIT);
-            }
-
-            else
-            {
-                layoutSwitcher.setDisplayedChild(EDIT_TEXT);
-                buttonSwitcher.setDisplayedChild(ACCEPT);
-            }
-        }
-
-        else
-        {
-            layoutSwitcher.setDisplayedChild(EDIT_TEXT);
-            buttonSwitcher.setVisibility(View.GONE);
-        }
+        layoutSwitcher.setDisplayedChild((shown)?
+                                         MARKDOWN:
+                                         EDIT_TEXT);
+        buttonSwitcher.setDisplayedChild((shown)?
+                                         EDIT:
+                                         ACCEPT);
     }
+
+    //     if (markdown)
+    //     {
+    //         buttonSwitcher.setVisibility(View.VISIBLE);
+    //         // Check if shown
+    //         if (shown)
+    //         {
+    //             layoutSwitcher.setDisplayedChild(MARKDOWN);
+    //             buttonSwitcher.setDisplayedChild(EDIT);
+    //         }
+
+    //         else
+    //         {
+    //             layoutSwitcher.setDisplayedChild(EDIT_TEXT);
+    //             buttonSwitcher.setDisplayedChild(ACCEPT);
+    //         }
+    //     }
+
+    //     else
+    //     {
+    //         layoutSwitcher.setDisplayedChild(EDIT_TEXT);
+    //         buttonSwitcher.setVisibility(View.GONE);
+    //     }
+    // }
 
     // goToDate
     private void goToDate(Calendar date)
@@ -2009,18 +2020,40 @@ public class Diary extends Activity
     {
         File folder = getMonth(year, month);
         File file = new File(folder, String.format(Locale.ENGLISH,
+                                                   (markdown)?
+                                                   MD_FORMAT:
                                                    DAY_FORMAT,
                                                    day));
         if (file.exists())
             return file;
 
-        else if (markdown)
-            return new File(folder, String.format(Locale.ENGLISH,
-                                                  MD_FORMAT,
-                                                  day));
-        else
+        file = new File(folder, String.format(Locale.ENGLISH,
+                                              (markdown)?
+                                              DAY_FORMAT:
+                                              MD_FORMAT,
+                                              day));
+        if (file.exists())
             return file;
+
+        return new File(folder, String.format(Locale.ENGLISH,
+                                              (markdown)?
+                                              MD_FORMAT:
+                                              DAY_FORMAT,
+                                              day));
     }
+
+        // File file = new File(folder, String.format(Locale.ENGLISH,
+        //                                            DAY_FORMAT,
+        //                                            day));
+        // if (file.exists())
+        //     return file;
+
+        // else if (markdown)
+        //     return new File(folder, String.format(Locale.ENGLISH,
+        //                                           MD_FORMAT,
+        //                                           day));
+        // else
+        //     return file;
 
     // getFile
     private File getFile()
@@ -2416,8 +2449,7 @@ public class Diary extends Activity
         textView.setText(text);
         changed = false;
         invalidateOptionsMenu();
-        if (markdown)
-            loadMarkdown();
+        loadMarkdown();
 
         if (text != null)
             checkPosition(text);
@@ -2647,8 +2679,7 @@ public class Diary extends Activity
                                         title, dateUrl);
         textView.append(linkText);
 
-        if (markdown)
-            loadMarkdown();
+        loadMarkdown();
     }
 
     // dateCheck
@@ -2714,8 +2745,7 @@ public class Diary extends Activity
         text = dateCheck(text, DATE_FORMAT);
         textView.setText(text);
 
-        if (markdown)
-            loadMarkdown();
+        loadMarkdown();
     }
 
     // dateCheck
