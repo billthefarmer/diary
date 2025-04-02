@@ -1,6 +1,7 @@
 # ![Diary](ic_launcher.png) Diary [![.github/workflows/main.yml](https://github.com/billthefarmer/diary/workflows/.github/workflows/build.yml/badge.svg)](https://github.com/billthefarmer/diary/actions) [![Release](https://img.shields.io/github/release/billthefarmer/diary.svg?logo=github)](https://github.com/billthefarmer/diary/releases)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.svg" alt="Get it on F-Droid" height="80">](https://f-droid.org/packages/org.billthefarmer.diary)
 
+## This app is no longer being maintained. Please feel free to fork or whatever.
 
 Diary is an innovative app where you could put your personal notes or
 personal journals every day. It's one of the best choices out there!
