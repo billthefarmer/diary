@@ -923,6 +923,18 @@ public class Diary extends Activity
                     entry = false;
                     return false;
                 }
+
+                // onReceivedError
+                @Override
+                @SuppressWarnings("deprecation")
+                public void onReceivedError(WebView view,
+                                            int errorCode,
+                                            String description,
+                                            String failingUrl)
+                {
+                    Log.w(TAG, "WebView load error " + errorCode
+                          + ": " + description + " @ " + failingUrl);
+                }
             });
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
