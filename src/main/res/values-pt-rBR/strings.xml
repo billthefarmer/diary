@@ -39,6 +39,7 @@
   <string name="storage">Armazenamento</string>
   <string name="start">Iniciar backup</string>
   <string name="complete">Backup concluído</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Salvar alterações?</string>
   <string name="save">Salve</string>
   <string name="discard">Descartar</string>

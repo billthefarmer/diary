@@ -39,6 +39,7 @@
   <string name="storage">Opslagruimte</string>
   <string name="start">Backup starten</string>
   <string name="complete">Backup voltooid</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Wijzigingen opslaan?</string>
   <string name="save">Opslaan</string>
   <string name="discard">Afdanken</string>

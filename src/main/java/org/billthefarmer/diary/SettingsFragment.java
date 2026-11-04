@@ -24,14 +24,19 @@
 package org.billthefarmer.diary;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
+import android.preference.EditTextPreference;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
+import android.content.Intent;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.content.SharedPreferences;
+import android.net.Uri;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -54,14 +59,24 @@ public class SettingsFragment extends android.preference.PreferenceFragment
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Get folder summary
-        EditTextPreference folder =
-            (EditTextPreference) findPreference(Settings.PREF_FOLDER);
+        folder = (EditTextPreference)
+                findPreference(Settings.PREF_FOLDER);
+
+        folder.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+            startActivityForResult(intent, REQUEST_FOLDER);
+
+            return true;
+        });
+
 
         if (folder.getText().isEmpty())
             folder.setText(Diary.DIARY);
 
         // Set folder in text view
-        folder.setSummary(folder.getText());
+        Uri uri = Uri.parse(folder.getText());
+        folder.setSummary(uri.getLastPathSegment());
 
         // Get index preference
         DatePickerPreference entry =
@@ -204,6 +219,34 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         {
             if (Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
                 getActivity().recreate();
+        }
+    }
+
+    private static final int REQUEST_FOLDER = 9999;
+
+    private EditTextPreference folder;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_FOLDER
+                && resultCode == Activity.RESULT_OK
+                && data != null) {
+
+            Uri treeUri = data.getData();
+
+            if (treeUri != null) {
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                getActivity().getContentResolver()
+                        .takePersistableUriPermission(treeUri, takeFlags);
+
+                folder.setText(treeUri.toString());
+                folder.setSummary(treeUri.getPath());
+            }
         }
     }
 }

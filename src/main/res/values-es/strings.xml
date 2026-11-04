@@ -39,6 +39,7 @@
   <string name="storage">Almacenamiento</string>
   <string name="start">Comenzar copia de seguridad</string>
   <string name="complete">Copia de seguridad completa</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">¿Guardar cambios?</string>
   <string name="save">Guardar</string>
   <string name="discard">Descartar</string>

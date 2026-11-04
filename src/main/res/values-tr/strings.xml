@@ -39,6 +39,7 @@
   <string name="storage">Depolama</string>
   <string name="start">Yedeklemeyi başlat</string>
   <string name="complete">Yedekleme tamamlandı</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Değişiklikler kaydedilsin mi?</string>
   <string name="save">Kaydet</string>
   <string name="discard">At</string>

@@ -39,6 +39,7 @@
   <string name="storage">貯蔵</string>
   <string name="start">バックアップを開始</string>
   <string name="complete">バックアップ完了</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">変更内容を保存？</string>
   <string name="save">セーブ</string>
   <string name="discard">捨てる</string>

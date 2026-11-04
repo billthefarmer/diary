@@ -36,9 +36,11 @@
   <string name="editScript">Skript bearbeiten…</string>
   <string name="backup">Backup…</string>
   <string name="choose">Wähle einen Dateinamen</string>
-  <string name="storage">Speicher</string>
+  <string name="storage">Speicherort</string>
+  <string name="selectStorage">Speicherort wählen</string>
   <string name="start">Backup starten</string>
-  <string name="complete">Backup komplett</string>
+  <string name="complete">Erfolgreich abgeschlossen</string>
+  <string name="error">Es ist ein Fehler aufgetreten</string>
   <string name="changes">Änderungen speichern?</string>
   <string name="save">Speichern</string>
   <string name="discard">Verwerfen</string>

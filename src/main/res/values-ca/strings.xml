@@ -39,15 +39,14 @@
   <string name="storage">Emmagatzematge</string>
   <string name="start">Inicia la còpia de seguretat</string>
   <string name="complete">S\'ha completat la còpia de seguretat</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Guardar canvis?</string>
   <string name="save">Desa</string>
   <string name="discard">Descartar</string>
   <string name="settings">Ajustos</string>
   <string name="calendar">Calendari</string>
   <string name="pref_calendar">Utilitza calendari personalitzat</string>
-  <string name="pref_calendar_summ">
-    Utilitza calendari personalitzat en lloc d\'un selector de data
-  </string>
+  <string name="pref_calendar_summ">Utilitza calendari personalitzat en lloc d\'un selector de data</string>
   <string name="markdown">Markdown</string>
   <string name="pref_markdown">Ús de markdown</string>
   <string name="pref_markdown_summ">

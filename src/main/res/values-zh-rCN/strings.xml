@@ -39,6 +39,7 @@
   <string name="storage">存储空间</string>
   <string name="start">开始备份</string>
   <string name="complete">备份完成</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">保存更改？</string>
   <string name="save">保存</string>
   <string name="discard">丢弃</string>

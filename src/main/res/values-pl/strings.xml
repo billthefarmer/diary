@@ -39,6 +39,7 @@
   <string name="storage">Pamięć wewnętrzna</string>
   <string name="start">Rozpocząć tworzenie kopii zapasowych</string>
   <string name="complete">Tworzenie kopii zapasowej zakończone</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Zapisz zmiany?</string>
   <string name="save">Zapisać</string>
   <string name="discard">Odrzucać</string>
