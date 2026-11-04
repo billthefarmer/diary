@@ -477,19 +477,26 @@ public class Diary extends Activity
     // listYears
     public static DocumentFile[] listYears(DocumentFile home)
     {
+        if (home == null || !home.isDirectory())
+            return new DocumentFile[0];
         return sortFiles(home.listFiles(), YEAR_DIR);
     }
 
     // listMonths
     public static DocumentFile[] listMonths(DocumentFile yearDir)
     {
+        if (yearDir == null || !yearDir.isDirectory())
+            return new DocumentFile[0];
         return sortFiles(yearDir.listFiles(), MONTH_DIR);
     }
 
     // listDays
     public static DocumentFile[] listDays(DocumentFile monthDir)
     {
-        return sortFiles(monthDir.listFiles(), DAY_FILE);
+        if (monthDir == null || !monthDir.isDirectory())
+            return new DocumentFile[0];
+
+           return sortFiles(monthDir.listFiles(), DAY_FILE);
     }
 
     // sortFiles
@@ -518,33 +525,7 @@ public class Diary extends Activity
         return Integer.parseInt(dayFile.getName().split("\\.")[0]);
     }
 
-    // read
-    public StringBuilder read(DocumentFile file) {
-        StringBuilder text = new StringBuilder();
 
-        if (file == null || !file.exists() || !file.isFile())
-            return text;
-
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        getContentResolver().openInputStream(file.getUri()),
-                        StandardCharsets.UTF_8))) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text.append(line);
-                text.append(System.getProperty("line.separator"));
-
-                if (text.length() >= LARGE_SIZE)
-                    break;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return text;
-    }
 
     // parseTime
     public static long parseTime(DocumentFile file)
@@ -2304,8 +2285,23 @@ public class Diary extends Activity
     // getHome
     private DocumentFile getHome()
     {
-        Uri uri = Uri.parse(folder);
-        return DocumentFile.fromTreeUri(this, uri);
+        if (folder == null || folder.isEmpty() || folder.equals(DIARY))
+            return null;
+
+        try
+        {
+            Uri uri = Uri.parse(folder);
+
+            if (!"content".equals(uri.getScheme()))
+                return null;
+
+            return DocumentFile.fromTreeUri(this, uri);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
    // findYear
@@ -2409,7 +2405,44 @@ public class Diary extends Activity
                 entry.get(Calendar.DATE));
     }
 
+    // read
+    public StringBuilder read(DocumentFile file) {
+        return read(this, file);
+    }
 
+    public static StringBuilder read(
+            android.content.Context context,
+            DocumentFile file)
+    {
+        StringBuilder text = new StringBuilder();
+
+        if (file == null || !file.exists() || !file.isFile())
+            return text;
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        context.getContentResolver()
+                                .openInputStream(file.getUri()),
+                        StandardCharsets.UTF_8)))
+        {
+            String line;
+
+            while ((line = reader.readLine()) != null)
+            {
+                text.append(line);
+                text.append(System.getProperty("line.separator"));
+
+                if (text.length() >= LARGE_SIZE)
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return text;
+    }
 
     // prevYear
     private int prevYear(int year)
