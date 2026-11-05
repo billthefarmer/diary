@@ -305,8 +305,6 @@ public class Diary extends Activity
         private final static int APP_STORAGE_ACCESS_REQUEST_CODE = 501;
         private static final int REQUEST_STORAGE_PERMISSIONS = 123;
         private static final int REQUEST_MEDIA_PERMISSIONS = 456;
-        private final String readPermission = permission.READ_EXTERNAL_STORAGE;
-        private final String writePermission = permission.WRITE_EXTERNAL_STORAGE;
 
         private void checkPermissions() {
 
@@ -314,8 +312,8 @@ public class Diary extends Activity
                 //As the device is Android 13 and above so I want the permission of accessing Audio, Images, Videos
                 //You can ask permission according to your requirements what you want to access.
                 String audioPermission = Manifest.permission.READ_MEDIA_AUDIO;
-                String imagesPermission = permission.READ_MEDIA_IMAGES;
-                String videoPermission = permission.READ_MEDIA_VIDEO;
+                String imagesPermission = Manifest.permission.READ_MEDIA_IMAGES;
+                String videoPermission = Manifest.permission.READ_MEDIA_VIDEO;
                 // Check for permissions and request them if needed
                 if (ContextCompat.checkSelfPermission(Diary.this, audioPermission) == PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(Diary.this, imagesPermission) == PackageManager.PERMISSION_GRANTED &&
@@ -326,18 +324,6 @@ public class Diary extends Activity
                 } else {
                     // You don't have the permissions. Request them.
                     ActivityCompat.requestPermissions(Diary.this, new String[]{audioPermission, imagesPermission, videoPermission}, REQUEST_MEDIA_PERMISSIONS);
-                }
-            } else {
-                //Android version is below 13 so we are asking normal read and write storage permissions
-                // Check for permissions and request them if needed
-                if (ContextCompat.checkSelfPermission(Diary.this, readPermission) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(Diary.this, writePermission) == PackageManager.PERMISSION_GRANTED) {
-                    // You have the permissions, you can proceed with your file operations.
-                    // Show the file picker dialog when needed
-                    // dialog.show();
-                } else {
-                    // You don't have the permissions. Request them.
-                    ActivityCompat.requestPermissions(Diary.this, new String[]{readPermission, writePermission}, REQUEST_STORAGE_PERMISSIONS);
                 }
             }
         }
@@ -360,9 +346,7 @@ public class Diary extends Activity
                         //Android version is 10 and below so need of special permission...
                         // dialog.show();
                     }
-                } else {
-                    // Permissions were denied. Show a rationale dialog or inform the user about the importance of these permissions.
-                    showRationaleDialog();
+
                 }
                 break;
 
@@ -375,43 +359,28 @@ public class Diary extends Activity
                         //special permission so show user a dialog..
                         accessAllFilesPermissionDialog();
                     }
-                } else {
-                    // Permissions were denied. Show a rationale dialog or inform the user about the importance of these permissions.
-                    showRationaleDialog();
                 }
                 break;
 
             case REQUEST_WRITE:
                 for (int i = 0; i < grantResults.length; i++)
-                    if (permissions[i].equals(permission
-                            .WRITE_EXTERNAL_STORAGE) &&
-                            grantResults[i] == PackageManager.PERMISSION_GRANTED)
-                        // Granted, save
                         save();
                 break;
 
             case REQUEST_READ:
                 for (int i = 0; i < grantResults.length; i++)
-                    if (permissions[i].equals(permission
-                            .READ_EXTERNAL_STORAGE) &&
-                            grantResults[i] == PackageManager.PERMISSION_GRANTED)
-                        // Granted, load
                         load();
                 break;
 
             case REQUEST_TEMPLATE:
                 for (int i = 0; i < grantResults.length; i++)
-                    if (permissions[i].equals(permission
-                            .READ_EXTERNAL_STORAGE) &&
-                            grantResults[i] == PackageManager.PERMISSION_GRANTED)
-                        // Granted, template
                         template();
                 break;
             }
         }
 
 
-    private boolean areAllPermissionsGranted(int[] grantResults) {
+        private boolean areAllPermissionsGranted(int[] grantResults) {
             for (int result : grantResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
                     return false;
@@ -420,27 +389,7 @@ public class Diary extends Activity
             return true;
         }
 
-        private void showRationaleDialog() {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, readPermission) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(this, writePermission) ) {
-                // Show a rationale dialog explaining why the permissions are necessary.
-                new AlertDialog.Builder(this)
-                        .setTitle("Permission Needed")
-                        .setMessage("This app needs storage permissions to read and write files.")
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            // Request permissions when the user clicks OK.
-                            ActivityCompat.requestPermissions(Diary.this, new String[]{readPermission, writePermission}, REQUEST_STORAGE_PERMISSIONS);
-                        })
-                        .setNegativeButton("Cancel", (dialog, which) -> {
-                            dialog.dismiss();
-                            // Handle the case where the user cancels the permission request.
-                        })
-                        .show();
-            } else {
-                // Request permissions directly if no rationale is needed.
-                ActivityCompat.requestPermissions(this, new String[]{readPermission, writePermission}, REQUEST_STORAGE_PERMISSIONS);
-            }
-        }
+
 
         // @RequiresApi(api = Build.VERSION_CODES.R)
         private void accessAllFilesPermissionDialog() {
@@ -496,7 +445,7 @@ public class Diary extends Activity
         if (monthDir == null || !monthDir.isDirectory())
             return new DocumentFile[0];
 
-           return sortFiles(monthDir.listFiles(), DAY_FILE);
+        return sortFiles(monthDir.listFiles(), DAY_FILE);
     }
 
     // sortFiles
@@ -756,7 +705,7 @@ public class Diary extends Activity
         markdownView.clearCache(true);
 
         // Copy help text to today's page if no entries
-        if ((checkSelfPermission(permission.WRITE_EXTERNAL_STORAGE)  == PackageManager.PERMISSION_GRANTED) &&  prevEntry == null && nextEntry == null && textView.length() == 0)
+        if (prevEntry == null && nextEntry == null && textView.length() == 0)
             textView.setText(readAssetFile(HELP));
 
         if (markdown && changed)
@@ -2791,17 +2740,7 @@ public class Diary extends Activity
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            if (checkSelfPermission(permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]
-                    {permission.WRITE_EXTERNAL_STORAGE,
-                     permission.READ_EXTERNAL_STORAGE,
-                     permission.WRITE_CALENDAR,
-                     permission.READ_CALENDAR}, REQUEST_READ);
-
                 return;
-            }
         }
 
         CharSequence text = read(getFile());
@@ -3087,17 +3026,7 @@ public class Diary extends Activity
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            if (checkSelfPermission(permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]
-                    {permission.WRITE_EXTERNAL_STORAGE,
-                     permission.READ_EXTERNAL_STORAGE,
-                     permission.WRITE_CALENDAR,
-                     permission.READ_CALENDAR}, REQUEST_TEMPLATE);
-
                 return;
-            }
         }
 
         Calendar template = Calendar.getInstance();

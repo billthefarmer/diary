@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 // Editor
 @SuppressWarnings("deprecation")
@@ -277,39 +278,6 @@ public class Editor extends Activity
         }
     }
 
-    // onRequestPermissionsResult
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults)
-    {
-        switch (requestCode)
-        {
-        case REQUEST_WRITE:
-            for (int i = 0; i < grantResults.length; i++)
-                if (permissions[i].equals(Manifest.permission
-                                          .WRITE_EXTERNAL_STORAGE) &&
-                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
-                {
-                    // Granted, write
-                    CharSequence text = textView.getText();
-                    write(text, file);
-                }
-            break;
-
-        case REQUEST_READ:
-            for (int i = 0; i < grantResults.length; i++)
-                if (permissions[i].equals(Manifest.permission
-                                          .READ_EXTERNAL_STORAGE) &&
-                    grantResults[i] == PackageManager.PERMISSION_GRANTED)
-                {
-                    // Granted, read
-                    CharSequence text = read(uri);
-                    textView.setText(text);
-                }
-            break;
-        }
-    }
 
     // resolveContent
     private Uri resolveContent(Uri uri)
@@ -362,21 +330,13 @@ public class Editor extends Activity
     {
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]
-                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                     Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ);
+        if (uri == null)
+            return stringBuilder;
 
-                return stringBuilder;
-            }
-        }
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader
-              (getContentResolver().openInputStream(uri))))
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        getContentResolver().openInputStream(uri),
+                        StandardCharsets.UTF_8)))
         {
             String line;
             while ((line = reader.readLine()) != null)
@@ -387,6 +347,7 @@ public class Editor extends Activity
         }
         catch (IOException e)
         {
+            e.printStackTrace();
         }
 
         return stringBuilder;
@@ -397,15 +358,7 @@ public class Editor extends Activity
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]
-                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                     Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_WRITE);
-
                 return;
-            }
         }
 
         if (file != null)
