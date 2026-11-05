@@ -30,12 +30,9 @@ import android.preference.EditTextPreference;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.content.Intent;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.content.SharedPreferences;
 import android.net.Uri;
 
 import java.text.DateFormat;
@@ -55,8 +52,8 @@ public class SettingsFragment extends android.preference.PreferenceFragment
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        SharedPreferences preferences =
-            PreferenceManager.getDefaultSharedPreferences(getActivity());
+        // SharedPreferences preferences =
+         //   PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Get folder summary
         folder = (EditTextPreference)
@@ -227,22 +224,35 @@ public class SettingsFragment extends android.preference.PreferenceFragment
     private EditTextPreference folder;
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_FOLDER
                 && resultCode == Activity.RESULT_OK
-                && data != null) {
-
+                && data != null)
+        {
             Uri treeUri = data.getData();
 
-            if (treeUri != null) {
-                final int takeFlags = data.getFlags()
-                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            if (treeUri != null)
+            {
+                final int flags = data.getFlags();
 
-                getActivity().getContentResolver()
-                        .takePersistableUriPermission(treeUri, takeFlags);
+                if ((flags & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0)
+                {
+                    getActivity().getContentResolver()
+                            .takePersistableUriPermission(
+                                    treeUri,
+                                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+
+                if ((flags & Intent.FLAG_GRANT_WRITE_URI_PERMISSION) != 0)
+                {
+                    getActivity().getContentResolver()
+                            .takePersistableUriPermission(
+                                    treeUri,
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
 
                 folder.setText(treeUri.toString());
                 folder.setSummary(treeUri.getPath());

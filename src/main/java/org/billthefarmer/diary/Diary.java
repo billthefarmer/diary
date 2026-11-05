@@ -65,6 +65,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -414,12 +415,15 @@ public class Diary extends Activity
 
 
     // sortFiles
-    public static File[] sortFiles(File[] files) {
+    public static DocumentFile[] sortFiles(DocumentFile[] files)
+    {
         if (files == null)
-            return new File[0];
+            return new DocumentFile[0];
+
         // compare
         Arrays.sort(files, (file1, file2) ->
                 file2.getName().compareTo(file1.getName()));
+
         return files;
     }
 
@@ -560,10 +564,6 @@ public class Diary extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        android.util.Log.d("LIFECYCLE",
-                "onCreate: savedInstanceState="
-                        + (savedInstanceState == null ? "null" : "vorhanden"));
 
         // Get preferences
         getPreferences();
@@ -798,75 +798,57 @@ public class Diary extends Activity
         int id = item.getItemId();
         if (id == R.id.prev) {
             onBackPressedDispatcher();
-            finish();
             return true;
         } else if (id == R.id.cancel) {
             onBackPressedDispatcher();
-            finish();
             return true;
         } else if (id == R.id.prevEntry) {
             prevEntry();
-            finish();
             return true;
         } else if (id == R.id.nextEntry) {
             nextEntry();
-            finish();
             return true;
         } else if (id == R.id.today) {
             today();
-            finish();
             return true;
         } else if (id == R.id.goToDate) {
             goToDate(currEntry);
-            finish();
             return true;
         } else if (id == R.id.index) {
             index();
-            finish();
             return true;
         } else if (id == R.id.link) {
             addIndexLink();
-            finish();
             return true;
         } else if (id == R.id.findAll) {
             findAll();
-            finish();
             return true;
         } else if (id == R.id.print) {
             print();
-            finish();
             return true;
         } else if (id == R.id.share) {
             share();
-            finish();
             return true;
         } else if (id == R.id.addTime) {
             addTime();
-            finish();
             return true;
         } else if (id == R.id.addEvents) {
             addEvents();
-            finish();
             return true;
         } else if (id == R.id.addMedia) {
             addMedia();
-            finish();
             return true;
         } else if (id == R.id.editStyles) {
             editStyles();
-            finish();
             return true;
         } else if (id == R.id.editScript) {
             editScript();
-            finish();
             return true;
         } else if (id == R.id.backup) {
             backup();
-            finish();
             return true;
         } else if (id == R.id.settings) {
             settings();
-            finish();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -1557,6 +1539,11 @@ public class Diary extends Activity
     // loadMarkdown
     private void loadMarkdown(CharSequence text)
     {
+        String baseUrl = getBaseUrl();
+
+        android.util.Log.d("DIARY_TEST", "Base URL: " + baseUrl);
+        android.util.Log.d("DIARY_TEST", "Text length: " +
+                (text == null ? -1 : text.length()));
         markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
                                   getStyles(), getScript());
     }
@@ -1584,8 +1571,10 @@ public class Diary extends Activity
         // Find matches
         while (matcher.find())
         {
-            File file = new File(matcher.group(2));
-            String type = FileUtils.getMimeType(file);
+            String name = matcher.group(2);
+            String extension = MimeTypeMap.getFileExtensionFromUrl(name);
+            String type = MimeTypeMap.getSingleton()
+                    .getMimeTypeFromExtension(extension.toLowerCase(Locale.ROOT));
 
             if (type == null)
             {
@@ -1853,10 +1842,12 @@ public class Diary extends Activity
         haveMedia = false;
     }
 
-    // getBaseUrl
-    private String getBaseUrl()
-    {
-        return getCurrent().getUri() + File.separator;
+    private String getBaseUrl() {
+        DocumentFile current = getCurrent();
+        if (current == null)
+            return "";
+
+        return current.getUri().toString() + "/";
     }
 
     // getCurrent
@@ -2155,9 +2146,13 @@ public class Diary extends Activity
 
         Uri uri = file.getUri();
 
-        startActivityForResult(
-                new Intent(Intent.ACTION_EDIT, uri, this, Editor.class),
-                EDIT_STYLES);
+        Intent intent = new Intent(Intent.ACTION_EDIT, uri, this, Editor.class);
+
+        intent.addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        startActivityForResult(intent, EDIT_STYLES);
     }
     /// editScript
     private void editScript()
@@ -2185,9 +2180,13 @@ public class Diary extends Activity
 
         Uri uri = file.getUri();
 
-        startActivityForResult(
-                new Intent(Intent.ACTION_EDIT, uri, this, Editor.class),
-                EDIT_STYLES);
+        Intent intent = new Intent(Intent.ACTION_EDIT, uri, this, Editor.class);
+
+        intent.addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        startActivityForResult(intent, EDIT_STYLES);
     }
 
     // backup
@@ -2531,18 +2530,22 @@ public class Diary extends Activity
     private Calendar diaryEntry(String url)
     {
         // Get home folder
-        String home = getHome().getUri().toString();
-
-        // Check url
-        if (!url.startsWith(home))
+        DocumentFile home = getHome();
+        if (home == null)
             return null;
 
-        // Get uri
+        String homeUri = home.getUri().toString();
+
+        // Check url
+        if (url == null || !url.startsWith(homeUri))
+            return null;
+
+        // Get document
         Uri uri = Uri.parse(url);
-        File file = new File(uri.getPath());
+        DocumentFile file = DocumentFile.fromSingleUri(this, uri);
 
         // Check file
-        if (!file.exists())
+        if (file == null || !file.exists() || !file.isFile())
             return null;
 
         // Get segments
@@ -2558,7 +2561,6 @@ public class Diary extends Activity
 
             return new GregorianCalendar(year, month, day);
         }
-
         catch (Exception e) {}
 
         return null;
@@ -2735,18 +2737,14 @@ public class Diary extends Activity
         return null;
     }
 
-    // load
     private void load()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-                return;
-        }
-
         CharSequence text = read(getFile());
+
         textView.setText(text);
         changed = false;
         invalidateOptionsMenu();
+
         if (markdown)
             loadMarkdown();
 
@@ -3261,15 +3259,6 @@ public class Diary extends Activity
     // resolveContent
     private Uri resolveContent(Uri uri)
     {
-        String path = FileUtils.getPath(this, uri);
-
-        if (path != null)
-        {
-            File file = new File(path);
-            if (file.canRead())
-                uri = Uri.fromFile(file);
-        }
-
         return uri;
     }
 
@@ -3945,12 +3934,13 @@ public class Diary extends Activity
         public void decorate(DayView dayView)
         {
             Calendar cellDate = dayView.getDate();
-            DocumentFile dayFile = getDay(cellDate.get(Calendar.YEAR),
-                                  cellDate.get(Calendar.MONTH),
-                                  cellDate.get(Calendar.DATE));
+            DocumentFile dayFile = getDay(
+                    cellDate.get(Calendar.YEAR),
+                    cellDate.get(Calendar.MONTH),
+                    cellDate.get(Calendar.DATE));
 
-            if (dayFile.exists())
-                    dayView.setBackgroundResource(R.drawable.diary_entry);
+            if (dayFile != null && dayFile.exists())
+                dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }
 }

@@ -21,16 +21,13 @@
 
 package org.billthefarmer.diary;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -42,10 +39,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 // Editor
@@ -59,7 +56,6 @@ public class Editor extends Activity
     private final static int REQUEST_READ = 1;
     private final static int REQUEST_WRITE = 2;
 
-    private File file;
     private Uri uri;
 
     private EditText textView;
@@ -117,14 +113,12 @@ public class Editor extends Activity
 
         if (uri != null)
         {
-            if (CONTENT.equalsIgnoreCase(uri.getScheme()))
-                uri = resolveContent(uri);
-
+            // Dateiname als Titel anzeigen
             String title = uri.getLastPathSegment();
-            setTitle(title);
 
-            if (!CONTENT.equalsIgnoreCase(uri.getScheme()))
-                file = new File(uri.getPath());
+            // Bei SAF-URIs kann der letzte Pfadabschnitt eine ID sein.
+            // Deshalb später gegebenenfalls über OpenableColumns.DISPLAY_NAME ermitteln.
+            setTitle(title);
 
             if (savedInstanceState == null)
             {
@@ -186,7 +180,7 @@ public class Editor extends Activity
                 if (changed)
                 {
                     CharSequence text = textView.getText();
-                    write(text, file);
+                    write(text, uri);
                 }
 
                 // Hide keyboard
@@ -258,7 +252,7 @@ public class Editor extends Activity
             {
             case DialogInterface.BUTTON_POSITIVE:
                 CharSequence text = textView.getText();
-                write(text, file);
+                write(text, uri);
                 setResult(RESULT_OK, null);
                 finish();
                 break;
@@ -282,14 +276,6 @@ public class Editor extends Activity
     // resolveContent
     private Uri resolveContent(Uri uri)
     {
-        String path = FileUtils.getPath(this, uri);
-
-        if (path != null)
-        {
-            File file = new File(path);
-            uri = Uri.fromFile(file);
-        }
-
         return uri;
     }
 
@@ -354,29 +340,29 @@ public class Editor extends Activity
     }
 
     // write
-    private void write(CharSequence text, File file)
+    private void write(CharSequence text, Uri uri)
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if (uri == null)
+            return;
+
+        try (OutputStream output = getContentResolver()
+                .openOutputStream(uri, "wt"))
         {
-                return;
+            if (output == null)
+                throw new IOException("Could not open output stream");
+
+            try (OutputStreamWriter writer = new OutputStreamWriter(
+                    output, StandardCharsets.UTF_8))
+            {
+                writer.append(text);
+            }
         }
-
-        if (file != null)
+        catch (IOException e)
         {
-            file.getParentFile().mkdirs();
-            try (FileWriter fileWriter = new FileWriter(file))
-            {
-                fileWriter.append(text);
-                fileWriter.close();
-            }
+            alertDialog(R.string.appName, e.getMessage(),
+                    android.R.string.ok);
 
-            catch (IOException e)
-            {
-                alertDialog(R.string.appName, e.getMessage(),
-                            android.R.string.ok);
-
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 }
