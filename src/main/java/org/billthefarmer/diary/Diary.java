@@ -19,11 +19,11 @@ package org.billthefarmer.diary;
 import static android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION;
 
 import android.Manifest;
-import android.Manifest.permission;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ClipData;
 import android.content.ComponentName;
@@ -52,6 +52,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -61,12 +62,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -94,6 +99,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,8 +109,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Deque;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -150,7 +161,6 @@ public class Diary extends Activity
     public static final int VERSION_CODE_S_V2 = 32;
 
     public final static String DIARY = "Diary";
-    public final static String TAG = DIARY;
 
     public final static String YEAR = "year";
     public final static String MONTH = "month";
@@ -178,8 +188,6 @@ public class Diary extends Activity
     public final static Pattern POSN_PATTERN =
             Pattern.compile("^ ?\\[([<#>])\\]: ?#(?: ?\\((\\d+)\\))? *$",
                     Pattern.MULTILINE);
-    public final static Pattern FILE_PATTERN =
-            Pattern.compile("([0-9]{4}).([0-9]{2}).([0-9]{2}).(txt|md)$");
     public final static Pattern TEMP_PATTERN =
             Pattern.compile("<<date *(.*)>>", Pattern.MULTILINE);
     public final static Pattern CHECK_PATTERN = Pattern.compile
@@ -214,6 +222,9 @@ public class Diary extends Activity
     public final static String MEDIA_TEMPLATE = "![%s](%s)";
     public final static String LINK_TEMPLATE = "[%s](%s)";
     public final static String INDEX_TEMPLATE = "<<date>>";
+
+    private static final String INDEX_VERSION = "DIARY-INDEX-1";
+
     public final static String AUDIO_TEMPLATE =
             "<audio controls src=\"%s\"></audio>";
     public final static String VIDEO_TEMPLATE =
@@ -249,7 +260,11 @@ public class Diary extends Activity
     public final static String ELLIPSIS = "…";
 
     private boolean custom = true;
-    private boolean markdown = true;
+    private boolean markdown = true; // Do we have markdown enabled?
+
+    private long markdownLoadStart; // for time measuring
+
+    private boolean currentMarkdown; // Is the current file a markdown file?
     private boolean extended = true;
     private boolean external = false;
     private boolean useIndex = false;
@@ -265,6 +280,8 @@ public class Diary extends Activity
 
     private boolean multi = false;
     private boolean entry = false;
+
+    private boolean diaryReady = false; // Index already done?
 
     private long saved = 0;
 
@@ -303,115 +320,116 @@ public class Diary extends Activity
     private View accept;
     private View edit;
 
-        private final static int APP_STORAGE_ACCESS_REQUEST_CODE = 501;
-        private static final int REQUEST_STORAGE_PERMISSIONS = 123;
-        private static final int REQUEST_MEDIA_PERMISSIONS = 456;
+    private final NavigableSet<LocalDate> entryDates = new TreeSet<>(); // Navigation Cache
+    private final Map<LocalDate, Uri> entryUris = new HashMap<>();
 
-        private void checkPermissions() {
+    private final static int APP_STORAGE_ACCESS_REQUEST_CODE = 501;
+    private static final int REQUEST_STORAGE_PERMISSIONS = 123;
+    private static final int REQUEST_MEDIA_PERMISSIONS = 456;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                //As the device is Android 13 and above so I want the permission of accessing Audio, Images, Videos
-                //You can ask permission according to your requirements what you want to access.
-                String audioPermission = Manifest.permission.READ_MEDIA_AUDIO;
-                String imagesPermission = Manifest.permission.READ_MEDIA_IMAGES;
-                String videoPermission = Manifest.permission.READ_MEDIA_VIDEO;
-                // Check for permissions and request them if needed
-                if (ContextCompat.checkSelfPermission(Diary.this, audioPermission) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(Diary.this, imagesPermission) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(Diary.this, videoPermission) == PackageManager.PERMISSION_GRANTED) {
-                    // You have the permissions, you can proceed with your media file operations.
-                    //Showing dialog when Show Dialog button is clicked.
-                    // dialog.show();
+    private void checkPermissions() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            //As the device is Android 13 and above so I want the permission of accessing Audio, Images, Videos
+            //You can ask permission according to your requirements what you want to access.
+            String audioPermission = Manifest.permission.READ_MEDIA_AUDIO;
+            String imagesPermission = Manifest.permission.READ_MEDIA_IMAGES;
+            String videoPermission = Manifest.permission.READ_MEDIA_VIDEO;
+            // Check for permissions and request them if needed
+            if (ContextCompat.checkSelfPermission(Diary.this, audioPermission) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(Diary.this, imagesPermission) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(Diary.this, videoPermission) == PackageManager.PERMISSION_GRANTED) {
+                // You have the permissions, you can proceed with your media file operations.
+                //Showing dialog when Show Dialog button is clicked.
+                // dialog.show();
+            } else {
+                // You don't have the permissions. Request them.
+                ActivityCompat.requestPermissions(Diary.this, new String[]{audioPermission, imagesPermission, videoPermission}, REQUEST_MEDIA_PERMISSIONS);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode)
+        {
+        case REQUEST_STORAGE_PERMISSIONS:
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permissions were granted. You can proceed with your file operations.
+                //Showing dialog when Show Dialog button is clicked.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    //Android version is 11 and above so to access all types of files we have to give
+                    //special permission so show user a dialog..
+                    accessAllFilesPermissionDialog();
                 } else {
-                    // You don't have the permissions. Request them.
-                    ActivityCompat.requestPermissions(Diary.this, new String[]{audioPermission, imagesPermission, videoPermission}, REQUEST_MEDIA_PERMISSIONS);
+                    //Android version is 10 and below so need of special permission...
+                    // dialog.show();
+                }
+
+            }
+            break;
+
+        case REQUEST_MEDIA_PERMISSIONS:   //This conditions only works on Android 13 and above versions
+            if (grantResults.length > 0 && areAllPermissionsGranted(grantResults)) {
+                // Permissions were granted. You can proceed with your media file operations.
+                //Showing dialog when Show Dialog button is clicked.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    //Android version is 11 and above so to access all types of files we have to give
+                    //special permission so show user a dialog..
+                    accessAllFilesPermissionDialog();
                 }
             }
+            break;
+
+        case REQUEST_WRITE:
+            for (int i = 0; i < grantResults.length; i++)
+                    save();
+            break;
+
+        case REQUEST_READ:
+            for (int i = 0; i < grantResults.length; i++)
+                    load();
+            break;
+
+        case REQUEST_TEMPLATE:
+            for (int i = 0; i < grantResults.length; i++)
+                    template();
+            break;
         }
+    }
 
-        @Override
-        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            switch (requestCode)
-            {
-            case REQUEST_STORAGE_PERMISSIONS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permissions were granted. You can proceed with your file operations.
-                    //Showing dialog when Show Dialog button is clicked.
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        //Android version is 11 and above so to access all types of files we have to give
-                        //special permission so show user a dialog..
-                        accessAllFilesPermissionDialog();
-                    } else {
-                        //Android version is 10 and below so need of special permission...
-                        // dialog.show();
-                    }
-
-                }
-                break;
-
-            case REQUEST_MEDIA_PERMISSIONS:   //This conditions only works on Android 13 and above versions
-                if (grantResults.length > 0 && areAllPermissionsGranted(grantResults)) {
-                    // Permissions were granted. You can proceed with your media file operations.
-                    //Showing dialog when Show Dialog button is clicked.
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        //Android version is 11 and above so to access all types of files we have to give
-                        //special permission so show user a dialog..
-                        accessAllFilesPermissionDialog();
-                    }
-                }
-                break;
-
-            case REQUEST_WRITE:
-                for (int i = 0; i < grantResults.length; i++)
-                        save();
-                break;
-
-            case REQUEST_READ:
-                for (int i = 0; i < grantResults.length; i++)
-                        load();
-                break;
-
-            case REQUEST_TEMPLATE:
-                for (int i = 0; i < grantResults.length; i++)
-                        template();
-                break;
+    private boolean areAllPermissionsGranted(int[] grantResults) {
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
             }
         }
-
-
-        private boolean areAllPermissionsGranted(int[] grantResults) {
-            for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return true;
+    }
 
 
 
-        // @RequiresApi(api = Build.VERSION_CODES.R)
-        private void accessAllFilesPermissionDialog() {
+    // @RequiresApi(api = Build.VERSION_CODES.R)
+    private void accessAllFilesPermissionDialog() {
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Permission Needed")
-                    .setMessage("This app needs all files access permissions to view files from your storage. Clicking on OK will redirect you to new window were you have to enable the option.")
-                    .setPositiveButton("OK", (myDialog, which) -> {
-                        // Request permissions when the user clicks OK.
-                        Intent intent = new Intent(ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
-                        startActivityForResult(intent, APP_STORAGE_ACCESS_REQUEST_CODE);
-                    })
-                    .setNegativeButton("Cancel", (myDialog, which) -> {
-                        myDialog.dismiss();
-                        // Handle the case where the user cancels the permission request.
-                        // dialog.show();
-                    })
-                    .show();
-        }
-
-
+        new AlertDialog.Builder(this)
+                .setTitle("Permission Needed")
+                .setMessage("This app needs all files access permissions to view files from your storage. Clicking on OK will redirect you to new window were you have to enable the option.")
+                .setPositiveButton("OK", (myDialog, which) -> {
+                    // Request permissions when the user clicks OK.
+                    Intent intent = new Intent(ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
+                    startActivityForResult(intent, APP_STORAGE_ACCESS_REQUEST_CODE);
+                })
+                .setNegativeButton("Cancel", (myDialog, which) -> {
+                    myDialog.dismiss();
+                    // Handle the case where the user cancels the permission request.
+                    // dialog.show();
+                })
+                .show();
+    }
 
 
     // sortFiles
@@ -571,11 +589,6 @@ public class Diary extends Activity
         Configuration config = getResources().getConfiguration();
         int night = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-        android.util.Log.d("LIFECYCLE",
-                "theme=" + theme
-                        + ", uiMode=" + config.uiMode
-                        + ", night=" + night);
-
         switch (theme) {
             case LIGHT:
                 setTheme(R.style.AppTheme);
@@ -598,7 +611,27 @@ public class Diary extends Activity
                 break;
         }
         setContentView(R.layout.main);
+        if (Build.VERSION.SDK_INT >= 35) {
+            getWindow().setDecorFitsSystemWindows(true);
+        }
+        View decor = getWindow().getDecorView();
+        ViewGroup content = findViewById(android.R.id.content);
 
+        content.setOnApplyWindowInsetsListener((view, insets) -> {
+            int top = insets.getInsets(
+                    WindowInsets.Type.statusBars()
+                            | WindowInsets.Type.displayCutout()
+            ).top;
+
+            view.setPadding(
+                    view.getPaddingLeft(),
+                    top,
+                    view.getPaddingRight(),
+                    view.getPaddingBottom()
+            );
+
+            return insets;
+        });
 
         textView = findViewById(R.id.text);
         scrollView = findViewById(R.id.scroll);
@@ -609,6 +642,7 @@ public class Diary extends Activity
 
         layoutSwitcher = findViewById(R.id.layout_switcher);
         buttonSwitcher = findViewById(R.id.button_switcher);
+
 
         WebSettings settings = markdownView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -623,32 +657,17 @@ public class Diary extends Activity
         entryStack = new ArrayDeque<>();
 
         if (folder == null || folder.isEmpty() || folder.equals(DIARY)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                startActivityForResult(i, 9999);
-            }
+            Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            startActivityForResult(i, 9999);
+        } else {
+            buildEntryIndexAsync(savedInstanceState == null);
         }
+    }
 
-
-        // Check startup
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-
-            // Check index and start from launcher
-            if (useIndex && Intent.ACTION_MAIN.equals(intent.getAction()))
-                index();
-
-                // Check start from widget
-            else if (intent.hasExtra(DiaryWidgetProvider.ENTRY))
-                changeDate(intent.getLongExtra(DiaryWidgetProvider.ENTRY,
-                        new Date().getTime()));
-                // Set the date
-            else
-                today();
-
-            // Check for sent media
-            mediaCheck(intent);
-        }
+    private int getScreenY(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return location[1];
     }
 
 
@@ -678,40 +697,15 @@ public class Diary extends Activity
         saved = savedInstanceState.getLong(SAVED);
     }
 
-    // onResume
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
 
-        int last = theme;
+        if (!diaryReady)
+            return;
 
-        // Get preferences
-        getPreferences();
-
-        // Recreate
-        if (last != theme)
-            recreate();
-
-        // Set date
-        setDate(currEntry);
-
-        // Reload if modified
-        DocumentFile file = getFile();
-
-        if (file != null && file.exists() && file.lastModified() > saved)
-            load();
-
-        // Clear cache
-        markdownView.clearCache(true);
-
-        // Copy help text to today's page if no entries
-        if (prevEntry == null && nextEntry == null && textView.length() == 0)
-            textView.setText(readAssetFile(HELP));
-
-        if (markdown && changed)
-            loadMarkdown();
-
-        setVisibility();
+        refreshDiary();
     }
 
     // onSaveInstanceState
@@ -978,15 +972,18 @@ public class Diary extends Activity
                                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }
 
+                    folder = treeUri.toString();
+
                     pref.edit()
-                            .putString(Settings.PREF_FOLDER, treeUri.toString())
+                            .putString(Settings.PREF_FOLDER, folder)
                             .apply();
+
+                    buildEntryIndexAsync(true);
+
                 }
             }
 
-            Log.d("DiaryFolder", "Gespeicherter Ordner: " +
-                    PreferenceManager.getDefaultSharedPreferences(this)
-                            .getString(Settings.PREF_FOLDER, DIARY));
+            PreferenceManager.getDefaultSharedPreferences(this).getString(Settings.PREF_FOLDER, DIARY);
 
             break;
 
@@ -1030,82 +1027,103 @@ public class Diary extends Activity
         return super.dispatchTouchEvent(event);
     }
 
+
     // setListeners
     private void setListeners()
     {
         if (markdownView != null)
         {
-            markdownView.setWebViewClient(new WebViewClient()
-            {
-                // onPageFinished
+            markdownView.setWebViewClient(new WebViewClient() {
+
+                private long pageStart;
+
                 @Override
-                public void onPageFinished(WebView view, String url)
+                public boolean shouldOverrideUrlLoading(
+                        WebView view, WebResourceRequest request)
                 {
-                    // Check if entry
-                    if (entry)
+                    Uri uri = request.getUrl();
+
+                    if ("content".equals(uri.getScheme()))
                     {
-                        if (entryStack.isEmpty())
-                            getActionBar().setDisplayHomeAsUpEnabled(false);
-
-                        else
-                            getActionBar().setDisplayHomeAsUpEnabled(true);
-
-                        setTitleDate(currEntry.getTime());
-                        view.clearHistory();
-                    }
-
-                    else
-                    {
-                        if (view.canGoBack())
+                        for (Map.Entry<LocalDate, Uri> entry : entryUris.entrySet())
                         {
-                            getActionBar().setDisplayHomeAsUpEnabled(true);
+                            if (uri.equals(entry.getValue()))
+                            {
+                                LocalDate date = entry.getKey();
 
-                            // Get page title
-                            if (view.getTitle() != null)
-                                setTitle(view.getTitle());
-                        }
+                                currEntry = Calendar.getInstance();
+                                currEntry.clear();
+                                currEntry.set(
+                                        date.getYear(),
+                                        date.getMonthValue() - 1,
+                                        date.getDayOfMonth());
 
-                        else
-                        {
-                            getActionBar().setDisplayHomeAsUpEnabled(false);
-                            setTitleDate(currEntry.getTime());
+                                load();
+
+                                return true;
+                            }
                         }
                     }
+
+                    return false;
                 }
 
-                // shouldOverrideUrlLoading
                 @Override
-                @SuppressWarnings("deprecation")
-                public boolean shouldOverrideUrlLoading(WebView view,
-                                                        String url)
+                public void onPageStarted(WebView view, String url, Bitmap favicon)
                 {
-                    Calendar calendar = diaryEntry(url);
-                    // Diary entry
-                    if (calendar != null)
+                    pageStart = System.currentTimeMillis();
+                }
+
+                @Override
+                public WebResourceResponse shouldInterceptRequest(
+                        WebView view, WebResourceRequest request)
+                {
+                    Uri uri = request.getUrl();
+
+                    if ("diary.local".equals(uri.getHost()))
                     {
-                        entryStack.push(currEntry);
-                        changeDate(calendar);
-                        return true;
+                        String filename = uri.getLastPathSegment();
+
+                        if (filename == null || filename.isEmpty())
+                            return null;
+
+                        try
+                        {
+                            DocumentFile folder = getCurrent();
+
+                            DocumentFile image = folder != null
+                                    ? folder.findFile(filename)
+                                    : null;
+
+                            if (image == null || !image.isFile())
+                                return null;
+
+                            InputStream stream =
+                                    getContentResolver().openInputStream(image.getUri());
+
+                            if (stream != null)
+                            {
+                                String extension =
+                                        MimeTypeMap.getFileExtensionFromUrl(filename);
+
+                                String mimeType = MimeTypeMap.getSingleton()
+                                        .getMimeTypeFromExtension(
+                                                extension.toLowerCase(Locale.ROOT));
+
+                                if (mimeType == null)
+                                    mimeType = "application/octet-stream";
+
+                                return new WebResourceResponse(
+                                        mimeType, null, stream);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("Diary", "Datei konnte nicht geladen werden", e);
+                        }
                     }
 
-                    if (URLUtil.isFileUrl(url) || URLUtil.isAssetUrl(url))
-                    {
-                        entry = false;
-                        return false;
-                    }
-
-                    Uri uri = Uri.parse(url);
-                    // Email url or use external browser
-                    if (external || MAILTO.equalsIgnoreCase(uri.getScheme()))
-                    {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        if (intent.resolveActivity(getPackageManager()) != null)
-                            startActivity(intent);
-                        return true;
-                    }
-
-                    entry = false;
-                    return false;
+                    return super.shouldInterceptRequest(view, request);
                 }
             });
 
@@ -1539,26 +1557,21 @@ public class Diary extends Activity
     // loadMarkdown
     private void loadMarkdown(CharSequence text)
     {
-        String baseUrl = getBaseUrl();
-
-        android.util.Log.d("DIARY_TEST", "Base URL: " + baseUrl);
-        android.util.Log.d("DIARY_TEST", "Text length: " +
-                (text == null ? -1 : text.length()));
-        markdownView.loadMarkdown(getBaseUrl(), markdownCheck(text),
+        String baseUrl = "https://diary.local/"; // getBaseUrl();
+        long start = System.currentTimeMillis();
+        String checkedText = markdownCheck(text);
+        markdownView.loadMarkdown(baseUrl, checkedText,
                                   getStyles(), getScript());
     }
 
     // markdownCheck
     private String markdownCheck(CharSequence text)
     {
-        // Date check
+
         text = dateCheck(text);
-
-        // Check for map
         text = mapCheck(text);
-
-        // Check for media
-        return mediaCheck(text).toString();
+        String result = mediaCheck(text).toString();
+        return result;
     }
 
     // mediaCheck
@@ -1684,49 +1697,60 @@ public class Diary extends Activity
         return buffer;
     }
 
-    // dateCheck
+    // Check a date
     private CharSequence dateCheck(CharSequence text)
     {
         StringBuffer buffer = new StringBuffer();
+
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
         Matcher matcher = DATE_PATTERN.matcher(text);
+        boolean indexChanged = false;
 
-        // Find matches
         while (matcher.find())
         {
             try
             {
-                // Parse date
                 Date date = dateFormat.parse(matcher.group(2));
                 calendar.setTime(date);
             }
-
-            // Ignore parse error
             catch (Exception e)
             {
+                matcher.appendReplacement(buffer, Matcher.quoteReplacement(matcher.group(0)));
                 continue;
             }
 
-            // Get file
-            DocumentFile file = getDay(calendar.get(Calendar.YEAR),
-                               calendar.get(Calendar.MONTH),
-                               calendar.get(Calendar.DATE));
+            LocalDate localDate = LocalDate.of(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DATE));
 
-            // Get uri
-            Uri uri = file.getUri();
+            Uri uri = entryUris.get(localDate);
 
-            // Create replacement
-            String replace =
-                String.format(Locale.ROOT, LINK_TEMPLATE,
-                              matcher.group(1), uri.toString());
-            // Substitute replacement
-            matcher.appendReplacement(buffer, replace);
+            if (uri == null)
+            {
+                matcher.appendReplacement(buffer, Matcher.quoteReplacement(matcher.group(0)));
+                continue;
+            }
+
+
+            // Datumslink durch Datei-URI ersetzen
+            String replacement = String.format(
+                    Locale.ROOT,
+                    LINK_TEMPLATE,
+                    matcher.group(1),
+                    uri.toString());
+
+            matcher.appendReplacement(
+                    buffer,
+                    Matcher.quoteReplacement(replacement));
         }
 
-        // Append rest of entry
         matcher.appendTail(buffer);
+
+        if (indexChanged)
+            writeEntryIndex(getHome());
 
         return buffer;
     }
@@ -1902,7 +1926,7 @@ public class Diary extends Activity
     // setVisibility
     private void setVisibility()
     {
-        if (markdown)
+        if (currentMarkdown)
         {
             buttonSwitcher.setVisibility(View.VISIBLE);
             // Check if shown
@@ -2252,6 +2276,66 @@ public class Diary extends Activity
         }
     }
 
+    private void refreshDiary()
+    {
+        int last = theme;
+
+        // Get preferences
+        getPreferences();
+
+        // Recreate
+        if (last != theme)
+        {
+            recreate();
+            return;
+        }
+
+        // Set date
+        setDate(currEntry);
+
+        // Reload if modified
+        DocumentFile file = getFile();
+
+        if (file != null && file.exists() && file.lastModified() > saved)
+            load();
+
+        // Clear cache
+        markdownView.clearCache(true);
+
+        // Copy help text to today's page if no entries
+        if (prevEntry == null && nextEntry == null && textView.length() == 0)
+            textView.setText(readAssetFile(HELP));
+
+        if (markdown && changed)
+            loadMarkdown();
+
+        setVisibility();
+    }
+
+    private void startDiary()
+    {
+        Intent intent = getIntent();
+
+        if (intent.hasExtra(DiaryWidgetProvider.ENTRY))
+            changeDate(intent.getLongExtra(DiaryWidgetProvider.ENTRY,
+                    new Date().getTime()));
+        else
+        {
+            Calendar calendar = Calendar.getInstance();
+            LocalDate today = LocalDate.of(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DATE));
+
+            if (entryDates.contains(today))
+                today();
+            else
+                index();
+        }
+
+        mediaCheck(intent);
+    }
+
    // findYear
     private DocumentFile findYear(int year)
     {
@@ -2324,19 +2408,14 @@ public class Diary extends Activity
         if (monthFolder == null)
             return null;
 
-        String name = String.format(Locale.ENGLISH, DAY_FORMAT, day);
+        String name = String.format(Locale.ENGLISH, MD_FORMAT, day);
         DocumentFile file = monthFolder.findFile(name);
 
         if (file != null)
             return file;
 
-        if (markdown)
-        {
-            name = String.format(Locale.ENGLISH, MD_FORMAT, day);
-            return monthFolder.findFile(name);
-        }
-
-        return null;
+        name = String.format(Locale.ENGLISH, DAY_FORMAT, day);
+        return monthFolder.findFile(name);
     }
 
     // getFile
@@ -2392,135 +2471,359 @@ public class Diary extends Activity
         return text;
     }
 
-    // prevYear
-    private int prevYear(int year)
-    {
-        int prev = -1;
-        for (DocumentFile yearDir : listYears(getHome()))
-        {
-            int n = yearValue(yearDir);
-            if (n < year && n > prev)
-                prev = n;
-        }
-        return prev;
-    }
 
-    // prevMonth
-    private int prevMonth(int year, int month)
-    {
-        int prev = -1;
-        for (DocumentFile monthDir : listMonths(findYear(year)))
-        {
-            int n = monthValue(monthDir);
-            if (n < month && n > prev)
-                prev = n;
-        }
-        return prev;
-    }
 
-    // prevDay
-    private int prevDay(int year, int month, int day)
+    private void buildEntryIndexAsync(boolean startAfter)
     {
-        int prev = -1;
-        for (DocumentFile dayFile : listDays(findMonth(year, month)))
-        {
-            int n = dayValue(dayFile);
-            if (n < day && n > prev)
-                prev = n;
-        }
-        return prev;
-    }
+        ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle(R.string.appName);
+        progress.setMessage(getString(R.string.indexBuilding));
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setProgress(0);
 
-    // getPrevEntry
-    private Calendar getPrevEntry(int year, int month, int day)
-    {
-        int prev;
-        if ((prev = prevDay(year, month, day)) == -1)
+        new AsyncTask<Void, String, Void>()
         {
-            if ((prev = prevMonth(year, month)) == -1)
+            @Override
+            protected Void doInBackground(Void... params)
             {
-                if ((prev = prevYear(year)) == -1)
+                entryDates.clear();
+                entryUris.clear();
+
+                DocumentFile home = getHome();
+
+                if (home == null)
                     return null;
-                return getPrevEntry(prev, Calendar.DECEMBER, 32);
+
+                // Zuerst versuchen, den Gesamtindex zu lesen
+                if (readEntryIndex(home))
+                {
+                    Log.d("Diary", "Loaded index: "
+                            + entryDates.size() + " Entries");
+                    return null;
+                }
+
+                progress.show();
+
+                // Gesamtindex fehlt: Verzeichnisse durchsuchen
+                List<Pair<Integer, DocumentFile>> months =
+                        new ArrayList<>();
+
+                for (DocumentFile yearDir : listYears(home))
+                {
+                    int year = yearValue(yearDir);
+
+                    for (DocumentFile monthDir : listMonths(yearDir))
+                        months.add(new Pair<>(year, monthDir));
+                }
+
+                int total = months.size();
+                int count = 0;
+
+                for (Pair<Integer, DocumentFile> item : months)
+                {
+                    int year = item.first;
+                    DocumentFile monthDir = item.second;
+                    int month = monthValue(monthDir);
+
+                    count++;
+
+                    publishProgress(
+                            String.valueOf(year),
+                            monthDir.getName(),
+                            String.valueOf(count),
+                            String.valueOf(total));
+
+                    // Alle Tagesdateien direkt erfassen
+                    for (DocumentFile dayFile : monthDir.listFiles())
+                    {
+                        String name = dayFile.getName();
+
+                        if (name == null || !name.matches(DAY_FILE))
+                            continue;
+
+                        try
+                        {
+                            int day = dayValue(dayFile);
+
+                            LocalDate date = LocalDate.of(
+                                    year, month + 1, day);
+
+                            entryDates.add(date);
+
+                            // Bei doppelten Einträgen bevorzugtes Format verwenden
+                            Uri oldUri = entryUris.get(date);
+
+                            boolean preferred =
+                                    markdown
+                                            ? name.endsWith(".md")
+                                            : name.endsWith(".txt");
+
+                            if (oldUri == null || preferred)
+                                entryUris.put(date, dayFile.getUri());
+                        }
+                        catch (DateTimeException e)
+                        {
+                            Log.w("Diary", "Ungültiges Datum: "
+                                    + dayFile.getUri() + " (" + name + ")", e);
+                        }
+                    }
+                }
+
+                // Gesamtindex dauerhaft speichern
+                writeEntryIndex(home);
+
+                Log.d("Diary", "Created index: "
+                        + entryDates.size() + " Entries");
+
+                return null;
             }
-            return getPrevEntry(year, prev, 32);
-        }
-        return new GregorianCalendar(year, month, prev);
-    }
-
-    // nextYear
-    private int nextYear(int year)
-    {
-        int next = -1;
-        for (DocumentFile yearDir : listYears(getHome()))
-        {
-            int n = yearValue(yearDir);
-            if (n > year && (next == -1 || n < next))
-                next = n;
-        }
-        return next;
-    }
-
-    // nextMonth
-    private int nextMonth(int year, int month)
-    {
-        int next = -1;
-        for (DocumentFile monthDir : listMonths(findYear(year)))
-        {
-            int n = monthValue(monthDir);
-            if (n > month && (next == -1 || n < next))
-                next = n;
-        }
-        return next;
-    }
-
-    // nextDay
-    private int nextDay(int year, int month, int day)
-    {
-        int next = -1;
-        for (DocumentFile dayFile : listDays(findMonth(year, month)))
-        {
-            int n = dayValue(dayFile);
-            if (n > day && (next == -1 || n < next))
-                next = n;
-        }
-        return next;
-    }
-
-    // getNextEntry
-    private Calendar getNextEntry(int year, int month, int day)
-    {
-        int next;
-        if ((next = nextDay(year, month, day)) == -1)
-        {
-            if ((next = nextMonth(year, month)) == -1)
+            @Override
+            protected void onProgressUpdate(String... values)
             {
-                if ((next = nextYear(year)) == -1)
-                    return null;
-                return getNextEntry(next, Calendar.JANUARY, -1);
+                int current = Integer.parseInt(values[2]);
+                int total = Integer.parseInt(values[3]);
+
+                progress.setMax(total);
+                progress.setProgress(current);
+
+                progress.setMessage(
+                        getString(R.string.indexBuildingYear,
+                                values[0], values[1]) +
+                                "\n" +
+                        getString(R.string.indexBuildingProgress,
+                                values[2], values[3]));
             }
-            return getNextEntry(year, next, -1);
-        }
-        return new GregorianCalendar(year, month, next);
+
+            @Override
+            protected void onPostExecute(Void result)
+            {
+                progress.dismiss();
+
+                long t = System.currentTimeMillis();
+
+                if (startAfter)
+                    startDiary();
+
+                diaryReady = true;
+
+                t = System.currentTimeMillis();
+                refreshDiary();
+            }
+            @Override
+            protected void onCancelled()
+            {
+                progress.dismiss();
+            }
+
+        }.execute();
     }
 
-    // getEntries
+    // Create Folder Index
+    private NavigableSet<Integer> getMonthIndex(DocumentFile monthDir)
+    {
+        NavigableSet<Integer> days = new TreeSet<>();
+
+        long t0 = System.currentTimeMillis();
+        DocumentFile indexFile = monthDir.findFile(".index.txt");
+        long t1 = System.currentTimeMillis();
+
+        boolean isFile = indexFile != null && indexFile.isFile();
+        long t2 = System.currentTimeMillis();
+
+        if (isFile)
+        {
+            try
+            {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(
+                                getContentResolver().openInputStream(indexFile.getUri())));
+
+                String line;
+
+                while ((line = reader.readLine()) != null)
+                {
+                    days.add(Integer.parseInt(line));
+                }
+
+                reader.close();
+
+                long t3 = System.currentTimeMillis();
+
+                return days;
+            }
+            catch (Exception e)
+            {
+                Log.w("Diary", "Couldn't read month index", e);
+                days.clear();
+            }
+        }
+
+        // Index neu aufbauen
+        for (DocumentFile file : monthDir.listFiles())
+        {
+            String name = file.getName();
+
+            if (name != null && name.matches(DAY_FILE))
+            {
+                try
+                {
+                    days.add(dayValue(file));
+                }
+                catch (Exception e)
+                {
+                    Log.w("Diary", "Invalid filename: " + name);
+                }
+            }
+        }
+
+        // Index speichern
+        try
+        {
+            if (indexFile == null)
+                indexFile = monthDir.createFile("text/plain", ".index");
+
+            if (indexFile != null)
+            {
+                OutputStream output = getContentResolver()
+                        .openOutputStream(indexFile.getUri(), "wt");
+
+                if (output != null)
+                {
+                    for (Integer day : days)
+                        output.write((day + "\n").getBytes(StandardCharsets.UTF_8));
+
+                    output.close();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.w("Diary", "Monatsindex konnte nicht gespeichert werden", e);
+        }
+
+        return days;
+    }
+
+    // Read Index File
+    private boolean readEntryIndex(DocumentFile home)
+    {
+        DocumentFile indexFile = home.findFile(".diary-index.txt");
+
+        if (indexFile == null || !indexFile.isFile())
+            return false;
+
+        try
+        {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            getContentResolver().openInputStream(indexFile.getUri()),
+                            StandardCharsets.UTF_8));
+
+            String line;
+
+            String version = reader.readLine();
+
+            if (!INDEX_VERSION.equals(version))
+            {
+                Log.w("Diary", "Gesamtindex fehlt oder hat eine ungültige Version");
+                reader.close();
+                return false;
+            }
+
+            while ((line = reader.readLine()) != null)
+            {
+                String[] parts = line.split("\\|", 2);
+
+                if (parts.length != 2)
+                    continue;
+
+                LocalDate date = LocalDate.parse(parts[0]);
+                Uri uri = Uri.parse(parts[1]);
+
+                entryDates.add(date);
+                entryUris.put(date, uri);
+            }
+
+            reader.close();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.w("Diary", "Gesamtindex konnte nicht gelesen werden", e);
+            entryDates.clear();
+            entryUris.clear();
+            return false;
+        }
+    }
+
+    // Write Index File
+    private void writeEntryIndex(DocumentFile home)
+    {
+        DocumentFile indexFile = home.findFile(".diary-index.txt");
+
+        try
+        {
+            if (indexFile == null)
+                indexFile = home.createFile("text/plain", ".diary-index");
+
+            if (indexFile == null)
+                return;
+
+            try (OutputStream output = getContentResolver()
+                    .openOutputStream(indexFile.getUri(), "wt"))
+            {
+                if (output == null)
+                    return;
+
+                output.write((INDEX_VERSION + "\n").getBytes(StandardCharsets.UTF_8));
+
+                for (LocalDate date : entryDates)
+                {
+                    Uri uri = entryUris.get(date);
+
+                    if (uri == null)
+                        continue;
+
+                    String line = date + "|" + uri + "\n";
+                    output.write(line.getBytes(StandardCharsets.UTF_8));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.w("Diary", "Gesamtindex konnte nicht gespeichert werden", e);
+        }
+    }
+
+    /// getEntries
     private List<Calendar> getEntries()
     {
-        Calendar entry = getNextEntry(1970, Calendar.JANUARY, 1);
-        return getEntries(entry);
+        return getEntries(new GregorianCalendar(
+                1970, Calendar.JANUARY, 1));
     }
 
     // getEntries
     private List<Calendar> getEntries(Calendar entry)
     {
         List<Calendar> list = new ArrayList<>();
-        while (entry != null && currEntry.compareTo(entry) <= 0)
+
+        LocalDate start = LocalDate.of(
+                entry.get(Calendar.YEAR),
+                entry.get(Calendar.MONTH) + 1,
+                entry.get(Calendar.DATE));
+
+        LocalDate end = LocalDate.of(
+                currEntry.get(Calendar.YEAR),
+                currEntry.get(Calendar.MONTH) + 1,
+                currEntry.get(Calendar.DATE));
+
+        for (LocalDate date : entryDates.subSet(start, true, end, true))
         {
-            list.add(entry);
-            entry = getNextEntry(entry.get(Calendar.YEAR),
-                                 entry.get(Calendar.MONTH),
-                                 entry.get(Calendar.DATE));
+            list.add(new GregorianCalendar(
+                    date.getYear(),
+                    date.getMonthValue() - 1,
+                    date.getDayOfMonth()));
         }
 
         return list;
@@ -2529,39 +2832,23 @@ public class Diary extends Activity
     // diaryEntry
     private Calendar diaryEntry(String url)
     {
-        // Get home folder
-        DocumentFile home = getHome();
-        if (home == null)
+        if (url == null)
             return null;
 
-        String homeUri = home.getUri().toString();
-
-        // Check url
-        if (url == null || !url.startsWith(homeUri))
-            return null;
-
-        // Get document
         Uri uri = Uri.parse(url);
-        DocumentFile file = DocumentFile.fromSingleUri(this, uri);
 
-        // Check file
-        if (file == null || !file.exists() || !file.isFile())
-            return null;
-
-        // Get segments
-        List<String> segments = uri.getPathSegments();
-        int size = segments.size();
-
-        // Parse segments
-        try
+        for (Map.Entry<LocalDate, Uri> item : entryUris.entrySet())
         {
-            int day = Integer.parseInt(segments.get(--size).split("\\.")[0]);
-            int month = Integer.parseInt(segments.get(--size)) - 1;
-            int year = Integer.parseInt(segments.get(--size));
+            if (item.getValue().equals(uri))
+            {
+                LocalDate date = item.getKey();
 
-            return new GregorianCalendar(year, month, day);
+                return new GregorianCalendar(
+                        date.getYear(),
+                        date.getMonthValue() - 1,
+                        date.getDayOfMonth());
+            }
         }
-        catch (Exception e) {}
 
         return null;
     }
@@ -2640,6 +2927,22 @@ public class Diary extends Activity
                 String mimeType = markdown ? "text/markdown" : "text/plain";
 
                 file = parent.createFile(mimeType, name);
+
+                LocalDate date = LocalDate.of(
+                        currEntry.get(Calendar.YEAR),
+                        currEntry.get(Calendar.MONTH) + 1,
+                        currEntry.get(Calendar.DAY_OF_MONTH));
+
+                boolean changed = entryDates.add(date);
+
+                if (!file.getUri().equals(entryUris.get(date)))
+                {
+                    entryUris.put(date, file.getUri());
+                    changed = true;
+                }
+
+                if (changed)
+                    writeEntryIndex(getHome());
             }
 
             if (file == null)
@@ -2737,19 +3040,26 @@ public class Diary extends Activity
         return null;
     }
 
-    private void load()
-    {
-        CharSequence text = read(getFile());
-
+    private void load() {
+        DocumentFile file = getFile();
+        currentMarkdown = markdown
+                && file != null
+                && file.getName() != null
+                && file.getName().endsWith(".md");
+        CharSequence text = read(file);
         textView.setText(text);
         changed = false;
         invalidateOptionsMenu();
 
-        if (markdown)
+        if (currentMarkdown) {
             loadMarkdown();
+        }
 
-        if (text != null)
+        setVisibility();
+
+        if (text != null) {
             checkPosition(text);
+        }
     }
 
     // checkPosition
@@ -2803,6 +3113,13 @@ public class Diary extends Activity
             // Scroll to it
             int height = scrollView.getHeight();
             scrollView.smoothScrollTo(0, position - height / 2);
+            int[] location = new int[2];
+
+            scrollView.getLocationOnScreen(location);
+
+            textView.getLocationOnScreen(location);
+
+            layoutSwitcher.getLocationOnScreen(location);
         }, POSITION_DELAY);
     }
 
@@ -2828,7 +3145,6 @@ public class Diary extends Activity
         return text;
     }
 
-    // setDate
     private void setDate(Calendar date)
     {
         setTitleDate(date.getTime());
@@ -2838,18 +3154,38 @@ public class Diary extends Activity
         int day = date.get(Calendar.DATE);
 
         Calendar calendar = Calendar.getInstance();
-        Calendar today = new GregorianCalendar(calendar.get(Calendar.YEAR),
-                                               calendar.get(Calendar.MONTH),
-                                               calendar.get(Calendar.DATE));
+        Calendar today = new GregorianCalendar(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DATE));
 
-        prevEntry = getPrevEntry(year, month, day);
-        if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
-            today.compareTo(date) < 0)
-            prevEntry = today;
+        LocalDate current = LocalDate.of(year, month + 1, day);
+
+        LocalDate previous = entryDates.lower(current);
+        LocalDate next = entryDates.higher(current);
+
+        prevEntry = previous != null
+                ? new GregorianCalendar(
+                previous.getYear(),
+                previous.getMonthValue() - 1,
+                previous.getDayOfMonth())
+                : null;
+
         currEntry = date;
-        nextEntry = getNextEntry(year, month, day);
+
+        nextEntry = next != null
+                ? new GregorianCalendar(
+                next.getYear(),
+                next.getMonthValue() - 1,
+                next.getDayOfMonth())
+                : null;
+
+        if ((prevEntry == null || today.compareTo(prevEntry) > 0) &&
+                today.compareTo(date) < 0)
+            prevEntry = today;
+
         if ((nextEntry == null || today.compareTo(nextEntry) < 0) &&
-            today.compareTo(date) > 0)
+                today.compareTo(date) > 0)
             nextEntry = today;
 
         invalidateOptionsMenu();
@@ -2901,10 +3237,14 @@ public class Diary extends Activity
         setDate(date);
         load();
 
-        if (markdown && !shown)
+        if (currentMarkdown && !shown)
         {
             animateAccept();
             shown = true;
+        }
+        else if (!currentMarkdown && shown)
+        {
+            shown = false;
         }
 
         entry = true;
@@ -3934,13 +4274,15 @@ public class Diary extends Activity
         public void decorate(DayView dayView)
         {
             Calendar cellDate = dayView.getDate();
-            DocumentFile dayFile = getDay(
+
+            LocalDate date = LocalDate.of(
                     cellDate.get(Calendar.YEAR),
-                    cellDate.get(Calendar.MONTH),
+                    cellDate.get(Calendar.MONTH) + 1,
                     cellDate.get(Calendar.DATE));
 
-            if (dayFile != null && dayFile.exists())
+            if (entryDates.contains(date))
                 dayView.setBackgroundResource(R.drawable.diary_entry);
         }
     }
 }
+

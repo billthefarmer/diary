@@ -84,6 +84,9 @@
   <string name="pref_template_page">Şablon sayfası</string>
   <string name="pref_index_template">Dizin şablonu</string>
   <string name="about">Hakkında</string>
+  <string name="indexBuilding">Günlük hazırlanıyor ...</string>
+  <string name="indexBuildingYear">Yıl %1$s – Ay %2$s</string>
+  <string name="indexBuildingProgress">%2$s aydan %1$s kadarı işlendi</string>
   <string name="pref_about_summ"><a
     href="https://github.com/billthefarmer/diary/releases/latest">Sürüm
     %s</a>
@@ -115,4 +118,5 @@
   Stoffels</a>, Dosya araçları <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="selectStorage">Depolama konumu seçin</string>
 </resources>

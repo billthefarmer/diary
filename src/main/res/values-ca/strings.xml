@@ -82,6 +82,7 @@
   <string name="pref_template_page">Pàgina de plantilles</string>
   <string name="pref_index_template">Plantilla d\'índex</string>
   <string name="about">Sobre</string>
+  <string name="indexBuildingProgress">processats %1$s de %2$s mesos</string>
   <string name="pref_about_summ"><a
   href="https://github.com/billthefarmer/diary/releases/latest">Version
   %s</a></string>
@@ -99,4 +100,7 @@
   Utilitats de fitxers de <a href="https://github.com/iPaulPro">Paul
   Burke</a>
   </string>
+    <string name="indexBuilding">Preparant el diari...</string>
+  <string name="selectStorage">Selecciona la ubicació d\'emmagatzematge</string>
+  <string name="indexBuildingYear">Any %1$s – Mes %2$s</string>
 </resources>

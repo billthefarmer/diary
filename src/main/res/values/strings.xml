@@ -85,6 +85,9 @@
   <string name="pref_template_page">Template page</string>
   <string name="pref_index_template">Index template</string>
   <string name="about">About</string>
+  <string name="indexBuilding">Preparing Diary ...</string>
+  <string name="indexBuildingYear">Year %1$s – Month %2$s</string>
+  <string name="indexBuildingProgress">processed %1$s of %2$s months</string>
   <string name="pref_about_summ"><a
     href="https://github.com/billthefarmer/diary/releases/latest">Version
     %s</a>
@@ -116,4 +119,5 @@
   Stoffels</a>, File utilities by <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+  <string name="selectStorage">Select storage location</string>
 </resources>

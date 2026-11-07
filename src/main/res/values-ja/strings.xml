@@ -84,6 +84,7 @@
   <string name="pref_index_template">インデックステンプレート</string>
   <string name="theme">テーマ</string>
   <string name="about">アプリについて</string>
+  <string name="indexBuildingProgress">%2$sか月中%1$sか月分を処理しました</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">バージョン %s</a></string>
   <string name="licence">ライセンス <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
   </string>
@@ -95,4 +96,7 @@
   View</a>, による日本語翻訳 <a href="https://github.com/naofum">naofum</a>, ファイルユーティリティ
   <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="indexBuilding">日記を準備中...</string>
+  <string name="indexBuildingYear">年 %1$s – 月 %2$s</string>
+  <string name="selectStorage">保存場所を選択</string>
 </resources>

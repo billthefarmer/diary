@@ -84,6 +84,7 @@
   <string name="pref_index_template">Modèle d’index</string>
   <string name="theme">Thème</string>
   <string name="about">À propos</string>
+  <string name="indexBuildingProgress">%1$s mois sur %2$s traités</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Version %s</a></string>
   <string name="built">Construit %s</string>
   <string name="licence">Licence <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
@@ -95,4 +96,7 @@
   rendu</a>, Traduction Française par <a href="https://github.com/comptuzus">David Ta</a>, Gestion de fichier
   par <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="indexBuilding">Préparation du journal...</string>
+  <string name="indexBuildingYear">Année %1$s – Mois %2$s</string>
+  <string name="selectStorage">Sélectionner l’emplacement de stockage</string>
 </resources>

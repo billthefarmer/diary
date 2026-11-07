@@ -84,6 +84,7 @@
   <string name="pref_template_page">Sjabloonpagina</string>
   <string name="pref_index_template">Index sjabloon</string>
   <string name="about">Over</string>
+  <string name="indexBuildingProgress">%1$s van de %2$s maanden verwerkt</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Versie %s</a></string>
   <string name="built">Uitgebracht op %s</string>
   <string name="licence">Licentie <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
@@ -95,4 +96,7 @@
   View</a>, Nederlandse vertaling door <a href="https://github.com/Vistaus">Heimen
   Stoffels</a>, Bestandshulpmiddelen door <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="selectStorage">Opslaglocatie selecteren</string>
+  <string name="indexBuilding">Dagboek voorbereiden ...</string>
+  <string name="indexBuildingYear">Jaar %1$s – Maand %2$s</string>
 </resources>
