@@ -120,4 +120,5 @@
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
   <string name="selectStorage">Select storage location</string>
+  <string name="folderOpenFailed">Could not open root folder</string>
 </resources>

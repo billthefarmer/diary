@@ -69,7 +69,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
-import android.webkit.URLUtil;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -144,7 +143,6 @@ public class Diary extends Activity
     public final static int VISIBLE_DELAY = 2048;
     public final static int LARGE_SIZE = 262144;
     public final static int BUFFER_SIZE = 4096;
-    public final static int SCALE_RATIO = 128;
     public final static int FIND_DELAY = 256;
     public final static int FIND_SIZE = 64;
 
@@ -210,11 +208,6 @@ public class Diary extends Activity
     public final static String ZIP = ".zip";
     public final static String HELP = "help.md";
     public final static String STYLES = "file:///android_asset/styles.css";
-    public final static String SCRIPT = "file:///android_asset/script.js";
-    public final static String CSS_STYLES = "css/styles.css";
-    public final static String TEXT_CSS = "text/css";
-    public final static String JS_SCRIPT = "js/script.js";
-    public final static String TEXT_JAVASCRIPT = "text/javascript";
     public final static String APPLICATION_ZIP = "application/zip";
     public final static String FILE_PROVIDER =
             "org.billthefarmer.diary.fileprovider";
@@ -247,9 +240,7 @@ public class Diary extends Activity
     public final static String GEO = "geo";
     public final static String OSM = "osm";
     public final static String HTTP = "http";
-    public final static String TEXT = "text";
     public final static String HTTPS = "https";
-    public final static String MAILTO = "mailto";
     public final static String CONTENT = "content";
     public final static String TEXT_PLAIN = "text/plain";
     public final static String IMAGE_PNG = "image/png";
@@ -257,7 +248,6 @@ public class Diary extends Activity
     public final static String IMAGE = "image";
     public final static String AUDIO = "audio";
     public final static String VIDEO = "video";
-    public final static String ELLIPSIS = "…";
 
     private boolean custom = true;
     private boolean markdown = true; // Do we have markdown enabled?
@@ -328,24 +318,19 @@ public class Diary extends Activity
     private static final int REQUEST_MEDIA_PERMISSIONS = 456;
 
     private void checkPermissions() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            //As the device is Android 13 and above so I want the permission of accessing Audio, Images, Videos
-            //You can ask permission according to your requirements what you want to access.
-            String audioPermission = Manifest.permission.READ_MEDIA_AUDIO;
-            String imagesPermission = Manifest.permission.READ_MEDIA_IMAGES;
-            String videoPermission = Manifest.permission.READ_MEDIA_VIDEO;
-            // Check for permissions and request them if needed
-            if (ContextCompat.checkSelfPermission(Diary.this, audioPermission) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(Diary.this, imagesPermission) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(Diary.this, videoPermission) == PackageManager.PERMISSION_GRANTED) {
-                // You have the permissions, you can proceed with your media file operations.
-                //Showing dialog when Show Dialog button is clicked.
-                // dialog.show();
-            } else {
-                // You don't have the permissions. Request them.
-                ActivityCompat.requestPermissions(Diary.this, new String[]{audioPermission, imagesPermission, videoPermission}, REQUEST_MEDIA_PERMISSIONS);
-            }
+        String audioPermission = Manifest.permission.READ_MEDIA_AUDIO;
+        String imagesPermission = Manifest.permission.READ_MEDIA_IMAGES;
+        String videoPermission = Manifest.permission.READ_MEDIA_VIDEO;
+        // Check for permissions and request them if needed
+        if (ContextCompat.checkSelfPermission(Diary.this, audioPermission) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(Diary.this, imagesPermission) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(Diary.this, videoPermission) == PackageManager.PERMISSION_GRANTED) {
+            // You have the permissions, you can proceed with your media file operations.
+            //Showing dialog when Show Dialog button is clicked.
+            // dialog.show();
+        } else {
+            // You don't have the permissions. Request them.
+            ActivityCompat.requestPermissions(Diary.this, new String[]{audioPermission, imagesPermission, videoPermission}, REQUEST_MEDIA_PERMISSIONS);
         }
     }
 
@@ -359,15 +344,7 @@ public class Diary extends Activity
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permissions were granted. You can proceed with your file operations.
                 //Showing dialog when Show Dialog button is clicked.
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    //Android version is 11 and above so to access all types of files we have to give
-                    //special permission so show user a dialog..
-                    accessAllFilesPermissionDialog();
-                } else {
-                    //Android version is 10 and below so need of special permission...
-                    // dialog.show();
-                }
-
+                accessAllFilesPermissionDialog();
             }
             break;
 
@@ -1119,7 +1096,7 @@ public class Diary extends Activity
                         }
                         catch (Exception e)
                         {
-                            Log.e("Diary", "Datei konnte nicht geladen werden", e);
+                            Log.e("Diary", "Couldn't load file", e);
                         }
                     }
 
@@ -1735,7 +1712,7 @@ public class Diary extends Activity
             }
 
 
-            // Datumslink durch Datei-URI ersetzen
+            // Replace Date link by file URI
             String replacement = String.format(
                     Locale.ROOT,
                     LINK_TEMPLATE,
@@ -2495,7 +2472,7 @@ public class Diary extends Activity
                 if (home == null)
                     return null;
 
-                // Zuerst versuchen, den Gesamtindex zu lesen
+                // Try loading index
                 if (readEntryIndex(home))
                 {
                     Log.d("Diary", "Loaded index: "
@@ -2505,7 +2482,7 @@ public class Diary extends Activity
 
                 progress.show();
 
-                // Gesamtindex fehlt: Verzeichnisse durchsuchen
+                // No index found, loop folders
                 List<Pair<Integer, DocumentFile>> months =
                         new ArrayList<>();
 
@@ -2534,7 +2511,7 @@ public class Diary extends Activity
                             String.valueOf(count),
                             String.valueOf(total));
 
-                    // Alle Tagesdateien direkt erfassen
+                    // Loop all day files
                     for (DocumentFile dayFile : monthDir.listFiles())
                     {
                         String name = dayFile.getName();
@@ -2551,7 +2528,7 @@ public class Diary extends Activity
 
                             entryDates.add(date);
 
-                            // Bei doppelten Einträgen bevorzugtes Format verwenden
+                            // For duplicate entries use prefedded format
                             Uri oldUri = entryUris.get(date);
 
                             boolean preferred =
@@ -2564,13 +2541,13 @@ public class Diary extends Activity
                         }
                         catch (DateTimeException e)
                         {
-                            Log.w("Diary", "Ungültiges Datum: "
+                            Log.w("Diary", "Invalid date: "
                                     + dayFile.getUri() + " (" + name + ")", e);
                         }
                     }
                 }
 
-                // Gesamtindex dauerhaft speichern
+                // Save index to file
                 writeEntryIndex(home);
 
                 Log.d("Diary", "Created index: "
@@ -2600,14 +2577,11 @@ public class Diary extends Activity
             {
                 progress.dismiss();
 
-                long t = System.currentTimeMillis();
-
                 if (startAfter)
                     startDiary();
 
                 diaryReady = true;
 
-                t = System.currentTimeMillis();
                 refreshDiary();
             }
             @Override
@@ -2624,12 +2598,9 @@ public class Diary extends Activity
     {
         NavigableSet<Integer> days = new TreeSet<>();
 
-        long t0 = System.currentTimeMillis();
         DocumentFile indexFile = monthDir.findFile(".index.txt");
-        long t1 = System.currentTimeMillis();
 
         boolean isFile = indexFile != null && indexFile.isFile();
-        long t2 = System.currentTimeMillis();
 
         if (isFile)
         {
@@ -2648,18 +2619,16 @@ public class Diary extends Activity
 
                 reader.close();
 
-                long t3 = System.currentTimeMillis();
-
                 return days;
             }
             catch (Exception e)
             {
-                Log.w("Diary", "Couldn't read month index", e);
+                Log.w("Diary", "Couldn't read index", e);
                 days.clear();
             }
         }
 
-        // Index neu aufbauen
+        // Rebuild index
         for (DocumentFile file : monthDir.listFiles())
         {
             String name = file.getName();
@@ -2699,7 +2668,7 @@ public class Diary extends Activity
         }
         catch (Exception e)
         {
-            Log.w("Diary", "Monatsindex konnte nicht gespeichert werden", e);
+            Log.w("Diary", "Could not write index", e);
         }
 
         return days;
@@ -2726,7 +2695,7 @@ public class Diary extends Activity
 
             if (!INDEX_VERSION.equals(version))
             {
-                Log.w("Diary", "Gesamtindex fehlt oder hat eine ungültige Version");
+                Log.w("Diary", "Index missing or invalid version");
                 reader.close();
                 return false;
             }
@@ -2750,7 +2719,7 @@ public class Diary extends Activity
         }
         catch (Exception e)
         {
-            Log.w("Diary", "Gesamtindex konnte nicht gelesen werden", e);
+            Log.w("Diary", "Could not read index", e);
             entryDates.clear();
             entryUris.clear();
             return false;
@@ -2829,30 +2798,6 @@ public class Diary extends Activity
         return list;
     }
 
-    // diaryEntry
-    private Calendar diaryEntry(String url)
-    {
-        if (url == null)
-            return null;
-
-        Uri uri = Uri.parse(url);
-
-        for (Map.Entry<LocalDate, Uri> item : entryUris.entrySet())
-        {
-            if (item.getValue().equals(uri))
-            {
-                LocalDate date = item.getKey();
-
-                return new GregorianCalendar(
-                        date.getYear(),
-                        date.getMonthValue() - 1,
-                        date.getDayOfMonth());
-            }
-        }
-
-        return null;
-    }
-
     // save
     private void save()
     {
@@ -2888,9 +2833,7 @@ public class Diary extends Activity
 
         if (parent == null)
         {
-            alertDialog(R.string.appName,
-                    "Der Tagebuchordner konnte nicht geöffnet werden.",
-                    android.R.string.ok);
+            alertDialog(R.string.appName, getString(R.string.folderOpenFailed), android.R.string.ok);
             return;
         }
 
@@ -2944,9 +2887,6 @@ public class Diary extends Activity
                 if (changed)
                     writeEntryIndex(getHome());
             }
-
-            if (file == null)
-                return;
 
             try (OutputStream output = getContentResolver()
                     .openOutputStream(file.getUri(), "wt");
@@ -3583,16 +3523,7 @@ public class Diary extends Activity
         String mapText = String.format(MEDIA_TEMPLATE,
                                        OSM,
                                        uri.toString());
-        if (true)
-            textView.append(mapText);
-
-        else
-        {
-            Editable editable = textView.getEditableText();
-            int position = textView.getSelectionStart();
-            editable.insert(position, mapText);
-        }
-
+        textView.append(mapText);
         loadMarkdown();
     }
 

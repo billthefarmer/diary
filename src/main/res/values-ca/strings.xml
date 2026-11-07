@@ -103,4 +103,5 @@
     <string name="indexBuilding">Preparant el diari...</string>
   <string name="selectStorage">Selecciona la ubicació d\'emmagatzematge</string>
   <string name="indexBuildingYear">Any %1$s – Mes %2$s</string>
+  <string name="folderOpenFailed">No s\'ha pogut obrir la carpeta arrel</string>
 </resources>

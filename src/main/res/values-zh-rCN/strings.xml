@@ -119,4 +119,5 @@
     <string name="indexBuilding">正在准备日记……</string>
   <string name="selectStorage">选择存储位置</string>
   <string name="indexBuildingYear">年份 %1$s – 月份 %2$s</string>
+    <string name="folderOpenFailed">无法打开根文件夹</string>
 </resources>

@@ -99,4 +99,5 @@
     <string name="selectStorage">Opslaglocatie selecteren</string>
   <string name="indexBuilding">Dagboek voorbereiden ...</string>
   <string name="indexBuildingYear">Jaar %1$s – Maand %2$s</string>
+  <string name="folderOpenFailed">Kon de hoofdmap niet openen</string>
 </resources>

@@ -105,4 +105,5 @@
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
     <string name="selectStorage">Seleziona la posizione di archiviazione</string>
+    <string name="folderOpenFailed">Impossibile aprire la cartella radice</string>
 </resources>
