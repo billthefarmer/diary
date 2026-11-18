@@ -23,17 +23,19 @@
 
 package org.billthefarmer.diary;
 
+import static org.billthefarmer.diary.Diary.YEAR_FORMAT;
+
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -109,7 +111,7 @@ public class DiaryWidgetUpdate extends Activity
         ComponentName provider = new
             ComponentName(this, DiaryWidgetProvider.class);
 
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(provider);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(provider);
         Intent broadcast = new
             Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,
@@ -124,36 +126,75 @@ public class DiaryWidgetUpdate extends Activity
     }
 
     // getHome
-    private File getHome()
+    private DocumentFile getHome()
     {
-        File file = new File(folder);
-        if (file.isAbsolute() && file.isDirectory() && file.canWrite())
-            return file;
+        if (folder == null || folder.isEmpty())
+            return null;
 
-        return new File(Environment.getExternalStorageDirectory(), folder);
+        try
+        {
+            Uri uri = Uri.parse(folder);
+            return DocumentFile.fromTreeUri(this, uri);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // getYear
-    private File getYear(int year)
+    private DocumentFile getYear(int year)
     {
-        return new File(getHome(), String.format(Locale.ENGLISH,
-                                                 Diary.YEAR_FORMAT,
-                                                 year));
+        DocumentFile home = getHome();
+
+        if (home == null)
+            return null;
+
+        String name = String.format(
+                Locale.ENGLISH,
+                YEAR_FORMAT,
+                year);
+
+        return home.findFile(name);
     }
 
-    // getMonth
-    private File getMonth(int year, int month)
+    private DocumentFile getMonth(int year, int month)
     {
-        return new File(getYear(year), String.format(Locale.ENGLISH,
-                                                     Diary.MONTH_FORMAT,
-                                                     month + 1));
+        DocumentFile yearFolder = findYear(year);
+
+        if (yearFolder == null)
+            return null;
+
+        String name = String.format(
+                Locale.ENGLISH,
+                Diary.MONTH_FORMAT,
+                month + 1);
+
+        return yearFolder.findFile(name);
+    }
+
+    // findYear
+    private DocumentFile findYear(int year)
+    {
+        DocumentFile home = getHome();
+
+        if (home == null)
+            return null;
+
+        String name = String.format(
+                Locale.ENGLISH,
+                YEAR_FORMAT,
+                year);
+
+        return home.findFile(name);
     }
 
     // prevYear
     private int prevYear(int year)
     {
         int prev = -1;
-        for (File yearDir : Diary.listYears(getHome()))
+        for (DocumentFile yearDir : Diary.listYears(getHome()))
         {
             int n = Diary.yearValue(yearDir);
             if (n < year && n > prev)
@@ -166,7 +207,7 @@ public class DiaryWidgetUpdate extends Activity
     private int prevMonth(int year, int month)
     {
         int prev = -1;
-        for (File monthDir : Diary.listMonths(getYear(year)))
+        for (DocumentFile monthDir : Diary.listMonths(getYear(year)))
         {
             int n = Diary.monthValue(monthDir);
             if (n < month && n > prev)
@@ -179,7 +220,7 @@ public class DiaryWidgetUpdate extends Activity
     private int prevDay(int year, int month, int day)
     {
         int prev = -1;
-        for (File dayFile : Diary.listDays(getMonth(year, month)))
+        for (DocumentFile dayFile : Diary.listDays(getMonth(year, month)))
         {
             int n = Diary.dayValue(dayFile);
             if (n < day && n > prev)
@@ -209,7 +250,7 @@ public class DiaryWidgetUpdate extends Activity
     private int nextYear(int year)
     {
         int next = -1;
-        for (File yearDir : Diary.listYears(getHome()))
+        for (DocumentFile yearDir : Diary.listYears(getHome()))
         {
             int n = Diary.yearValue(yearDir);
             if (n > year && (next == -1 || n < next))
@@ -222,7 +263,7 @@ public class DiaryWidgetUpdate extends Activity
     private int nextMonth(int year, int month)
     {
         int next = -1;
-        for (File monthDir : Diary.listMonths(getYear(year)))
+        for (DocumentFile monthDir : Diary.listMonths(getYear(year)))
         {
             int n = Diary.monthValue(monthDir);
             if (n > month && (next == -1 || n < next))
@@ -235,7 +276,7 @@ public class DiaryWidgetUpdate extends Activity
     private int nextDay(int year, int month, int day)
     {
         int next = -1;
-        for (File dayFile : Diary.listDays(getMonth(year, month)))
+        for (DocumentFile dayFile : Diary.listDays(getMonth(year, month)))
         {
             int n = Diary.dayValue(dayFile);
             if (n > day && (next == -1 || n < next))

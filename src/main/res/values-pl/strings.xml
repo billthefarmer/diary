@@ -39,6 +39,7 @@
   <string name="storage">Pamięć wewnętrzna</string>
   <string name="start">Rozpocząć tworzenie kopii zapasowych</string>
   <string name="complete">Tworzenie kopii zapasowej zakończone</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Zapisz zmiany?</string>
   <string name="save">Zapisać</string>
   <string name="discard">Odrzucać</string>
@@ -83,6 +84,9 @@
   <string name="pref_index_template">Szablon indeksu</string>
   <string name="theme">Motyw</string>
   <string name="about">O aplikacji</string>
+  <string name="indexBuilding">Przygotowywanie dziennika...</string>
+  <string name="indexBuildingYear">Rok %1$s – Miesiąc %2$s</string>
+  <string name="indexBuildingProgress">przetworzono %1$s z %2$s miesięcy</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Wersja %s</a></string>
   <string name="built">Zbudowano: %s</string>
   <string name="licence">Licencja <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a>
@@ -94,4 +98,5 @@
   View</a>, Polskie tłumaczenie według <a href="https://github.com/bla-ke">Daria Szatan</a>, Narzędzia plików:
   <a href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="selectStorage">Wybierz lokalizację przechowywania</string>
 </resources>

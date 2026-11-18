@@ -36,6 +36,7 @@
   <string name="storage">Archiviazione</string>
   <string name="start">Backup avviato</string>
   <string name="complete">Backup completato</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Desideri salvare le modifiche?</string>
   <string name="save">Salva</string>
   <string name="discard">Annulla</string>
@@ -82,6 +83,9 @@
   <string name="pref_index_template">Modello di indice</string>
   <string name="theme">Tema</string>
   <string name="about">Altro su</string>
+  <string name="indexBuilding">Preparazione del diario ..</string>
+  <string name="indexBuildingYear">Anno %1$s – Mese %2$s</string>
+  <string name="indexBuildingProgress">elaborati %1$s mesi su %2$s</string>
   <string name="pref_about_summ"><a
   href="https://github.com/billthefarmer/diary/releases/latest">Versione
   %s</a></string>
@@ -100,4 +104,6 @@
   Magliano</a>, File utilities by <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="selectStorage">Seleziona la posizione di archiviazione</string>
+    <string name="folderOpenFailed">Impossibile aprire la cartella radice</string>
 </resources>

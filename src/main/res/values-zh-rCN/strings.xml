@@ -39,6 +39,7 @@
   <string name="storage">存储空间</string>
   <string name="start">开始备份</string>
   <string name="complete">备份完成</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">保存更改？</string>
   <string name="save">保存</string>
   <string name="discard">丢弃</string>
@@ -83,6 +84,7 @@
   <string name="pref_template_page">模板页</string>
   <string name="pref_index_template">索引模板</string>
   <string name="about">关于</string>
+  <string name="indexBuildingProgress">已处理 %1$s 个月（共 %2$s 个月）</string>
   <string name="pref_about_summ"><a
     href="https://github.com/billthefarmer/diary/releases/latest">版本
     %s</a>
@@ -114,4 +116,8 @@
   Stoffels</a>, 文件工具来自 <a
   href="https://github.com/iPaulPro">Paul Burke</a>
   </string>
+    <string name="indexBuilding">正在准备日记……</string>
+  <string name="selectStorage">选择存储位置</string>
+  <string name="indexBuildingYear">年份 %1$s – 月份 %2$s</string>
+    <string name="folderOpenFailed">无法打开根文件夹</string>
 </resources>

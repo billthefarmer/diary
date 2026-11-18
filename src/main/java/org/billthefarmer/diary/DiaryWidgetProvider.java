@@ -31,13 +31,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.provider.DocumentFile;
 import android.text.Html;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -190,7 +189,7 @@ public class DiaryWidgetProvider extends AppWidgetProvider
     private CharSequence getText(Context context)
     {
         // Get text
-        CharSequence text = Diary.read(getFile(entry));
+        CharSequence text = Diary.read(context, getFile(entry, context));
 
         if (markdown)
         {
@@ -209,62 +208,92 @@ public class DiaryWidgetProvider extends AppWidgetProvider
         return text;
     }
 
-    // getHome
-    private File getHome()
+    /// getHome
+    private DocumentFile getHome(Context context)
     {
-        File file = new File(folder);
-        if (file.isAbsolute() && file.isDirectory() && file.canWrite())
-            return file;
+        String folder = PreferenceManager
+                .getDefaultSharedPreferences(context)
+                .getString(Settings.PREF_FOLDER, Diary.DIARY);
 
-        return new File(Environment.getExternalStorageDirectory(), folder);
+        if (folder == null || folder.isEmpty()
+                || folder.equals(Diary.DIARY))
+            return null;
+
+        return DocumentFile.fromTreeUri(context, Uri.parse(folder));
     }
 
     // getYear
-    private File getYear(int year)
+    private DocumentFile getYear(Context context, int year)
     {
-        return new File(getHome(), String.format(Locale.ENGLISH,
-                                                 Diary.YEAR_FORMAT,
-                                                 year));
-    }
+        DocumentFile home = getHome(context);
 
-    // getMonth
-    private File getMonth(int year, int month)
-    {
-        return new File(getYear(year), String.format(Locale.ENGLISH,
-                                                     Diary.MONTH_FORMAT,
-                                                     month + 1));
+        if (home == null)
+            return null;
+
+        String name = String.format(
+                Locale.ENGLISH,
+                Diary.YEAR_FORMAT,
+                year);
+
+        return home.findFile(name);
     }
 
     // getDay
-    private File getDay(int year, int month, int day)
+    private DocumentFile getDay(Context context, int year, int month, int day)
     {
-        File folder = getMonth(year, month);
-        File file = new File(folder, String.format(Locale.ENGLISH,
-                                                   Diary.DAY_FORMAT,
-                                                   day));
-        if (file.exists())
+        DocumentFile home = getHome(context);
+
+        if (home == null)
+            return null;
+
+        String yearName = String.format(
+                Locale.ENGLISH, Diary.YEAR_FORMAT, year);
+
+        DocumentFile yearFolder = home.findFile(yearName);
+
+        if (yearFolder == null)
+            return null;
+
+        String monthName = String.format(
+                Locale.ENGLISH, Diary.MONTH_FORMAT, month + 1);
+
+        DocumentFile monthFolder = yearFolder.findFile(monthName);
+
+        if (monthFolder == null)
+            return null;
+
+        String dayName = String.format(
+                Locale.ENGLISH, Diary.DAY_FORMAT, day);
+
+        DocumentFile file = monthFolder.findFile(dayName);
+
+        if (file != null)
             return file;
 
-        else if (markdown)
-            return new File(folder, String.format(Locale.ENGLISH,
-                                                  Diary.MD_FORMAT,
-                                                  day));
-        else
-            return file;
+        if (markdown)
+        {
+            dayName = String.format(
+                    Locale.ENGLISH, Diary.MD_FORMAT, day);
+
+            return monthFolder.findFile(dayName);
+        }
+
+        return null;
     }
 
     // getFile
-    private File getFile(Calendar entry)
+    private DocumentFile getFile(Calendar entry, Context context)
     {
-        return getDay(entry.get(Calendar.YEAR),
-                      entry.get(Calendar.MONTH),
-                      entry.get(Calendar.DATE));
+        return getDay(
+                context,
+                entry.get(Calendar.YEAR),
+                entry.get(Calendar.MONTH),
+                entry.get(Calendar.DATE));
     }
 
     // getFile
-    private File getFile()
+    private DocumentFile getFile(Context context)
     {
-        Calendar calendar = Calendar.getInstance();
-        return getFile(calendar);
+        return getFile(Calendar.getInstance(), context);
     }
 }

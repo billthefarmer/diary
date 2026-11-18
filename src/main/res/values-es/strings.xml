@@ -39,6 +39,7 @@
   <string name="storage">Almacenamiento</string>
   <string name="start">Comenzar copia de seguridad</string>
   <string name="complete">Copia de seguridad completa</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">¿Guardar cambios?</string>
   <string name="save">Guardar</string>
   <string name="discard">Descartar</string>
@@ -83,6 +84,7 @@
   <string name="pref_index_template">Plantilla de índice</string>
   <string name="theme">Tema</string>
   <string name="about">Acerca de</string>
+  <string name="indexBuildingProgress">se han procesado %1$s de %2$s meses</string>
   <string name="pref_about_summ"><a
   href="https://github.com/billthefarmer/diary/releases/latest">Version
   %s</a></string>
@@ -101,4 +103,7 @@
   Utilidades de archivos <a href="https://github.com/iPaulPro">Paul
   Burke</a>
   </string>
+    <string name="indexBuilding">Preparando el diario ..</string>
+  <string name="indexBuildingYear">Año %1$s – Mes %2$s</string>
+  <string name="selectStorage">Seleccionar ubicación de almacenamiento</string>
 </resources>

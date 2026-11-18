@@ -39,6 +39,7 @@
   <string name="storage">Armazenamento</string>
   <string name="start">Iniciar backup</string>
   <string name="complete">Backup concluído</string>
+  <string name="error">An error has occurred</string>
   <string name="changes">Salvar alterações?</string>
   <string name="save">Salve</string>
   <string name="discard">Descartar</string>
@@ -83,6 +84,7 @@
   <string name="pref_template_page">Página de modelo</string>
   <string name="pref_index_template">Modelo de índice</string>
   <string name="about">Sobre</string>
+  <string name="indexBuildingProgress">processados ​​%1$s de %2$s meses</string>
   <string name="pref_about_summ"><a href="https://github.com/billthefarmer/diary/releases/latest">Versão %s</a></string>
   <string name="built">Construído %s</string>
   <string name="licence">Licença <a href="https://www.gnu.org/licenses/gpl.txt">GNU GPLv3</a></string>
@@ -93,4 +95,7 @@
   View</a>, Tradução para o português por <a href="https://github.com/jeisoncp">Jeison Pandini</a>, Utilidades
   de aquivo por <a href="https://github.com/iPaulPro">Paul
   Burke</a></string>
+  <string name="indexBuilding">Preparando diário...</string>
+  <string name="indexBuildingYear">Ano %1$s – Mês %2$s</string>
+  <string name="selectStorage">Selecione o local de armazenamento</string>
 </resources>
