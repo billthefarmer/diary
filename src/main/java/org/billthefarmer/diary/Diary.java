@@ -46,8 +46,6 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.provider.OpenableColumns;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.provider.DocumentFile;
 import android.text.Editable;
 import android.text.Spanned;
@@ -260,9 +258,6 @@ public class Diary extends Activity
 
     private boolean custom = true;
     private boolean markdown = true; // Do we have markdown enabled?
-
-    private long markdownLoadStart; // for time measuring
-
     private boolean currentMarkdown; // Is the current file a markdown file?
     private boolean extended = true;
     private boolean external = false;
@@ -283,8 +278,6 @@ public class Diary extends Activity
     private boolean diaryReady = false; // Index already done?
 
     private long saved = 0;
-
-    private float minScale = 1000;
 
     private long indexPage;
     private long templatePage;
@@ -403,19 +396,6 @@ public class Diary extends Activity
     }
 
 
-    // sortFiles
-    public static DocumentFile[] sortFiles(DocumentFile[] files)
-    {
-        if (files == null)
-            return new DocumentFile[0];
-
-        // compare
-        Arrays.sort(files, (file1, file2) ->
-                file2.getName().compareTo(file1.getName()));
-
-        return files;
-    }
-
     // listYears
     public static DocumentFile[] listYears(DocumentFile home)
     {
@@ -524,30 +504,6 @@ public class Diary extends Activity
                 listEntries(file, fileList);
         }
     }
-
-    // listFiles
-    public static void listFiles(DocumentFile directory,
-                                 List<DocumentFile> fileList)
-    {
-        if (directory == null || !directory.isDirectory())
-            return;
-
-        // Get all entries from a directory
-        DocumentFile[] files = directory.listFiles();
-
-        for (DocumentFile file : files)
-        {
-            if (file.isFile())
-                fileList.add(file);
-
-            else if (file.isDirectory())
-            {
-                fileList.add(file);
-                listFiles(file, fileList);
-            }
-        }
-    }
-
 
     // onCreate
     @Override
@@ -1321,78 +1277,51 @@ public class Diary extends Activity
         }
 
         if (scrollView != null)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            showAccept = () ->
             {
-                showAccept = () ->
+                startAnimation(accept, R.anim.fade_in, View.VISIBLE);
+                scrollUp = false;
+            };
+
+            // onScrollChange
+            scrollView.setOnScrollChangeListener((v, x, y, oldX, oldY) ->
+            {
+                // Scroll up
+                if (y > oldY)
                 {
-                    startAnimation(accept, R.anim.fade_in, View.VISIBLE);
-                    scrollUp = false;
-                };
-
-                // onScrollChange
-                scrollView.setOnScrollChangeListener((v, x, y, oldX, oldY) ->
-                {
-                    // Scroll up
-                    if (y > oldY)
+                    if (!scrollUp)
                     {
-                        if (!scrollUp)
-                        {
-                            // Hide button
-                            // accept.setVisibility(View.INVISIBLE);
-                            startAnimation(accept, R.anim.fade_out,
-                                           View.INVISIBLE);
+                        // Hide button
+                        // accept.setVisibility(View.INVISIBLE);
+                        startAnimation(accept, R.anim.fade_out,
+                                       View.INVISIBLE);
 
-                            // Set flags
-                            scrollUp = true;
-                            scrollDn = false;
-                        }
-
-                        // Show button delayed
-                        scrollView.removeCallbacks(showAccept);
-                        scrollView.postDelayed(showAccept, VISIBLE_DELAY);
-                    }
-
-                    else if (!scrollDn)
-                    {
                         // Set flags
-                        scrollUp = false;
-                        scrollDn = true;
-
-                        // Show button
-                        if (accept.getVisibility() != View.VISIBLE)
-                        {
-                            // accept.setVisibility(View.VISIBLE);
-                            startAnimation(accept, R.anim.fade_in,
-                                           View.VISIBLE);
-                            scrollView.removeCallbacks(showAccept);
-                        }
+                        scrollUp = true;
+                        scrollDn = false;
                     }
-                });
-            }
-    }
 
-    // cancel
-    private void cancel()
-    {
-        if (changed)
-            alertDialog(R.string.appName, R.string.changes,
-                        R.string.save, R.string.discard, (dialog, id) ->
-        {
-            switch (id)
-            {
-            case DialogInterface.BUTTON_POSITIVE:
-                save();
-                load();
-                break;
+                    // Show button delayed
+                    scrollView.removeCallbacks(showAccept);
+                    scrollView.postDelayed(showAccept, VISIBLE_DELAY);
+                }
 
-            case DialogInterface.BUTTON_NEGATIVE:
-                load();
-                break;
-            }
-        });
+                else if (!scrollDn)
+                {
+                    // Set flags
+                    scrollUp = false;
+                    scrollDn = true;
 
-        else
-            load();
+                    // Show button
+                    if (accept.getVisibility() != View.VISIBLE)
+                    {
+                        // accept.setVisibility(View.VISIBLE);
+                        startAnimation(accept, R.anim.fade_in,
+                                       View.VISIBLE);
+                        scrollView.removeCallbacks(showAccept);
+                    }
+                }
+            });
     }
 
     // animateAccept
@@ -1537,8 +1466,7 @@ public class Diary extends Activity
 
         text = dateCheck(text);
         text = mapCheck(text);
-        String result = mediaCheck(text).toString();
-        return result;
+        return mediaCheck(text).toString();
     }
 
     // mediaCheck
@@ -1831,14 +1759,6 @@ public class Diary extends Activity
 
         // Reset the flag
         haveMedia = false;
-    }
-
-    private String getBaseUrl() {
-        DocumentFile current = getCurrent();
-        if (current == null)
-            return "";
-
-        return current.getUri().toString() + "/";
     }
 
     // getCurrent
@@ -2941,38 +2861,6 @@ public class Diary extends Activity
         return changed;
     }
 
-    /// getEntries
-    private List<Calendar> getEntries()
-    {
-        return getEntries(new GregorianCalendar(
-                1970, Calendar.JANUARY, 1));
-    }
-
-    // getEntries
-    private List<Calendar> getEntries(Calendar entry)
-    {
-        List<Calendar> list = new ArrayList<>();
-
-        LocalDate start = LocalDate.of(
-                entry.get(Calendar.YEAR),
-                entry.get(Calendar.MONTH) + 1,
-                entry.get(Calendar.DATE));
-
-        LocalDate end = LocalDate.of(
-                currEntry.get(Calendar.YEAR),
-                currEntry.get(Calendar.MONTH) + 1,
-                currEntry.get(Calendar.DATE));
-
-        for (LocalDate date : entryDates.subSet(start, true, end, true))
-        {
-            list.add(new GregorianCalendar(
-                    date.getYear(),
-                    date.getMonthValue() - 1,
-                    date.getDayOfMonth()));
-        }
-
-        return list;
-    }
 
     // save
     private void save()
@@ -3925,7 +3813,6 @@ public class Diary extends Activity
             extends AsyncTask<Uri, Void, Void>
     {
         private WeakReference<Diary> diaryWeakReference;
-        private String search;
         private boolean success = false;
 
         // ZipTask
