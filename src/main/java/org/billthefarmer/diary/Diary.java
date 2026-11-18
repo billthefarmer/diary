@@ -85,8 +85,12 @@ import android.widget.ViewSwitcher;
 import android.support.v4.content.FileProvider;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -216,7 +220,7 @@ public class Diary extends Activity
     public final static String LINK_TEMPLATE = "[%s](%s)";
     public final static String INDEX_TEMPLATE = "<<date>>";
 
-    private static final String INDEX_VERSION = "DIARY-INDEX-1";
+    private static final int INDEX_VERSION = 1;
 
     public final static String AUDIO_TEMPLATE =
             "<audio controls src=\"%s\"></audio>";
@@ -317,23 +321,6 @@ public class Diary extends Activity
     private static final int REQUEST_STORAGE_PERMISSIONS = 123;
     private static final int REQUEST_MEDIA_PERMISSIONS = 456;
 
-    private void checkPermissions() {
-        String audioPermission = Manifest.permission.READ_MEDIA_AUDIO;
-        String imagesPermission = Manifest.permission.READ_MEDIA_IMAGES;
-        String videoPermission = Manifest.permission.READ_MEDIA_VIDEO;
-        // Check for permissions and request them if needed
-        if (ContextCompat.checkSelfPermission(Diary.this, audioPermission) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(Diary.this, imagesPermission) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(Diary.this, videoPermission) == PackageManager.PERMISSION_GRANTED) {
-            // You have the permissions, you can proceed with your media file operations.
-            //Showing dialog when Show Dialog button is clicked.
-            // dialog.show();
-        } else {
-            // You don't have the permissions. Request them.
-            ActivityCompat.requestPermissions(Diary.this, new String[]{audioPermission, imagesPermission, videoPermission}, REQUEST_MEDIA_PERMISSIONS);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -350,13 +337,7 @@ public class Diary extends Activity
 
         case REQUEST_MEDIA_PERMISSIONS:   //This conditions only works on Android 13 and above versions
             if (grantResults.length > 0 && areAllPermissionsGranted(grantResults)) {
-                // Permissions were granted. You can proceed with your media file operations.
-                //Showing dialog when Show Dialog button is clicked.
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    //Android version is 11 and above so to access all types of files we have to give
-                    //special permission so show user a dialog..
-                    accessAllFilesPermissionDialog();
-                }
+                accessAllFilesPermissionDialog();
             }
             break;
 
@@ -591,7 +572,6 @@ public class Diary extends Activity
         if (Build.VERSION.SDK_INT >= 35) {
             getWindow().setDecorFitsSystemWindows(true);
         }
-        View decor = getWindow().getDecorView();
         ViewGroup content = findViewById(android.R.id.content);
 
         content.setOnApplyWindowInsetsListener((view, insets) -> {
@@ -650,12 +630,7 @@ public class Diary extends Activity
 
     @Override
     protected void onDestroy() {
-        android.util.Log.e(
-                "LIFECYCLE",
-                "onDestroy: isFinishing=" + isFinishing()
-                        + ", isChangingConfigurations=" + isChangingConfigurations()
-        );
-
+        closeOptionsMenu();
         super.onDestroy();
     }
 
@@ -1535,7 +1510,6 @@ public class Diary extends Activity
     private void loadMarkdown(CharSequence text)
     {
         String baseUrl = "https://diary.local/"; // getBaseUrl();
-        long start = System.currentTimeMillis();
         String checkedText = markdownCheck(text);
         markdownView.loadMarkdown(baseUrl, checkedText,
                                   getStyles(), getScript());
@@ -1727,7 +1701,7 @@ public class Diary extends Activity
         matcher.appendTail(buffer);
 
         if (indexChanged)
-            writeEntryIndex(getHome());
+            writeEntryIndex();
 
         return buffer;
     }
@@ -2473,16 +2447,15 @@ public class Diary extends Activity
                     return null;
 
                 // Try loading index
-                if (readEntryIndex(home))
+                if (readEntryIndex())
                 {
                     Log.d("Diary", "Loaded index: "
                             + entryDates.size() + " Entries");
                     return null;
                 }
 
-                progress.show();
-
                 // No index found, loop folders
+                publishProgress("show");
                 List<Pair<Integer, DocumentFile>> months =
                         new ArrayList<>();
 
@@ -2548,7 +2521,7 @@ public class Diary extends Activity
                 }
 
                 // Save index to file
-                writeEntryIndex(home);
+                writeEntryIndex();
 
                 Log.d("Diary", "Created index: "
                         + entryDates.size() + " Entries");
@@ -2558,6 +2531,11 @@ public class Diary extends Activity
             @Override
             protected void onProgressUpdate(String... values)
             {
+                if (values.length > 0 && "show".equals(values[0])) {
+                    if (!progress.isShowing())
+                        progress.show();
+                    return;
+                }
                 int current = Integer.parseInt(values[2]);
                 int total = Integer.parseInt(values[3]);
 
@@ -2575,7 +2553,8 @@ public class Diary extends Activity
             @Override
             protected void onPostExecute(Void result)
             {
-                progress.dismiss();
+                if (progress.isShowing())
+                    progress.dismiss();
 
                 if (startAfter)
                     startDiary();
@@ -2593,42 +2572,11 @@ public class Diary extends Activity
         }.execute();
     }
 
-    // Create Folder Index
+    // Scan month folder
     private NavigableSet<Integer> getMonthIndex(DocumentFile monthDir)
     {
         NavigableSet<Integer> days = new TreeSet<>();
 
-        DocumentFile indexFile = monthDir.findFile(".index.txt");
-
-        boolean isFile = indexFile != null && indexFile.isFile();
-
-        if (isFile)
-        {
-            try
-            {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(
-                                getContentResolver().openInputStream(indexFile.getUri())));
-
-                String line;
-
-                while ((line = reader.readLine()) != null)
-                {
-                    days.add(Integer.parseInt(line));
-                }
-
-                reader.close();
-
-                return days;
-            }
-            catch (Exception e)
-            {
-                Log.w("Diary", "Couldn't read index", e);
-                days.clear();
-            }
-        }
-
-        // Rebuild index
         for (DocumentFile file : monthDir.listFiles())
         {
             String name = file.getName();
@@ -2646,80 +2594,59 @@ public class Diary extends Activity
             }
         }
 
-        // Index speichern
-        try
-        {
-            if (indexFile == null)
-                indexFile = monthDir.createFile("text/plain", ".index");
-
-            if (indexFile != null)
-            {
-                OutputStream output = getContentResolver()
-                        .openOutputStream(indexFile.getUri(), "wt");
-
-                if (output != null)
-                {
-                    for (Integer day : days)
-                        output.write((day + "\n").getBytes(StandardCharsets.UTF_8));
-
-                    output.close();
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Log.w("Diary", "Could not write index", e);
-        }
-
         return days;
     }
 
     // Read Index File
-    private boolean readEntryIndex(DocumentFile home)
+    private boolean readEntryIndex()
     {
-        DocumentFile indexFile = home.findFile(".diary-index.txt");
+        File indexFile = new File(getFilesDir(), "diary-index.cache");
 
-        if (indexFile == null || !indexFile.isFile())
+        if (!indexFile.exists())
             return false;
 
-        try
+        try (DataInputStream input = new DataInputStream(
+                new BufferedInputStream(new FileInputStream(indexFile))))
         {
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                            getContentResolver().openInputStream(indexFile.getUri()),
-                            StandardCharsets.UTF_8));
-
-            String line;
-
-            String version = reader.readLine();
-
-            if (!INDEX_VERSION.equals(version))
+            // Version prüfen
+            if (input.readInt() != INDEX_VERSION)
             {
-                Log.w("Diary", "Index missing or invalid version");
-                reader.close();
+                Log.w("Diary", "Invalid binary index version");
                 return false;
             }
 
-            while ((line = reader.readLine()) != null)
+            int count = input.readInt();
+
+            if (count < 0 || count > 100000)
             {
-                String[] parts = line.split("\\|", 2);
+                Log.w("Diary", "Invalid index entry count: " + count);
+                return false;
+            }
 
-                if (parts.length != 2)
-                    continue;
+            entryDates.clear();
+            entryUris.clear();
 
-                LocalDate date = LocalDate.parse(parts[0]);
-                Uri uri = Uri.parse(parts[1]);
+            for (int i = 0; i < count; i++)
+            {
+                int year = input.readInt();
+                int month = input.readInt();
+                int day = input.readInt();
+
+                LocalDate date = LocalDate.of(year, month, day);
+                Uri uri = Uri.parse(input.readUTF());
 
                 entryDates.add(date);
                 entryUris.put(date, uri);
             }
 
-            reader.close();
+            Log.d("Diary", "Loaded binary index: "
+                    + entryDates.size() + " Entries");
+
             return true;
         }
         catch (Exception e)
         {
-            Log.w("Diary", "Could not read index", e);
+            Log.e("Diary", "Could not read binary index", e);
             entryDates.clear();
             entryUris.clear();
             return false;
@@ -2727,42 +2654,82 @@ public class Diary extends Activity
     }
 
     // Write Index File
-    private void writeEntryIndex(DocumentFile home)
+    private void writeEntryIndex()
     {
-        DocumentFile indexFile = home.findFile(".diary-index.txt");
+        File indexFile = new File(getFilesDir(), "diary-index.cache");
+        File tempFile = new File(getFilesDir(), "diary-index.tmp");
 
-        try
+        try (DataOutputStream output = new DataOutputStream(
+                new BufferedOutputStream(new FileOutputStream(tempFile))))
         {
-            if (indexFile == null)
-                indexFile = home.createFile("text/plain", ".diary-index");
+            output.writeInt(INDEX_VERSION);
 
-            if (indexFile == null)
-                return;
-
-            try (OutputStream output = getContentResolver()
-                    .openOutputStream(indexFile.getUri(), "wt"))
+            int count = 0;
+            for (LocalDate date : entryDates)
             {
-                if (output == null)
-                    return;
+                if (entryUris.containsKey(date))
+                    count++;
+            }
 
-                output.write((INDEX_VERSION + "\n").getBytes(StandardCharsets.UTF_8));
+            output.writeInt(count);
 
-                for (LocalDate date : entryDates)
-                {
-                    Uri uri = entryUris.get(date);
+            for (LocalDate date : entryDates)
+            {
+                Uri uri = entryUris.get(date);
 
-                    if (uri == null)
-                        continue;
+                if (uri == null)
+                    continue;
 
-                    String line = date + "|" + uri + "\n";
-                    output.write(line.getBytes(StandardCharsets.UTF_8));
-                }
+                output.writeInt(date.getYear());
+                output.writeInt(date.getMonthValue());
+                output.writeInt(date.getDayOfMonth());
+                output.writeUTF(uri.toString());
             }
         }
         catch (Exception e)
         {
-            Log.w("Diary", "Gesamtindex konnte nicht gespeichert werden", e);
+            Log.e("Diary", "Could not write binary index", e);
+            tempFile.delete();
+            return;
         }
+
+        if (indexFile.exists() && !indexFile.delete())
+        {
+            Log.e("Diary", "Could not replace old index");
+            tempFile.delete();
+            return;
+        }
+
+        if (!tempFile.renameTo(indexFile))
+        {
+            Log.e("Diary", "Could not rename temporary index");
+            tempFile.delete();
+        }
+        else
+        {
+            Log.d("Diary", "Binary index saved: "
+                    + entryDates.size() + " Entries");
+        }
+    }
+
+    private boolean updateEntryIndex(LocalDate date, DocumentFile file)
+    {
+        if (file == null)
+        {
+            boolean changed = entryDates.remove(date);
+            changed |= entryUris.remove(date) != null;
+            return changed;
+        }
+
+        boolean changed = entryDates.add(date);
+
+        if (!file.getUri().equals(entryUris.get(date)))
+        {
+            entryUris.put(date, file.getUri());
+            changed = true;
+        }
+
+        return changed;
     }
 
     /// getEntries
@@ -2833,15 +2800,36 @@ public class Diary extends Activity
 
         if (parent == null)
         {
-            alertDialog(R.string.appName, getString(R.string.folderOpenFailed), android.R.string.ok);
+            alertDialog(R.string.appName,
+                    getString(R.string.folderOpenFailed),
+                    android.R.string.ok);
             return;
         }
+
+        LocalDate date = LocalDate.of(
+                currEntry.get(Calendar.YEAR),
+                currEntry.get(Calendar.MONTH) + 1,
+                currEntry.get(Calendar.DAY_OF_MONTH));
+
+        boolean changed = false;
 
         if (text.length() == 0)
         {
             // Delete file
             if (file != null && file.exists())
-                file.delete();
+            {
+                if (!file.delete())
+                    return;
+            }
+
+            // Check for alternative file extension
+            String name = String.format(Locale.ENGLISH,
+                    markdown ? DAY_FORMAT : MD_FORMAT,
+                    currEntry.get(Calendar.DATE));
+
+            DocumentFile alternative = parent.findFile(name);
+
+            changed = updateEntryIndex(date, alternative);
 
             // Delete empty month folder
             if (parent.exists() && parent.listFiles().length == 0)
@@ -2867,25 +2855,13 @@ public class Diary extends Activity
                         markdown ? MD_FORMAT : DAY_FORMAT,
                         currEntry.get(Calendar.DATE));
 
-                String mimeType = markdown ? "text/markdown" : "text/plain";
+                String mimeType = markdown
+                        ? "text/markdown" : "text/plain";
 
                 file = parent.createFile(mimeType, name);
 
-                LocalDate date = LocalDate.of(
-                        currEntry.get(Calendar.YEAR),
-                        currEntry.get(Calendar.MONTH) + 1,
-                        currEntry.get(Calendar.DAY_OF_MONTH));
-
-                boolean changed = entryDates.add(date);
-
-                if (!file.getUri().equals(entryUris.get(date)))
-                {
-                    entryUris.put(date, file.getUri());
-                    changed = true;
-                }
-
-                if (changed)
-                    writeEntryIndex(getHome());
+                if (file == null)
+                    return;
             }
 
             try (OutputStream output = getContentResolver()
@@ -2901,10 +2877,16 @@ public class Diary extends Activity
                         android.R.string.ok);
 
                 e.printStackTrace();
+                return;
             }
-        }
-    }
 
+            // Update index only after successful save
+            changed = updateEntryIndex(date, file);
+        }
+
+        if (changed)
+            writeEntryIndex();
+    }
     // alertDialog
     private void alertDialog(int title, int message,
                              int positiveButton, int negativeButton,
