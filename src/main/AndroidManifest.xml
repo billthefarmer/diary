@@ -23,6 +23,7 @@
     android:installLocation="auto"
     tools:ignore="GoogleAppIndexingWarning">
 
+  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.READ_CALENDAR" />
@@ -44,10 +45,11 @@
       android:allowBackup="true"
       android:supportsRtl="true"
       android:usesCleartextTraffic="true"
+      android:requestLegacyExternalStorage="true"
       android:icon="@drawable/ic_launcher"
       android:label="@string/appName"
       android:theme="@style/AppDarkTheme"
-      tools:ignore="AllowBackup">
+      tools:ignore="AllowBackup,UnusedAttribute">
 
     <activity
         android:name="Diary"

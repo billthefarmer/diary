@@ -29,9 +29,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -82,7 +82,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -101,6 +100,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 
 import org.billthefarmer.markdown.MarkdownView;
 import org.billthefarmer.view.CustomCalendarDialog;
@@ -139,8 +141,6 @@ public class Diary extends Activity
     public static final int LIGHT  = 0;
     public static final int DARK   = 1;
     public static final int SYSTEM = 2;
-
-    public static final int VERSION_CODE_S_V2 = 32;
 
     public final static String DIARY = "Diary";
     public final static String TAG = DIARY;
@@ -192,7 +192,7 @@ public class Diary extends Activity
     public final static String DAY_FORMAT = "%02d.txt";
     public final static String MD_FORMAT = "%02d.md";
 
-    public final static String ZIP = ".zip";
+    public final static String DOT_ZIP = ".zip";
     public final static String HELP = "help.md";
     public final static String STYLES = "file:///android_asset/styles.css";
     public final static String SCRIPT = "file:///android_asset/script.js";
@@ -224,7 +224,7 @@ public class Diary extends Activity
     public final static String EVENTS_TEMPLATE = "@:%s %s\n";
 
     public final static String BRACKET_CHARS = "([{<";
-    public final static String DIARY_IMAGE = "Diary.png";
+    public final static String DOT_PNG = ".png";
 
     public final static String GEO = "geo";
     public final static String OSM = "osm";
@@ -290,6 +290,7 @@ public class Diary extends Activity
     private Runnable showAccept;
 
     private GestureDetector gestureDetector;
+    private ExecutorService executor;
 
     private Deque<Calendar> entryStack;
 
@@ -488,12 +489,64 @@ public class Diary extends Activity
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
 
+        executor = Executors.newSingleThreadExecutor();
         setListeners();
 
         gestureDetector =
             new GestureDetector(this, new GestureListener());
 
         entryStack = new ArrayDeque<>();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
+            !Environment.isExternalStorageManager())
+        {
+            alertDialog(R.string.access, R.string.manageFiles,
+                        R.string.access, R.string.cancel, (dialog, id) ->
+            {
+                switch (id)
+                {
+                case DialogInterface.BUTTON_POSITIVE:
+                    Uri appId = Uri.parse(PACKAGE + BuildConfig.APPLICATION_ID);
+                    Intent intent = new
+                        Intent(android.provider.Settings.
+                               ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                               appId);
+                    startActivity(intent);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+                }
+            });
+
+            today();
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R &&
+            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED)
+        {
+            alertDialog(R.string.files, R.string.manageFiles,
+                        R.string.files, R.string.cancel, (dialog, id) ->
+            {
+                switch (id)
+                {
+                case DialogInterface.BUTTON_POSITIVE:
+                    requestPermissions(new String[]
+                    {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE},
+                                       REQUEST_OPEN);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+                }
+            });
+
+            today();
+            return;
+        }
 
         // Check startup
         if (savedInstanceState == null)
@@ -807,8 +860,9 @@ public class Diary extends Activity
                 return;
 
             uri = data.getData();
-            ZipTask zipTask = new ZipTask(this);
-            zipTask.execute(uri);
+            doZip(uri);
+            // ZipTask zipTask = new ZipTask(this);
+            // zipTask.execute(uri);
             break;
         }
     }
@@ -1704,30 +1758,6 @@ public class Diary extends Activity
                                          ACCEPT);
     }
 
-    //     if (markdown)
-    //     {
-    //         buttonSwitcher.setVisibility(View.VISIBLE);
-    //         // Check if shown
-    //         if (shown)
-    //         {
-    //             layoutSwitcher.setDisplayedChild(MARKDOWN);
-    //             buttonSwitcher.setDisplayedChild(EDIT);
-    //         }
-
-    //         else
-    //         {
-    //             layoutSwitcher.setDisplayedChild(EDIT_TEXT);
-    //             buttonSwitcher.setDisplayedChild(ACCEPT);
-    //         }
-    //     }
-
-    //     else
-    //     {
-    //         layoutSwitcher.setDisplayedChild(EDIT_TEXT);
-    //         buttonSwitcher.setVisibility(View.GONE);
-    //     }
-    // }
-
     // goToDate
     private void goToDate(Calendar date)
     {
@@ -1785,10 +1815,10 @@ public class Diary extends Activity
     {
         // Get search string
         String search = searchView.getQuery().toString();
-
+        doFind(search);
         // Execute find task
-        FindTask findTask = new FindTask(this);
-        findTask.execute(search);
+        // FindTask findTask = new FindTask(this);
+        // findTask.execute(search);
     }
 
     // print
@@ -1824,11 +1854,14 @@ public class Diary extends Activity
         {
             intent.setType(IMAGE_PNG);
 
-            markdownView.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(markdownView.getDrawingCache());
-            markdownView.setDrawingCacheEnabled(false);
+            Bitmap bitmap = Bitmap.createBitmap(markdownView.getWidth(),
+                                                markdownView.getHeight(),
+                                                Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            markdownView.draw(canvas);
 
-            File image = new File(getCacheDir(), DIARY_IMAGE);
+            String name = UUID.randomUUID().toString() + DOT_PNG;
+            File image = new File(getCacheDir(), name);
             try (FileOutputStream out = new FileOutputStream(image))
             {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -1918,7 +1951,7 @@ public class Diary extends Activity
     private void backup()
     {
         // Remove path prefix
-        String name = (getHome().getPath() + ZIP)
+        String name = (getHome().getPath() + DOT_ZIP)
             .replaceFirst(Environment.getExternalStorageDirectory()
                           .getPath() + File.separator, "");
 
@@ -1943,8 +1976,9 @@ public class Diary extends Activity
 
                 // Start zip task
                 Uri uri = Uri.fromFile(file);
-                ZipTask zipTask = new ZipTask(this);
-                zipTask.execute(uri);
+                doZip(uri);
+                // ZipTask zipTask = new ZipTask(this);
+                // zipTask.execute(uri);
                 break;
 
             case DialogInterface.BUTTON_NEUTRAL:
@@ -2041,19 +2075,6 @@ public class Diary extends Activity
                                               DAY_FORMAT,
                                               day));
     }
-
-        // File file = new File(folder, String.format(Locale.ENGLISH,
-        //                                            DAY_FORMAT,
-        //                                            day));
-        // if (file.exists())
-        //     return file;
-
-        // else if (markdown)
-        //     return new File(folder, String.format(Locale.ENGLISH,
-        //                                           MD_FORMAT,
-        //                                           day));
-        // else
-        //     return file;
 
     // getFile
     private File getFile()
@@ -2998,7 +3019,7 @@ public class Diary extends Activity
         toast.setGravity(Gravity.CENTER, 0, 0);
         // Fix for android 13
         View view = toast.getView();
-        if (view != null && Build.VERSION.SDK_INT > VERSION_CODE_S_V2)
+        if (view != null && Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2)
             view.setBackgroundResource(R.drawable.toast_frame);
         toast.show();
     }
@@ -3129,41 +3150,16 @@ public class Diary extends Activity
         }
     }
 
-    // ZipTask
-    private static class ZipTask
-            extends AsyncTask<Uri, Void, Void>
+    // doZip
+    private void doZip(Uri uri)
     {
-        private WeakReference<Diary> diaryWeakReference;
-        private String search;
-
-        // ZipTask
-        public ZipTask(Diary diary)
+        showToast(R.string.start);
+        File home = getHome();
+        executor.execute(() ->
         {
-            diaryWeakReference = new WeakReference<>(diary);
-        }
-
-        // onPreExecute
-        @Override
-        protected void onPreExecute()
-        {
-            final Diary diary = diaryWeakReference.get();
-            if (diary != null)
-                diary.showToast(R.string.start);
-        }
-
-        // doInBackground
-        @Override
-        protected Void doInBackground(Uri... uris)
-        {
-            final Diary diary = diaryWeakReference.get();
-            if (diary == null)
-                return null;
-
-            File home = diary.getHome();
-
             // Create output stream
             try (ZipOutputStream output = new ZipOutputStream
-                 (diary.getContentResolver().openOutputStream(uris[0])))
+                 (getContentResolver().openOutputStream(uri)))
             {
                 byte[] buffer = new byte[BUFFER_SIZE];
 
@@ -3209,63 +3205,35 @@ public class Diary extends Activity
 
                 // Close last entry
                 output.closeEntry();
+                textView.post(() -> showToast(R.string.complete));
             }
 
             catch (Exception e)
             {
-                diary.runOnUiThread (() ->
-                    diary.alertDialog(R.string.appName, e.getMessage(),
-                                      android.R.string.ok));
+                textView.post(() ->
+                    alertDialog(R.string.appName, e.getMessage(),
+                                android.R.string.ok));
                 e.printStackTrace();
             }
-
-            return null;
-        }
-
-        // onPostExecute
-        @Override
-        protected void onPostExecute(Void noresult)
-        {
-            final Diary diary = diaryWeakReference.get();
-            if (diary != null)
-                diary.showToast(R.string.complete);
-        }
+        });
     }
 
-    // FindTask
-    private static class FindTask
-            extends AsyncTask<String, Void, List<String>>
+    // doFind
+    private void doFind(String search)
     {
-        private WeakReference<Diary> diaryWeakReference;
-        private String search;
+        // Create a list of matches
+        List<String> matches = new ArrayList<>();
+        Pattern pattern =
+            Pattern.compile(search, Pattern.CASE_INSENSITIVE |
+                            Pattern.LITERAL | Pattern.UNICODE_CASE);
+        // Get entry list
+        List<File> entries = new ArrayList<>();
+        listEntries(diary.getHome(), entries);
 
-        // FindTask
-        public FindTask(Diary diary)
+        DateFormat dateFormat =
+            DateFormat.getDateInstance(DateFormat.MEDIUM);
+        executor.execute(() ->
         {
-            diaryWeakReference = new WeakReference<>(diary);
-        }
-
-        // doInBackground
-        @Override
-        protected List<String> doInBackground(String... params)
-        {
-            // Create a list of matches
-            List<String> matches = new ArrayList<>();
-            final Diary diary = diaryWeakReference.get();
-            if (diary == null)
-                return matches;
-
-            search = params[0];
-            Pattern pattern =
-                Pattern.compile(search, Pattern.CASE_INSENSITIVE |
-                                Pattern.LITERAL | Pattern.UNICODE_CASE);
-            // Get entry list
-            List<File> entries = new ArrayList<>();
-            listEntries(diary.getHome(), entries);
-
-            DateFormat dateFormat =
-                DateFormat.getDateInstance(DateFormat.MEDIUM);
-
             // Check the entries
             for (File file : entries)
             {
@@ -3295,55 +3263,46 @@ public class Diary extends Activity
                                  "  " + headline);
                 }
             }
-
-            return matches;
-        }
-
-        // onPostExecute
-        @Override
-        protected void onPostExecute(List<String> matches)
-        {
-            final Diary diary = diaryWeakReference.get();
-            if (diary == null)
-                return;
-
-            // Build dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(diary);
-            builder.setTitle(R.string.findAll);
-
-            // If found populate dialog
-            if (!matches.isEmpty())
+            textView.post(() ->
             {
-                final String[] choices = matches.toArray(new String[0]);
-                builder.setItems(choices, (dialog, which) ->
+                // Build dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(diary);
+                builder.setTitle(R.string.findAll);
+
+                // If found populate dialog
+                if (!matches.isEmpty())
                 {
-                    String choice = choices[which];
-                    DateFormat format =
+                    final String[] choices = matches.toArray(new String[0]);
+                    builder.setItems(choices, (dialog, which) ->
+                    {
+                        String choice = choices[which];
+                        DateFormat format =
                             DateFormat.getDateInstance(DateFormat.MEDIUM);
 
-                    // Get the entry chosen
-                    try
-                    {
-                        Date date = format.parse(choice);
-                        Calendar entry = Calendar.getInstance();
-                        entry.setTime(date);
-                        diary.changeDate(entry);
+                        // Get the entry chosen
+                        try
+                        {
+                            Date date = format.parse(choice);
+                            Calendar entry = Calendar.getInstance();
+                            entry.setTime(date);
+                            diary.changeDate(entry);
 
-                        // Put the search text back - why it
-                        // disappears I have no idea or why I have to
-                        // do it after a delay
-                        diary.searchView.postDelayed(() ->
-                                diary.searchView.setQuery(search, false),
-                                                     FIND_DELAY);
-                    }
+                            // Put the search text back - why it
+                            // disappears I have no idea or why I have to
+                            // do it after a delay
+                            searchView.postDelayed(() ->
+                                searchView.setQuery(search, false),
+                                                   FIND_DELAY);
+                        }
 
-                    catch (Exception e) {}
-                });
-            }
+                        catch (Exception e) {}
+                    });
+                }
 
-            builder.setNegativeButton(android.R.string.cancel, null);
-            builder.show();
-        }
+                builder.setNegativeButton(android.R.string.cancel, null);
+                builder.show();
+            });
+        });
     }
 
     // QueryTextListener
