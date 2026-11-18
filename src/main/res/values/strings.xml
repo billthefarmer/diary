@@ -121,4 +121,5 @@
   </string>
   <string name="selectStorage">Select storage location</string>
   <string name="folderOpenFailed">Could not open root folder</string>
+  <string name="positionWeather">Position and Weather</string>
 </resources>

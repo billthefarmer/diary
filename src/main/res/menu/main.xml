@@ -90,6 +90,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       android:showAsAction="never"
       android:title="@string/addMedia" />
   <item
+      android:id="@+id/positionWeather"
+      android:showAsAction="never"
+      android:title="@string/positionWeather" />
+  <item
       android:id="@+id/editStyles"
       android:showAsAction="never"
       android:title="@string/editStyles" />

@@ -35,6 +35,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -98,6 +100,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -129,6 +133,7 @@ import org.billthefarmer.view.CustomCalendarDialog;
 import org.billthefarmer.view.CustomCalendarView;
 import org.billthefarmer.view.DayDecorator;
 import org.billthefarmer.view.DayView;
+import org.json.JSONObject;
 
 // Diary
 @SuppressWarnings("deprecation")
@@ -325,35 +330,43 @@ public class Diary extends Activity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode)
-        {
-        case REQUEST_STORAGE_PERMISSIONS:
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permissions were granted. You can proceed with your file operations.
-                //Showing dialog when Show Dialog button is clicked.
-                accessAllFilesPermissionDialog();
-            }
-            break;
+        switch (requestCode) {
+            case REQUEST_STORAGE_PERMISSIONS:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permissions were granted. You can proceed with your file operations.
+                    //Showing dialog when Show Dialog button is clicked.
+                    accessAllFilesPermissionDialog();
+                }
+                break;
 
-        case REQUEST_MEDIA_PERMISSIONS:   //This conditions only works on Android 13 and above versions
-            if (grantResults.length > 0 && areAllPermissionsGranted(grantResults)) {
-                accessAllFilesPermissionDialog();
-            }
-            break;
+            case REQUEST_MEDIA_PERMISSIONS:   //This conditions only works on Android 13 and above versions
+                if (grantResults.length > 0 && areAllPermissionsGranted(grantResults)) {
+                    accessAllFilesPermissionDialog();
+                }
+                break;
 
-        case REQUEST_WRITE:
-            for (int i = 0; i < grantResults.length; i++)
+            case REQUEST_WRITE:
+                for (int i = 0; i < grantResults.length; i++)
                     save();
-            break;
+                break;
 
-        case REQUEST_READ:
-            for (int i = 0; i < grantResults.length; i++)
+            case REQUEST_READ:
+                for (int i = 0; i < grantResults.length; i++)
                     load();
-            break;
+                break;
 
-        case REQUEST_TEMPLATE:
-            for (int i = 0; i < grantResults.length; i++)
+            case REQUEST_TEMPLATE:
+                for (int i = 0; i < grantResults.length; i++)
                     template();
+                break;
+
+            case LOCATION_PERMISSION_REQUEST:
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED)
+                addPositionWeather();
+            else
+                Toast.makeText(this, "Standortberechtigung fehlt",
+                        Toast.LENGTH_LONG).show();
             break;
         }
     }
@@ -783,6 +796,9 @@ public class Diary extends Activity
             return true;
         } else if (id == R.id.addMedia) {
             addMedia();
+            return true;
+        } else if (id == R.id.positionWeather) {
+            addPositionWeather();
             return true;
         } else if (id == R.id.editStyles) {
             editStyles();
@@ -2093,6 +2109,199 @@ public class Diary extends Activity
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(WILD_WILD);
         startActivityForResult(Intent.createChooser(intent, null), ADD_MEDIA);
+    }
+
+    private static final int LOCATION_PERMISSION_REQUEST = 1001;
+
+    // Current Position and today's weather
+    private void addPositionWeather()
+    {
+        // Laufzeitberechtigungen prüfen
+        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(
+                    new String[] {
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    LOCATION_PERMISSION_REQUEST);
+            return;
+        }
+
+        LocationManager locationManager =
+                (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        String provider = null;
+
+        // Netzwerk bevorzugen, GPS als Alternative
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            provider = LocationManager.NETWORK_PROVIDER;
+        else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            provider = LocationManager.GPS_PROVIDER;
+
+        if (provider == null)
+        {
+            Toast.makeText(this, "Kein Standortanbieter verfügbar",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        locationManager.getCurrentLocation(
+                provider,
+                null,
+                getMainExecutor(),
+                location -> {
+                    if (location == null)
+                    {
+                        Toast.makeText(this, "Standort konnte nicht ermittelt werden",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    getWeather(location);
+                });
+        loadMarkdown();
+    }
+
+    private void getWeather(Location location)
+    {
+        new Thread(() -> {
+            HttpURLConnection connection = null;
+
+            try
+            {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+
+                String urlString = String.format(Locale.US,
+                        "https://api.open-meteo.com/v1/forecast"
+                                + "?latitude=%.6f"
+                                + "&longitude=%.6f"
+                                + "&current=temperature_2m,relative_humidity_2m,"
+                                + "weather_code,wind_speed_10m"
+                                + "&daily=temperature_2m_max,temperature_2m_min"
+                                + "&timezone=auto",
+                        latitude, longitude);
+
+                URL url = new URL(urlString);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
+
+                StringBuilder response = new StringBuilder();
+
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(
+                                connection.getInputStream(),
+                                StandardCharsets.UTF_8)))
+                {
+                    String line;
+                    while ((line = reader.readLine()) != null)
+                        response.append(line);
+                }
+
+                JSONObject json = new JSONObject(response.toString());
+
+                JSONObject current = json.getJSONObject("current");
+                JSONObject daily = json.getJSONObject("daily");
+
+                double temperature = current.getDouble("temperature_2m");
+                int humidity = current.getInt("relative_humidity_2m");
+                double wind = current.getDouble("wind_speed_10m");
+                int weatherCode = current.getInt("weather_code");
+
+                double max = daily.getJSONArray("temperature_2m_max").getDouble(0);
+                double min = daily.getJSONArray("temperature_2m_min").getDouble(0);
+
+                String emoji = getWeatherEmoji(weatherCode);
+
+                String coordinates = String.format(Locale.US,
+                        "%.6f,%.6f", latitude, longitude);
+
+                String mapLink = String.format(Locale.US,
+                        "[%s](https://www.openstreetmap.org/search?lat=%.6f&lon=%.6f)",
+                        coordinates, latitude, longitude);
+
+                String weather = String.format(Locale.GERMANY,
+                        "%s %.1f °C · Luftfeuchtigkeit %d %% · Wind %.1f km/h%n"
+                                + "Heute: %.1f °C / %.1f °C",
+                        emoji, temperature, humidity, wind, max, min);
+
+                String result = mapLink + "\n\n" + weather + "\n\n";
+
+                runOnUiThread(() -> {
+                    Editable editable = textView.getText();
+                    int position = textView.getSelectionStart();
+
+                    if (position < 0)
+                        position = editable.length();
+
+                    editable.insert(position, result);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.e("Diary", "Wetterabfrage fehlgeschlagen", e);
+
+                runOnUiThread(() ->
+                        Toast.makeText(this,
+                                "Wetter konnte nicht abgefragt werden",
+                                Toast.LENGTH_LONG).show());
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.disconnect();
+            }
+        }).start();
+    }
+
+    private String getWeatherEmoji(int code)
+    {
+        switch (code)
+        {
+            case 0:
+                return "☀️";
+            case 1:
+                return "🌤️";
+            case 2:
+                return "⛅";
+            case 3:
+                return "☁️";
+            case 45:
+            case 48:
+                return "🌫️";
+            case 51:
+            case 53:
+            case 55:
+                return "🌦️";
+            case 56:
+            case 57:
+            case 61:
+            case 63:
+            case 65:
+            case 66:
+            case 67:
+            case 80:
+            case 81:
+            case 82:
+                return "🌧️";
+            case 71:
+            case 73:
+            case 75:
+            case 77:
+            case 85:
+            case 86:
+                return "🌨️";
+            case 95:
+            case 96:
+            case 99:
+                return "⛈️";
+            default:
+                return "🌡️";
+        }
     }
 
     // editStyles
