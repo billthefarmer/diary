@@ -123,6 +123,7 @@ public class Diary extends Activity
     public final static int REQUEST_READ = 1;
     public final static int REQUEST_WRITE = 2;
     public final static int REQUEST_TEMPLATE = 3;
+    public final static int REQUEST_OPEN = 4;
 
     public final static int POSITION_DELAY = 128;
     public final static int VISIBLE_DELAY = 2048;
@@ -241,6 +242,7 @@ public class Diary extends Activity
     public final static String AUDIO = "audio";
     public final static String VIDEO = "video";
     public final static String ELLIPSIS = "…";
+    public final static String PACKAGE = "package:";
 
     private boolean custom = true;
     private boolean markdown = true;
@@ -501,7 +503,8 @@ public class Diary extends Activity
             !Environment.isExternalStorageManager())
         {
             alertDialog(R.string.access, R.string.manageFiles,
-                        R.string.access, R.string.cancel, (dialog, id) ->
+                        R.string.access, android.R.string.cancel,
+                        (dialog, id) ->
             {
                 switch (id)
                 {
@@ -528,7 +531,7 @@ public class Diary extends Activity
             != PackageManager.PERMISSION_GRANTED)
         {
             alertDialog(R.string.files, R.string.manageFiles,
-                        R.string.files, R.string.cancel, (dialog, id) ->
+                        R.string.files, android.R.string.cancel, (dialog, id) ->
             {
                 switch (id)
                 {
@@ -3240,7 +3243,7 @@ public class Diary extends Activity
                             Pattern.LITERAL | Pattern.UNICODE_CASE);
         // Get entry list
         List<File> entries = new ArrayList<>();
-        listEntries(diary.getHome(), entries);
+        listEntries(getHome(), entries);
 
         DateFormat dateFormat =
             DateFormat.getDateInstance(DateFormat.MEDIUM);
@@ -3278,7 +3281,7 @@ public class Diary extends Activity
             textView.post(() ->
             {
                 // Build dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(diary);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.findAll);
 
                 // If found populate dialog
@@ -3297,7 +3300,7 @@ public class Diary extends Activity
                             Date date = format.parse(choice);
                             Calendar entry = Calendar.getInstance();
                             entry.setTime(date);
-                            diary.changeDate(entry);
+                            changeDate(entry);
 
                             // Put the search text back - why it
                             // disappears I have no idea or why I have to

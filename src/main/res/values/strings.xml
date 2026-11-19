@@ -18,7 +18,9 @@
 
   -->
 
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
   <string name="appName">Diary</string>
   <string name="today">Today</string>
   <string name="prevEntry">Previous</string>
@@ -42,6 +44,9 @@
   <string name="changes">Save changes?</string>
   <string name="save">Save</string>
   <string name="discard">Discard</string>
+  <string name="manageFiles"><p>In order to have access to the diary entries <b>Diary</b> must use the <b>Files</b> or <b>All files access</b> permission depending upon the version of Android. If this is not allowed the app may still be able to access files using the <b>Storage</b> button in the file chooser.</p></string>
+  <string name="files">Files</string>
+  <string name="access">Access all files</string>
   <string name="settings">Settings</string>
   <string name="calendar">Calendar</string>
   <string name="pref_calendar">Use custom calendar</string>

@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.13.2'
     }
 }
 
@@ -24,7 +24,7 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 35
     namespace = "org.billthefarmer.diary"
 
     defaultConfig {
@@ -38,22 +38,25 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     lintOptions {
-        disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
-            'IconDuplicates', 'UnusedAttribute', 'OldTargetApi',
-            'NonConstantResourceId', 'ExpiredTargetSdkVersion',
-            'MediaCapabilities', 'AndroidGradlePluginVersion'
+    	disable 'ScopedStorage', 'NonConstantResourceId', 'AndroidGradlePluginVersion',
+	'GradleDependency', 'SwitchIntDef', 'SetJavaScriptEnabled',
+	'ExpiredTargetSdkVersion', 'ContentDescription'
         // abortOnError false
     }
 }
 
 dependencies {
-    implementation 'org.commonmark:commonmark-ext-yaml-front-matter:0.21.0'
+    implementation 'org.commonmark:commonmark-ext-yaml-front-matter:0.32.0'
     implementation 'com.github.billthefarmer:CustomCalendarView:v1.06'
     implementation 'com.github.billthefarmer:MarkdownView:v1.11'
-    implementation 'org.commonmark:commonmark:0.21.0'
+    implementation 'org.commonmark:commonmark:0.32.0'
 }
