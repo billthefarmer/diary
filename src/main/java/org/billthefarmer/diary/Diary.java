@@ -46,7 +46,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.provider.OpenableColumns;
-import android.support.v4.provider.DocumentFile;
+import androidx.documentfile.provider.DocumentFile;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -82,7 +82,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -648,17 +648,24 @@ public class Diary extends Activity
 
     // onPause
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
 
-        if (changed) {
+        if (changed)
+        {
             save();
-            // Clear flag
             changed = false;
         }
 
-        DocumentFile file = getFile();
-        saved = (file != null && file.exists()) ? file.lastModified() : 0;
+        if (currEntry != null)
+        {
+            DocumentFile file = getFile();
+            saved = (file != null && file.exists())
+                    ? file.lastModified() : 0;
+        }
+        else
+            saved = 0;
     }
 
     // onCreateOptionsMenu
@@ -1276,7 +1283,7 @@ public class Diary extends Activity
             });
         }
 
-        if (scrollView != null)
+        if (scrollView != null) {
             showAccept = () ->
             {
                 startAnimation(accept, R.anim.fade_in, View.VISIBLE);
@@ -1287,14 +1294,12 @@ public class Diary extends Activity
             scrollView.setOnScrollChangeListener((v, x, y, oldX, oldY) ->
             {
                 // Scroll up
-                if (y > oldY)
-                {
-                    if (!scrollUp)
-                    {
+                if (y > oldY) {
+                    if (!scrollUp) {
                         // Hide button
                         // accept.setVisibility(View.INVISIBLE);
                         startAnimation(accept, R.anim.fade_out,
-                                       View.INVISIBLE);
+                                View.INVISIBLE);
 
                         // Set flags
                         scrollUp = true;
@@ -1304,24 +1309,21 @@ public class Diary extends Activity
                     // Show button delayed
                     scrollView.removeCallbacks(showAccept);
                     scrollView.postDelayed(showAccept, VISIBLE_DELAY);
-                }
-
-                else if (!scrollDn)
-                {
+                } else if (!scrollDn) {
                     // Set flags
                     scrollUp = false;
                     scrollDn = true;
 
                     // Show button
-                    if (accept.getVisibility() != View.VISIBLE)
-                    {
+                    if (accept.getVisibility() != View.VISIBLE) {
                         // accept.setVisibility(View.VISIBLE);
                         startAnimation(accept, R.anim.fade_in,
-                                       View.VISIBLE);
+                                View.VISIBLE);
                         scrollView.removeCallbacks(showAccept);
                     }
                 }
             });
+        }
     }
 
     // animateAccept

@@ -44,10 +44,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import androidx.activity.ComponentActivity;
+import androidx.activity.OnBackPressedCallback;
 
 // Editor
 @SuppressWarnings("deprecation")
-public class Editor extends Activity
+public class Editor extends ComponentActivity
 {
     public final static String TAG = "Editor";
     public final static String CHANGED = "changed";
@@ -128,6 +130,45 @@ public class Editor extends Activity
         }
 
         setListeners();
+
+        getOnBackPressedDispatcher().addCallback(this,
+                new OnBackPressedCallback(true)
+                {
+                    @Override
+                    public void handleOnBackPressed()
+                    {
+                        // Hide keyboard
+                        InputMethodManager imm = (InputMethodManager)
+                                getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+
+                        if (changed)
+                            alertDialog(R.string.appName, R.string.changes,
+                                    R.string.save, R.string.discard, (dialog, id) ->
+                                    {
+                                        switch (id)
+                                        {
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                CharSequence text = textView.getText();
+                                                write(text, uri);
+                                                setResult(RESULT_OK, null);
+                                                finish();
+                                                break;
+
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                changed = false;
+                                                setResult(RESULT_CANCELED, null);
+                                                finish();
+                                                break;
+                                        }
+                                    });
+                        else
+                        {
+                            setResult(RESULT_CANCELED, null);
+                            finish();
+                        }
+                    }
+                });
     }
 
     // setListeners
@@ -232,43 +273,6 @@ public class Editor extends Activity
         else
         {
             return super.onOptionsItemSelected(item);
-        }
-    }
-
-    // onBackPressed
-    @Override
-    public void onBackPressed()
-    {
-        // Hide keyboard
-        InputMethodManager imm = (InputMethodManager)
-            getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-
-        if (changed)
-            alertDialog(R.string.appName, R.string.changes,
-                        R.string.save, R.string.discard, (dialog, id) ->
-        {
-            switch (id)
-            {
-            case DialogInterface.BUTTON_POSITIVE:
-                CharSequence text = textView.getText();
-                write(text, uri);
-                setResult(RESULT_OK, null);
-                finish();
-                break;
-
-            case DialogInterface.BUTTON_NEGATIVE:
-                changed = false;
-                setResult(RESULT_CANCELED, null);
-                finish();
-                break;
-            }
-        });
-
-        else
-        {
-            setResult(RESULT_CANCELED, null);
-            finish();
         }
     }
 

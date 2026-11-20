@@ -26,7 +26,7 @@ apply plugin: 'com.android.application'
 android.buildFeatures.buildConfig = true
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 36
     namespace "org.billthefarmer.diary"
 
     defaultConfig {
@@ -48,7 +48,7 @@ android {
         disable 'IconDensities', 'ContentDescription', 'SetJavaScriptEnabled',
             'IconDuplicates', 'UnusedAttribute', 'OldTargetApi',
             'NonConstantResourceId', 'ExpiredTargetSdkVersion',
-            'MediaCapabilities', 'AndroidGradlePluginVersion'
+            'MediaCapabilities', 'AndroidGradlePluginVersion', 'MissingTranslation'
         // abortOnError false
     }
 }
@@ -56,9 +56,11 @@ android {
 dependencies {
     implementation 'org.commonmark:commonmark-ext-yaml-front-matter:0.21.0'
     implementation 'com.github.billthefarmer:CustomCalendarView:v1.06'
-    implementation project(':markdownview')
+    implementation 'com.github.billthefarmer:MarkdownView:v1.09'
     implementation 'org.commonmark:commonmark:0.21.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation "androidx.annotation:annotation:1.7.1"
-    implementation 'com.android.support:support-v4:23.0.0'
+    implementation 'androidx.activity:activity:1.10.1'
+    implementation 'androidx.activity:activity:1.13.0'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
 }
