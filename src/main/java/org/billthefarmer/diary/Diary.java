@@ -115,10 +115,12 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -2083,7 +2085,6 @@ public class Diary extends Activity
 
                     getWeather(location);
                 });
-        loadMarkdown();
     }
 
     private void getWeather(Location location)
@@ -2161,6 +2162,8 @@ public class Diary extends Activity
                         position = editable.length();
 
                     editable.insert(position, result);
+                    loadMarkdown();
+
                 });
             }
             catch (Exception e)
@@ -3063,6 +3066,18 @@ public class Diary extends Activity
 
     private void load() {
         DocumentFile file = getFile();
+
+        if (file != null) // If the file exists, have a quick check if it is in the index
+        {
+            LocalDate date = LocalDate.of(
+                    currEntry.get(Calendar.YEAR),
+                    currEntry.get(Calendar.MONTH) + 1,
+                    currEntry.get(Calendar.DATE));
+
+            if (!entryDates.contains(date)) // it isn't, so rescan the current month
+                syncMonthIndex(date.getYear(), date.getMonthValue() - 1);
+        }
+
         currentMarkdown = markdown
                 && file != null
                 && file.getName() != null
@@ -3081,6 +3096,60 @@ public class Diary extends Activity
         if (text != null) {
             checkPosition(text);
         }
+    }
+
+    // Resync current month into index
+    private boolean syncMonthIndex(int year, int month)
+    {
+        DocumentFile monthDir = findMonth(year, month);
+
+        if (monthDir == null)
+            return false;
+
+        boolean changed = false;
+        Set<LocalDate> foundDates = new HashSet<>();
+
+        for (DocumentFile file : monthDir.listFiles())
+        {
+            String name = file.getName();
+
+            if (name == null || !name.matches(DAY_FILE))
+                continue;
+
+            try
+            {
+                int day = dayValue(file);
+                LocalDate date = LocalDate.of(year, month + 1, day);
+
+                foundDates.add(date);
+
+                Uri oldUri = entryUris.get(date);
+
+                boolean preferred = markdown
+                        ? name.endsWith(".md")
+                        : name.endsWith(".txt");
+
+                if (oldUri == null || preferred)
+                    changed |= updateEntryIndex(date, file);
+            }
+            catch (DateTimeException e)
+            {
+                Log.w("Diary", "Invalid date: " + name, e);
+            }
+        }
+
+        for (LocalDate date : new ArrayList<>(entryDates))
+        {
+            if (date.getYear() == year
+                    && date.getMonthValue() == month + 1
+                    && !foundDates.contains(date))
+                changed |= updateEntryIndex(date, null);
+        }
+
+        if (changed)
+            writeEntryIndex();
+
+        return changed;
     }
 
     // checkPosition
