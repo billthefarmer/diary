@@ -150,6 +150,7 @@ public class Diary extends Activity
     public final static String MONTH = "month";
     public final static String DAY = "day";
 
+    public final static String CHANGED = "changed";
     public final static String SAVED = "saved";
     public final static String SHOWN = "shown";
     public final static String ENTRY = "entry";
@@ -586,6 +587,7 @@ public class Diary extends Activity
 
         shown = savedInstanceState.getBoolean(SHOWN);
         entry = savedInstanceState.getBoolean(ENTRY);
+        changed = savedInstanceState.getBoolean(CHANGED);
         saved = savedInstanceState.getLong(SAVED);
     }
 
@@ -641,6 +643,7 @@ public class Diary extends Activity
 
             outState.putBoolean(SHOWN, shown);
             outState.putBoolean(ENTRY, entry);
+            outState.putBoolean(CHANGED, changed);
             outState.putLong(SAVED, saved);
         }
     }

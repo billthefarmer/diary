@@ -57,6 +57,6 @@ android {
 dependencies {
     implementation 'org.commonmark:commonmark-ext-yaml-front-matter:0.32.0'
     implementation 'com.github.billthefarmer:CustomCalendarView:v1.06'
-    implementation 'com.github.billthefarmer:MarkdownView:v1.11'
+    implementation 'com.github.billthefarmer:MarkdownView:v1.12'
     implementation 'org.commonmark:commonmark:0.32.0'
 }
