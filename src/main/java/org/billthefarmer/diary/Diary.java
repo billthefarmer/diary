@@ -527,6 +527,10 @@ public class Diary extends Activity
         // Get preferences
         getPreferences();
 
+        // Restore Instance if saved instance present
+        if (savedInstanceState != null)
+            shown = savedInstanceState.getBoolean(SHOWN, true);
+
         Configuration config = getResources().getConfiguration();
         int night = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -587,7 +591,6 @@ public class Diary extends Activity
 
         layoutSwitcher = findViewById(R.id.layout_switcher);
         buttonSwitcher = findViewById(R.id.button_switcher);
-
 
         WebSettings settings = markdownView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -2025,7 +2028,6 @@ public class Diary extends Activity
     private void addEvents()
     {
         if (BuildConfig.DEBUG)
-            Log.d("DiaryEvents", "addEvents aufgerufen: " + currEntry.getTime());
         if (checkSelfPermission(Manifest.permission.READ_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(
@@ -2411,6 +2413,9 @@ public class Diary extends Activity
         if (file != null && file.exists() && file.lastModified() > saved)
             load();
 
+        // get Display Status
+        getCurrentMarkdown();
+
         // Clear cache
         markdownView.clearCache(true);
 
@@ -2418,10 +2423,22 @@ public class Diary extends Activity
         if (prevEntry == null && nextEntry == null && textView.length() == 0)
             textView.setText(readAssetFile(HELP));
 
+
         if (markdown && changed)
             loadMarkdown();
 
         setVisibility();
+    }
+
+    // Find out if we are to show markdown view
+    private void getCurrentMarkdown()
+    {
+        DocumentFile file = getFile();
+
+        currentMarkdown = markdown
+                && file != null
+                && file.getName() != null
+                && file.getName().endsWith(".md");
     }
 
     private void startDiary()
@@ -2610,8 +2627,6 @@ public class Diary extends Activity
                 // Try loading index
                 if (readEntryIndex())
                 {
-                    Log.d("Diary", "Loaded index: "
-                            + entryDates.size() + " Entries");
                     return null;
                 }
 
@@ -2683,9 +2698,6 @@ public class Diary extends Activity
 
                 // Save index to file
                 writeEntryIndex();
-
-                Log.d("Diary", "Created index: "
-                        + entryDates.size() + " Entries");
 
                 return null;
             }
@@ -2800,14 +2812,10 @@ public class Diary extends Activity
                 entryUris.put(date, uri);
             }
 
-            Log.d("Diary", "Loaded binary index: "
-                    + entryDates.size() + " Entries");
-
             return true;
         }
         catch (Exception e)
         {
-            Log.e("Diary", "Could not read binary index", e);
             entryDates.clear();
             entryUris.clear();
             return false;
@@ -3105,15 +3113,12 @@ public class Diary extends Activity
                 syncMonthIndex(date.getYear(), date.getMonthValue() - 1);
         }
 
-        currentMarkdown = markdown
-                && file != null
-                && file.getName() != null
-                && file.getName().endsWith(".md");
         CharSequence text = read(file);
         textView.setText(text);
         changed = false;
         invalidateOptionsMenu();
 
+        getCurrentMarkdown();
         if (currentMarkdown) {
             loadMarkdown();
         }
