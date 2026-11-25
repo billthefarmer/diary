@@ -551,11 +551,16 @@ public class Diary extends Activity
                             | WindowInsets.Type.displayCutout()
             ).top;
 
+            int bottom = insets.getInsets(
+                    WindowInsets.Type.ime()
+                            | WindowInsets.Type.navigationBars()
+            ).bottom;
+
             view.setPadding(
                     view.getPaddingLeft(),
                     top,
                     view.getPaddingRight(),
-                    view.getPaddingBottom()
+                    bottom
             );
 
             return insets;
