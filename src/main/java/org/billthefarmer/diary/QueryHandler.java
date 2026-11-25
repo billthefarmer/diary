@@ -64,8 +64,6 @@ public class QueryHandler extends AsyncQueryHandler
     private static final int EVENT_DONE = 3;
 
     private static QueryHandler queryHandler;
-    private static EventListener listener;
-
     // QueryHandler
     private QueryHandler(ContentResolver resolver)
     {
@@ -81,8 +79,6 @@ public class QueryHandler extends AsyncQueryHandler
         if (queryHandler == null)
             queryHandler = new QueryHandler(resolver);
 
-        listener = l;
-
         Uri path = Instances.CONTENT_URI;
         path = Uri.withAppendedPath(path, String.valueOf(startTime));
         path = Uri.withAppendedPath(path, String.valueOf(endTime));
@@ -90,9 +86,9 @@ public class QueryHandler extends AsyncQueryHandler
         if (BuildConfig.DEBUG)
             Log.d(TAG, String.format("Query with path %s", path));
 
-        queryHandler.startQuery(INSTANCE_LISTEN, null, path,
-                                INSTANCE_PROJECTION, null,
-                                null, INSTANCE_ORDERBY);
+        queryHandler.startQuery(INSTANCE_LISTEN, l, path,
+                INSTANCE_PROJECTION, null,
+                null, INSTANCE_ORDERBY);
     }
 
     // insertEvent
@@ -127,37 +123,40 @@ public class QueryHandler extends AsyncQueryHandler
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Query complete");
 
-        ContentValues values = (ContentValues) object;
         long calendarID = 0;
 
         switch (token)
         {
-        case EVENT_INSERT:
-            // Use the cursor to move through the returned records
-            cursor.moveToFirst();
-            // Get the field value
-            calendarID = cursor.getLong(CALENDAR_ID_INDEX);
-            values.put(Events.CALENDAR_ID, calendarID);
-            values.put(Events.EVENT_TIMEZONE,
-                       TimeZone.getDefault().getDisplayName());
-            startInsert(EVENT_REMIND, null, Events.CONTENT_URI, values);
-            break;
-
-        case INSTANCE_LISTEN:
-            // Use the cursor to move through the returned records
-            while (cursor.moveToNext())
+            case EVENT_INSERT:
             {
-                // Get the field values
-                long startTime = cursor.getLong(INSTANCE_BEGIN_INDEX);
-                String title = cursor.getString(INSTANCE_TITLE_INDEX);
+                ContentValues values = (ContentValues) object;
 
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, String.format("Found event with title %s on %s",
-                                             title, startTime));
+                cursor.moveToFirst();
+                calendarID = cursor.getLong(CALENDAR_ID_INDEX);
+                values.put(Events.CALENDAR_ID, calendarID);
+                values.put(Events.EVENT_TIMEZONE,
+                        TimeZone.getDefault().getDisplayName());
+                startInsert(EVENT_REMIND, null, Events.CONTENT_URI, values);
+                break;
+            }
 
-                // Return values
-                if (listener != null)
-                    listener.onEvent(startTime, title);
+            case INSTANCE_LISTEN:
+            {
+                EventListener listener = (EventListener) object;
+
+                while (cursor.moveToNext())
+                {
+                    long startTime = cursor.getLong(INSTANCE_BEGIN_INDEX);
+                    String title = cursor.getString(INSTANCE_TITLE_INDEX);
+
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, String.format("Found event with title %s on %s",
+                                title, startTime));
+
+                    if (listener != null)
+                        listener.onEvent(startTime, title);
+                }
+                break;
             }
         }
     }

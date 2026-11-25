@@ -46,6 +46,9 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.provider.OpenableColumns;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 import android.text.Editable;
 import android.text.Spanned;
@@ -147,7 +150,7 @@ public class Diary extends Activity
     public final static int REQUEST_READ = 1;
     public final static int REQUEST_WRITE = 2;
     public final static int REQUEST_TEMPLATE = 3;
-
+    private static final int REQUEST_CALENDAR = 1002;
     public final static int POSITION_DELAY = 128;
     public final static int VISIBLE_DELAY = 2048;
     public final static int LARGE_SIZE = 262144;
@@ -355,12 +358,21 @@ public class Diary extends Activity
                     template();
                 break;
 
+            case REQUEST_CALENDAR:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    addEvents();
+                else
+                    Toast.makeText(this, "Missing calendar permission",
+                            Toast.LENGTH_LONG).show();
+                break;
+
             case LOCATION_PERMISSION_REQUEST:
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED)
                 addPositionWeather();
             else
-                Toast.makeText(this, "Standortberechtigung fehlt",
+                Toast.makeText(this, "Location permission mussing",
                         Toast.LENGTH_LONG).show();
             break;
         }
@@ -2012,11 +2024,21 @@ public class Diary extends Activity
     // addEvents
     private void addEvents()
     {
+        if (BuildConfig.DEBUG)
+            Log.d("DiaryEvents", "addEvents aufgerufen: " + currEntry.getTime());
+        if (checkSelfPermission(Manifest.permission.READ_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[]{Manifest.permission.READ_CALENDAR},
+                    REQUEST_CALENDAR);
+            return;
+        }
         GregorianCalendar endTime = new
             GregorianCalendar(currEntry.get(Calendar.YEAR),
                               currEntry.get(Calendar.MONTH),
                               currEntry.get(Calendar.DATE));
         endTime.add(Calendar.DATE, 1);
+
         QueryHandler.queryEvents(this, currEntry.getTimeInMillis(),
                                  endTime.getTimeInMillis(),
                                  (startTime, title) ->
@@ -3819,6 +3841,7 @@ public class Diary extends Activity
         if (markdown && shown)
             animateSwipeLeft();
     }
+
 
     // onActionModeStarted
     @Override
